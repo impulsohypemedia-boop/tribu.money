@@ -1,7 +1,7 @@
 /**
  * PWA icon pipeline.
  *
- * Draws Split's mark — a thumbs-up on a black-ringed pink disc — at every size the
+ * Draws Tribu's mark — three people on a black-ringed orange disc — at every size the
  * manifest, the install prompt, iOS and the browser tab need. Deterministic: re-running
  * produces byte-identical files, so it is safe to run in CI or after the artwork changes.
  *
@@ -30,12 +30,12 @@ import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
 
 const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
-const SOURCE = path.join(root, 'src/assets/logos/split-mark.svg')
+const SOURCE = path.join(root, 'src/assets/logos/tribu-mark.svg')
 const ICON_DIR = path.join(root, 'public/icons')
 const SPLASH_DIR = path.join(ICON_DIR, 'splash')
 const APP_DIR = path.join(root, 'src/app')
 
-const PINK = '#FF90E8'
+const PINK = '#FF7A45'
 /** The manifest's `background_color`. iOS paints it while the app boots, so the splash matches. */
 const CREAM = '#FAF4F0'
 const BOARD = 1705 // the artwork's own coordinate space
@@ -55,7 +55,7 @@ const MARK = source.match(/<g id="mark">([\s\S]*?)<\/g>/)[1]
  * Where the thumb's ink sits in the artboard. Measured off a render of the mark alone, so
  * it includes the stroke; the drawing is not centred in its own artboard.
  */
-const ART = { x: 191, y: 168, w: 1128, h: 1368 }
+const ART = { x: 333, y: 363, w: 1039, h: 974 }
 
 /**
  * `art` is the share of the frame's height the thumb takes, and applies to "flat" only.

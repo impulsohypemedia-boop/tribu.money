@@ -8,10 +8,10 @@ import {
 } from './share-package'
 
 const slug = 'lisbon-weekend-x7k2m9'
-const url = `https://peanutsplit.com/r/${slug}`
+const url = `https://tribu.money/r/${slug}`
 const nextAction = 'Open the link, pick your name, then add what you paid.'
 const payload = roomSharePackage({
-    title: 'Lisbon weekend · Peanut Split',
+    title: 'Lisbon weekend · Tribu',
     nextAction,
     url,
 })
@@ -19,7 +19,7 @@ const payload = roomSharePackage({
 describe('room share package', () => {
     it('keeps the exact next action and bearer link together in the directed payload', () => {
         expect(payload).toEqual({
-            title: 'Lisbon weekend · Peanut Split',
+            title: 'Lisbon weekend · Tribu',
             text: nextAction,
             url,
             fullText: `${nextAction}\n${url}`,
@@ -31,7 +31,7 @@ describe('room share package', () => {
         const native = nativeRoomShareData(payload)
 
         expect(native).toEqual({
-            title: 'Lisbon weekend · Peanut Split',
+            title: 'Lisbon weekend · Tribu',
             text: nextAction,
             url,
         })

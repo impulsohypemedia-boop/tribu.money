@@ -19,7 +19,7 @@ const MAX_TITLE_NAME = 48
  * to have — and what `getTranslator` resolves to when a catalog is missing a key.
  */
 export const ROOM_DESCRIPTION = 'Join the split — see who owes what and add what you paid.'
-export const ROOM_FALLBACK_TITLE = 'Split room — Peanut Split'
+export const ROOM_FALLBACK_TITLE = 'Split room — Tribu'
 export const ROOM_FALLBACK_DESCRIPTION = 'Split expenses with one link. No signup, no app, free to use.'
 
 /**
@@ -38,20 +38,20 @@ const roomDescription = async (locale: string | null): Promise<string> =>
     (await getTranslator(locale ?? 'en'))('preview.roomDescription')
 
 export const RECAP_DESCRIPTION = 'What this split added up to — days, expenses, people, and who fronted the most.'
-export const RECAP_FALLBACK_TITLE = 'Trip recap — Peanut Split'
+export const RECAP_FALLBACK_TITLE = 'Trip recap — Tribu'
 
-/** "Ski trip — Peanut Split". Exported for tests; no I/O. */
+/** "Ski trip — Tribu". Exported for tests; no I/O. */
 export function roomTitle(name: string, _emblem: string | null): string {
     const trimmed = name.replace(/\s+/g, ' ').trim()
     const clipped = trimmed.length > MAX_TITLE_NAME ? `${trimmed.slice(0, MAX_TITLE_NAME).trimEnd()}…` : trimmed
-    return clipped ? `${clipped} — Peanut Split` : ROOM_FALLBACK_TITLE
+    return clipped ? `${clipped} — Tribu` : ROOM_FALLBACK_TITLE
 }
 
-/** "Ski trip recap — Peanut Split". Exported for tests; no I/O. */
+/** "Ski trip recap — Tribu". Exported for tests; no I/O. */
 export function recapTitle(name: string, _emblem: string | null): string {
     const trimmed = name.replace(/\s+/g, ' ').trim()
     const clipped = trimmed.length > MAX_TITLE_NAME ? `${trimmed.slice(0, MAX_TITLE_NAME).trimEnd()}…` : trimmed
-    return clipped ? `${clipped} recap — Peanut Split` : RECAP_FALLBACK_TITLE
+    return clipped ? `${clipped} recap — Tribu` : RECAP_FALLBACK_TITLE
 }
 
 /**

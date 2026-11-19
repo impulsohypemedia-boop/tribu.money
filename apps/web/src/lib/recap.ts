@@ -13,7 +13,7 @@
  * access to the group's ledger. So V1 shares the recap as an IMAGE — the PNG
  * from `/r/<slug>/recap/card`, handed to `navigator.share({ files })` — and the
  * image prints the product's domain, never the slug. Nothing credential-bearing
- * leaves the group; the acquisition surface is "peanutsplit.com" printed on the
+ * leaves the group; the acquisition surface is "tribu.money" printed on the
  * artwork.
  *
  * The screen at `/r/<slug>/recap` is for members who already hold the link. It

@@ -9,7 +9,8 @@
 export type SplitMode = 'EQUAL' | 'EXACT' | 'PERCENTAGE' | 'SHARES'
 
 /** Free-form on the wire; the UI knows about these three. */
-export type SettlementMethod = 'cash' | 'bank' | 'peanut'
+/** `peanut` survives only to render settlements recorded before the fork. */
+export type SettlementMethod = 'cash' | 'bank' | 'lemon' | 'peanut'
 
 export interface CurrencyInfo {
     code: string
@@ -57,6 +58,9 @@ export interface ApiMember {
     removedAt?: string | null
     /** Server-derived exact-balance eligibility for leaving the active roster. */
     canRemove?: boolean
+    /** Lemon wallet this member is paid at, proven by a signature. Lowercase hex. */
+    walletAddress?: string | null
+    lemonTag?: string | null
 }
 
 export interface ApiShare {
@@ -113,6 +117,12 @@ export interface ApiSettlement {
     note: string | null
     /** User-pasted documentation; Split never fetches or verifies it. */
     receiptUrl?: string | null
+    /** Set only for method `lemon`, after the server checked the transfer on chain. */
+    txHash?: string | null
+    chainId?: number | null
+    token?: string | null
+    /** Token base units. */
+    tokenAmount?: string | null
     createdAt: string
 }
 
@@ -300,6 +310,20 @@ export interface SettlementInput {
     method?: SettlementMethod | string | null
     note?: string | null
     receiptUrl?: string | null
+    /** Method `lemon` only: the transfer the server checks on chain before recording. */
+    lemon?: { txHash: string; token: 'USDC' | 'USDT'; tokenAmount: string }
+}
+
+export interface LemonQuote {
+    chainId: number
+    quotes: { token: 'USDC' | 'USDT'; address: string; decimals: number; usdCents: string; tokenAmount: string }[]
+}
+
+export interface WalletLinkInput {
+    wallet: string
+    message: string
+    signature: string
+    lemonTag?: string | null
 }
 
 // ─── push ───────────────────────────────────────────────────────────────────

@@ -42,7 +42,7 @@ export function DocChrome({ children, page }: { children: React.ReactNode; page:
             <footer className="border-t border-n-1 bg-white">
                 <div className="mx-auto flex max-w-[90rem] flex-col gap-2 px-4 py-8 text-sm text-grey-1 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
                     <p>Code-derived on 3 August 2026. Canonical implementation always wins over this description.</p>
-                    <p className="font-bold text-n-1">Peanut Split · internal engineering reference</p>
+                    <p className="font-bold text-n-1">Tribu · internal engineering reference</p>
                 </div>
             </footer>
         </main>

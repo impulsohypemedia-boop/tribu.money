@@ -11,7 +11,7 @@ import type { AuditRecommendation } from './audit-model'
 export const auditRecommendations = {
     'OPS-01': {
         decision: 'defer',
-        note: 'Leadership decision recorded 2026-08-04: pushing to main should deploy directly. Do not add branch protection, required pull requests, or an immutable-artifact project to the roadmap. Revisit deployment gating only once Peanut Split has tens of thousands of users.',
+        note: 'Leadership decision recorded 2026-08-04: pushing to main should deploy directly. Do not add branch protection, required pull requests, or an immutable-artifact project to the roadmap. Revisit deployment gating only once Tribu has tens of thousands of users.',
     },
     'SEC-02': {
         decision: 'fix-now',

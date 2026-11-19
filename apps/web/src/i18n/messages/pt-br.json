@@ -17,7 +17,7 @@
                 "linkPrompt": "Cada um lança o seu",
                 "joined": "Bea, Jules e Mo abriram o link"
             },
-            "stageSummary": "Um link do Peanut Split passa pelo grupo para que cada amigo abra a mesma sala e lance despesas.",
+            "stageSummary": "Um link do Tribu passa pelo grupo para que cada amigo abra a mesma sala e lance despesas.",
             "validation": {
                 "roomRequired": "Dê um nome para a sala.",
                 "creatorRequired": "Diga quem é você."
@@ -41,10 +41,10 @@
             "recovery": {
                 "title": "Já tem o link de uma sala?",
                 "label": "Cole o link da sala",
-                "placeholder": "peanutsplit.com/r/sua-sala-…",
+                "placeholder": "tribu.money/r/sua-sala-…",
                 "hint": "Salva a sala neste aparelho.",
                 "submit": "Adicionar esta sala",
-                "invalid": "Cole o link completo de uma sala do Peanut Split.",
+                "invalid": "Cole o link completo de uma sala do Tribu.",
                 "notFound": "Não encontramos essa sala. Confira se você colou o link inteiro.",
                 "failed": "Não deu para conferir essa sala agora. Nada foi salvo; tente de novo.",
                 "openingSaved": "Abrindo {room}. Ela foi salva neste aparelho.",
@@ -132,23 +132,23 @@
             "madeByBrand": "Squirrel Labs",
             "termsLink": "Termos",
             "privacyLink": "Privacidade",
-            "operatedBy": "O Peanut Split é operado pela Squirrel Labs Ltd, a empresa por trás do Peanut (peanut.me). Registrada na Inglaterra e no País de Gales sob o número 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
+            "operatedBy": "O Tribu é operado pela Squirrel Labs Ltd, a empresa por trás do Peanut (peanut.me). Registrada na Inglaterra e no País de Gales sob o número 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
         },
         "appHome": {
-            "landingLink": "O que é o Split?"
+            "landingLink": "O que é o Tribu?"
         },
         "install": {
             "title": "Instale o Split",
             "body": "Volte mais rápido para esta sala. Sem loja de apps. Sem conta.",
             "bodySettled": "Mantenha esta viagem e a próxima a um toque.",
-            "announcement": "Você pode instalar o Split.",
+            "announcement": "Você pode instalar o Tribu.",
             "cta": "Instalar o Split",
             "ctaSteps": "Ver etapas de instalação",
             "dismiss": "Agora não",
             "row": {
                 "label": "Instalar o Split",
-                "labelIos": "Adicionar o Split à tela de início",
-                "installed": "O Split já está instalado.",
+                "labelIos": "Adicionar o Tribu à tela de início",
+                "installed": "O Tribu já está instalado.",
                 "preparing": "Preparando…",
                 "checkLabel": "Ícone do Split",
                 "checkLabelIos": "Ícone da tela inicial",
@@ -162,29 +162,29 @@
                 "step1Android": "Toque em Mais no Chrome.",
                 "step2Android": "Escolha “Adicionar à tela inicial” ou “Instalar e criar atalho”.",
                 "step3Android": "Escolha “Instalar” ou “Instalar app”.",
-                "step4Android": "Confirme que o nome é “Split” e toque em “Instalar”.",
+                "step4Android": "Confirme que o nome é “Tribu” e toque em “Instalar”.",
                 "step1Other": "Abra o menu do navegador.",
                 "step2Other": "Escolha “Instalar app”. No Mac, escolha “Adicionar ao Dock”.",
-                "step3Other": "Confirme que o nome é “Split” e prossiga.",
+                "step3Other": "Confirme que o nome é “Tribu” e prossiga.",
                 "noOption": "Não encontrou a opção de instalação? Abra esta página no Chrome.",
                 "install": "Instalar"
             },
             "ios": {
-                "title": "Adicione o Split à tela de início",
+                "title": "Adicione o Tribu à tela de início",
                 "step1": "Toque em Compartilhar. Se não aparecer, toque primeiro em Mais.",
                 "step2": "Toque em “Adicionar à Tela de Início”.",
                 "step3": "Ative “Abrir como App da Web”, se aparecer.",
                 "step4": "Toque em “Adicionar”.",
-                "openAfter": "Depois, abra o Split pelo novo ícone.",
+                "openAfter": "Depois, abra o Tribu pelo novo ícone.",
                 "body": "Use o menu Compartilhar do navegador.",
                 "prepareFailed": "Não foi possível preparar esta sala. Tente novamente em instantes.",
                 "add": "Adicionar"
             },
             "repair": {
-                "announcement": "Você pode verificar o ícone do Split.",
+                "announcement": "Você pode verificar o ícone do Tribu.",
                 "title": "Substitua o ícone antigo da sala",
-                "body": "O ícone diz Split? Está tudo certo. Mostra o nome de uma sala? Substitua-o.",
-                "cardBody": "Seu ícone mostra o nome de uma sala? Substitua-o pelo Split.",
+                "body": "O ícone diz Tribu? Está tudo certo. Mostra o nome de uma sala? Substitua-o.",
+                "cardBody": "Seu ícone mostra o nome de uma sala? Substitua-o pelo Tribu.",
                 "cta": "Verificar ícone",
                 "copyFirst": "Copie o link da sala antes de remover o ícone antigo.",
                 "step1": "Remova o ícone que tem o nome da sala.",
@@ -198,12 +198,12 @@
                 "copied": "Link da sala copiado.",
                 "copyFailed": "Não foi possível copiar o link. Abra-o novamente de onde foi compartilhado.",
                 "missing": "O link não está aqui. Abra-o novamente de onde foi compartilhado.",
-                "check": "Instale somente se o nome mostrar “Split”.",
+                "check": "Instale somente se o nome mostrar “Tribu”.",
                 "back": "Voltar para a sala"
             },
             "page": {
                 "preparing": "Verificando este navegador…",
-                "installed": "O Split já está instalado.",
+                "installed": "O Tribu já está instalado.",
                 "continue": "Voltar ao Split",
                 "copyRoom": "Copiar link original da sala",
                 "roomRecovery": "A sala não apareceu depois de instalar? Abra o link original uma vez."
@@ -221,7 +221,7 @@
                 "title": "Salas abertas ficam neste aparelho"
             },
             "money": {
-                "title": "O Split guarda as contas, não o dinheiro"
+                "title": "O Tribu guarda as contas, não o dinheiro"
             },
             "done": "Entendi"
         },
@@ -237,7 +237,7 @@
                 "body": "Sem cadastro, senha ou download."
             },
             "features": {
-                "title": "O que o Split faz",
+                "title": "O que o Tribu faz",
                 "currency": {
                     "title": "162 moedas para a sala",
                     "body": "Conversão automática para 156 moedas; outras 6 funcionam sem conversão."
@@ -274,7 +274,7 @@
             },
             "team": {
                 "title": "Quem construiu",
-                "intro": "Konrad e Hugo criaram o Split. Aqui eles contam por quê.",
+                "intro": "Konrad e Hugo criaram o Tribu. Aqui eles contam por quê.",
                 "konrad": {
                     "name": "Konrad",
                     "role": "fez o Split",
@@ -314,7 +314,7 @@
                 },
                 "lost": {
                     "q": "Como a gente volta para a sala?",
-                    "a": "Deixe o link no grupo para todo mundo encontrar por lá. O Split também salva neste aparelho as salas que você abre, e você pode colar o link na página inicial para adicionar a sala de novo."
+                    "a": "Deixe o link no grupo para todo mundo encontrar por lá. O Tribu também salva neste aparelho as salas que você abre, e você pode colar o link na página inicial para adicionar a sala de novo."
                 },
                 "limits": {
                     "q": "Há um limite diário de despesas?",
@@ -323,7 +323,7 @@
             },
             "compare": {
                 "line": "Vindo de outro app de divisão de contas?",
-                "link": "Veja como o Split se compara ao Splitwise"
+                "link": "Veja como o Tribu se compara ao Splitwise"
             }
         }
     },
@@ -410,7 +410,7 @@
             "messagePlaceholder": "O que você fez, o que aconteceu e o que esperava que acontecesse?",
             "messageHint": "Obrigatório · pelo menos {minimum} caracteres. Links de salas são removidos do texto antes do armazenamento.",
             "attachmentsTitle": "Escolha o que anexar",
-            "attachmentsIntro": "Todos os anexos começam desativados. Ative apenas o que deseja incluir para a equipe de manutenção do Split na Squirrel Labs.",
+            "attachmentsIntro": "Todos os anexos começam desativados. Ative apenas o que deseja incluir para a equipe de manutenção do Tribu na Squirrel Labs.",
             "deviceTitle": "Detalhes do aparelho",
             "deviceHint": "Navegador e sistema, área visível, fuso horário, modo do app e estado da rede.",
             "exactDeviceData": "Ver os dados exatos do aparelho",
@@ -437,12 +437,12 @@
             "imageTooLarge": "Essa imagem é grande demais. Escolha uma captura com menos de 20 MB.",
             "imageUnreadable": "Não foi possível ler essa imagem. Escolha uma captura JPEG, PNG ou WebP.",
             "consentTitle": "Concordo em enviar este relato",
-            "consentHint": "A equipe de manutenção do Split na Squirrel Labs pode ler sua mensagem e somente os anexos selecionados acima. Os relatos não vão para análises nem aparecem na sala, e têm exclusão programada após 90 dias.",
+            "consentHint": "A equipe de manutenção do Tribu na Squirrel Labs pode ler sua mensagem e somente os anexos selecionados acima. Os relatos não vão para análises nem aparecem na sala, e têm exclusão programada após 90 dias.",
             "send": "Enviar relato",
             "cancel": "Cancelar",
             "sendFailed": "Não foi possível enviar o relato — seu texto e sua captura continuam aqui.",
             "successTitle": "Relato enviado",
-            "successBody": "Obrigado. O relato e os anexos selecionados foram salvos para a equipe de manutenção do Split na Squirrel Labs.",
+            "successBody": "Obrigado. O relato e os anexos selecionados foram salvos para a equipe de manutenção do Tribu na Squirrel Labs.",
             "done": "Concluir"
         },
         "export": {
@@ -643,7 +643,7 @@
             "topPayer": "{name} foi quem mais pagou",
             "share": "Compartilhar a história",
             "sharing": "Preparando…",
-            "shareTitle": "Peanut Split",
+            "shareTitle": "Tribu",
             "shareText": "Nossas contas, acertadas.",
             "copied": "Resumo copiado — cole onde quiser.",
             "downloaded": "Resumo salvo nos seus downloads.",
@@ -791,12 +791,8 @@
             "cash": "Dinheiro",
             "bank": "Banco",
             "peanut": "Peanut",
-            "peanutNote": "Abre o Peanut em outra aba. O Split registra o pagamento aqui mesmo se o dinheiro não for enviado.",
             "note": "Observação (opcional)",
             "notePlaceholder": "Mandei na sexta",
-            "receiptLink": "Link do comprovante (opcional)",
-            "receiptLinkPlaceholder": "https://…",
-            "receiptLinkHint": "Guardado só como referência. O Split não abre nem verifica.",
             "record": "Registrar pagamento",
             "back": "Voltar",
             "recorded": "{from} pagou a {to}",
@@ -807,7 +803,20 @@
             "amountFormatInvalid": "Confira os separadores e as casas decimais do valor.",
             "amountTooHigh": "Isso é mais do que {name} deve.",
             "recordedTitle": "Registrado agora",
-            "amountTooHighYou": "Isso é mais do que você deve."
+            "amountTooHighYou": "Isso é mais do que você deve.",
+            "lemon": "Lemon",
+            "lemonNote": "Pago da sua carteira Lemon, em dólares digitais.",
+            "lemonQuote": "Você vai enviar {amount} {token} do seu Lemon.",
+            "lemonPay": "Pagar com Lemon",
+            "lemonPaying": "Aguardando o Lemon…",
+            "lemonConfirming": "Confirmando o pagamento…",
+            "lemonPayTitle": "Pagamento para {name} no Tribu",
+            "lemonFailed": "O pagamento não foi concluído. Nenhum dinheiro saiu.",
+            "lemonSignInNeeded": "Entre com o Lemon para pagar por aqui.",
+            "lemonOnlyPayer": "Só {name} pode pagar esta dívida com o Lemon.",
+            "lemonLinking": "Conectando seu Lemon a este grupo. Tente de novo em instantes.",
+            "lemonPayeeNoWallet": "{name} ainda não abriu este grupo pelo Lemon, então não há onde receber.",
+            "lemonTokenUnavailable": "{token} não está disponível nesta rede."
         },
         "share": {
             "title": "Compartilhar sala",
@@ -830,7 +839,7 @@
             "shared": "Convite enviado.",
             "shareFailed": "O menu de compartilhamento não abriu. Copie o convite.",
             "anyoneCanJoin": "Qualquer pessoa com este link pode entrar e lançar gastos.",
-            "shareTitle": "{room} · Peanut Split",
+            "shareTitle": "{room} · Tribu",
             "shareText": "Abra o link, escolha seu nome e adicione o que você pagou."
         },
         "create": {
@@ -915,7 +924,7 @@
             "step1": "Escanear uma conta · confira os itens",
             "step2": "Escanear uma conta · quem pediu o quê",
             "reading": "Lendo a conta…",
-            "privacyNote": "O Split envia a foto uma vez e não a guarda.",
+            "privacyNote": "O Tribu envia a foto uma vez e não a guarda.",
             "reviewTitle": "Confira os itens",
             "reviewBody": "Corrija o que saiu errado, apague o que não é seu e acrescente o que faltou.",
             "reviewFromMerchant": "De {merchant}. Corrija o que saiu errado e acrescente o que faltou.",
@@ -1055,7 +1064,8 @@
             "removing": "Desfazendo…",
             "confirmNo": "Deixar",
             "removed": "Registro desfeito. Os saldos foram atualizados.",
-            "removeFailed": "Não deu para excluir esse pagamento — tente de novo."
+            "removeFailed": "Não deu para excluir esse pagamento — tente de novo.",
+            "txLink": "Ver a transação"
         },
         "achievements": {
             "crew": {
@@ -1141,7 +1151,7 @@
         "notifyMe": "Me avisar sobre {room}",
         "cta": "Me avisar",
         "on": "Ativadas",
-        "iosNeedsPwa": "Adicione o Split à sua tela de início.",
+        "iosNeedsPwa": "Adicione o Tribu à sua tela de início.",
         "iosHow": "Como?",
         "denied": "Bloqueadas nas configurações do navegador.",
         "unknown": "Não deu para verificar agora — este aparelho pode continuar recebendo.",
@@ -1177,7 +1187,7 @@
         "MALFORMED_JSON": "Algo deu errado ao enviar — tente de novo.",
         "JSON_REQUIRED": "Algo deu errado ao enviar — tente de novo.",
         "REQUEST_TOO_LARGE": "Essa solicitação é grande demais para enviar.",
-        "CROSS_SITE_REQUEST": "Não foi possível verificar essa solicitação — abra o Split de novo e tente novamente.",
+        "CROSS_SITE_REQUEST": "Não foi possível verificar essa solicitação — abra o Tribu de novo e tente novamente.",
         "NOT_FOUND": "Esta sala não existe.",
         "EXPENSE_NOT_FOUND": "Esse gasto não está mais aqui — recarregue a sala.",
         "SETTLEMENT_NOT_FOUND": "Esse pagamento não está mais aqui — recarregue a sala.",
@@ -1211,7 +1221,7 @@
         "SETTLEMENT_EXCEEDS_DEBT": "Esse pagamento é maior do que a dívida atual — recarregue e confira o valor.",
         "IDEMPOTENCY_KEY_REUSED": "Essa chave de salvamento já foi usada em outra sala — tente salvar de novo.",
         "MEMBER_TOKEN_INVALID": "Escolha seu nome de novo para continuar.",
-        "INSTALL_HANDOFF_UNAVAILABLE": "A transferência salva para instalar não está mais disponível — abra esta sala no navegador e adicione o Split de novo.",
+        "INSTALL_HANDOFF_UNAVAILABLE": "A transferência salva para instalar não está mais disponível — abra esta sala no navegador e adicione o Tribu de novo.",
         "SCAN_UNAVAILABLE": "O escaneamento de contas não está ligado aqui.",
         "SCAN_IMAGE_TOO_LARGE": "Essa imagem é grande demais — tire uma foto nova.",
         "SCAN_BAD_IMAGE": "Não deu para enviar essa imagem — tente tirar de novo.",
@@ -1229,7 +1239,17 @@
         "NO_RATE": "Não há cotação entre essa moeda e a da sala, então não dá para converter. Use a moeda da sala.",
         "MANUAL_FX_RATE_REQUIRED": "Insira uma cotação manual para esta moeda personalizada.",
         "MANUAL_FX_RATE_INVALID": "Essa cotação manual é inválida ou faz o valor convertido arredondar para zero.",
-        "MANUAL_FX_RATE_NOT_ALLOWED": "As cotações manuais só estão disponíveis para moedas personalizadas do gasto."
+        "MANUAL_FX_RATE_NOT_ALLOWED": "As cotações manuais só estão disponíveis para moedas personalizadas do gasto.",
+        "LEMON_PROOF_INVALID": "O Lemon não conseguiu confirmar que essa carteira é sua.",
+        "LEMON_PROOF_STALE": "Sua sessão do Lemon expirou. Abra o Tribu pelo Lemon de novo.",
+        "LEMON_TX_INVALID": "Esse pagamento não pode ser registrado.",
+        "LEMON_TX_UNDERPAID": "O pagamento enviado é menor que a dívida.",
+        "LEMON_TX_PENDING": "O pagamento ainda está sendo confirmado.",
+        "LEMON_TX_FAILED": "A transação falhou na rede. O pagamento não foi registrado.",
+        "LEMON_TX_MISMATCH": "Essa transação não corresponde a este pagamento.",
+        "LEMON_TX_ALREADY_RECORDED": "Esse pagamento já está registrado.",
+        "LEMON_WALLET_MISSING": "As duas pessoas precisam ter aberto o grupo pelo Lemon.",
+        "NOT_THIS_MEMBER": "Só essa pessoa pode conectar a própria carteira."
     },
     "derivation": {
         "title": "De onde vem esse número",
@@ -1385,7 +1405,7 @@
             "title": "Vale saber",
             "more": "…e mais {count, plural, one {#} other {#}}.",
             "ROW_UNBALANCED": "A linha {row} não fecha no próprio arquivo, então ficou de fora.",
-            "ROW_UNSUPPORTED_CURRENCY": "A linha {row} está em {detail}, que o Split ainda não tem, então ficou de fora.",
+            "ROW_UNSUPPORTED_CURRENCY": "A linha {row} está em {detail}, que o Tribu ainda não tem, então ficou de fora.",
             "ROW_NO_PAYER": "A linha {row} não diz quem pagou, então ficou de fora.",
             "ROW_ZERO_COST": "A linha {row} não tem valor, então ficou de fora.",
             "ROW_BAD_AMOUNT": "A linha {row} tem um valor que a gente não conseguiu ler, então ficou de fora.",
@@ -1403,7 +1423,7 @@
             "SPLITPRO_SPLIT_MODE_FLATTENED": "As divisões por porcentagem/partes do Split Pro mantêm os valores finais, mas entram como valores fixos. Editá-las depois não preservará os pesos originais.",
             "SPLITPRO_MISSING_NAMES": "O Split Pro deixou de fora {count, plural, one {o nome de uma pessoa} other {os nomes de # pessoas}}. Você verá o rótulo “Membro” abaixo — troque antes de criar a sala.",
             "SPLITPRO_BALANCES_SKIPPED": "{count, plural, one {Um saldo do backup do Split Pro está incompleto e ficou de fora} other {# saldos do backup do Split Pro estão incompletos e ficaram de fora}}. Compare a prévia com o Split Pro antes de criar a sala.",
-            "SPLITPRO_UNSUPPORTED_CURRENCY": "O Split não consegue converter {detail}, então os saldos nessa moeda ficaram de fora. Use outra exportação se esses saldos importarem."
+            "SPLITPRO_UNSUPPORTED_CURRENCY": "O Tribu não consegue converter {detail}, então os saldos nessa moeda ficaram de fora. Use outra exportação se esses saldos importarem."
         },
         "errors": {
             "NOT_SPLITWISE_CSV": "A gente não reconhece este arquivo. Escolha o .csv de um grupo do Splitwise, o .csv de um contato do Split Pro ou splitpro_data.json na página Conta do Split Pro.",

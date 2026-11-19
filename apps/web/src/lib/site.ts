@@ -27,9 +27,9 @@ export function resolveSiteUrl(value: string | undefined): string {
     const origin = configuredOrigin(value)
     if (!origin) return CANONICAL_ORIGIN
     // Every official host collapses onto the canonical apex. Without this, a deployment whose
-    // NEXT_PUBLIC_BASE_URL still says `split.peanut.me` (the legacy alias) canonicalises the
+    // NEXT_PUBLIC_BASE_URL still says `app.tribu.money` (the legacy alias) canonicalises the
     // real site onto its own alias the moment that value becomes authoritative — which is
-    // exactly what took peanutsplit.com down on 2026-08-27. A fork's origin is not a product
+    // exactly what took tribu.money down on 2026-08-27. A fork's origin is not a product
     // host and passes through untouched.
     return isProductHost(new URL(origin).hostname) ? CANONICAL_ORIGIN : origin
 }

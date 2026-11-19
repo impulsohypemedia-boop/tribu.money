@@ -3,7 +3,7 @@ import { ExistingRoomImportScreen } from '@/components/import/ExistingRoomImport
 
 /** Room slugs are credentials. This nested utility is useful only to someone who already has one. */
 export const metadata: Metadata = {
-    title: 'Import into a room — Peanut Split',
+    title: 'Import into a room — Tribu',
     robots: { index: false, follow: false },
 }
 

@@ -1,5 +1,6 @@
 'use client'
 
+import { lemonNetwork } from '@/lib/lemon/chain'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { useTranslations } from 'next-intl'
@@ -88,6 +89,8 @@ export function SettlementRow({
                 return tSettle('cash')
             case 'bank':
                 return tSettle('bank')
+            case 'lemon':
+                return settlement.token ? `${tSettle('lemon')} · ${settlement.token}` : tSettle('lemon')
             case 'peanut':
                 return tSettle('peanut')
             default:
@@ -180,6 +183,18 @@ export function SettlementRow({
             <p className="text-h10 uppercase tracking-wide text-grey-1">
                 {details ? `${t('paymentLabel')} · ${details}` : t('paymentLabel')}
             </p>
+
+            {settlement.txHash && (
+                <a
+                    href={lemonNetwork().explorerTxUrl(settlement.txHash)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-fit text-sm font-bold underline underline-offset-2"
+                    data-testid="settlement-tx-link"
+                >
+                    {t('txLink')}
+                </a>
+            )}
 
             {settlement.receiptUrl && (
                 <a

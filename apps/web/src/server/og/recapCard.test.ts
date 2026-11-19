@@ -442,11 +442,11 @@ describe('toRecapCard', () => {
 
 describe('recapTitle', () => {
     it('keeps legacy emoji out of text metadata', () => {
-        expect(recapTitle('Ski trip', '🎿')).toBe('Ski trip recap — Peanut Split')
+        expect(recapTitle('Ski trip', '🎿')).toBe('Ski trip recap — Tribu')
     })
 
     it('keeps non-Latin names — HTML has no glyph budget', () => {
-        expect(recapTitle('Кипр 2026', null)).toBe('Кипр 2026 recap — Peanut Split')
+        expect(recapTitle('Кипр 2026', null)).toBe('Кипр 2026 recap — Tribu')
     })
 
     it('falls back when the name is empty', () => {

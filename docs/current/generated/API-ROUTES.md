@@ -3,9 +3,9 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/src/app/**/route.ts`  
-Input SHA-256: `406d4b2f3ea942224210b20d80c726b798a4453632dca910c3080d2d2df6f66f`
+Input SHA-256: `ef64632b3c79b61a2d357254983be69f7d9bb57b08c19209cc8ec40f449fdc00`
 
-Exported operations: 43
+Exported operations: 45
 
 | Method   | Path                                            | Handler                                                                    |
 | -------- | ----------------------------------------------- | -------------------------------------------------------------------------- |
@@ -15,6 +15,7 @@ Exported operations: 43
 | `POST`   | `/api/import`                                   | `apps/web/src/app/api/import/route.ts`                                     |
 | `DELETE` | `/api/install-handoff`                          | `apps/web/src/app/api/install-handoff/route.ts`                            |
 | `POST`   | `/api/install-handoff`                          | `apps/web/src/app/api/install-handoff/route.ts`                            |
+| `GET`    | `/api/lemon/nonce`                              | `apps/web/src/app/api/lemon/nonce/route.ts`                                |
 | `POST`   | `/api/push/dismissed`                           | `apps/web/src/app/api/push/dismissed/route.ts`                             |
 | `POST`   | `/api/push/opened`                              | `apps/web/src/app/api/push/opened/route.ts`                                |
 | `GET`    | `/api/rate`                                     | `apps/web/src/app/api/rate/route.ts`                                       |
@@ -31,12 +32,14 @@ Exported operations: 43
 | `GET`    | `/api/rooms/:slug/history/export`               | `apps/web/src/app/api/rooms/[slug]/history/export/route.ts`                |
 | `POST`   | `/api/rooms/:slug/import`                       | `apps/web/src/app/api/rooms/[slug]/import/route.ts`                        |
 | `POST`   | `/api/rooms/:slug/install-handoff`              | `apps/web/src/app/api/rooms/[slug]/install-handoff/route.ts`               |
+| `GET`    | `/api/rooms/:slug/lemon-quote`                  | `apps/web/src/app/api/rooms/[slug]/lemon-quote/route.ts`                   |
 | `POST`   | `/api/rooms/:slug/members`                      | `apps/web/src/app/api/rooms/[slug]/members/route.ts`                       |
 | `DELETE` | `/api/rooms/:slug/members/:memberId`            | `apps/web/src/app/api/rooms/[slug]/members/[memberId]/route.ts`            |
 | `PATCH`  | `/api/rooms/:slug/members/:memberId`            | `apps/web/src/app/api/rooms/[slug]/members/[memberId]/route.ts`            |
 | `POST`   | `/api/rooms/:slug/members/:memberId/claim`      | `apps/web/src/app/api/rooms/[slug]/members/[memberId]/claim/route.ts`      |
 | `POST`   | `/api/rooms/:slug/members/:memberId/reactivate` | `apps/web/src/app/api/rooms/[slug]/members/[memberId]/reactivate/route.ts` |
 | `POST`   | `/api/rooms/:slug/members/:memberId/restore`    | `apps/web/src/app/api/rooms/[slug]/members/[memberId]/restore/route.ts`    |
+| `POST`   | `/api/rooms/:slug/members/:memberId/wallet`     | `apps/web/src/app/api/rooms/[slug]/members/[memberId]/wallet/route.ts`     |
 | `DELETE` | `/api/rooms/:slug/push-subscriptions`           | `apps/web/src/app/api/rooms/[slug]/push-subscriptions/route.ts`            |
 | `POST`   | `/api/rooms/:slug/push-subscriptions`           | `apps/web/src/app/api/rooms/[slug]/push-subscriptions/route.ts`            |
 | `POST`   | `/api/rooms/:slug/push-subscriptions/status`    | `apps/web/src/app/api/rooms/[slug]/push-subscriptions/status/route.ts`     |
@@ -51,7 +54,6 @@ Exported operations: 43
 | `POST`   | `/r/:slug/card/:kind`                           | `apps/web/src/app/(product-shell)/r/[slug]/card/[kind]/route.ts`           |
 | `GET`    | `/r/:slug/recap/card`                           | `apps/web/src/app/(product-shell)/r/[slug]/recap/card/route.ts`            |
 | `GET`    | `/readiness`                                    | `apps/web/src/app/readiness/route.ts`                                      |
-| `GET`    | `/rss.xml`                                      | `apps/web/src/app/rss.xml/route.ts`                                        |
 
 This inventory proves exported verbs and paths only. Read `../API.md` and the handler source for trust,
 validation, status, rate-limit, idempotency, retention, and feature-gate semantics.

@@ -25,7 +25,7 @@ export function isCanonicalPwaRequest(headers: HeaderReader, configuredSiteUrl: 
 }
 
 /**
- * The installed app is "Split". "Peanut Split" stays on the surfaces a search engine or a group
+ * The installed app is "Split". "Tribu" stays on the surfaces a search engine or a group
  * chat sees — the root `<title>`, `SITE_NAME`, the OG unfurls. A home screen has room for one word.
  *
  * Nothing per-room can appear here. The manifest is one static file fetched without credentials,
@@ -33,9 +33,9 @@ export function isCanonicalPwaRequest(headers: HeaderReader, configuredSiteUrl: 
  */
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'Split',
-        short_name: 'Split',
-        description: 'Split expenses with a link. No signup.',
+        name: 'Tribu',
+        short_name: 'Tribu',
+        description: 'Gastos compartidos y pagos cripto.',
         // Pin the identity the old implicit manifest had while moving only its launch surface.
         // Without `id`, some browsers derive it from start_url and can treat this as a second app.
         id: '/',
@@ -44,7 +44,7 @@ export default function manifest(): MetadataRoute.Manifest {
         display: 'standalone',
         display_override: ['standalone'],
         orientation: 'portrait',
-        theme_color: '#FFC900',
+        theme_color: '#FF7A45',
         background_color: '#FAF4F0',
         /**
          * Long-press the launcher icon. English in every language, deliberately: the manifest is

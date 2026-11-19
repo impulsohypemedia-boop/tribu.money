@@ -1,12 +1,10 @@
 import type { Metadata } from 'next'
-import { GoogleAdsTag } from '@/components/analytics/GoogleAdsTag'
-import { XAdsTag } from '@/components/analytics/XAdsTag'
 import { CreateRoomForm } from '@/components/room/CreateRoomForm'
 import { readPrefill } from '@/lib/room-prefill'
 import type { Query } from '@/lib/utm'
 
 export const metadata: Metadata = {
-    title: 'New split — Peanut Split',
+    title: 'New split — Tribu',
     description: 'Create a room, add who’s in, and share when you are ready. No signup.',
     alternates: { canonical: '/new' },
     // A bare form with nothing to rank for, and it was indexable while sitemap.ts deliberately
@@ -28,8 +26,6 @@ export default async function NewRoomPage({ searchParams }: { searchParams: Prom
             </main>
             {/* The other page a room is created from. It is noindex and no ad points at it, but
                 the conversion fires here, and each tag has to be loaded to receive it. */}
-            <GoogleAdsTag />
-            <XAdsTag />
         </>
     )
 }

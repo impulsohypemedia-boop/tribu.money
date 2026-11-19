@@ -3,7 +3,7 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `a486551b2365dab7eb7a451ee4c0ccb8944a51f9e163bac5fddc0eb8bd7dd4b1`
+Input SHA-256: `918338c271facaf4249fee2355cf4e8edbe68f8a6e6bf378776584715284c8ca`
 
 PostgreSQL namespace: `split`  
 Models: 15  
@@ -80,6 +80,9 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `avatar`             | `String?`            | —                                                                                  |
 | `avatarPalette`      | `String?`            | —                                                                                  |
 | `userId`             | `String?`            | // future account-linking hook                                                     |
+| `walletAddress`      | `String?`            | —                                                                                  |
+| `lemonTag`           | `String?`            | —                                                                                  |
+| `walletLinkedAt`     | `DateTime?`          | —                                                                                  |
 | `provisional`        | `Boolean`            | @default(false)                                                                    |
 | `createdAt`          | `DateTime`           | @default(now())                                                                    |
 | `removedAt`          | `DateTime?`          | // non-null = Former for future activity; ledger identity remains durable          |
@@ -187,6 +190,10 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `method`      | `String?`   | // "cash" \| "bank" \| "peanut" \| null                                                      |
 | `note`        | `String?`   | —                                                                                            |
 | `receiptUrl`  | `String?`   | // pasted documentation only; never fetched or verified                                      |
+| `txHash`      | `String?`   | @unique                                                                                      |
+| `chainId`     | `Int?`      | —                                                                                            |
+| `token`       | `String?`   | // "USDC" \| "USDT"                                                                          |
+| `tokenAmount` | `String?`   | // token base units, decimal string                                                          |
 | `createdAt`   | `DateTime`  | @default(now())                                                                              |
 | `deletedAt`   | `DateTime?` | —                                                                                            |
 | `room`        | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade)                             |

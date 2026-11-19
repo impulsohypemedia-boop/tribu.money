@@ -96,7 +96,7 @@ export function PassTheLinkStage({ roomName, state }: PassTheLinkStageProps) {
                                     <div className="pass-link-shared-main">
                                         <strong>{shownRoomName}</strong>
                                         <b data-testid="pass-link-url">
-                                            peanutsplit.com/r/{stem}
+                                            tribu.money/r/{stem}
                                             <span>{SLUG_TAIL_HINT}</span>
                                         </b>
                                     </div>

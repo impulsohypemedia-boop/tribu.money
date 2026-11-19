@@ -38,6 +38,7 @@ import { discardSharedReceipt } from '@/lib/shared-receipt'
 import { daySpan } from '@/lib/story'
 import { themeVars } from '@/lib/themes'
 import { useRoomIdentity } from '@/lib/use-identity'
+import { useLemonWalletLink } from '@/components/lemon/useLemonWalletLink'
 import { useMotionAllowed } from '@/lib/use-motion'
 import { AchievementMoment } from './AchievementMoment'
 import { AllSettled } from './AllSettled'
@@ -443,6 +444,13 @@ export function RoomScreen({ slug }: { slug: string }) {
         })()
     }, [consumeSharedReceipt, error, params.add, params.shared])
 
+    // Before the early returns below: hooks must run in the same order on every render.
+    useLemonWalletLink(
+        slug,
+        (identity && state?.members.find((member) => member.id === identity.memberId && isActiveMember(member))) ||
+            null,
+        identity?.token
+    )
     if (isApiError(error, 'NOT_FOUND')) return <RoomNotFound slug={slug} addExpense={params.add} />
     if (error && !state) return <RoomErrorState onRetry={() => void refetch()} />
 

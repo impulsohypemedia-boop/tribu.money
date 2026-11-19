@@ -8,6 +8,10 @@ import { actorFromToken, appendRoomAuditEvent, lockRoomWrite, type PushRoomWrite
 import { WRITE_LIMIT, enforceRateLimit } from '@/server/rateLimit'
 import { balancesOf, loadRoom, memberIdForToken, toRoomState } from '@/server/roomState'
 import { settlementSchema } from '@/server/validation'
+import { lemonNetwork } from '@/lib/lemon/chain'
+import { verifyStablecoinPayment } from '@/server/lemon/payment'
+import { quoteStablecoin } from '@/server/lemon/quote'
+import { chainClient } from '@/server/lemon/rpc'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,6 +32,44 @@ export const POST = (request: Request, ctx: Ctx) =>
         const room = await loadRoom(slug)
         const amountMinor = parseMinor(body.amountMinor)
         if (amountMinor <= 0n) throw badRequest('settlement amount must be greater than zero', 'AMOUNT_NOT_POSITIVE')
+
+        // A Lemon payment is checked against the chain before the room lock is taken: the RPC
+        // round trip must not hold up every other write in the room.
+        const isLemon = body.method === 'lemon'
+        if (isLemon !== Boolean(body.lemon)) {
+            throw badRequest('a lemon settlement needs its transaction, and only it may carry one', 'LEMON_TX_INVALID')
+        }
+        if (body.lemon) {
+            const network = lemonNetwork()
+            const stablecoin = network.tokens[body.lemon.token]
+            if (!stablecoin) throw badRequest('token is not offered on this network', 'LEMON_TX_INVALID')
+            const payer = room.members.find((member) => member.id === body.fromId)
+            const payee = room.members.find((member) => member.id === body.toId)
+            if (!payer?.walletAddress || !payee?.walletAddress) {
+                throw badRequest('both people need a linked Lemon wallet', 'LEMON_WALLET_MISSING')
+            }
+            const { tokenAmount: quotedAmount } = await quoteStablecoin(amountMinor, room.currency, stablecoin)
+            const client = chainClient(network)
+            await verifyStablecoinPayment(
+                {
+                    txHash: body.lemon.txHash,
+                    token: stablecoin,
+                    from: payer.walletAddress,
+                    to: payee.walletAddress,
+                    tokenAmount: BigInt(body.lemon.tokenAmount),
+                    quotedAmount,
+                },
+                async (hash) => {
+                    try {
+                        return await client.getTransactionReceipt({ hash })
+                    } catch (error) {
+                        if ((error as { name?: string }).name === 'TransactionReceiptNotFoundError') return null
+                        throw error
+                    }
+                },
+                network
+            )
+        }
 
         const token = memberTokenOf(request)
         let result: SettlementWriteResult
@@ -60,6 +102,14 @@ export const POST = (request: Request, ctx: Ctx) =>
                     }
                 }
 
+                if (body.lemon) {
+                    const used = await tx.settlement.findUnique({
+                        where: { txHash: body.lemon.txHash.toLowerCase() },
+                        select: { id: true },
+                    })
+                    if (used) throw conflict('that payment is already recorded', 'LEMON_TX_ALREADY_RECORDED')
+                }
+
                 const actor = actorFromToken(lockedRoom.members, token)
                 const actorMemberId = actor.memberId
 
@@ -88,6 +138,14 @@ export const POST = (request: Request, ctx: Ctx) =>
                         method: body.method ?? null,
                         note: body.note ?? null,
                         receiptUrl: body.receiptUrl ?? null,
+                        ...(body.lemon
+                            ? {
+                                  txHash: body.lemon.txHash.toLowerCase(),
+                                  chainId: lemonNetwork().chainId,
+                                  token: body.lemon.token,
+                                  tokenAmount: body.lemon.tokenAmount,
+                              }
+                            : {}),
                         createdById: actorMemberId,
                     },
                 })

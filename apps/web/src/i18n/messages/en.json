@@ -17,7 +17,7 @@
                 "linkPrompt": "Everyone adds their own",
                 "joined": "Bea, Jules and Mo opened the link"
             },
-            "stageSummary": "A Peanut Split room link moves through a group chat so every friend can open the same room and add expenses.",
+            "stageSummary": "A Tribu room link moves through a group chat so every friend can open the same room and add expenses.",
             "validation": {
                 "roomRequired": "Name the room first.",
                 "creatorRequired": "Tell us who you are."
@@ -41,10 +41,10 @@
             "recovery": {
                 "title": "Already have a room link?",
                 "label": "Paste the room link",
-                "placeholder": "peanutsplit.com/r/your-room-…",
+                "placeholder": "tribu.money/r/your-room-…",
                 "hint": "Saves the room on this device.",
                 "submit": "Add this room",
-                "invalid": "Paste a complete Peanut Split room link.",
+                "invalid": "Paste a complete Tribu room link.",
                 "notFound": "We could not find that room. Check that the whole link was pasted.",
                 "failed": "We could not check that room just now. Nothing was saved — try again.",
                 "openingSaved": "Opening {room}. It is saved on this device.",
@@ -132,25 +132,25 @@
             "madeByBrand": "Squirrel Labs",
             "termsLink": "Terms",
             "privacyLink": "Privacy",
-            "operatedBy": "Peanut Split is operated by Squirrel Labs Ltd, the company behind Peanut (peanut.me). Registered in England and Wales, company number 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
+            "operatedBy": "Tribu is operated by Squirrel Labs Ltd, the company behind Peanut (peanut.me). Registered in England and Wales, company number 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
         },
         "appHome": {
-            "landingLink": "What is Split?"
+            "landingLink": "What is Tribu?"
         },
         "install": {
             "title": "Install Split",
             "body": "Get back to this room faster. No app store. No account.",
             "bodySettled": "Keep this trip—and the next one—one tap away.",
-            "announcement": "Install Split is available.",
+            "announcement": "Install Tribu is available.",
             "cta": "Install Split",
             "ctaSteps": "Show install steps",
             "dismiss": "Not now",
             "row": {
                 "label": "Install Split",
-                "labelIos": "Add Split to Home Screen",
-                "installed": "Split is installed.",
+                "labelIos": "Add Tribu to Home Screen",
+                "installed": "Tribu is installed.",
                 "preparing": "Preparing…",
-                "checkLabel": "Split icon",
+                "checkLabel": "Tribu icon",
                 "checkLabelIos": "Home Screen icon",
                 "checkAction": "Check"
             },
@@ -162,29 +162,29 @@
                 "step1Android": "Tap More in Chrome.",
                 "step2Android": "Choose “Add to Home screen” or “Install and create shortcut”.",
                 "step3Android": "Choose “Install” or “Install app”.",
-                "step4Android": "Confirm the name is “Split”, then tap “Install”.",
+                "step4Android": "Confirm the name is “Tribu”, then tap “Install”.",
                 "step1Other": "Open your browser’s menu.",
                 "step2Other": "Choose “Install app”. On Mac, choose “Add to Dock”.",
-                "step3Other": "Make sure the name is “Split”, then confirm.",
+                "step3Other": "Make sure the name is “Tribu”, then confirm.",
                 "noOption": "No install option? Open this page in Chrome.",
                 "install": "Install"
             },
             "ios": {
-                "title": "Add Split to your Home Screen",
+                "title": "Add Tribu to your Home Screen",
                 "step1": "Tap Share. If it is hidden, tap More first.",
                 "step2": "Tap “Add to Home Screen”.",
                 "step3": "Turn on “Open as Web App”, if you see it.",
                 "step4": "Tap “Add”.",
-                "openAfter": "Then open Split from the new icon.",
+                "openAfter": "Then open Tribu from the new icon.",
                 "body": "Use your browser’s Share menu.",
                 "prepareFailed": "Couldn’t prepare this room. Try again in a moment.",
                 "add": "Add"
             },
             "repair": {
-                "announcement": "A Split icon check is available.",
+                "announcement": "A Tribu icon check is available.",
                 "title": "Replace the old room icon",
-                "body": "Icon says Split? You’re all set. Icon shows a room name? Replace it.",
-                "cardBody": "Does your icon show a room name? Replace it with Split.",
+                "body": "Icon says Tribu? You’re all set. Icon shows a room name? Replace it.",
+                "cardBody": "Does your icon show a room name? Replace it with Tribu.",
                 "cta": "Check icon",
                 "copyFirst": "Copy the room link before removing the old icon.",
                 "step1": "Remove the icon named after the room.",
@@ -198,12 +198,12 @@
                 "copied": "Room link copied.",
                 "copyFailed": "Couldn’t copy the link. Reopen it from where it was shared.",
                 "missing": "No room link here. Reopen it from where it was shared.",
-                "check": "Install only if the name says “Split”.",
+                "check": "Install only if the name says “Tribu”.",
                 "back": "Back to room"
             },
             "page": {
                 "preparing": "Checking this browser…",
-                "installed": "Split is installed.",
+                "installed": "Tribu is installed.",
                 "continue": "Back to Split",
                 "copyRoom": "Copy original room link",
                 "roomRecovery": "Room missing after installing? Open the original room link once."
@@ -221,7 +221,7 @@
                 "title": "Opened rooms stay on this device"
             },
             "money": {
-                "title": "Split keeps the maths, not the money"
+                "title": "Tribu keeps the maths, not the money"
             },
             "done": "Got it"
         },
@@ -237,7 +237,7 @@
                 "body": "No email, password, or download."
             },
             "features": {
-                "title": "What Split does",
+                "title": "What Tribu does",
                 "currency": {
                     "title": "162 room currencies",
                     "body": "Automatic conversion for 156 currencies; six more work without conversion."
@@ -274,7 +274,7 @@
             },
             "team": {
                 "title": "The people who built it",
-                "intro": "Konrad and Hugo built Split. Here is why.",
+                "intro": "Konrad and Hugo built Tribu. Here is why.",
                 "konrad": {
                     "name": "Konrad",
                     "role": "built Split",
@@ -314,7 +314,7 @@
                 },
                 "lost": {
                     "q": "How do we get back to the room?",
-                    "a": "Leave the link in the group chat so everyone can find it there. Split also saves rooms you open on this device, and you can paste the link on the home page to add it back."
+                    "a": "Leave the link in the group chat so everyone can find it there. Tribu also saves rooms you open on this device, and you can paste the link on the home page to add it back."
                 },
                 "limits": {
                     "q": "Is there a daily limit on expenses?",
@@ -323,7 +323,7 @@
             },
             "compare": {
                 "line": "Coming from another splitting app?",
-                "link": "See how Split compares to Splitwise"
+                "link": "See how Tribu compares to Splitwise"
             }
         }
     },
@@ -486,7 +486,7 @@
             "crowdFavorite": "Crowd favorite",
             "reactionDetail": "{count, plural, one {# reaction} other {# reactions}}",
             "sharedTable": "Most shared expense",
-            "sharedTableDetail": "Split across {count, plural, one {# person} other {# people}}",
+            "sharedTableDetail": "Tribu across {count, plural, one {# person} other {# people}}",
             "currencyPassport": "Currency passport",
             "currencyDetail": "{count, plural, one {# expense currency} other {# expense currencies}}",
             "activityTitle": "Changes",
@@ -643,7 +643,7 @@
             "topPayer": "{name} fronted the most",
             "share": "Share the story",
             "sharing": "Getting it ready…",
-            "shareTitle": "Peanut Split",
+            "shareTitle": "Tribu",
             "shareText": "Our split, settled.",
             "copied": "Recap copied — paste it anywhere.",
             "downloaded": "Recap saved to your downloads.",
@@ -711,7 +711,7 @@
             "choosePeople": "Choose people",
             "peopleSummary": "{name} + {count}",
             "splitSummary": "{people}, {mode}",
-            "splitMode": "Split method",
+            "splitMode": "Tribu method",
             "equally": "Equally",
             "exactAmounts": "Exact amounts",
             "percentage": "Percentage",
@@ -774,7 +774,7 @@
             "equallyHint": "Same for everyone",
             "exactAmountsHint": "Different amounts",
             "percentageHint": "Set each person’s percentage",
-            "sharesHint": "Split by relative shares",
+            "sharesHint": "Tribu by relative shares",
             "equallyShort": "equally",
             "exactShort": "exact",
             "percentageShort": "by percentage",
@@ -791,12 +791,8 @@
             "cash": "Cash",
             "bank": "Bank",
             "peanut": "Peanut",
-            "peanutNote": "Opens Peanut in a new tab. Split records the payment here even if no money is sent.",
             "note": "Note (optional)",
             "notePlaceholder": "Sent on Friday",
-            "receiptLink": "Receipt link (optional)",
-            "receiptLinkPlaceholder": "https://…",
-            "receiptLinkHint": "Saved as documentation only. Split does not open or verify it.",
             "record": "Record payment",
             "back": "Back",
             "recorded": "{from} paid {to}",
@@ -807,7 +803,20 @@
             "amountFormatInvalid": "Check the separators and decimal places in the amount.",
             "amountTooHigh": "That is more than {name} owes.",
             "recordedTitle": "Recorded just now",
-            "amountTooHighYou": "That is more than you owe."
+            "amountTooHighYou": "That is more than you owe.",
+            "lemon": "Lemon",
+            "lemonNote": "Paid from your Lemon wallet, in digital dollars.",
+            "lemonQuote": "You will send {amount} {token} from your Lemon.",
+            "lemonPay": "Pay with Lemon",
+            "lemonPaying": "Waiting for Lemon…",
+            "lemonConfirming": "Confirming the payment…",
+            "lemonPayTitle": "Payment to {name} on Tribu",
+            "lemonFailed": "The payment did not go through. No money moved.",
+            "lemonSignInNeeded": "Sign in with Lemon to pay from here.",
+            "lemonOnlyPayer": "Only {name} can pay this debt with Lemon.",
+            "lemonLinking": "Connecting your Lemon to this group. Try again in a moment.",
+            "lemonPayeeNoWallet": "{name} has not opened this group from Lemon yet, so there is nowhere to send it.",
+            "lemonTokenUnavailable": "{token} is not available on this network."
         },
         "share": {
             "title": "Share room",
@@ -830,7 +839,7 @@
             "shared": "Room link sent.",
             "shareFailed": "The share sheet did not open. Copy the invite instead.",
             "anyoneCanJoin": "Anyone with this link can join and add expenses.",
-            "shareTitle": "{room} · Peanut Split",
+            "shareTitle": "{room} · Tribu",
             "shareText": "Open the link, pick your name, then add what you paid."
         },
         "create": {
@@ -915,7 +924,7 @@
             "step1": "Scan a bill · check the items",
             "step2": "Scan a bill · who had what",
             "reading": "Reading the bill…",
-            "privacyNote": "Split sends the photo once and doesn’t store it.",
+            "privacyNote": "Tribu sends the photo once and doesn’t store it.",
             "reviewTitle": "Check the items",
             "reviewBody": "Fix anything that came out wrong, delete what is not yours, add what was missed.",
             "reviewFromMerchant": "From {merchant}. Fix anything that came out wrong, add what was missed.",
@@ -1055,7 +1064,8 @@
             "removing": "Undoing…",
             "confirmNo": "Keep it",
             "removed": "Payment record undone. Room balances updated.",
-            "removeFailed": "Could not remove that payment — try again."
+            "removeFailed": "Could not remove that payment — try again.",
+            "txLink": "View the transaction"
         },
         "achievements": {
             "crew": {
@@ -1141,7 +1151,7 @@
         "notifyMe": "Notify me about {room}",
         "cta": "Notify me",
         "on": "On",
-        "iosNeedsPwa": "Add Split to your home screen.",
+        "iosNeedsPwa": "Add Tribu to your home screen.",
         "iosHow": "How?",
         "denied": "Blocked in your browser settings.",
         "unknown": "Couldn’t check just now — this device may still be getting them.",
@@ -1177,7 +1187,7 @@
         "MALFORMED_JSON": "Something went wrong sending that — try again.",
         "JSON_REQUIRED": "Something went wrong sending that — try again.",
         "REQUEST_TOO_LARGE": "That request is too large to send.",
-        "CROSS_SITE_REQUEST": "That request could not be verified — reopen Split and try again.",
+        "CROSS_SITE_REQUEST": "That request could not be verified — reopen Tribu and try again.",
         "NOT_FOUND": "This room does not exist.",
         "EXPENSE_NOT_FOUND": "That expense is no longer here — refresh the room.",
         "SETTLEMENT_NOT_FOUND": "That payment is no longer here — refresh the room.",
@@ -1211,7 +1221,7 @@
         "SETTLEMENT_EXCEEDS_DEBT": "That payment is more than is currently owed — refresh and check the amount.",
         "IDEMPOTENCY_KEY_REUSED": "That save key was already used in another room — try saving again.",
         "MEMBER_TOKEN_INVALID": "Choose your name again to continue.",
-        "INSTALL_HANDOFF_UNAVAILABLE": "That saved install handoff is no longer available — open this room in your browser and add Split again.",
+        "INSTALL_HANDOFF_UNAVAILABLE": "That saved install handoff is no longer available — open this room in your browser and add Tribu again.",
         "SCAN_UNAVAILABLE": "Bill scanning is not switched on here.",
         "SCAN_IMAGE_TOO_LARGE": "That image is too large — take a new photo.",
         "SCAN_BAD_IMAGE": "That image could not be sent — try taking it again.",
@@ -1229,7 +1239,17 @@
         "NO_RATE": "There is no rate between that currency and the room’s, so it cannot be converted. Use the room currency.",
         "MANUAL_FX_RATE_REQUIRED": "Enter a manual rate for this custom currency.",
         "MANUAL_FX_RATE_INVALID": "That manual rate is invalid or makes the converted amount round to zero.",
-        "MANUAL_FX_RATE_NOT_ALLOWED": "Manual rates are only available for custom expense currencies."
+        "MANUAL_FX_RATE_NOT_ALLOWED": "Manual rates are only available for custom expense currencies.",
+        "LEMON_PROOF_INVALID": "Lemon could not confirm that wallet is yours.",
+        "LEMON_PROOF_STALE": "Your Lemon session expired. Open Tribu from Lemon again.",
+        "LEMON_TX_INVALID": "That payment cannot be recorded.",
+        "LEMON_TX_UNDERPAID": "The payment sent is less than the debt.",
+        "LEMON_TX_PENDING": "The payment is still being confirmed.",
+        "LEMON_TX_FAILED": "The transaction failed on the network. The payment was not recorded.",
+        "LEMON_TX_MISMATCH": "That transaction does not match this payment.",
+        "LEMON_TX_ALREADY_RECORDED": "That payment is already recorded.",
+        "LEMON_WALLET_MISSING": "Both people need to have opened the group from Lemon.",
+        "NOT_THIS_MEMBER": "Only that person can connect their wallet."
     },
     "derivation": {
         "title": "How this adds up",
@@ -1288,7 +1308,7 @@
         "discardConfirm": "Discard this waiting expense from this phone? This cannot be undone.",
         "reviewAmount": "Amount",
         "reviewPayer": "Payer",
-        "reviewSplit": "Split with",
+        "reviewSplit": "Tribu with",
         "remapPayer": "Replace payer {name}",
         "remapParticipant": "Replace participant {name}",
         "chooseActive": "Choose an active person",
@@ -1385,7 +1405,7 @@
             "title": "Worth knowing",
             "more": "…and {count, plural, one {# more} other {# more}}.",
             "ROW_UNBALANCED": "Row {row} does not add up in the file itself, so it was left out.",
-            "ROW_UNSUPPORTED_CURRENCY": "Row {row} is in {detail}, which Split does not carry yet, so it was left out.",
+            "ROW_UNSUPPORTED_CURRENCY": "Row {row} is in {detail}, which Tribu does not carry yet, so it was left out.",
             "ROW_NO_PAYER": "Row {row} does not say who paid, so it was left out.",
             "ROW_ZERO_COST": "Row {row} has no amount, so it was left out.",
             "ROW_BAD_AMOUNT": "Row {row} has an amount we could not read, so it was left out.",
@@ -1403,7 +1423,7 @@
             "SPLITPRO_SPLIT_MODE_FLATTENED": "Split Pro’s percentage/share splits keep the same final amounts, but arrive as fixed amounts. Editing them later will not preserve the original weights.",
             "SPLITPRO_MISSING_NAMES": "Split Pro left {count, plural, one {one person’s name} other {# people’s names}} out of the backup. They are labelled “Member” below — rename them before creating the room.",
             "SPLITPRO_BALANCES_SKIPPED": "{count, plural, one {One balance in the Split Pro backup is incomplete, so it was left out} other {# balances in the Split Pro backup are incomplete, so they were left out}}. Compare the preview with Split Pro before creating the room.",
-            "SPLITPRO_UNSUPPORTED_CURRENCY": "Split cannot convert {detail}, so balances in that currency were left out. Choose another export if those balances matter."
+            "SPLITPRO_UNSUPPORTED_CURRENCY": "Tribu cannot convert {detail}, so balances in that currency were left out. Choose another export if those balances matter."
         },
         "errors": {
             "NOT_SPLITWISE_CSV": "We don’t recognize this file. Choose a Splitwise group .csv, a Split Pro friend .csv, or the splitpro_data.json file from Split Pro’s Account page.",

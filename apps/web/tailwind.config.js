@@ -2,7 +2,7 @@ const { fontFamily } = require('tailwindcss/defaultTheme')
 const plugin = require('tailwindcss/plugin')
 
 // Design system copied by value from peanut-ui (2026-07-25) and re-keyed to the
-// Split identity: primary = #FFC900 (yellow). Legacy colour aliases and every
+// Tribu identity: primary = #FF7A45 (orange), secondary = #7DD3C0 (teal). Legacy colour aliases and every
 // dark: variant were stripped on the way in. Diverge freely — there is no
 // dependency on peanut-ui.
 /** @type {import('tailwindcss').Config} */
@@ -27,16 +27,16 @@ module.exports = {
         extend: {
             colors: {
                 primary: {
-                    1: '#FFC900',
-                    2: '#E5B500',
-                    3: '#FFF4CC',
-                    4: '#FAE184',
+                    1: '#FF7A45',
+                    2: '#E5612C',
+                    3: '#FFE9DF',
+                    4: '#FFB899',
                 },
                 secondary: {
-                    1: '#FF90E8',
+                    1: '#7DD3C0',
                     2: '#E99898',
                     3: '#90A8ED',
-                    4: '#FFF4CC',
+                    4: '#FFE9DF',
                     5: '#FBEAEA',
                     6: '#E9EEFB',
                 },

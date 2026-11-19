@@ -75,7 +75,7 @@ export function LandingProof() {
                                 <Doodle name="link" size={34} weight={1.7} />
                                 <span>
                                     <small>{t('linkIdentity.linkLabel')}</small>
-                                    <b>peanutsplit.com/r/lisbon-weekend{SLUG_TAIL_HINT}</b>
+                                    <b>tribu.money/r/lisbon-weekend{SLUG_TAIL_HINT}</b>
                                 </span>
                             </motion.div>
                             <div className="landing-proof-identity">

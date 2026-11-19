@@ -95,7 +95,7 @@ const reviewItems: ReviewItem[] = [
         id: 'BOUNDARIES',
         auditIds: ['RES-01'],
         title: 'Error, loading and not-found states',
-        question: 'Should failures keep Peanut Split’s visual language and always offer one safe next action?',
+        question: 'Should failures keep Tribu’s visual language and always offer one safe next action?',
         recommendation:
             'Approve a restrained family: plain-language title, redacted detail, one recovery action, and a route-safe exit. Avoid an elaborate recovery framework.',
         implementationBoundary:
@@ -171,7 +171,7 @@ function readRecords(): ReviewRecords {
 
 function buildBrief(records: ReviewRecords): string {
     const lines = [
-        '# Peanut Split UX review',
+        '# Tribu UX review',
         '',
         `Exported: ${new Date().toISOString()}`,
         '',
@@ -431,8 +431,8 @@ function RadioMockup() {
 }
 
 const lowContrastThemes = [
-    { name: 'Classic', field: '#FFC900', muted: '#7A5E00', ratio: '3.97:1' },
-    { name: 'Bubblegum', field: '#FF90E8', muted: '#8A2E77', ratio: '3.80:1' },
+    { name: 'Classic', field: '#FF7A45', muted: '#7A5E00', ratio: '3.97:1' },
+    { name: 'Bubblegum', field: '#7DD3C0', muted: '#8A2E77', ratio: '3.80:1' },
     { name: 'Coral', field: '#E99898', muted: '#7A2E2E', ratio: '4.17:1' },
 ] as const
 

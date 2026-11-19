@@ -26,7 +26,7 @@ export const marketingCopy = {
         meta: {
             title: 'Import your Splitwise group',
             description:
-                'Import a Splitwise CSV into Peanut Split. Check expenses and balances before creating a room. Everyone joins through a link, with no account needed.',
+                'Import a Splitwise CSV into Tribu. Check expenses and balances before creating a room. Everyone joins through a link, with no account needed.',
         },
         hero: {
             eyebrow: 'splitwise import',

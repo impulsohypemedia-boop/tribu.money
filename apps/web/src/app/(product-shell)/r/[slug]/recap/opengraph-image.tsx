@@ -23,7 +23,7 @@ export const runtime = 'nodejs'
 // Live room state, and the build has no database — never prerender this.
 export const dynamic = 'force-dynamic'
 
-export const alt = 'A Peanut Split trip recap'
+export const alt = 'A Tribu trip recap'
 export const size = OG_SIZE
 export const contentType = OG_CONTENT_TYPE
 

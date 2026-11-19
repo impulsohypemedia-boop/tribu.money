@@ -28,9 +28,9 @@ describe('roomSlugFromLink', () => {
     })
 
     it.each([
-        [`https://peanutsplit.com/r/${SLUG}`, SLUG],
-        [`https://www.peanutsplit.com/r/${SLUG}/`, SLUG],
-        [`peanutsplit.com/r/${SLUG}?utm_source=chat#room`, SLUG],
+        [`https://tribu.money/r/${SLUG}`, SLUG],
+        [`https://www.tribu.money/r/${SLUG}/`, SLUG],
+        [`tribu.money/r/${SLUG}?utm_source=chat#room`, SLUG],
         [`/r/${SLUG}`, SLUG],
         [`${ORIGIN}/r/${SLUG}`, SLUG],
     ])('normalizes a valid room link without retaining URL decoration', (value, expected) => {
@@ -41,11 +41,11 @@ describe('roomSlugFromLink', () => {
         '',
         'not a URL',
         `https://example.com/r/${SLUG}`,
-        `javascript://peanutsplit.com/r/${SLUG}`,
-        `https://user:password@peanutsplit.com/r/${SLUG}`,
-        'https://peanutsplit.com/',
-        'https://peanutsplit.com/r/not-a-room',
-        `https://peanutsplit.com/r/${SLUG}/extra`,
+        `javascript://tribu.money/r/${SLUG}`,
+        `https://user:password@tribu.money/r/${SLUG}`,
+        'https://tribu.money/',
+        'https://tribu.money/r/not-a-room',
+        `https://tribu.money/r/${SLUG}/extra`,
     ])('rejects invalid or non-Peanut credentials: %s', (value) => {
         expect(roomSlugFromLink(value, ORIGIN)).toBeNull()
     })

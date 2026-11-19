@@ -27,19 +27,19 @@ describe('the origin-bound PWA manifest route', () => {
         expect(response.status).toBe(200)
         expect(response.headers.get('content-type')).toBe('application/manifest+json')
         expect(response.headers.get('cache-control')).toBe('public, max-age=0, must-revalidate')
-        await expect(response.json()).resolves.toMatchObject({ name: 'Split', start_url: '/app', scope: '/' })
+        await expect(response.json()).resolves.toMatchObject({ name: 'Tribu', start_url: '/app', scope: '/' })
     })
 
     it.each([
-        'peanutsplit.com',
-        'split.peanut.me',
-        '@peanutsplit.com',
-        '//peanutsplit.com',
-        'peanutsplit.com/.',
+        'tribu.money',
+        'app.tribu.money',
+        '@tribu.money',
+        '//tribu.money',
+        'tribu.money/.',
         'peanutsplit%2ecom',
-        'peanutsplit.com?',
-        'peanutsplit.com:',
-        'peanutsplit.com:444',
+        'tribu.money?',
+        'tribu.money:',
+        'tribu.money:444',
         'split.example.org',
         'split.example.org:443',
     ])('fails closed without publishing an install identity for non-configured authority %j', async (authority) => {

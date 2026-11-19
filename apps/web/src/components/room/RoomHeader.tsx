@@ -68,7 +68,7 @@ export function RoomHeader({
         // The room's field colour, with the classic yellow as the literal
         // fallback — a room with no theme renders the exact bytes it did before
         // this variable existed.
-        <header className="sticky top-0 z-10 border-b border-n-1 bg-[var(--split-theme-field,#FFC900)]">
+        <header className="sticky top-0 z-10 border-b border-n-1 bg-[var(--split-theme-field,#FF7A45)]">
             <div className="flex items-center gap-3 px-4 py-3">
                 <button
                     ref={headerSettingsRef}

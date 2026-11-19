@@ -5,9 +5,9 @@
 /* Split identity — yellow primary. tailwind.config.js reads these through
    `primary-base` / `secondary-base` / `accent`; removing them breaks the theme. */
 :root {
-    --primary-color: #ffc900;
+    --primary-color: #ff7a45;
     --secondary-color: #211c17;
-    --accent-color: #ff90e8;
+    --accent-color: #7dd3c0;
     --split-ink: #211c17;
     --font-display-hero: 'Gluten';
 }
@@ -290,7 +290,7 @@
 }
 
 [data-skin='sticker'] li::marker {
-    color: var(--skin-pink, #ff90e8);
+    color: var(--skin-pink, #7dd3c0);
 }
 
 /* Type. Keyed on `split-page-title`, not on an h1 under the hero: two of the four content pilots author
@@ -318,7 +318,7 @@
     padding: 6px 11px;
     border: 2px solid var(--skin-ink, #211c17);
     border-radius: 999px;
-    background: var(--skin-pink, #ff90e8);
+    background: var(--skin-pink, #7dd3c0);
     box-shadow: 0 0 0 4px var(--skin-halo, #ffffff);
     color: var(--skin-ink, #211c17);
     font-family: var(--skin-meta, ui-monospace, Menlo, monospace);
@@ -347,7 +347,7 @@
     margin-right: 0.5rem;
     padding: 6px 11px;
     border-radius: 999px;
-    background: var(--skin-pink, #ff90e8);
+    background: var(--skin-pink, #7dd3c0);
     box-shadow: 0 0 0 4px var(--skin-halo, #ffffff);
     color: var(--skin-ink, #211c17);
     content: counter(split-section, decimal-leading-zero);
@@ -475,7 +475,7 @@
     height: 22px;
     border: 2px solid var(--skin-ink, #211c17);
     border-radius: 50%;
-    background: var(--skin-yellow, #ffc900);
+    background: var(--skin-yellow, #ff7a45);
     color: var(--skin-ink, #211c17);
     content: counter(split-step);
     font-family: var(--skin-meta, ui-monospace, Menlo, monospace);
@@ -591,7 +591,7 @@
 [data-skin='sticker'] .split-btn {
     border: 2px solid var(--skin-ink, #211c17);
     border-radius: 999px;
-    background: var(--skin-yellow, #ffc900);
+    background: var(--skin-yellow, #ff7a45);
     box-shadow:
         0 0 0 4px #ffffff,
         5px 8px 0 rgba(255, 144, 232, 0.7);
@@ -606,7 +606,7 @@
     background: #ffffff;
     box-shadow:
         0 0 0 3px #ffffff,
-        2px 3px 0 var(--skin-yellow, #ffc900);
+        2px 3px 0 var(--skin-yellow, #ff7a45);
     color: var(--skin-ink, #211c17);
     font-weight: 700;
 }
@@ -664,7 +664,7 @@
 }
 
 [data-skin='sticker'] .split-tool-preset[aria-pressed='true'] {
-    background: var(--skin-yellow, #ffc900);
+    background: var(--skin-yellow, #ff7a45);
     box-shadow:
         0 0 0 3px #ffffff,
         2px 3px 0 rgba(255, 144, 232, 0.7);
@@ -683,7 +683,7 @@
 }
 
 [data-skin='sticker'] .split-calc-chips button[aria-pressed='true'] {
-    background: var(--skin-yellow, #ffc900);
+    background: var(--skin-yellow, #ff7a45);
     box-shadow:
         0 0 0 3px #ffffff,
         2px 3px 0 rgba(255, 144, 232, 0.7);
@@ -1264,7 +1264,7 @@
     overflow: hidden;
     border: 2.5px solid #211c17;
     border-radius: 1rem 1rem 0.3rem;
-    background: #ffc900;
+    background: #ff7a45;
     box-shadow: 0.38rem 0.38rem 0 #211c17;
 }
 
@@ -1276,7 +1276,7 @@
     aspect-ratio: 1;
     border: 2px solid #211c17;
     border-radius: 999px;
-    background: #ff90e8;
+    background: #7dd3c0;
     content: '';
 }
 
@@ -1509,7 +1509,7 @@
 }
 
 .landing-proof-scene-expenses {
-    background: #ffc900;
+    background: #ff7a45;
 }
 
 .landing-proof-scene-plan {
@@ -1583,7 +1583,7 @@
     align-items: center;
     padding: 1.25rem;
     border-bottom: 1.5px dashed #211c17;
-    background: #fff4cc;
+    background: #ffe9df;
 }
 
 .landing-proof-ticket span {
@@ -1836,7 +1836,7 @@
 }
 
 .landing-room-examples li:nth-child(2) .landing-room-example-link {
-    background: #fff4cc;
+    background: #ffe9df;
     transform: rotate(0.45deg);
 }
 

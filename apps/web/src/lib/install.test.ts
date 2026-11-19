@@ -99,15 +99,15 @@ function fakeWindow({
         matchMedia: () => ({ matches: state.standalone }),
         navigator: { userAgent: ua, platform, maxTouchPoints },
         location: {
-            origin: 'https://peanutsplit.com',
-            href: `https://peanutsplit.com${pathname}${search}`,
+            origin: 'https://tribu.money',
+            href: `https://tribu.money${pathname}${search}`,
             pathname,
             search,
             hash: '',
         },
         performance: {
             getEntriesByType: (type: string) =>
-                type === 'navigation' ? [{ name: `https://peanutsplit.com${initialPathname}${initialSearch}` }] : [],
+                type === 'navigation' ? [{ name: `https://tribu.money${initialPathname}${initialSearch}` }] : [],
         },
         localStorage: {
             getItem: (key: string) => {

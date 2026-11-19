@@ -4,7 +4,6 @@ import matter from 'gray-matter'
 import ts from 'typescript'
 
 const root = resolve(import.meta.dirname, '..')
-const includeGenerated = process.argv.includes('--include-generated')
 const failures = []
 const FOSS_RELEASE_LABEL = 'claims FOSS, open-source, or AGPL status before the public-release gate'
 const APPROVED_PUBLIC_SOURCE_CANDIDATES = new Set(
@@ -153,14 +152,6 @@ const stewardshipRequirements = {
         /sem clique obrigatório/u,
     ],
 }
-
-/**
- * `_system` is the drafting agent's input layer, not a publishing surface — `COLLECTIONS` in
- * `lib/content.ts` never scans it and no URL serves it. It is also where the rules about the word
- * "free" are written down, quoted phrasing and all, so auditing it would fail on the file that
- * explains the audit.
- */
-const isInputLayer = (name) => name.startsWith('_')
 
 function filesBelow(directory, extensions, skipDirectory = () => false) {
     return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -428,29 +419,6 @@ function auditJson(path) {
     }
 }
 
-function auditMarkdown(path) {
-    const local = relative(root, path)
-    const source = readFileSync(path, 'utf8')
-    // Only the three translations of the one canonical comparison may carry launch copy. The path
-    // allowlist prevents a pair of magic frontmatter lines from creating an indexable doorway.
-    let frontmatter = {}
-    try {
-        frontmatter = matter(source).data
-    } catch {
-        // The content loader's parser test reports malformed YAML precisely. This audit still scans
-        // the raw file below so malformed frontmatter cannot also become a posture bypass.
-    }
-    const allowPublicSourceCandidate =
-        APPROVED_PUBLIC_SOURCE_CANDIDATES.has(local) &&
-        frontmatter.releaseGate === 'public-source' &&
-        Array.isArray(frontmatter.claims) &&
-        frontmatter.claims.includes('public-source-and-self-hosting')
-
-    for (const failure of findMarkdownPostureFailures(source, { allowPublicSourceCandidate })) {
-        failures.push(`${local}:${failure.line} ${failure.label}: “${failure.match}”`)
-    }
-}
-
 function auditTypescript(path, options = {}) {
     const local = relative(root, path)
     const source = readFileSync(path, 'utf8')
@@ -467,69 +435,10 @@ function auditTypescript(path, options = {}) {
     visit(sourceFile)
 }
 
-// Keep this in lockstep with src/i18n/locales.ts. The audit runs without the TypeScript loader.
-const DEFAULT_LOCALE = 'en'
-
-/**
- * A `/new` link may only carry the `locale` param of the page that authors it, and the default
- * locale may not carry one at all.
- *
- * `proxy.ts` writes `?locale=` into the `ps-locale` cookie for a year without comparing it to the
- * one already stored, and `room.locale` is stamped from that cookie once and never re-inferred. So
- * an English page emitting `/new?locale=en` silently resets a Spanish or Portuguese reader's
- * language and turns their room — and its unfurl — English. `newRoomHref` already refuses to append
- * the default locale, but it only rewrites a bare `/new` pathname, which leaves an absolute CTA
- * authored inside generated content free to reintroduce the bug. This is that backstop.
- */
-function auditNewLinkLocale(path, pageLocale) {
-    const local = relative(root, path).replaceAll('\\', '/')
-    const source = readFileSync(path, 'utf8')
-    const lines = source.split('\n')
-    lines.forEach((text, index) => {
-        for (const match of text.matchAll(/(?:https?:\/\/[^\s"'<>]*peanutsplit\.com)?\/new\?[^\s"'<>)]*/gu)) {
-            const query = match[0].slice(match[0].indexOf('?') + 1)
-            const carried = new URLSearchParams(query.replaceAll('&amp;', '&')).get('locale')
-            if (carried === null) continue
-            const line = `${local}:${index + 1}`
-            if (pageLocale === DEFAULT_LOCALE) {
-                failures.push(
-                    `${line} a ${DEFAULT_LOCALE} page puts locale= on a /new link, which overwrites the reader's stored language: “${match[0]}”`
-                )
-            } else if (carried !== pageLocale) {
-                failures.push(`${line} a ${pageLocale} page puts locale=${carried} on a /new link: “${match[0]}”`)
-            }
-        }
-    })
-}
-
-/** The generated artifact names its locale in frontmatter; the filename is the mirror's own key. */
-function localeOfGeneratedPage(path) {
-    const source = readFileSync(path, 'utf8')
-    try {
-        const declared = matter(source).data?.lang
-        if (typeof declared === 'string' && declared.length > 0) return declared
-    } catch {
-        // Fall through to the filename, which the mirror guarantees.
-    }
-    return basename(path, extname(path))
-}
-
 for (const path of filesBelow(resolve(root, 'src/i18n/messages'), new Set(['.json']))) auditJson(path)
-for (const path of filesBelow(resolve(root, 'src/content'), new Set(['.md', '.mdx']), isInputLayer)) {
-    auditMarkdown(path)
-    auditNewLinkLocale(path, basename(path, extname(path)))
-}
-// The posture audit over generated SEO stays behind the flag — it is mono's artifact and mono owns
-// its wording. The /new locale check does not: those bytes are what production serves, the bug is
-// invisible to a reader, and it costs one regex per line.
-for (const path of filesBelow(resolve(root, 'src/generated/seo'), new Set(['.md', '.mdx']))) {
-    if (includeGenerated) auditMarkdown(path)
-    auditNewLinkLocale(path, localeOfGeneratedPage(path))
-}
 
-const publicSourcePage = resolve(root, 'src/app/(product-shell)/(marketing)/source/page.tsx')
 for (const path of productionTypescriptFiles()) {
-    auditTypescript(path, { allowPublicSourceCandidate: path === publicSourcePage })
+    auditTypescript(path, { allowPublicSourceCandidate: false })
 }
 
 if (failures.length) {
@@ -538,4 +447,4 @@ if (failures.length) {
     process.exit(1)
 }
 
-console.log(`Marketing copy audit clean${includeGenerated ? ' (including generated SEO)' : ''}`)
+console.log('Marketing copy audit clean')

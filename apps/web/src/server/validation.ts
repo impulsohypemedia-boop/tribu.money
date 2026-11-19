@@ -258,6 +258,24 @@ export const settlementSchema = z.object({
     method: z.string().trim().max(20).nullish(),
     note: z.string().trim().max(280).nullish(),
     receiptUrl: receiptUrl.nullish(),
+    /** Method `lemon` only: the stablecoin transfer that paid this debt. */
+    lemon: z
+        .object({
+            txHash: z.string().regex(/^0x[0-9a-fA-F]{64}$/),
+            token: z.enum(['USDC', 'USDT']),
+            tokenAmount: z.string().regex(/^[1-9][0-9]{0,30}$/),
+        })
+        .optional(),
+})
+
+export const walletLinkSchema = z.object({
+    wallet: z.string().regex(/^0x[0-9a-fA-F]{40}$/),
+    message: z.string().min(1).max(4000),
+    signature: z
+        .string()
+        .regex(/^0x[0-9a-fA-F]+$/)
+        .max(20_000),
+    lemonTag: z.string().trim().max(64).nullish(),
 })
 
 export const rateQuerySchema = z.object({ from: currencyCode, to: currencyCode })

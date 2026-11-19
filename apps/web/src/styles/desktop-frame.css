@@ -1,6 +1,6 @@
 @media screen and (min-width: 768px) {
     body:has(.split-app-frame) {
-        background-color: #fff4cc;
+        background-color: #ffe9df;
         background-image: radial-gradient(rgb(33 28 23 / 12%) 1px, transparent 1px);
         background-size: 24px 24px;
     }

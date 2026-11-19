@@ -29,6 +29,8 @@ import type {
     RoomStateWithAddedMember,
     RoomStateWithMember,
     SettlementInput,
+    LemonQuote,
+    WalletLinkInput,
 } from './api-types'
 import type { FeedbackReportInput, FeedbackReportResult } from './feedback-contract'
 
@@ -353,6 +355,20 @@ export const api = {
 
     addSettlement: (slug: string, input: SettlementInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/settlements`, { method: 'POST', body: input, token }),
+
+    lemonNonce: () => request<{ nonce: string }>('/api/lemon/nonce', { cache: 'no-store' }),
+
+    lemonQuote: (slug: string, amountMinor: string) =>
+        request<LemonQuote>(`/api/rooms/${encode(slug)}/lemon-quote?amountMinor=${encode(amountMinor)}`, {
+            cache: 'no-store',
+        }),
+
+    linkWallet: (slug: string, memberId: string, input: WalletLinkInput, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}/wallet`, {
+            method: 'POST',
+            body: input,
+            token,
+        }),
 
     deleteSettlement: (slug: string, id: string, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/settlements/${encode(id)}`, { method: 'DELETE', token }),

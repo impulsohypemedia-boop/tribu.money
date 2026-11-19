@@ -17,7 +17,7 @@
                 "linkPrompt": "Кожен додає свої витрати",
                 "joined": "Беа, Джулс і Мо відкрили посилання"
             },
-            "stageSummary": "Посилання на кімнату Peanut Split поширюється в груповому чаті, тож усі друзі можуть відкрити ту саму кімнату й додати витрати.",
+            "stageSummary": "Посилання на кімнату Tribu поширюється в груповому чаті, тож усі друзі можуть відкрити ту саму кімнату й додати витрати.",
             "validation": {
                 "roomRequired": "Спочатку назви кімнату.",
                 "creatorRequired": "Скажи нам, хто ти."
@@ -41,10 +41,10 @@
             "recovery": {
                 "title": "Уже маєш посилання на кімнату?",
                 "label": "Встав посилання на кімнату",
-                "placeholder": "peanutsplit.com/r/tvoia-kimnata-…",
+                "placeholder": "tribu.money/r/tvoia-kimnata-…",
                 "hint": "Збереже кімнату на цьому пристрої.",
                 "submit": "Додати цю кімнату",
-                "invalid": "Встав повне посилання на кімнату Peanut Split.",
+                "invalid": "Встав повне посилання на кімнату Tribu.",
                 "notFound": "Не вдалося знайти цю кімнату. Перевір, чи вставлено все посилання.",
                 "failed": "Зараз не вдалося перевірити кімнату. Нічого не збережено — спробуй ще раз.",
                 "openingSaved": "Відкриваємо кімнату «{room}». Її збережено на цьому пристрої.",
@@ -132,23 +132,23 @@
             "madeByBrand": "Squirrel Labs",
             "termsLink": "Умови",
             "privacyLink": "Конфіденційність",
-            "operatedBy": "Оператор Peanut Split — Squirrel Labs Ltd, компанія, що стоїть за Peanut (peanut.me). Зареєстрована в Англії та Уельсі під номером 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
+            "operatedBy": "Оператор Tribu — Squirrel Labs Ltd, компанія, що стоїть за Peanut (peanut.me). Зареєстрована в Англії та Уельсі під номером 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
         },
         "appHome": {
-            "landingLink": "Що таке Split?"
+            "landingLink": "Що таке Tribu?"
         },
         "install": {
             "title": "Установити Split",
             "body": "Повертайся до цієї кімнати швидше. Без магазину застосунків. Без облікового запису.",
             "bodySettled": "Нехай ця подорож — і наступна — завжди буде на відстані одного натискання.",
-            "announcement": "Split можна встановити.",
+            "announcement": "Tribu можна встановити.",
             "cta": "Установити Split",
             "ctaSteps": "Показати кроки встановлення",
             "dismiss": "Не зараз",
             "row": {
                 "label": "Установити Split",
-                "labelIos": "Додати Split на початковий екран",
-                "installed": "Split установлено.",
+                "labelIos": "Додати Tribu на початковий екран",
+                "installed": "Tribu установлено.",
                 "preparing": "Готуємо…",
                 "checkLabel": "Піктограма Split",
                 "checkLabelIos": "Піктограма на початковому екрані",
@@ -162,29 +162,29 @@
                 "step1Android": "У Chrome натисни «Ще».",
                 "step2Android": "Вибери «Додати на головний екран» або «Установити та створити ярлик».",
                 "step3Android": "Вибери «Установити» або «Установити застосунок».",
-                "step4Android": "Перевір, що назва — «Split», і натисни «Установити».",
+                "step4Android": "Перевір, що назва — «Tribu», і натисни «Установити».",
                 "step1Other": "Відкрий меню браузера.",
                 "step2Other": "Вибери «Установити застосунок». На Mac вибери «Додати в Dock».",
-                "step3Other": "Переконайся, що назва — «Split», і підтвердь.",
+                "step3Other": "Переконайся, що назва — «Tribu», і підтвердь.",
                 "noOption": "Немає функції встановлення? Відкрий цю сторінку в Chrome.",
                 "install": "Установити"
             },
             "ios": {
-                "title": "Додати Split на початковий екран",
+                "title": "Додати Tribu на початковий екран",
                 "step1": "Натисни «Поширити». Якщо не бачиш цього пункту, спочатку натисни «Ще».",
                 "step2": "Натисни «На початковий екран».",
                 "step3": "Увімкни «Відкрити як вебзастосунок», якщо бачиш цей пункт.",
                 "step4": "Натисни «Додати».",
-                "openAfter": "Потім відкрий Split із нової піктограми.",
+                "openAfter": "Потім відкрий Tribu із нової піктограми.",
                 "body": "Скористайся меню «Поширити» у браузері.",
                 "prepareFailed": "Не вдалося підготувати цю кімнату. Спробуй ще раз за мить.",
                 "add": "Додати"
             },
             "repair": {
-                "announcement": "Можна перевірити піктограму Split.",
+                "announcement": "Можна перевірити піктограму Tribu.",
                 "title": "Заміни стару піктограму кімнати",
-                "body": "На піктограмі написано Split? Усе гаразд. Є назва кімнати? Заміни її.",
-                "cardBody": "На піктограмі є назва кімнати? Заміни її на Split.",
+                "body": "На піктограмі написано Tribu? Усе гаразд. Є назва кімнати? Заміни її.",
+                "cardBody": "На піктограмі є назва кімнати? Заміни її на Tribu.",
                 "cta": "Перевірити піктограму",
                 "copyFirst": "Скопіюй посилання на кімнату, перш ніж видаляти стару піктограму.",
                 "step1": "Видали піктограму з назвою кімнати.",
@@ -198,12 +198,12 @@
                 "copied": "Посилання на кімнату скопійовано.",
                 "copyFailed": "Не вдалося скопіювати посилання. Відкрий його знову там, де ним поділилися.",
                 "missing": "Тут немає посилання на кімнату. Відкрий його знову там, де ним поділилися.",
-                "check": "Установлюй лише тоді, коли назва — «Split».",
+                "check": "Установлюй лише тоді, коли назва — «Tribu».",
                 "back": "Назад до кімнати"
             },
             "page": {
                 "preparing": "Перевіряємо цей браузер…",
-                "installed": "Split установлено.",
+                "installed": "Tribu установлено.",
                 "continue": "Назад до Split",
                 "copyRoom": "Скопіювати початкове посилання на кімнату",
                 "roomRecovery": "Після встановлення кімната зникла? Один раз відкрий її початкове посилання."
@@ -221,7 +221,7 @@
                 "title": "Відкриті кімнати залишаються на цьому пристрої"
             },
             "money": {
-                "title": "Split зберігає розрахунки, а не гроші"
+                "title": "Tribu зберігає розрахунки, а не гроші"
             },
             "done": "Зрозуміло"
         },
@@ -274,7 +274,7 @@
             },
             "team": {
                 "title": "Хто це створив",
-                "intro": "Konrad і Hugo створили Split. Ось чому.",
+                "intro": "Konrad і Hugo створили Tribu. Ось чому.",
                 "konrad": {
                     "name": "Конрад",
                     "role": "створив Split",
@@ -314,7 +314,7 @@
                 },
                 "lost": {
                     "q": "Як повернутися до кімнати?",
-                    "a": "Залиш посилання в груповому чаті, щоб усі могли його знайти. Split також зберігає кімнати, відкриті на цьому пристрої, а посилання можна вставити на головній сторінці, щоб додати кімнату знову."
+                    "a": "Залиш посилання в груповому чаті, щоб усі могли його знайти. Tribu також зберігає кімнати, відкриті на цьому пристрої, а посилання можна вставити на головній сторінці, щоб додати кімнату знову."
                 },
                 "limits": {
                     "q": "Чи є денний ліміт витрат?",
@@ -323,7 +323,7 @@
             },
             "compare": {
                 "line": "Переходиш з іншого застосунку для розподілу витрат?",
-                "link": "Порівняй Split зі Splitwise"
+                "link": "Порівняй Tribu зі Splitwise"
             }
         }
     },
@@ -410,7 +410,7 @@
             "messagePlaceholder": "Що було зроблено, що сталося й що мало статися?",
             "messageHint": "Обов’язково · щонайменше {minimum} символів. Посилання на кімнати в тексті видаляються перед збереженням.",
             "attachmentsTitle": "Вибери вкладення",
-            "attachmentsIntro": "Спочатку всі вкладення вимкнені. Увімкни лише те, що хочеш додати для команди супроводу Split у Squirrel Labs.",
+            "attachmentsIntro": "Спочатку всі вкладення вимкнені. Увімкни лише те, що хочеш додати для команди супроводу Tribu у Squirrel Labs.",
             "deviceTitle": "Дані пристрою",
             "deviceHint": "Браузер і ОС, розмір вікна, часовий пояс, режим застосунку та стан мережі.",
             "exactDeviceData": "Переглянути точні дані пристрою",
@@ -437,12 +437,12 @@
             "imageTooLarge": "Це зображення завелике. Вибери знімок екрана до 20 МБ.",
             "imageUnreadable": "Не вдалося прочитати зображення. Вибери знімок екрана у форматі JPEG, PNG або WebP.",
             "consentTitle": "Я погоджуюся надіслати цей звіт",
-            "consentHint": "Команда супроводу Split у Squirrel Labs зможе прочитати твоє повідомлення й лише вибрані вище вкладення. Звіти не надсилаються в аналітику й не показуються в кімнаті; їх заплановано видалити через 90 днів.",
+            "consentHint": "Команда супроводу Tribu у Squirrel Labs зможе прочитати твоє повідомлення й лише вибрані вище вкладення. Звіти не надсилаються в аналітику й не показуються в кімнаті; їх заплановано видалити через 90 днів.",
             "send": "Надіслати звіт",
             "cancel": "Скасувати",
             "sendFailed": "Не вдалося надіслати звіт — текст і знімок екрана досі тут.",
             "successTitle": "Звіт надіслано",
-            "successBody": "Дякуємо. Звіт і вибрані вкладення збережено для команди супроводу Split у Squirrel Labs.",
+            "successBody": "Дякуємо. Звіт і вибрані вкладення збережено для команди супроводу Tribu у Squirrel Labs.",
             "done": "Готово"
         },
         "export": {
@@ -643,7 +643,7 @@
             "topPayer": "Найбільший внесок за групу: {name}",
             "share": "Поділитися історією",
             "sharing": "Готуємо…",
-            "shareTitle": "Peanut Split",
+            "shareTitle": "Tribu",
             "shareText": "Ми повністю розрахувалися.",
             "copied": "Підсумок скопійовано — встав його де завгодно.",
             "downloaded": "Підсумок збережено в завантаженнях.",
@@ -791,12 +791,8 @@
             "cash": "Готівка",
             "bank": "Банк",
             "peanut": "Peanut",
-            "peanutNote": "Відкриває Peanut у новій вкладці. Split запише платіж тут, навіть якщо переказ не відбудеться.",
             "note": "Нотатка (необов’язково)",
             "notePlaceholder": "Надіслано в п’ятницю",
-            "receiptLink": "Посилання на квитанцію (необов’язково)",
-            "receiptLinkPlaceholder": "https://…",
-            "receiptLinkHint": "Split не відкриває й не перевіряє це посилання.",
             "record": "Записати платіж",
             "back": "Назад",
             "recorded": "Платіж: {from} → {to}",
@@ -807,7 +803,20 @@
             "amountFormatInvalid": "Перевір роздільники й знаки після коми в сумі.",
             "amountTooHigh": "Це більше, ніж {name} має віддати.",
             "recordedTitle": "Щойно записано",
-            "amountTooHighYou": "Це більше, ніж ти маєш віддати."
+            "amountTooHighYou": "Це більше, ніж ти маєш віддати.",
+            "lemon": "Lemon",
+            "lemonNote": "Paid from your Lemon wallet, in digital dollars.",
+            "lemonQuote": "You will send {amount} {token} from your Lemon.",
+            "lemonPay": "Pay with Lemon",
+            "lemonPaying": "Waiting for Lemon…",
+            "lemonConfirming": "Confirming the payment…",
+            "lemonPayTitle": "Payment to {name} on Tribu",
+            "lemonFailed": "The payment did not go through. No money moved.",
+            "lemonSignInNeeded": "Sign in with Lemon to pay from here.",
+            "lemonOnlyPayer": "Only {name} can pay this debt with Lemon.",
+            "lemonLinking": "Connecting your Lemon to this group. Try again in a moment.",
+            "lemonPayeeNoWallet": "{name} has not opened this group from Lemon yet, so there is nowhere to send it.",
+            "lemonTokenUnavailable": "{token} is not available on this network."
         },
         "share": {
             "title": "Поділитися кімнатою",
@@ -830,7 +839,7 @@
             "shared": "Посилання на кімнату надіслано.",
             "shareFailed": "Меню поширення не відкрилося. Натомість скопіюй запрошення.",
             "anyoneCanJoin": "Кожен із цим посиланням може приєднатися й додавати витрати.",
-            "shareTitle": "{room} · Peanut Split",
+            "shareTitle": "{room} · Tribu",
             "shareText": "Приєднуйся й додай свої витрати."
         },
         "create": {
@@ -915,7 +924,7 @@
             "step1": "Відскануй чек · перевір позиції",
             "step2": "Відскануй чек · хто що брав",
             "reading": "Читаємо чек…",
-            "privacyNote": "Split надсилає фото один раз і не зберігає його.",
+            "privacyNote": "Tribu надсилає фото один раз і не зберігає його.",
             "reviewTitle": "Перевір позиції",
             "reviewBody": "Виправ помилки, видали те, що не твоє, і додай пропущене.",
             "reviewFromMerchant": "Продавець: {merchant}. Виправ помилки й додай пропущене.",
@@ -1055,7 +1064,8 @@
             "removing": "Скасовуємо…",
             "confirmNo": "Залишити",
             "removed": "Запис платежу скасовано. Баланси кімнати оновлено.",
-            "removeFailed": "Не вдалося скасувати запис платежу — спробуй ще раз."
+            "removeFailed": "Не вдалося скасувати запис платежу — спробуй ще раз.",
+            "txLink": "View the transaction"
         },
         "achievements": {
             "crew": {
@@ -1141,7 +1151,7 @@
         "notifyMe": "Сповіщати мене про кімнату «{room}»",
         "cta": "Сповіщати мене",
         "on": "Увімк.",
-        "iosNeedsPwa": "Додай Split на початковий екран.",
+        "iosNeedsPwa": "Додай Tribu на початковий екран.",
         "iosHow": "Як?",
         "denied": "Заблоковано в налаштуваннях браузера.",
         "unknown": "Зараз не вдалося перевірити — цей пристрій усе ще може їх отримувати.",
@@ -1177,7 +1187,7 @@
         "MALFORMED_JSON": "Під час надсилання щось пішло не так — спробуй ще раз.",
         "JSON_REQUIRED": "Під час надсилання щось пішло не так — спробуй ще раз.",
         "REQUEST_TOO_LARGE": "Цей запит завеликий для надсилання.",
-        "CROSS_SITE_REQUEST": "Не вдалося перевірити цей запит — знову відкрий Split і повтори спробу.",
+        "CROSS_SITE_REQUEST": "Не вдалося перевірити цей запит — знову відкрий Tribu і повтори спробу.",
         "NOT_FOUND": "Цієї кімнати не існує.",
         "EXPENSE_NOT_FOUND": "Цієї витрати тут уже немає — онови кімнату.",
         "SETTLEMENT_NOT_FOUND": "Цього платежу тут уже немає — онови кімнату.",
@@ -1211,7 +1221,7 @@
         "SETTLEMENT_EXCEEDS_DEBT": "Цей платіж перевищує поточний борг — онови й перевір суму.",
         "IDEMPOTENCY_KEY_REUSED": "Цей ключ збереження вже використано в іншій кімнаті — спробуй зберегти ще раз.",
         "MEMBER_TOKEN_INVALID": "Знову вибери своє ім’я, щоб продовжити.",
-        "INSTALL_HANDOFF_UNAVAILABLE": "Збережені дані для встановлення більше недоступні — відкрий цю кімнату в браузері й знову додай Split.",
+        "INSTALL_HANDOFF_UNAVAILABLE": "Збережені дані для встановлення більше недоступні — відкрий цю кімнату в браузері й знову додай Tribu.",
         "SCAN_UNAVAILABLE": "Сканування чеків тут не ввімкнено.",
         "SCAN_IMAGE_TOO_LARGE": "Це зображення завелике — зроби нове фото.",
         "SCAN_BAD_IMAGE": "Не вдалося надіслати зображення — спробуй сфотографувати ще раз.",
@@ -1229,7 +1239,17 @@
         "NO_RATE": "Між цією валютою й валютою кімнати немає курсу, тому конвертація неможлива. Використай валюту кімнати.",
         "MANUAL_FX_RATE_REQUIRED": "Укажи власний курс цієї нестандартної валюти.",
         "MANUAL_FX_RATE_INVALID": "Власний курс недійсний або округлює конвертовану суму до нуля.",
-        "MANUAL_FX_RATE_NOT_ALLOWED": "Власні курси доступні лише для нестандартних валют витрат."
+        "MANUAL_FX_RATE_NOT_ALLOWED": "Власні курси доступні лише для нестандартних валют витрат.",
+        "LEMON_PROOF_INVALID": "Lemon could not confirm that wallet is yours.",
+        "LEMON_PROOF_STALE": "Your Lemon session expired. Open Tribu from Lemon again.",
+        "LEMON_TX_INVALID": "That payment cannot be recorded.",
+        "LEMON_TX_UNDERPAID": "The payment sent is less than the debt.",
+        "LEMON_TX_PENDING": "The payment is still being confirmed.",
+        "LEMON_TX_FAILED": "The transaction failed on the network. The payment was not recorded.",
+        "LEMON_TX_MISMATCH": "That transaction does not match this payment.",
+        "LEMON_TX_ALREADY_RECORDED": "That payment is already recorded.",
+        "LEMON_WALLET_MISSING": "Both people need to have opened the group from Lemon.",
+        "NOT_THIS_MEMBER": "Only that person can connect their wallet."
     },
     "derivation": {
         "title": "Звідки ця сума",
@@ -1385,7 +1405,7 @@
             "title": "Варто знати",
             "more": "…і ще {count, plural, one {# попередження} few {# попередження} many {# попереджень} other {# попередження}}.",
             "ROW_UNBALANCED": "Рядок {row} не сходиться в самому файлі, тому його пропущено.",
-            "ROW_UNSUPPORTED_CURRENCY": "Валюта рядка {row} — {detail}; Split її ще не підтримує, тому рядок пропущено.",
+            "ROW_UNSUPPORTED_CURRENCY": "Валюта рядка {row} — {detail}; Tribu її ще не підтримує, тому рядок пропущено.",
             "ROW_NO_PAYER": "У рядку {row} не вказано платника, тому його пропущено.",
             "ROW_ZERO_COST": "У рядку {row} немає суми, тому його пропущено.",
             "ROW_BAD_AMOUNT": "У рядку {row} є сума, яку не вдалося прочитати, тому його пропущено.",
@@ -1403,7 +1423,7 @@
             "SPLITPRO_SPLIT_MODE_FLATTENED": "Розподіли у відсотках і частках зі Split Pro зберігають кінцеві суми, але додаються як фіксовані суми. Подальше редагування не збереже початкових пропорцій.",
             "SPLITPRO_MISSING_NAMES": "{count, plural, one {У резервній копії Split Pro немає імені однієї людини. Нижче її позначено як «Учасник» — перейменуй її перед створенням кімнати.} few {У резервній копії Split Pro немає імен # людей. Нижче їх позначено як «Учасник» — перейменуй їх перед створенням кімнати.} many {У резервній копії Split Pro немає імен # людей. Нижче їх позначено як «Учасник» — перейменуй їх перед створенням кімнати.} other {У резервній копії Split Pro немає імені # людини. Нижче її позначено як «Учасник» — перейменуй її перед створенням кімнати.}}",
             "SPLITPRO_BALANCES_SKIPPED": "Через неповні дані в резервній копії Split Pro пропущено {count, plural, one {# баланс} few {# баланси} many {# балансів} other {# балансу}}. Перед створенням кімнати порівняй попередній перегляд зі Split Pro.",
-            "SPLITPRO_UNSUPPORTED_CURRENCY": "Split не може конвертувати {detail}, тому баланси в цій валюті пропущено. Якщо вони важливі, вибери інший експорт."
+            "SPLITPRO_UNSUPPORTED_CURRENCY": "Tribu не може конвертувати {detail}, тому баланси в цій валюті пропущено. Якщо вони важливі, вибери інший експорт."
         },
         "errors": {
             "NOT_SPLITWISE_CSV": "Ми не розпізнаємо цей файл. Вибери .csv групи Splitwise, .csv друга зі Split Pro або splitpro_data.json зі сторінки «Обліковий запис» у Split Pro.",

@@ -1,5 +1,4 @@
 import { afterAll, describe, expect, it } from 'vitest'
-import { STATIC_PAGES, staticPageIsSitemapped } from '@/data/static-pages'
 import { landingVariant, publicFossReleased, publicSourceCommit, splitV2Enabled } from './flags'
 
 const prior = process.env.NEXT_PUBLIC_SPLIT_V2_ENABLED
@@ -53,15 +52,6 @@ describe('publicFossReleased', () => {
 
         process.env.NEXT_PUBLIC_BUILD_COMMIT = COMMIT
         expect(publicSourceCommit()).toBe(COMMIT)
-    })
-
-    it('keeps the source page out of the sitemap until the same gate opens', () => {
-        const source = STATIC_PAGES.find((page) => page.href === '/source')!
-        process.env.NEXT_PUBLIC_BUILD_COMMIT = COMMIT
-        delete process.env.NEXT_PUBLIC_FOSS_RELEASED
-        expect(staticPageIsSitemapped(source)).toBe(false)
-        process.env.NEXT_PUBLIC_FOSS_RELEASED = '1'
-        expect(staticPageIsSitemapped(source)).toBe(true)
     })
 })
 

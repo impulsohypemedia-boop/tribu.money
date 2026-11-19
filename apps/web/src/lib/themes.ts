@@ -66,7 +66,7 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
         // the default theme is not allowed to move a single pixel.
         tint: '#FFFFFF',
         accent: '#7DD3C0',
-        motif: 'peanut',
+        motif: 'tribu',
     },
     {
         key: 'bubblegum',

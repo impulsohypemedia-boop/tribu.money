@@ -62,7 +62,7 @@ function Panel({ name, size, first = false }: { name: string; size: number; firs
     return (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-            src={emblemDataUri(name) ?? doodleDataUri('peanut')}
+            src={emblemDataUri(name) ?? doodleDataUri('tribu')}
             width={size}
             height={size}
             alt=""

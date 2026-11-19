@@ -22,6 +22,6 @@ describe('RoomEmblem', () => {
 
     it('keeps the existing fallback for malformed stored drawings', () => {
         const html = renderToStaticMarkup(<RoomEmblem value="drawing:v1:not-valid" name="Ski trip" />)
-        expect(html).toContain(DOODLE.peanut)
+        expect(html).toContain(DOODLE.tribu)
     })
 })

@@ -1,7 +1,7 @@
 const { fontFamily } = require('tailwindcss/defaultTheme')
 const plugin = require('tailwindcss/plugin')
 
-// Design system copied by value from peanut-ui (2026-07-25) and re-keyed to the
+// Tribu's design tokens. Started from an older upstream system and re-keyed to the
 // Tribu identity: primary = #FF7A45 (orange), secondary = #7DD3C0 (teal). Legacy colour aliases and every
 // dark: variant were stripped on the way in. Diverge freely — there is no
 // dependency on peanut-ui.
@@ -25,6 +25,10 @@ module.exports = {
             8: '8px',
         },
         extend: {
+            // Soft warm hairlines instead of black outlines: text keeps n-1, borders do not.
+            borderColor: {
+                'n-1': '#EAD8CB',
+            },
             colors: {
                 primary: {
                     1: '#FF7A45',
@@ -76,7 +80,7 @@ module.exports = {
                 'primary-base': 'var(--primary-color)',
                 'secondary-base': 'var(--secondary-color)',
                 accent: 'var(--accent-color)',
-                background: '#FAF4F0',
+                background: '#FFF8F2',
                 error: {
                     DEFAULT: '#B3261E',
                     1: '#FFD8D8',
@@ -134,10 +138,10 @@ module.exports = {
                 '2xl': '1.5rem',
             },
             fontFamily: {
-                sans: ['var(--font-roboto)', ...fontFamily.sans],
-                display: ['var(--font-sniglet)', ...fontFamily.sans],
-                'display-hero': ['var(--font-display-hero)', ...fontFamily.sans],
-                roboto: ['var(--font-roboto)', ...fontFamily.sans],
+                sans: ['var(--font-nunito)', ...fontFamily.sans],
+                display: ['var(--font-fredoka)', ...fontFamily.sans],
+                'display-hero': ['var(--font-fredoka)', ...fontFamily.sans],
+                roboto: ['var(--font-nunito)', ...fontFamily.sans],
             },
             fontSize: {
                 0: ['0px', '0px'],
@@ -182,7 +186,7 @@ module.exports = {
                     '@apply flex flex-col gap-2': {},
                 },
                 '.btn': {
-                    '@apply disabled:bg-n-4 disabled:hover:bg-n-4/90 disabled:text-grey-1 disabled:cursor-not-allowed inline-flex items-center justify-center h-13 px-5 border border-n-1 rounded-sm text-base text-n-1 fill-n-1 font-bold transition-colors':
+                    '@apply disabled:bg-n-4 disabled:hover:bg-n-4/90 disabled:text-grey-1 disabled:cursor-not-allowed inline-flex items-center justify-center h-13 px-5 border border-n-1 rounded-full text-base text-n-1 fill-n-1 font-bold transition-colors':
                         {},
                 },
                 '.btn svg': {
@@ -288,49 +292,49 @@ module.exports = {
                     '@apply !w-7 !h-7': {},
                 },
                 '.shadow-2': {
-                    '@apply shadow-[0.125rem_0.125rem_0_#211C17]': {},
+                    '@apply shadow-[0_1px_4px_rgba(74,29,10,0.10)]': {},
                 },
                 '.shadow-4': {
-                    '@apply shadow-[0.25rem_0.25rem_0_#211C17]': {},
+                    '@apply shadow-[0_6px_18px_-6px_rgba(74,29,10,0.18)]': {},
                 },
                 '.shadow-primary-6': {
-                    '@apply shadow-[0.375rem_0.375rem_0_#211C17]': {},
+                    '@apply shadow-[0_10px_24px_-8px_rgba(74,29,10,0.22)]': {},
                 },
                 '.shadow-primary-8': {
-                    '@apply shadow-[0.5rem_0.5rem_0_#211C17]': {},
+                    '@apply shadow-[0_14px_32px_-10px_rgba(74,29,10,0.24)]': {},
                 },
                 '.shadow-secondary-4': {
-                    '@apply shadow-[0.25rem_-0.25rem_0_#211C17]': {},
+                    '@apply shadow-[0_6px_18px_-6px_rgba(74,29,10,0.18)]': {},
                 },
                 '.shadow-secondary-6': {
-                    '@apply shadow-[0.375rem_-0.375rem_0_#211C17]': {},
+                    '@apply shadow-[0_10px_24px_-8px_rgba(74,29,10,0.22)]': {},
                 },
                 '.shadow-secondary-8': {
-                    '@apply shadow-[0.5rem_-0.5rem_0_#211C17]': {},
+                    '@apply shadow-[0_14px_32px_-10px_rgba(74,29,10,0.24)]': {},
                 },
                 '.btn-shadow-primary-3': {
-                    '@apply shadow-[0.1875rem_0.1875rem_0_#211C17]': {},
+                    '@apply shadow-[0_4px_12px_-4px_rgba(229,97,44,0.45)]': {},
                 },
                 '.btn-shadow-primary-4': {
-                    '@apply shadow-[0.25rem_0.25rem_0_#211C17]': {},
+                    '@apply shadow-[0_6px_16px_-6px_rgba(229,97,44,0.5)]': {},
                 },
                 '.btn-shadow-primary-6': {
-                    '@apply shadow-[0.375rem_0.375rem_0_#211C17]': {},
+                    '@apply shadow-[0_8px_20px_-6px_rgba(229,97,44,0.5)]': {},
                 },
                 '.btn-shadow-primary-8': {
-                    '@apply shadow-[0.5rem_0.5rem_0_#211C17]': {},
+                    '@apply shadow-[0_10px_24px_-8px_rgba(229,97,44,0.5)]': {},
                 },
                 '.btn-shadow-secondary-3': {
-                    '@apply shadow-[0.1875rem_-0.1875rem_0_#211C17]': {},
+                    '@apply shadow-[0_6px_16px_-6px_rgba(229,97,44,0.5)]': {},
                 },
                 '.btn-shadow-secondary-4': {
-                    '@apply shadow-[0.25rem_-0.25rem_0_#211C17]': {},
+                    '@apply shadow-[0_6px_16px_-6px_rgba(229,97,44,0.5)]': {},
                 },
                 '.btn-shadow-secondary-6': {
-                    '@apply shadow-[0.375rem_-0.375rem_0_#211C17]': {},
+                    '@apply shadow-[0_6px_16px_-6px_rgba(229,97,44,0.5)]': {},
                 },
                 '.btn-shadow-secondary-8': {
-                    '@apply shadow-[0.5rem_-0.5rem_0_#211C17]': {},
+                    '@apply shadow-[0_6px_16px_-6px_rgba(229,97,44,0.5)]': {},
                 },
                 '.brutal-border': {
                     '@apply border-2 border-n-1': {},

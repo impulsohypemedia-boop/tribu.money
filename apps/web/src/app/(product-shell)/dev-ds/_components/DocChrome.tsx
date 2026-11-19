@@ -13,7 +13,7 @@ export function DocChrome({ children, page }: { children: React.ReactNode; page:
             <header className="sticky top-0 z-40 border-b border-n-1 bg-primary-1">
                 <div className="mx-auto flex min-h-16 max-w-[90rem] flex-wrap items-center justify-between gap-2 px-4 py-2 sm:gap-4 sm:px-6 lg:px-8">
                     <Link href="/dev-ds" className="flex items-center gap-2 font-display text-xl font-extrabold">
-                        <Doodle name="peanut" size={30} weight={1.8} />
+                        <Doodle name="tribu" size={30} weight={1.8} />
                         <span>Split / system</span>
                     </Link>
                     <nav aria-label="Design system">

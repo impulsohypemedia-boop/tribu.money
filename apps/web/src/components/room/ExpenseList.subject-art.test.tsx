@@ -94,7 +94,7 @@ const state = (description: string, overrides: Partial<ApiExpense> = {}): RoomSt
         createdAt: '2026-08-03T10:00:00.000Z',
     },
     members: [
-        { id: 'ana', name: 'Ana', avatar: 'peanut', createdAt: '2026-08-03T10:00:00.000Z' },
+        { id: 'ana', name: 'Ana', avatar: 'tribu', createdAt: '2026-08-03T10:00:00.000Z' },
         { id: 'bea', name: 'Bea', avatar: 'bee', createdAt: '2026-08-03T10:00:00.000Z' },
     ],
     expenses: [expense(description, overrides)],

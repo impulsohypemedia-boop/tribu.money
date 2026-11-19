@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'motion/react'
 import { useTranslations } from 'next-intl'
-import { peanutCheering } from '@/assets/mascot'
+import { tribuFestejo } from '@/assets/mascot'
 import { type DoodleName } from '@/components/ui/doodles'
 import { recapPath } from '@/lib/recap'
 import { storyBucketFor } from '@/lib/story'
@@ -135,7 +135,7 @@ export function AllSettled({ compact = false, celebrate = false, summary, emblem
                 className="relative"
             >
                 <Image
-                    src={peanutCheering}
+                    src={tribuFestejo}
                     alt=""
                     unoptimized
                     className={compact ? 'h-20 w-20 object-contain' : 'h-28 w-28 object-contain'}

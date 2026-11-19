@@ -1,19 +1,16 @@
-import { Roboto_Flex, Sniglet } from 'next/font/google'
+import { Fredoka, Nunito } from 'next/font/google'
 
-const roboto = Roboto_Flex({
+const nunito = Nunito({
     subsets: ['latin'],
     display: 'swap',
-    variable: '--font-roboto',
-    axes: ['wdth'],
+    variable: '--font-nunito',
 })
 
-const sniglet = Sniglet({
-    weight: ['400', '800'],
+const fredoka = Fredoka({
+    weight: ['400', '600', '700'],
     subsets: ['latin'],
     display: 'swap',
-    variable: '--font-sniglet',
+    variable: '--font-fredoka',
 })
 
-// Gluten, the hero display face, lives in globals.css (@font-face over public/fonts woff2), not
-// here: next/font would hash its URL, and Title.tsx preloads it by stable URL.
-export const bodyFontClassName = `${roboto.variable} ${sniglet.variable} font-sans`
+export const bodyFontClassName = `${nunito.variable} ${fredoka.variable} font-sans`

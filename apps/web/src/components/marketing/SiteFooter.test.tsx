@@ -3,16 +3,12 @@ import { describe, expect, it, vi } from 'vitest'
 import { SiteFooter, SOURCE_URL } from './SiteFooter'
 
 vi.mock('next-intl', () => ({
-    useLocale: () => 'en',
+    useLocale: () => 'es-419',
     useTranslations: () => (key: string) => key,
 }))
 
-vi.mock('@/components/ui/LocaleSwitcher', () => ({
-    LocaleSwitcher: () => null,
-}))
-
 describe('SiteFooter', () => {
-    const html = renderToStaticMarkup(<SiteFooter showLocaleSwitcher={false} />)
+    const html = renderToStaticMarkup(<SiteFooter />)
 
     it('links the public source, as the AGPL requires for a hosted fork', () => {
         expect(html).toContain(`href="${SOURCE_URL}"`)

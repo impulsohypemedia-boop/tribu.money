@@ -124,7 +124,7 @@
             "createSplit": "Start a split",
             "toolsLink": "Calculators",
             "importLink": "Import from Splitwise",
-            "sourceStewardship": "Source code",
+            "sourceStewardship": "Open source",
             "colCompare": "Compare",
             "colGuides": "Guides",
             "allGuides": "All guides",
@@ -222,6 +222,21 @@
                 "title": "Tribu keeps the maths, not the money"
             },
             "done": "Got it"
+        },
+        "howItWorks": {
+            "title": "That easy",
+            "create": {
+                "title": "Start your tribe",
+                "body": "Name it and add your people. No account needed."
+            },
+            "share": {
+                "title": "Share the link",
+                "body": "Everyone joins from the group chat and adds what they paid."
+            },
+            "settle": {
+                "title": "Settle in a tap",
+                "body": "Tribu works out who pays whom. Inside Lemon you pay in USDC or USDT."
+            }
         }
     },
     "locale": {

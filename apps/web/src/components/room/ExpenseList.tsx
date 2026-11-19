@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { AnimatePresence, motion } from 'motion/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'sonner'
-import { peanutThinking } from '@/assets/mascot'
+import { tribuPensando } from '@/assets/mascot'
 import type { ApiExpense, CurrencyInfo, RoomState } from '@/lib/api-types'
 import { cn } from '@/lib/cn'
 import { personalExpenseImpact } from '@/lib/expense-impact'
@@ -368,7 +368,7 @@ export function ExpenseList({
                     data-motion-surface
                 >
                     <Image
-                        src={peanutThinking}
+                        src={tribuPensando}
                         alt=""
                         unoptimized
                         className="h-20 w-20 object-contain sm:h-32 sm:w-32"

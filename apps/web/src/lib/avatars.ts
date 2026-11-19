@@ -240,7 +240,7 @@ export const PERSONA_KEYS = Object.keys(PERSONAS) as PersonaKey[]
  */
 export const CLASSIC_AVATARS = {
     'doodle-dog': classic('dog', 'Good Dog', 'Reliably delighted', '#FFE9DF', '#B8F0C5'),
-    'doodle-peanut': classic('peanut', 'Classic Peanut', 'Keeps it simple', '#FFB899', '#F6C7EC'),
+    'doodle-tribu': classic('tribu', 'The Tribe', 'Gets everyone in', '#FFB899', '#F6C7EC'),
     'doodle-sun': classic('sun', 'Little Sun', 'Aggressively awake', '#FFB899', '#BDECF5'),
     'doodle-wave': classic('wave', 'Big Wave', 'Swims any weather', '#BDECF5', '#FFE9DF'),
     'doodle-leaf': classic('leaf', 'Fresh Leaf', 'Touches grass', '#B8F0C5', '#FFE9DF'),
@@ -351,11 +351,11 @@ export function dealPersonaKeys(count: number, random: () => number = Math.rando
 }
 
 /** A neutral defensive render fallback for null or unknown legacy values. */
-export const FALLBACK_AVATAR = CLASSIC_AVATARS['doodle-peanut']
+export const FALLBACK_AVATAR = CLASSIC_AVATARS['doodle-tribu']
 
 /** The same fallback as a key, for the callers that pass a persona across a boundary rather than
  *  render it — `avatar` is null on legacy rows, and the card route 404s on a null. */
-export const FALLBACK_AVATAR_KEY = 'doodle-peanut' satisfies AvatarKey
+export const FALLBACK_AVATAR_KEY = 'doodle-tribu' satisfies AvatarKey
 
 export const avatarArt = (avatar: string | null | undefined, _name?: string): AvatarArt =>
     isAvatarKey(avatar) ? AVATARS[avatar] : FALLBACK_AVATAR

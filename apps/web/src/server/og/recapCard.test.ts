@@ -376,8 +376,8 @@ describe('toRecapCard', () => {
     })
 
     it('falls back to the peanut for junk emblems, exactly like RoomEmblem does', () => {
-        expect(cardOf(recapOf({ emoji: '🦖', name: 'Ski trip' })).emblem).toBe('peanut')
-        expect(cardOf(recapOf({ emoji: null, name: 'zzz' })).emblem).toBe('peanut')
+        expect(cardOf(recapOf({ emoji: '🦖', name: 'Ski trip' })).emblem).toBe('tribu')
+        expect(cardOf(recapOf({ emoji: null, name: 'zzz' })).emblem).toBe('tribu')
     })
 
     it('sanitizes a hostile member name inside the top-payer line', () => {

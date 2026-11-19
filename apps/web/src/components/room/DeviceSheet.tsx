@@ -5,7 +5,6 @@ import { InstallRow } from '@/components/pwa/InstallRow'
 import { CloseButton } from '@/components/ui/CloseButton'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/Drawer'
 import { DrawerBody } from '@/components/ui/DrawerLayout'
-import { LocaleSwitcher } from '@/components/ui/LocaleSwitcher'
 import { SettingToggle } from '@/components/ui/SettingToggle'
 import { triggerHaptic, useSettings } from '@/lib/use-settings'
 
@@ -35,7 +34,6 @@ export function DeviceSheet({
 }) {
     const t = useTranslations('room.header')
     const tSettings = useTranslations('settings')
-    const tLocale = useTranslations('locale')
     const { settings, setSoundEnabled, setHapticsEnabled, setAnimationsEnabled } = useSettings()
 
     return (
@@ -48,7 +46,6 @@ export function DeviceSheet({
                 <DrawerBody>
                     {/* Installing is per device by construction, so the sheet's label stays true. */}
                     <InstallRow slug={slug} token={token} active={open} />
-                    <LocaleSwitcher label={tLocale('label')} />
                     <div className="flex flex-col gap-2">
                         <SettingToggle
                             label={t('sound')}

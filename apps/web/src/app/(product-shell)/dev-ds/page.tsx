@@ -156,7 +156,7 @@ export default function DesignSystemPage() {
                     </div>
                     <div className="relative hidden min-h-72 lg:block" aria-hidden="true">
                         <div className="shadow-primary-8 absolute right-4 top-0 grid size-64 rotate-3 place-items-center rounded-full border-2 border-n-1 bg-secondary-1">
-                            <Doodle name="peanut" size={174} weight={1.15} />
+                            <Doodle name="tribu" size={174} weight={1.15} />
                         </div>
                         <div className="shadow-4 absolute bottom-0 left-1 rounded-sm border border-n-1 bg-white p-4">
                             <p className="font-display text-2xl font-extrabold">Link. Room. Sorted.</p>

@@ -14,12 +14,11 @@ const custom = encodeRoomDrawing([
 describe('emblemDoodle', () => {
     it('recognises a drawn emblem', () => {
         expect(emblemDoodle('mountain')).toBe('mountain')
-        expect(emblemDoodle('peanut')).toBe('peanut')
+        expect(emblemDoodle('tribu')).toBe('tribu')
     })
 
     it('draws legacy room-picker emoji without rewriting stored room data', () => {
         expect(emblemDoodle('🏔️')).toBe('mountain')
-        expect(emblemDoodle('🥜')).toBe('peanut')
         expect(emblemDoodle('🧾')).toBe('iconreceipt')
     })
 
@@ -46,11 +45,11 @@ describe('roomEmblemDoodle', () => {
     it('keeps an unreadable stored value on the peanut instead of re-deriving it', () => {
         // Still a pin — somebody chose a picture we cannot draw, and quietly
         // swapping it for the name's guess would change their room.
-        expect(roomEmblemDoodle('🦖', 'Ski trip')).toBe('peanut')
+        expect(roomEmblemDoodle('🦖', 'Ski trip')).toBe('tribu')
     })
 
     it('falls back to the peanut when the name says nothing either', () => {
-        expect(roomEmblemDoodle(null, 'Quarterly offsite')).toBe('peanut')
+        expect(roomEmblemDoodle(null, 'Quarterly offsite')).toBe('tribu')
     })
 })
 
@@ -75,7 +74,7 @@ describe('emblemChoice', () => {
         expect(emblemChoice('ski', 'pizza', 'Ski trip')).toEqual({ emblem: null })
         // Same drawing either way, but the room goes back to following its name,
         // so a later rename can move it again.
-        expect(emblemChoice('peanut', 'peanut', 'Quarterly offsite')).toEqual({ emblem: null })
+        expect(emblemChoice('tribu', 'tribu', 'Quarterly offsite')).toEqual({ emblem: null })
     })
 
     it('round-trips a pin and back with no way to get stuck', () => {

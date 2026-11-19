@@ -718,7 +718,7 @@ export function SplitwiseImport({ targetRoom }: { targetRoom?: ExistingRoomImpor
                             const choice = parsedFile.choices[index]
                             if (choice) applyChoice(choice, index, parsedFile.source)
                         }}
-                        className="h-12 rounded-sm border border-n-1 bg-white px-3 text-base font-bold text-n-1 shadow-[2px_2px_0_#111] outline-none"
+                        className="shadow-4 h-12 rounded-sm border border-n-1 bg-white px-3 text-base font-bold text-n-1 outline-none"
                         data-testid="import-group-choice"
                     >
                         {parsedFile.choices.map((choice, index) => (

@@ -4,7 +4,7 @@ import { useCallback, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { peanutSad } from '@/assets/mascot'
+import { tribuTriste } from '@/assets/mascot'
 import { Button } from '@/components/ui/Button'
 import { buttonClassName } from '@/components/ui/button-style'
 import { forgetRoom } from '@/lib/recent-rooms'
@@ -49,7 +49,7 @@ export function RoomErrorState({ onRetry }: { onRetry: () => void }) {
         <div className="flex flex-col items-center gap-4 px-4 py-16 text-center">
             {/* Always above the fold when it renders, and it is the LCP element —
                 eager, or the error screen paints its own headline before its face. */}
-            <Image src={peanutSad} alt="" unoptimized priority className="h-32 w-32 object-contain" />
+            <Image src={tribuTriste} alt="" unoptimized priority className="h-32 w-32 object-contain" />
             <p className="text-h5">{t('errorTitle')}</p>
             <p className="max-w-[20rem] text-sm text-grey-1">{t('errorBody')}</p>
             <Button variant="primary" shadowSize="4" className="justify-center text-h6" onClick={onRetry}>
@@ -79,7 +79,7 @@ export function RoomNotFound({ slug, addExpense = false }: { slug?: string; addE
         <div className="flex flex-col items-center gap-4 px-4 py-16 text-center" data-testid="room-not-found">
             {/* Always above the fold when it renders, and it is the LCP element —
                 eager, or the error screen paints its own headline before its face. */}
-            <Image src={peanutSad} alt="" unoptimized priority className="h-32 w-32 object-contain" />
+            <Image src={tribuTriste} alt="" unoptimized priority className="h-32 w-32 object-contain" />
             <p className="text-h5">{t('notFoundTitle')}</p>
             <p className="max-w-[22rem] text-sm text-grey-1">{t('notFoundBody')}</p>
             <Link

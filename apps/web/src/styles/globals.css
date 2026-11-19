@@ -1,0 +1,2257 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Split identity — yellow primary. tailwind.config.js reads these through
+   `primary-base` / `secondary-base` / `accent`; removing them breaks the theme. */
+:root {
+    --primary-color: #ffc900;
+    --secondary-color: #211c17;
+    --accent-color: #ff90e8;
+    --split-ink: #211c17;
+    --font-display-hero: 'Gluten';
+}
+
+/* Gluten (SIL OFL 1.1) is declared by hand, not through next/font: Next 16.2 drops font preload
+   links from dynamic-page HTML (the hint rides only the RSC payload), and preloading the LCP H1's
+   face needs a stable URL Title.tsx can <link rel="preload"> itself. It replaced the proprietary
+   Knerd on 2026-09-01. Split by unicode-range the way Fontsource ships it, so a Latin headline
+   fetches 22KB and never pays for Vietnamese; the OG renderer reads its own copy out of
+   node_modules. */
+@font-face {
+    font-family: 'Gluten';
+    src: url('/fonts/gluten-latin-400.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 400;
+    unicode-range:
+        U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+        U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Gluten';
+    src: url('/fonts/gluten-latin-ext-400.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 400;
+    unicode-range:
+        U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+        U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Gluten';
+    src: url('/fonts/gluten-vietnamese-400.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 400;
+    unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+}
+
+@layer base {
+    :root {
+        color-scheme: light;
+    }
+
+    html,
+    body {
+        /* no native pull-to-refresh — this is an installable PWA */
+        overscroll-behavior-y: none;
+    }
+
+    html {
+        /*
+         * The room's action bar is `position: fixed` at the bottom, so the last
+         * ~80px of the viewport is not somewhere anything can be tapped. Every
+         * scroll the BROWSER performs on our behalf — focusing the last row's
+         * reaction button with a keyboard, an anchor jump, an automated
+         * `scrollIntoView` — scrolls the minimum needed to make the element
+         * visible, which parks it flush against the viewport bottom and
+         * therefore underneath that bar. The room's own `pb-36` covers the case
+         * where the USER scrolls to the end; this covers the case where the
+         * browser decides where the end is. Generous enough for the bar plus a
+         * home indicator.
+         */
+        scroll-padding-bottom: 7rem;
+    }
+
+    body {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /*
+     * One keyboard-focus language for the whole product. Resting borders,
+     * shadows and geometry stay owned by each component; focus adds only this
+     * ink outline, and only for keyboard-style navigation. `!important` is
+     * deliberate: several legacy composers use `outline-none` to suppress the
+     * browser default, and a local utility must not be able to erase the shared
+     * accessibility state.
+     */
+    :where(a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus-visible {
+        outline: 2px solid var(--split-ink) !important;
+        outline-offset: 2px !important;
+    }
+
+    /* A transparent link on the ink footer would otherwise draw ink on ink.
+     * Filled dark controls on a light surface still use the normal ink ring. */
+    [data-focus-surface='dark']
+        :where(a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex='-1'])):focus-visible {
+        outline-color: white !important;
+    }
+
+    /* Edge-flush controls inside rounded overflow shells cannot show an
+     * outward ring—the shell clips it. Pull only those explicitly marked rings
+     * inside the control. This is the contained variant of the same recipe,
+     * not a second component-level focus style. */
+    [data-focus-contained]:focus-visible {
+        outline-offset: -2px !important;
+    }
+
+    /* Contained rings sit against the control fill rather than the parent
+     * surface, so mixed light/dark segmented controls name that local tone. */
+    [data-focus-contained][data-focus-tone='light']:focus-visible {
+        outline-color: var(--split-ink) !important;
+    }
+
+    [data-focus-contained][data-focus-tone='dark']:focus-visible {
+        outline-color: white !important;
+    }
+
+    /* Some native controls are visually replaced while remaining the real
+     * keyboard/AT target. Draw the same central recipe on their visible
+     * adjacent proxy instead of leaving focus on an sr-only pixel. */
+    [data-focus-proxy]:focus-visible + [data-focus-proxy-target] {
+        outline: 2px solid var(--split-ink) !important;
+        outline-offset: 2px !important;
+    }
+
+    [data-focus-surface='dark'] [data-focus-proxy]:focus-visible + [data-focus-proxy-target] {
+        outline-color: white !important;
+    }
+
+    /*
+     * Native date controls paint their own platform calendar glyph. It is the
+     * one icon we cannot draw or theme, so date inputs hide it and place the
+     * same calendar doodle as every other surface in the field.
+     */
+    input[data-doodle-date]::-webkit-calendar-picker-indicator {
+        opacity: 0;
+    }
+}
+
+@layer utilities {
+    button,
+    [type='button'] {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Money never jitters. */
+    .tabular-nums {
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+/* ---------------------------------------------------------- chapter ink & receipt grammar
+   fun-engine.md S3. `[data-chapter]` (ChapterFrame.tsx) sets --chapter-wash/--chapter-ink/
+   --chapter-hairline/--chapter-ink-28 on one wrapper; every rule below reads them by CSS
+   inheritance, never by a prop threaded through the renderers. Every fallback repeats
+   `--split-ink` so a block rendered without a ChapterFrame ancestor (a unit test fixture, or a
+   resolver failure the layout already tolerates — see recipe.ts's `pageChapterOrNull`) still
+   paints something sane instead of an invalid custom property. None of these rules animate, so
+   none needs a prefers-reduced-motion entry alongside the ones above. */
+
+/* Section numerals: one counter per chapter-framed region, one leading digit per markdown `##`
+   heading. `split-section-heading` (components.tsx's `h2:` prose override) scopes this to that
+   heading alone — the internal `<h2>`s Steps/Checklist/FAQ/CTA render for their own titles
+   (blocks.tsx) never increment it. Pseudo-element content is paint-only and never reaches
+   server-rendered HTML, so this is verified by a CSS text assertion, not a DOM one — see
+   chapter-tokens.test.ts. */
+[data-chapter] {
+    counter-reset: split-section;
+}
+
+.split-section-heading::before {
+    content: counter(split-section, decimal-leading-zero) ' ';
+    counter-increment: split-section;
+    font-variant-numeric: tabular-nums;
+    color: var(--chapter-ink, var(--split-ink));
+}
+
+/* Steps: a leader digit per row (blocks.tsx's `split-steps`/`split-step`), same counter idiom. */
+.split-steps {
+    counter-reset: split-step;
+}
+
+.split-step {
+    counter-increment: split-step;
+}
+
+.split-step::before {
+    content: counter(split-step, decimal-leading-zero);
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--chapter-ink, var(--split-ink));
+}
+
+/* Callout: a taped note. blocks.tsx's subtraction pass drops the border/radius; this rotated
+   strip in chapter ink at 28% alpha is the only ornament left, and it never touches the text. */
+.split-callout::before {
+    content: '';
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    width: 74px;
+    height: 16px;
+    margin-left: -37px;
+    background: var(--chapter-ink-28, rgba(33, 28, 23, 0.28));
+    border: 1px solid rgba(33, 28, 23, 0.18);
+    transform: rotate(1.6deg);
+}
+
+/* Checklist: a perforated tear-line along the item's left border (blocks.tsx's
+   `split-checklist-item`), via mask-image rather than a dashed border — a dashed border rounds at
+   the corners and cannot hold a fixed dot pitch. */
+.split-checklist-item::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 2px;
+    background: var(--chapter-ink, var(--split-ink));
+    -webkit-mask-image: repeating-linear-gradient(to bottom, #000 0, #000 3px, transparent 3px, transparent 7px);
+    mask-image: repeating-linear-gradient(to bottom, #000 0, #000 3px, transparent 3px, transparent 7px);
+}
+
+/* Table scroll cue (components.tsx's `table` wrapper). A comparison table is wider than the 36rem
+   column and scrolls inside its own box, which on a phone reads as a table that simply ends at the
+   screen edge. The four-layer background is the whole affordance: two white covers painted in the
+   box's own ground sit over the left and right edges with `background-attachment: local`, so they
+   travel WITH the content and slide out of view as it scrolls, uncovering two `scroll`-attached
+   shadows that stay pinned to the box. Fully scrolled either way, that side's cover is back over
+   its shadow and the cue disappears. No listener, no ResizeObserver, no extra element. */
+.split-table-scroll {
+    background-image:
+        linear-gradient(to right, #ffffff 55%, rgba(255, 255, 255, 0)),
+        linear-gradient(to left, #ffffff 55%, rgba(255, 255, 255, 0)),
+        linear-gradient(to right, rgba(33, 28, 23, 0.18), rgba(33, 28, 23, 0)),
+        linear-gradient(to left, rgba(33, 28, 23, 0.18), rgba(33, 28, 23, 0));
+    background-repeat: no-repeat;
+    background-position:
+        left center,
+        right center,
+        left center,
+        right center;
+    background-size:
+        2rem 100%,
+        2rem 100%,
+        0.75rem 100%,
+        0.75rem 100%;
+    background-attachment: local, local, scroll, scroll;
+}
+
+/* ---------------------------------------------------------- sticker skin
+   fun-engine.md Wave 2 / S2. `ChapterFrame` and `SkinFrame` are the only things that set
+   `--skin-*`: they paint the whole palette plus `--skin-wall` onto one wrapper, beside
+   `data-skin`. Every rule below is scoped `[data-skin='sticker']`, so an unskinned page — every
+   generated guide, every flat-register page, the LP, the room — matches none of them and this
+   whole section is inert rather than absent.
+
+   Every `var()` repeats its literal as a fallback, the idiom the chapter block above states. The
+   wallpaper is the sharp case: `background-image: var(--skin-wall), radial-gradient(…)` is
+   invalid-at-computed-value-time if `--skin-wall` is ever unset, which would take the dot grid
+   down with it, so it carries an explicit `none`.
+
+   Every rule that paints a background also sets `color`. Two of them have no choice: the chapter
+   block's `.split-section-heading::before` and `.split-step::before` set
+   `color: var(--chapter-ink, …)`, and chapter ink on pink/yellow/green measures 2.44–3.85:1 across
+   all six chapters — skin-tokens.test.ts computes all 18 pairs and gates the source shape. The
+   rest follow the same rule so that gate can stay mechanical.
+
+   Nothing here animates, so none of it needs a prefers-reduced-motion entry.
+
+   No rule here selects on `data-testid`. An earlier pass painted the calculator through its test
+   ids; that couples the design to a hook whose whole point is that a test may rename it, and the
+   class audit rejects it. Every calculator surface the skin touches carries a `split-tool-*` class
+   of its own instead (ToolCalculator.tsx, styling-free there), beside `split-working`,
+   `split-tool-shares`, `split-tool-amount` and the `aria-pressed` the preset chips gained. */
+
+/* Ground. The tiles scroll with the content: `background-attachment: fixed` repaints the whole
+   viewport on every scroll frame, which is the one thing that would cost the 60fps budget. */
+[data-skin='sticker'] {
+    background-color: var(--skin-paper, #faf4f0);
+    background-image: var(--skin-wall, none), radial-gradient(rgba(33, 28, 23, 0.05) 1px, transparent 1px);
+    background-size:
+        210px 210px,
+        5px 5px;
+    color: var(--skin-ink, #211c17);
+}
+
+[data-skin='sticker'] li::marker {
+    color: var(--skin-pink, #ff90e8);
+}
+
+/* Type. Keyed on `split-page-title`, not on an h1 under the hero: two of the four content pilots author
+   no `<Hero>` and take their h1 from components.tsx's markdown override, so keying the signature
+   treatment off the hero would ship it on half the pilot. */
+[data-skin='sticker'] .split-page-title {
+    color: var(--skin-ink, #211c17);
+    font-family: var(--skin-display, ui-sans-serif, system-ui, sans-serif);
+    font-stretch: var(--skin-display-stretch, 75%);
+    font-weight: 900;
+    text-shadow: 3px 3px 0 rgba(255, 144, 232, 0.5);
+    text-transform: uppercase;
+}
+
+/* Paper ground instead of the yellow band — the band's own `bg-primary-1` is on this element, so
+   an ancestor rule could not repaint it. */
+[data-skin='sticker'] .split-hero-band {
+    border-bottom: 2px solid var(--skin-ink, #211c17);
+    background: var(--skin-paper, #faf4f0);
+    color: var(--skin-ink, #211c17);
+}
+
+[data-skin='sticker'] .split-hero-eyebrow {
+    display: inline-block;
+    padding: 6px 11px;
+    border: 2px solid var(--skin-ink, #211c17);
+    border-radius: 999px;
+    background: var(--skin-pink, #ff90e8);
+    box-shadow: 0 0 0 4px var(--skin-halo, #ffffff);
+    color: var(--skin-ink, #211c17);
+    font-family: var(--skin-meta, ui-monospace, Menlo, monospace);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transform: rotate(-2deg);
+}
+
+[data-skin='sticker'] .split-section-heading {
+    font-family: var(--skin-display, ui-sans-serif, system-ui, sans-serif);
+    font-stretch: var(--skin-display-stretch, 75%);
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+/* Repaints the numeral the chapter block already draws. `counter-increment` stays up there and is
+   deliberately not repeated. `content` is re-declared only to drop that rule's trailing space,
+   which would pad the pink pill lopsidedly, and `display: inline-block` is load-bearing: a
+   `::before` on an `<h2>` is a non-replaced inline box, `transform` does not apply to those, and
+   without it the tilt is silently dropped — the mock's `.num` is a real span carrying the same
+   declaration (sticker-sheet.html:91). `color` overrides the chapter ink; see the header. */
+[data-skin='sticker'] .split-section-heading::before {
+    display: inline-block;
+    margin-right: 0.5rem;
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: var(--skin-pink, #ff90e8);
+    box-shadow: 0 0 0 4px var(--skin-halo, #ffffff);
+    color: var(--skin-ink, #211c17);
+    content: counter(split-section, decimal-leading-zero);
+    font-family: var(--skin-meta, ui-monospace, Menlo, monospace);
+    font-size: 13px;
+    font-weight: 800;
+    transform: rotate(-2deg);
+}
+
+[data-skin='sticker'] .split-block-title {
+    font-family: var(--skin-display, ui-sans-serif, system-ui, sans-serif);
+    font-size: 15.5px;
+    font-stretch: var(--skin-display-stretch, 75%);
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+/* The die-cut sticker recipe, and its three-step tilt cycle (the mock's `.stk` + `.t1/.t2/.t3`).
+   `.split-related-link` is deliberately absent: `RelatedPages` wraps its links in an
+   `overflow-hidden` "one card, many rows" `<ul>`, which would clip every child's halo, offset
+   shadow and rotated corners — so the LIST is the sticker instead, which is also closer to what
+   that markup already says. `.split-tool-result` keeps the treatment: its `overflow-hidden` clips
+   that element's children, never its own box-shadow. */
+[data-skin='sticker']
+    :is(
+        .split-step,
+        .split-checklist-item,
+        .split-faq-item,
+        .split-cta-card,
+        .split-share-card,
+        .split-related-list,
+        [data-script-block],
+        .split-calc,
+        .split-tool-result
+    ) {
+    border: 2px solid var(--skin-ink, #211c17);
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow:
+        0 0 0 5px var(--skin-halo, #ffffff),
+        6px 10px 0 rgba(33, 28, 23, 0.12);
+    color: var(--skin-ink, #211c17);
+}
+
+[data-skin='sticker']
+    :is(
+        .split-step,
+        .split-checklist-item,
+        .split-faq-item,
+        .split-cta-card,
+        .split-share-card,
+        .split-related-list,
+        [data-script-block],
+        .split-calc
+    ):nth-child(3n + 1) {
+    transform: rotate(-0.7deg);
+}
+
+[data-skin='sticker']
+    :is(
+        .split-step,
+        .split-checklist-item,
+        .split-faq-item,
+        .split-cta-card,
+        .split-share-card,
+        .split-related-list,
+        [data-script-block],
+        .split-calc
+    ):nth-child(3n + 2) {
+    transform: rotate(0.5deg);
+}
+
+[data-skin='sticker']
+    :is(
+        .split-step,
+        .split-checklist-item,
+        .split-faq-item,
+        .split-cta-card,
+        .split-share-card,
+        .split-related-list,
+        [data-script-block],
+        .split-calc
+    ):nth-child(3n) {
+    transform: rotate(-0.4deg);
+}
+
+/* The list is the sticker now, so its own hairline grid goes: the `overflow-hidden` that would
+   clip the halo, and the `gap-px` rules between rows. */
+[data-skin='sticker'] .split-related-list {
+    overflow: visible;
+    gap: 0.75rem;
+}
+
+/* The share card is a die-cut sticker with a strip of tape holding it down — the CTA card's box
+   plus the short-version slip's pink washi. Two blocks that both ask the reader to do something
+   sitting a screen apart would otherwise be the same white rectangle twice.
+
+   `position: relative` is the tape's containing block, exactly as it is on `.split-short-version`:
+   the card is a plain `<div>` and carries no positioning of its own. The button needs nothing here
+   — `Share.tsx` puts `split-btn` on it, so it takes the same yellow pill as every other CTA. */
+[data-skin='sticker'] .split-share-card {
+    position: relative;
+}
+
+[data-skin='sticker'] .split-share-card::before {
+    position: absolute;
+    top: -9px;
+    right: 26px;
+    width: 62px;
+    height: 15px;
+    border: 1px solid rgba(33, 28, 23, 0.1);
+    background: rgba(255, 144, 232, 0.55);
+    color: var(--skin-ink, #211c17);
+    content: '';
+    transform: rotate(2.5deg);
+}
+
+/* The step numeral becomes a yellow disc. Longhands rather than the mock's `font` shorthand: the
+   shorthand would reset the chapter block's `font-variant-numeric: tabular-nums` to normal.
+   `content` is re-declared for the same reason the section-heading rule above re-declares its own:
+   the chapter block draws `01` and the mock's disc holds a bare `1`, and a leading zero inside a
+   22px circle at 12px mono does not fit. `counter-increment` stays up in the chapter block. */
+[data-skin='sticker'] .split-step::before {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--skin-ink, #211c17);
+    border-radius: 50%;
+    background: var(--skin-yellow, #ffc900);
+    color: var(--skin-ink, #211c17);
+    content: counter(split-step);
+    font-family: var(--skin-meta, ui-monospace, Menlo, monospace);
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 19px;
+    text-align: center;
+}
+
+/* The perforation is replaced by the sticker edge. */
+[data-skin='sticker'] .split-checklist-item::before {
+    display: none;
+}
+
+[data-skin='sticker'] .split-tick {
+    width: 23px;
+    height: 23px;
+    border: 2px solid var(--skin-ink, #211c17);
+    background: var(--skin-green, #98e9ab);
+    color: var(--skin-ink, #211c17);
+}
+
+/* Paper blocks: post-it, washi tape, evidence slip. */
+[data-skin='sticker'] .split-callout {
+    border-radius: 3px;
+    background: var(--skin-postit, #fff3c4);
+    box-shadow: 4px 6px 0 rgba(33, 28, 23, 0.08);
+    color: var(--skin-ink, #211c17);
+    transform: rotate(-0.6deg);
+}
+
+[data-skin='sticker'] .split-callout::before {
+    background: rgba(255, 144, 232, 0.55);
+    color: var(--skin-ink, #211c17);
+}
+
+/* The short-version slip drops its `border-l-4` ledger rule for a taped one. `position: relative`
+   is the tape's containing block — the `<p>` does not carry it otherwise. */
+[data-skin='sticker'] .split-short-version {
+    position: relative;
+    border: 0;
+    color: var(--skin-muted, #5f646d);
+}
+
+[data-skin='sticker'] .split-short-version::before {
+    position: absolute;
+    top: -8px;
+    left: 22px;
+    width: 58px;
+    height: 15px;
+    border: 1px solid rgba(33, 28, 23, 0.1);
+    background: rgba(255, 144, 232, 0.55);
+    color: var(--skin-ink, #211c17);
+    content: '';
+    transform: rotate(-2.5deg);
+}
+
+/* The torn-receipt edges bracket the whole slip — quote AND its source line, the way the mock's
+   `.quote` does. On the `<blockquote>` they would rule off the attribution instead, and unscoped
+   they would reach every markdown quote on the page. `split-quote` is the inner `<figure>`, not
+   the column wrapper around it (blocks.tsx), so the mock's full `14px 14px 12px` applies here
+   without the ground running the width of the page. */
+[data-skin='sticker'] .split-quote {
+    position: relative;
+    padding: 14px 14px 12px;
+    border-top: 2px dashed var(--skin-ink, #211c17);
+    border-bottom: 2px dashed var(--skin-ink, #211c17);
+    border-radius: 3px;
+    background: #ffffff;
+    box-shadow: 4px 6px 0 rgba(33, 28, 23, 0.08);
+    color: var(--skin-ink, #211c17);
+    transform: rotate(-0.4deg);
+}
+
+/* The blockquote's own dashed rule and the slip's top edge are the same line drawn twice, 14px
+   apart. The slip wins; the mock's `.quote blockquote` carries no rule at all. */
+[data-skin='sticker'] .split-quote blockquote {
+    padding-top: 0;
+    border-top: 0;
+}
+
+[data-skin='sticker'] .split-quote::before {
+    position: absolute;
+    top: -8px;
+    right: 18px;
+    width: 52px;
+    height: 14px;
+    border: 1px solid rgba(33, 28, 23, 0.1);
+    background: rgba(255, 201, 0, 0.6);
+    color: var(--skin-ink, #211c17);
+    content: '';
+    transform: rotate(2deg);
+}
+
+/* The cast chip. `LandingPersona` paints the persona's own art — background, ink and box — through
+   an inline `style`, which no stylesheet rule can outrank, so the mock's flat yellow disc and its
+   62px box are NOT re-declared here: the cast keeps its identity and the skin adds the die-cut
+   ring around it. Everything the mock's `.castchip` says that survives that is here. */
+[data-skin='sticker'] .split-cast-art {
+    border: 2px solid var(--skin-ink, #211c17);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 4px var(--skin-halo, #ffffff),
+        3px 5px 0 rgba(255, 144, 232, 0.7);
+    transform: rotate(-3deg);
+}
+
+/* Actions. A `split-btn` hook rather than a descendant-anchor rule: `Hero` renders
+   `<ShortVersionSlot>` inside its own `<section>`, and that ends in an inline `#questions` anchor
+   mid-sentence, which any `.split-cta-card a[href]`-style descendant rule would turn into a full
+   yellow pill in the middle of a paragraph. A child combinator does not help either — the hero's
+   CTA is nested inside the column div, not a direct child of the section. */
+[data-skin='sticker'] .split-btn {
+    border: 2px solid var(--skin-ink, #211c17);
+    border-radius: 999px;
+    background: var(--skin-yellow, #ffc900);
+    box-shadow:
+        0 0 0 4px #ffffff,
+        5px 8px 0 rgba(255, 144, 232, 0.7);
+    color: var(--skin-ink, #211c17);
+    font-weight: 800;
+}
+
+[data-skin='sticker'] [data-script-copy],
+[data-skin='sticker'] .split-tool-copy {
+    border: 2px solid var(--skin-ink, #211c17);
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow:
+        0 0 0 3px #ffffff,
+        2px 3px 0 var(--skin-yellow, #ffc900);
+    color: var(--skin-ink, #211c17);
+    font-weight: 700;
+}
+
+/* Table — the versus page's side-by-side. No column tint: a GFM table has no per-column hook, so
+   the only selector available is positional, and the corpus disagrees on position — the Wave-2
+   pilot `splitwise-vs-tricount` puts us last, every other comparison (`settle-up-alternative`,
+   `tricount-alternative`, × en/es-419/pt-br) puts the rival last. A positional tint in the page's
+   own accent pink would read as an endorsement of whichever column it landed on. The `th`
+   mono/uppercase and the bold first column carry the sticker read instead. */
+[data-skin='sticker'] table th {
+    border-bottom: 2px solid var(--skin-ink, #211c17);
+    color: var(--skin-ink, #211c17);
+    font-family: var(--skin-meta, ui-monospace, Menlo, monospace);
+    text-transform: uppercase;
+}
+
+[data-skin='sticker'] table td:first-child {
+    color: var(--skin-ink, #211c17);
+    font-weight: 700;
+}
+
+/* Working strip. Applies to `Working.tsx`'s root div AND to the tool page's own inlined `<ul>`,
+   which carries the same class rather than the component (ToolCalculator does not import it). */
+[data-skin='sticker'] .split-working {
+    padding-top: 10px;
+    border-top: 2px dashed rgba(33, 28, 23, 0.25);
+    color: var(--skin-muted, #5f646d);
+}
+
+[data-skin='sticker'] .split-working li span:last-child {
+    font-family: var(--skin-meta, ui-monospace, Menlo, monospace);
+    font-variant-numeric: tabular-nums;
+}
+
+/* The total gets the solid rule — `[data-calc-row='total']`, never `li:last-child`: `<Calc>`'s
+   rows run total, people, share, foot, so `:last-child` would rule off the footnote and leave the
+   total plain. Generic `<Working>` consumers carry no `data-calc-row` and correctly get nothing. */
+[data-skin='sticker'] [data-calc-row='total'] {
+    margin-top: 4px;
+    padding-top: 7px;
+    border-top: 2px solid var(--skin-ink, #211c17);
+    color: var(--skin-ink, #211c17);
+    font-weight: 800;
+}
+
+/* The live chip is a pressed toggle, which is also what says so to a screen reader — the on-state
+   is the `aria-pressed` ToolCalculator sets, not a second class saying the same thing twice. */
+[data-skin='sticker'] .split-tool-preset {
+    border: 2px solid var(--skin-ink, #211c17);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--skin-ink, #211c17);
+    font-weight: 700;
+}
+
+[data-skin='sticker'] .split-tool-preset[aria-pressed='true'] {
+    background: var(--skin-yellow, #ffc900);
+    box-shadow:
+        0 0 0 3px #ffffff,
+        2px 3px 0 rgba(255, 144, 232, 0.7);
+    color: var(--skin-ink, #211c17);
+}
+
+/* `<Calc>`'s chips (S4) are the same pressed-toggle idiom as `.split-tool-preset` above — restated
+   rather than shared because the two blocks landed in different stages and a joint selector would
+   couple their lifecycles for one saved declaration. */
+[data-skin='sticker'] .split-calc-chips button {
+    border: 2px solid var(--skin-ink, #211c17);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--skin-ink, #211c17);
+    font-weight: 700;
+}
+
+[data-skin='sticker'] .split-calc-chips button[aria-pressed='true'] {
+    background: var(--skin-yellow, #ffc900);
+    box-shadow:
+        0 0 0 3px #ffffff,
+        2px 3px 0 rgba(255, 144, 232, 0.7);
+    color: var(--skin-ink, #211c17);
+}
+
+/* The hook is on the text and number inputs only. `ScaleInput`'s range and `SwitchRow`'s `sr-only`
+   checkbox deliberately do not carry it: a 2px border, white fill and 10px radius visibly destroy a
+   native range track on every engine, and repainting a hidden checkbox means nothing. */
+[data-skin='sticker'] .split-tool-field {
+    border: 2px solid var(--skin-ink, #211c17);
+    border-radius: 10px;
+    background: #ffffff;
+    color: var(--skin-ink, #211c17);
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+}
+
+/* The currency slot, not the ticker inside it: `CurrencySelect` paints its own trigger, and the
+   slot is the one node in this app's markup that is only ever the currency. */
+[data-skin='sticker'] .split-tool-currency {
+    color: var(--skin-muted, #5f646d);
+    font-weight: 600;
+}
+
+[data-skin='sticker'] .split-tool-builder-summary {
+    border: 2px dashed rgba(33, 28, 23, 0.4);
+    border-radius: 12px;
+}
+
+/* The per-person rows are `<dl><div>` rows, not `<li>` — the only `<li>` inside `tool-result` are
+   the workings, so the mock's `.res li` maps here and its `.wk li` maps there. */
+[data-skin='sticker'] .split-tool-shares > div {
+    padding-bottom: 8px;
+    border-bottom: 2px dashed rgba(33, 28, 23, 0.18);
+}
+
+[data-skin='sticker'] .split-tool-shares dt {
+    font-weight: 700;
+}
+
+/* `.res .det` — the second line of the row's `<dt>`, which is the person's share expressed in
+   words rather than money. Without this it inherits the `.who` bold above and the two lines read as
+   equal weight. `span + span` rather than `:last-child`: a row whose tool authors no detail renders
+   the label span alone, and `:last-child` would then un-bold the name. The mock's `--pmut` is not
+   carried over — `--skin-muted` is the grey this text already paints in (skin.ts). */
+[data-skin='sticker'] .split-tool-shares dt span + span {
+    color: var(--skin-muted, #5f646d);
+    font-family: var(--skin-meta, ui-monospace, Menlo, monospace);
+    font-weight: 500;
+}
+
+/* `.res .amt`. `split-tool-amount` is on the per-person `<dd>` and repeats once per row — it is a
+   row amount, not a headline, so it takes the mono/tabular treatment and not `.bigres strong`. */
+[data-skin='sticker'] .split-tool-amount {
+    font-family: var(--skin-meta, ui-monospace, Menlo, monospace);
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+}
+
+/* The headline amount, `.bigres strong`. `<Calc>`'s result (S4) is the only one in the wave:
+   `ToolCalculator` renders no single result node — every amount it paints is a per-person row —
+   so pointing this at a calculator hook would set 27px display type on each of them. */
+[data-skin='sticker'] .split-calc-result strong {
+    color: var(--skin-ink, #211c17);
+    font-family: var(--skin-display, ui-sans-serif, system-ui, sans-serif);
+    font-size: 27px;
+    font-stretch: var(--skin-display-stretch, 75%);
+    font-variant-numeric: tabular-nums;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255, 144, 232, 0.5);
+}
+
+/* ------------------------------------------------------------------ motion
+   The CSS half of the animation catalog. Everything spring-shaped lives in
+   motion/react components and consults `useMotionAllowed()`; these three are
+   here because they attach to elements that already exist and would otherwise
+   need wrapping in a `motion.div` purely to borrow a 250ms transform.
+
+   All three animate `transform`/`opacity` only — the 60fps-on-mid-range-Android
+   rule from the spec. */
+
+@keyframes ps-pop {
+    0% {
+        transform: scale(1);
+    }
+    45% {
+        transform: scale(1.12);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes ps-shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    15%,
+    45%,
+    75% {
+        transform: translateX(-5px);
+    }
+    30%,
+    60%,
+    90% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes ps-tile-settle {
+    0% {
+        transform: scale(1);
+    }
+    40% {
+        transform: scale(1.06);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes ps-drawer-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-pop {
+    animation: ps-pop 100ms ease-out;
+}
+
+.animate-shake {
+    animation: ps-shake 500ms ease-in-out;
+}
+
+/* A slot-machine reel landing, in the avatar picker. Eight of these play in
+   sequence within half a second, which is why the amplitude is half of
+   `.animate-pop`'s: one celebratory pop can afford 1.12, eight of them at tile
+   size read as popcorn. Same family, different job. */
+.animate-tile-settle {
+    animation: ps-tile-settle 120ms ease-out;
+}
+
+/* vaul animates the sheet itself; this is the content settling inside it a beat
+   later, on the same decelerating curve the drawer arrives on. */
+.animate-drawer-in {
+    animation: ps-drawer-in 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The route-level loading fallback holds back for 400ms, then fades in. A fast
+   navigation never shows it at all: flashing a full interstitial for a
+   sub-400ms load reads as a glitch, not as feedback (user report, 2026-08-23).
+   Slow loads still get the screen, and its copy is in the DOM — and the
+   accessibility tree — from the first frame; only the paint is deferred.
+   MUST ride with `data-motion-surface` on the same element: both
+   reduced-motion policies above kill animations wholesale, and without that
+   opt-in's `opacity: 1 !important` the fallback would be parked invisible
+   forever. */
+@keyframes ps-route-reveal {
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-route-reveal {
+    opacity: 0;
+    animation: ps-route-reveal 200ms ease-out 400ms forwards;
+}
+
+/* One CSS motion policy rather than a selector list that every new component
+   has to remember to join. `.reduce-animations` is the in-app taste toggle;
+   the media query is the OS accessibility declaration and always wins. State
+   still changes immediately, but no CSS animation or transition runs. */
+.reduce-animations *,
+.reduce-animations *::before,
+.reduce-animations *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition: none !important;
+}
+
+/* Decorative particles get `opacity: 0` as well as `animation: none`. Stopping a
+   burst mid-flight is worse than the burst was: `animation: none` freezes every
+   piece wherever it happened to be that frame, and a confetti rect parked in
+   mid-air with a black border around it reads as a rendering bug rather than as
+   a preference being honoured. Only ever applied to `aria-hidden` decoration —
+   nothing that carries meaning is allowed to disappear this way. */
+.reduce-animations [data-decorative],
+.reduce-animations [data-decorative]::before,
+.reduce-animations [data-decorative]::after {
+    animation: none !important;
+    opacity: 0 !important;
+}
+
+/*
+ * motion/react 12 still interpolates opacity when `reducedMotion="always"` and
+ * SSR can emit the component's `initial={{ opacity: 0 }}` before the hook knows
+ * the media query. Every meaningful motion surface opts into this policy. It is
+ * visible and untransformed in the very first CSS pass, with or without JS.
+ */
+.reduce-animations [data-motion-surface] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.reduce-animations [data-motion-collapse] {
+    height: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+
+    [data-decorative],
+    [data-decorative]::before,
+    [data-decorative]::after {
+        animation: none !important;
+        opacity: 0 !important;
+    }
+
+    [data-motion-surface] {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+
+    [data-motion-collapse] {
+        height: auto !important;
+    }
+
+    .landing-proof-scene,
+    .landing-proof-copy,
+    .landing-proof-visual,
+    .landing-marquee-track,
+    .landing-marquee-run img,
+    .landing-room-examples,
+    .landing-room-examples-heading,
+    .landing-room-examples ul,
+    .landing-room-examples li {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
+
+.reduce-animations .group\/fold[open] > .landing-fold-body {
+    animation: none !important;
+}
+
+.reduce-animations .landing-proof-scene,
+.reduce-animations .landing-proof-copy,
+.reduce-animations .landing-proof-visual,
+.reduce-animations .landing-marquee-track,
+.reduce-animations .landing-marquee-run img,
+.reduce-animations .landing-room-examples,
+.reduce-animations .landing-room-examples-heading,
+.reduce-animations .landing-room-examples ul,
+.reduce-animations .landing-room-examples li {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* ---------------------------------------------------------- pass the link
+   One causal story around the real creator. The chat is decorative and settles
+   permanently after its first run; none of these keyframes loop. */
+
+.landing-persona {
+    position: relative;
+    display: inline-grid;
+    width: 2rem;
+    height: 2rem;
+    overflow: hidden;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1.5px solid #211c17;
+    border-radius: 999px;
+    box-shadow: 0.08rem 0.08rem 0 #211c17;
+}
+
+.landing-persona-accent {
+    position: absolute;
+    right: 4%;
+    bottom: 5%;
+    width: 46%;
+    height: 46%;
+    border-radius: 44% 56% 60% 40%;
+    transform: rotate(12deg);
+}
+
+.landing-persona > svg {
+    position: relative;
+    z-index: 1;
+    width: 86%;
+    height: 86%;
+}
+
+.pass-link-hero {
+    position: relative;
+    display: grid;
+    min-height: min(42rem, 100svh);
+    grid-template-rows: minmax(0, 1fr);
+    overflow: hidden;
+}
+
+.pass-link-hero-inner {
+    display: flex;
+    width: min(100%, 90rem);
+    min-height: min(42rem, 100svh);
+    flex-direction: column;
+    margin-inline: auto;
+    padding-inline: clamp(1.5rem, 3.4vw, 3.25rem);
+}
+
+.pass-link-layout {
+    display: grid;
+    min-height: 0;
+    flex: 1;
+    grid-template-areas:
+        'copy stage'
+        'form stage';
+    grid-template-columns: minmax(31rem, 1.16fr) minmax(22rem, 0.84fr);
+    grid-template-rows: auto auto;
+    column-gap: clamp(1.75rem, 4vw, 5rem);
+    align-content: center;
+    padding-block: 1rem 1.5rem;
+}
+
+.pass-link-copy {
+    grid-area: copy;
+    align-self: end;
+}
+
+.pass-link-copy h1 {
+    max-width: 49rem;
+    margin: 0;
+    overflow-wrap: normal;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-stretch: 50%;
+    font-weight: 1000;
+    letter-spacing: -0.045em;
+    line-height: 1.05;
+    text-transform: uppercase;
+    text-wrap: balance;
+}
+
+.pass-link-copy mark {
+    display: inline-block;
+    max-width: 100%;
+    padding-inline: 0.08em;
+    background: var(--primary-color);
+    color: inherit;
+}
+
+.pass-link-form-wrap {
+    width: min(100%, 39rem);
+    grid-area: form;
+    align-self: start;
+    margin-top: 1rem;
+}
+
+.pass-link-form {
+    gap: 0.5rem;
+    padding: 0.75rem;
+}
+
+.pass-link-stage-shell {
+    min-width: 0;
+    min-height: 32rem;
+    grid-area: stage;
+    align-self: stretch;
+}
+
+.pass-link-stage {
+    position: relative;
+    height: 100%;
+    min-height: 32rem;
+}
+
+.pass-link-chat-link {
+    position: absolute;
+    z-index: 2;
+    inset: 1.85rem 1.4rem 0.5rem;
+    border-radius: 1.25rem;
+    color: inherit;
+    text-decoration: none;
+    transform: none;
+    transition: transform 170ms ease-out;
+}
+
+.pass-link-chat-frame {
+    position: relative;
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    flex-direction: column;
+    border: 2.5px solid #211c17;
+    border-radius: 1.25rem;
+    background: #fffdf8;
+    box-shadow: 0.65rem 0.65rem 0 #211c17;
+    transform: rotate(-1deg);
+}
+
+.pass-link-chat-header {
+    display: flex;
+    min-height: 4.65rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 2px solid #211c17;
+    background: #fff9ed;
+}
+
+.pass-link-chat-group-mark {
+    position: relative;
+    display: grid;
+    width: 2.55rem;
+    aspect-ratio: 1;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1.5px solid #211c17;
+    border-radius: 999px;
+    background: #c7a6ff;
+}
+
+.pass-link-chat-group-mark > i {
+    position: absolute;
+    right: -0.05rem;
+    bottom: 0;
+    width: 0.62rem;
+    aspect-ratio: 1;
+    border: 1.5px solid #211c17;
+    border-radius: 999px;
+    background: #4fd276;
+}
+
+.pass-link-chat-title {
+    min-width: 0;
+    flex: 1;
+}
+
+.pass-link-chat-title strong {
+    display: block;
+    overflow: hidden;
+    font-size: clamp(0.9rem, 1.35vw, 1.15rem);
+    font-weight: 950;
+    letter-spacing: -0.025em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pass-link-chat-title small {
+    display: block;
+    margin-top: 0.2rem;
+    color: #5f646d;
+    font-size: clamp(0.53rem, 0.7vw, 0.65rem);
+    font-weight: 800;
+}
+
+.pass-link-avatar-stack,
+.pass-link-card-people {
+    display: flex;
+    flex: 0 0 auto;
+    padding-right: 0.25rem;
+}
+
+.pass-link-avatar {
+    width: clamp(1.75rem, 2.5vw, 2.15rem);
+    height: auto;
+    aspect-ratio: 1;
+    margin-right: -0.48rem;
+    border: 2px solid #211c17;
+}
+
+.pass-link-avatar svg,
+.pass-link-mini-avatar svg {
+    width: 80%;
+    height: 80%;
+}
+
+.pass-link-chat-body {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.15rem 1.1rem 0.9rem;
+}
+
+.pass-link-message-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    opacity: 0;
+}
+
+.pass-link-chat-question {
+    animation: pass-link-bubble-in 420ms cubic-bezier(0.22, 1, 0.36, 1) 100ms both;
+}
+
+.pass-link-chat-reply {
+    animation: pass-link-bubble-in 420ms cubic-bezier(0.22, 1, 0.36, 1) 850ms both;
+}
+
+.pass-link-message-row-outgoing {
+    justify-content: flex-end;
+    margin-bottom: 0.95rem;
+}
+
+.pass-link-message-row > div {
+    min-width: 0;
+}
+
+.pass-link-message-row small {
+    display: block;
+    margin: 0 0 0.2rem 0.25rem;
+    color: #6a625b;
+    font-size: clamp(0.48rem, 0.62vw, 0.58rem);
+    font-weight: 850;
+}
+
+.pass-link-message-row-outgoing small {
+    margin-right: 0.25rem;
+    text-align: right;
+}
+
+.pass-link-mini-avatar {
+    width: 1.75rem;
+    height: auto;
+    aspect-ratio: 1;
+    border: 1.7px solid #211c17;
+}
+
+.pass-link-message {
+    margin: 0;
+    padding: 0.6rem 0.75rem;
+    border: 2px solid #211c17;
+    border-radius: 0.78rem 0.78rem 0.78rem 0.25rem;
+    background: white;
+    box-shadow: 0.2rem 0.2rem 0 #211c17;
+    font-size: clamp(0.68rem, 0.95vw, 0.84rem);
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+.pass-link-message-row-outgoing .pass-link-message {
+    border-radius: 0.78rem 0.78rem 0.25rem 0.78rem;
+    background: #98e9ab;
+}
+
+.pass-link-shared-wrap {
+    width: min(92%, 24rem);
+    align-self: flex-end;
+    margin-bottom: 0.85rem;
+    opacity: 0;
+    transform-origin: 85% 0;
+    animation: pass-link-card-in 580ms cubic-bezier(0.2, 1.25, 0.3, 1) 1.55s both;
+}
+
+.pass-link-shared-card {
+    position: relative;
+    overflow: hidden;
+    border: 2.5px solid #211c17;
+    border-radius: 1rem 1rem 0.3rem;
+    background: #ffc900;
+    box-shadow: 0.38rem 0.38rem 0 #211c17;
+}
+
+.pass-link-shared-card::before {
+    position: absolute;
+    top: -2.8rem;
+    right: -2.35rem;
+    width: 7rem;
+    aspect-ratio: 1;
+    border: 2px solid #211c17;
+    border-radius: 999px;
+    background: #ff90e8;
+    content: '';
+}
+
+.pass-link-share-mark {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.65rem;
+    z-index: 1;
+    display: grid;
+    width: 2rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 2px solid #211c17;
+    border-radius: 999px;
+    background: #fff9ed;
+    box-shadow: 0.12rem 0.12rem 0 #211c17;
+}
+
+.pass-link-shared-main {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    min-width: 0;
+    gap: 0.35rem;
+    padding: 1rem 3.25rem 0.75rem 0.85rem;
+}
+
+.pass-link-shared-main > strong {
+    overflow: hidden;
+    font-size: clamp(1.25rem, 2.55vw, 2.15rem);
+    font-weight: 950;
+    letter-spacing: -0.055em;
+    line-height: 0.95;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pass-link-shared-main > b {
+    overflow: hidden;
+    color: #514a42;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: clamp(0.42rem, 0.6vw, 0.56rem);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pass-link-shared-main > b span {
+    color: #5f646d;
+    letter-spacing: 0.08em;
+}
+
+.pass-link-shared-footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.55rem;
+    padding: 0.5rem 0.7rem;
+    border-top: 2px solid #211c17;
+    background: #fff9ed;
+}
+
+.pass-link-card-people .pass-link-avatar {
+    width: clamp(1.45rem, 2.1vw, 1.8rem);
+    font-size: clamp(0.35rem, 0.45vw, 0.46rem);
+    opacity: 0;
+    animation: pass-link-avatar-in 340ms cubic-bezier(0.2, 1.5, 0.3, 1) both;
+}
+
+.pass-link-card-people .pass-link-avatar:nth-child(1) {
+    animation-delay: 2.25s;
+}
+
+.pass-link-card-people .pass-link-avatar:nth-child(2) {
+    animation-delay: 2.4s;
+}
+
+.pass-link-card-people .pass-link-avatar:nth-child(3) {
+    animation-delay: 2.55s;
+}
+
+.pass-link-card-people .pass-link-avatar:nth-child(4) {
+    animation-delay: 2.7s;
+}
+
+.pass-link-shared-footer > strong {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    font-size: clamp(0.52rem, 0.7vw, 0.66rem);
+    font-weight: 950;
+    text-align: right;
+}
+
+.pass-link-shared-footer > strong > span {
+    display: grid;
+    width: 1.75rem;
+    aspect-ratio: 1;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 2px solid #211c17;
+    border-radius: 999px;
+    background: #98e9ab;
+    box-shadow: 0.12rem 0.12rem 0 #211c17;
+    transform: none;
+    transition: transform 160ms ease-out;
+}
+
+.pass-link-joined {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: auto 0 0;
+    color: #5f5851;
+    font-size: clamp(0.48rem, 0.66vw, 0.61rem);
+    font-weight: 850;
+    line-height: 1.1;
+    opacity: 0;
+    animation: pass-link-joined-in 350ms ease 3.25s both;
+}
+
+.pass-link-joined > span {
+    display: grid;
+    width: 1.25rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1.5px solid #211c17;
+    border-radius: 999px;
+    background: #98e9ab;
+}
+
+.pass-link-stage[data-state='complete'] .pass-link-message-row,
+.pass-link-stage[data-state='complete'] .pass-link-shared-wrap,
+.pass-link-stage[data-state='complete'] .pass-link-card-people .pass-link-avatar,
+.pass-link-stage[data-state='complete'] .pass-link-joined {
+    opacity: 1;
+    transform: none;
+    animation: none;
+}
+
+@keyframes pass-link-bubble-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.6rem) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes pass-link-card-in {
+    from {
+        opacity: 0;
+        transform: translate(2rem, 0.75rem) rotate(4deg) scale(0.82);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes pass-link-avatar-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.7rem) rotate(14deg) scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes pass-link-joined-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.3rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.group\/fold[open] > .landing-fold-body {
+    animation: landing-fold-open 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes landing-fold-open {
+    from {
+        opacity: 0;
+        transform: translateY(-0.35rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* -------------------------------------------------------------- proof scenes */
+
+.landing-proof {
+    display: flex;
+    flex-direction: column;
+    border-top: 1.5px solid #211c17;
+}
+
+.landing-proof-scene {
+    display: grid;
+    min-height: 29rem;
+    grid-template-columns: minmax(0, 0.9fr) minmax(24rem, 1.1fr);
+    gap: clamp(2.5rem, 7vw, 7rem);
+    align-items: center;
+    padding: clamp(3.5rem, 7vw, 7rem) max(1.25rem, calc((100vw - 78rem) / 2));
+    border-bottom: 1.5px solid #211c17;
+}
+
+.landing-proof-scene-link {
+    background: #faf4f0;
+}
+
+.landing-proof-scene-expenses {
+    background: #ffc900;
+}
+
+.landing-proof-scene-plan {
+    background: #eafbee;
+}
+
+.landing-proof-copy h2,
+.landing-room-examples-heading h2 {
+    max-width: 38rem;
+    margin: 0;
+    font-size: clamp(2.5rem, 4.7vw, 4.75rem);
+    font-weight: 900;
+    letter-spacing: -0.055em;
+    line-height: 0.92;
+}
+
+.landing-proof-copy > span,
+.landing-room-examples-copy > span {
+    display: block;
+    max-width: 33rem;
+    margin-top: 1.15rem;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.landing-proof-link-card {
+    overflow: hidden;
+    width: min(100%, 34rem);
+    justify-self: end;
+    border: 2px solid #211c17;
+    border-radius: 0.75rem;
+    background: white;
+    box-shadow: 0.5rem 0.5rem 0 #211c17;
+    transform: rotate(1deg);
+}
+
+.landing-proof-visual {
+    display: grid;
+    min-width: 0;
+    justify-items: end;
+}
+
+.landing-proof-object-link {
+    display: grid;
+    width: min(100%, 34rem);
+    border-radius: 0.75rem;
+    color: inherit;
+    justify-self: end;
+    text-decoration: none;
+    transform: rotate(var(--landing-link-tilt, 0deg));
+    transition: transform 170ms ease-out;
+}
+
+.landing-proof-object-link-identity {
+    --landing-link-hover-tilt: -1deg;
+}
+
+.landing-proof-object-link-expenses {
+    --landing-link-tilt: 0.35deg;
+    --landing-link-hover-tilt: 0deg;
+}
+
+.landing-proof-object-link-plan {
+    --landing-link-hover-tilt: 1deg;
+}
+
+.landing-proof-ticket {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.25rem;
+    border-bottom: 1.5px dashed #211c17;
+    background: #fff4cc;
+}
+
+.landing-proof-ticket span {
+    min-width: 0;
+}
+
+.landing-proof-ticket small,
+.landing-proof-ticket b,
+.landing-proof-identity > small,
+.landing-proof-expenses b,
+.landing-proof-expenses small,
+.landing-proof-plan > span,
+.landing-room-examples b,
+.landing-room-examples small {
+    display: block;
+}
+
+.landing-proof-ticket small,
+.landing-proof-identity > small,
+.landing-proof-plan > span {
+    margin-bottom: 0.3rem;
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.landing-proof-ticket b {
+    overflow: hidden;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.landing-proof-identity {
+    padding: 1.25rem;
+}
+
+.landing-proof-identity ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.landing-proof-identity li {
+    display: flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.35rem 0.7rem 0.35rem 0.35rem;
+    border: 1.5px solid #211c17;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.landing-proof-expenses {
+    position: relative;
+    display: grid;
+    width: min(100%, 34rem);
+    gap: 0.85rem;
+    justify-self: end;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.landing-proof-expenses li {
+    display: flex;
+    min-height: 5.25rem;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.15rem;
+    border: 2px solid #211c17;
+    border-radius: 0.75rem;
+    background: white;
+    box-shadow: 0.35rem 0.35rem 0 #211c17;
+}
+
+.landing-proof-expenses li:nth-child(1) {
+    margin-right: 2.5rem;
+    transform: rotate(-1.2deg);
+}
+
+.landing-proof-expenses li:nth-child(2) {
+    margin-left: 2.5rem;
+    background: #eafbee;
+    transform: rotate(0.7deg);
+}
+
+.landing-proof-expenses li:nth-child(3) {
+    margin-right: 1.5rem;
+    background: #fbeaea;
+    transform: rotate(-0.5deg);
+}
+
+.landing-proof-expenses b {
+    font-size: 1rem;
+}
+
+.landing-proof-expenses small {
+    margin-top: 0.2rem;
+    color: #5f646d;
+    font-size: 0.8rem;
+}
+
+.landing-proof-plan {
+    width: min(100%, 34rem);
+    justify-self: end;
+    padding: 1.2rem;
+    border: 2px solid #211c17;
+    border-radius: 0.75rem;
+    background: #98e9ab;
+    box-shadow: 0.5rem 0.5rem 0 #211c17;
+    transform: rotate(-1deg);
+}
+
+.landing-proof-plan p {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 0.75rem;
+    align-items: center;
+    margin: 0.65rem 0 0;
+    padding: 0.75rem;
+    border: 1.5px solid #211c17;
+    border-radius: 0.75rem;
+    background: white;
+}
+
+.landing-proof-plan b {
+    font-size: 0.9rem;
+}
+
+/* The claim strip. One track, the run twice, translated by exactly half — so the seam between
+   copies lands off-screen and the loop has no visible restart. Duration is fixed rather than
+   content-derived: the runs differ in width per locale, which changes the speed, not the loop. */
+.landing-marquee {
+    overflow: hidden;
+    border-top: 1.5px solid #211c17;
+    border-bottom: 1.5px solid #211c17;
+    background: white;
+}
+
+.landing-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: landing-marquee 32s linear infinite;
+}
+
+.landing-marquee-run {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.landing-marquee-run li {
+    display: flex;
+    min-height: 3.75rem;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1rem;
+    color: #211c17;
+    font-size: 1.125rem;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.landing-marquee-run img {
+    width: 2rem;
+    height: auto;
+    animation: thumbs-up 1.2s infinite;
+    transform-origin: bottom left;
+}
+
+@keyframes landing-marquee {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* peanut.me's wave, kept beat for beat so the two strips read as one family. */
+@keyframes thumbs-up {
+    35% {
+        transform: rotate(-15deg);
+    }
+
+    50% {
+        transform: rotate(9deg);
+    }
+
+    60% {
+        transform: rotate(-5deg);
+    }
+}
+
+.landing-room-examples {
+    padding: clamp(3.5rem, 7vw, 6rem) max(1.25rem, calc((100vw - 78rem) / 2));
+    border-bottom: 1.5px solid #211c17;
+    background: #faf4f0;
+}
+
+.landing-room-examples-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.landing-room-examples-copy {
+    min-width: 0;
+}
+
+.landing-room-examples ul {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.85rem;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.landing-room-examples li {
+    min-width: 0;
+}
+
+.landing-room-example-link {
+    display: flex;
+    width: 100%;
+    min-height: 8rem;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+    border: 1.5px solid #211c17;
+    border-radius: 0.75rem;
+    background: white;
+    box-shadow: 0.25rem 0.25rem 0 #211c17;
+    color: inherit;
+    text-decoration: none;
+    transform: rotate(-0.35deg);
+    transition: transform 170ms ease-out;
+}
+
+.landing-room-examples li:nth-child(2) .landing-room-example-link {
+    background: #fff4cc;
+    transform: rotate(0.45deg);
+}
+
+.landing-room-examples li:nth-child(3) .landing-room-example-link {
+    background: #fbeaea;
+    transform: rotate(-0.25deg);
+}
+
+.landing-room-examples li:nth-child(4) .landing-room-example-link {
+    background: #e9eefb;
+    transform: rotate(0.35deg);
+}
+
+.landing-room-examples b {
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.landing-room-examples small {
+    margin-top: 0.3rem;
+    color: #5f646d;
+    font-size: 0.75rem;
+    line-height: 1.35;
+}
+
+.final-cta-link {
+    transform: none;
+    transition: transform 170ms ease-out;
+}
+
+.final-cta-button {
+    pointer-events: none;
+}
+
+.pass-link-chat-link:active,
+.landing-proof-object-link:active,
+.landing-room-examples li .landing-room-example-link:active,
+.final-cta-link:active {
+    transform: translateY(0.1rem) rotate(0) scale(0.985);
+    transition-duration: 90ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .pass-link-chat-link:hover {
+        transform: translateY(-0.25rem) rotate(1deg);
+    }
+
+    .pass-link-chat-link:hover .pass-link-shared-footer > strong > span {
+        transform: translateX(0.18rem);
+    }
+
+    .landing-proof-object-link:hover {
+        transform: translateY(-0.3rem) rotate(var(--landing-link-hover-tilt, 0deg));
+    }
+
+    .landing-room-examples li .landing-room-example-link:hover {
+        transform: translateY(-0.25rem) rotate(0);
+    }
+
+    .final-cta-link:hover {
+        transform: translateY(-0.25rem) rotate(-0.2deg);
+    }
+}
+
+@media (max-width: 899px) {
+    .pass-link-hero {
+        min-height: 0;
+    }
+
+    .pass-link-hero-inner {
+        min-height: 0;
+        padding-inline: clamp(1rem, 5vw, 1.25rem);
+    }
+
+    .pass-link-layout {
+        display: grid;
+        grid-template-areas:
+            'copy'
+            'stage'
+            'form';
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto 18rem auto;
+        gap: 0.65rem;
+        align-content: start;
+        padding-block: 1.25rem;
+    }
+
+    .pass-link-copy {
+        align-self: start;
+    }
+
+    .pass-link-copy h1 {
+        max-width: 35rem;
+        font-size: clamp(1.375rem, 7vw, 2.5rem);
+    }
+
+    .pass-link-stage-shell,
+    .pass-link-stage {
+        min-height: 0;
+    }
+
+    .pass-link-form-wrap {
+        width: 100%;
+        align-self: end;
+        margin-top: 0;
+    }
+
+    .pass-link-chat-link {
+        inset: 0.35rem 0 0.2rem;
+        width: min(calc(100% - 2rem), 14.25rem);
+        margin-inline: auto;
+        border-radius: 0.8rem;
+    }
+
+    .pass-link-chat-frame {
+        border-width: 1.7px;
+        border-radius: 0.8rem;
+        box-shadow: 0.35rem 0.35rem 0 #211c17;
+        transform: rotate(-0.6deg);
+    }
+
+    .pass-link-chat-header {
+        min-height: 2.3rem;
+        gap: 0.28rem;
+        padding: 0.28rem 0.55rem;
+        border-bottom-width: 1.5px;
+    }
+
+    .pass-link-chat-group-mark {
+        width: 1.65rem;
+        border-width: 1px;
+    }
+
+    .pass-link-chat-group-mark svg {
+        width: 1.05rem;
+        height: 1.05rem;
+    }
+
+    .pass-link-chat-group-mark > i {
+        width: 0.42rem;
+        border-width: 1px;
+    }
+
+    .pass-link-chat-title strong {
+        font-size: clamp(0.58rem, 2.6vw, 0.75rem);
+    }
+
+    .pass-link-chat-title small {
+        margin-top: 0.05rem;
+        font-size: clamp(0.35rem, 1.35vw, 0.42rem);
+    }
+
+    .pass-link-avatar {
+        width: clamp(1.15rem, 5.4vw, 1.45rem);
+        margin-right: -0.3rem;
+        border-width: 1.25px;
+        font-size: clamp(0.26rem, 1.15vw, 0.34rem);
+    }
+
+    .pass-link-chat-body {
+        display: grid;
+        grid-template-areas:
+            'question'
+            'reply'
+            'card'
+            'joined';
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr auto;
+        gap: 0.22rem;
+        padding: 0.38rem 0.48rem 0.3rem;
+    }
+
+    .pass-link-message-row {
+        grid-area: question;
+        gap: 0.22rem;
+        margin: 0;
+    }
+
+    .pass-link-message-row-outgoing {
+        grid-area: reply;
+        justify-self: end;
+    }
+
+    .pass-link-mini-avatar {
+        width: 1.05rem;
+        border-width: 1.2px;
+        font-size: 0.28rem;
+    }
+
+    .pass-link-message-row small {
+        margin: 0 0 0.08rem 0.15rem;
+        font-size: clamp(0.3rem, 1.15vw, 0.36rem);
+    }
+
+    .pass-link-message {
+        padding: 0.3rem 0.42rem;
+        border-width: 1.25px;
+        border-radius: 0.45rem 0.45rem 0.45rem 0.16rem;
+        box-shadow: 0.12rem 0.12rem 0 #211c17;
+        font-size: clamp(0.43rem, 1.85vw, 0.54rem);
+    }
+
+    .pass-link-message-row-outgoing .pass-link-message {
+        border-radius: 0.45rem 0.45rem 0.16rem 0.45rem;
+    }
+
+    .pass-link-shared-wrap {
+        width: min(88%, 20rem);
+        grid-area: card;
+        align-self: center;
+        justify-self: center;
+        margin: 0;
+    }
+
+    .pass-link-shared-card {
+        border-width: 1.5px;
+        border-radius: 0.55rem 0.55rem 0.16rem;
+        box-shadow: 0.22rem 0.22rem 0 #211c17;
+    }
+
+    .pass-link-shared-card::before {
+        top: -1.75rem;
+        right: -1.45rem;
+        width: 4.25rem;
+        border-width: 1.25px;
+    }
+
+    .pass-link-share-mark {
+        top: 0.3rem;
+        right: 0.3rem;
+        width: 1.2rem;
+        border-width: 1.25px;
+        box-shadow: 0.07rem 0.07rem 0 #211c17;
+    }
+
+    .pass-link-share-mark svg {
+        width: 0.78rem;
+        height: 0.78rem;
+    }
+
+    .pass-link-shared-main {
+        gap: 0.12rem;
+        padding: 0.55rem 1.8rem 0.35rem 0.45rem;
+    }
+
+    .pass-link-shared-main > strong {
+        font-size: clamp(0.82rem, 4.2vw, 1.05rem);
+    }
+
+    .pass-link-shared-main > b {
+        font-size: clamp(0.28rem, 1.1vw, 0.35rem);
+    }
+
+    .pass-link-shared-footer {
+        min-height: 1.7rem;
+        gap: 0.3rem;
+        padding: 0.22rem 0.35rem;
+        border-top-width: 1.25px;
+    }
+
+    .pass-link-card-people .pass-link-avatar {
+        width: clamp(0.92rem, 4.3vw, 1.12rem);
+        font-size: clamp(0.2rem, 0.82vw, 0.27rem);
+    }
+
+    .pass-link-shared-footer > strong {
+        gap: 0.2rem;
+        font-size: clamp(0.32rem, 1.25vw, 0.4rem);
+    }
+
+    .pass-link-shared-footer > strong > span {
+        width: 1.05rem;
+        border-width: 1.2px;
+        box-shadow: 0.07rem 0.07rem 0 #211c17;
+    }
+
+    .pass-link-shared-footer > strong svg {
+        width: 0.65rem;
+        height: 0.65rem;
+    }
+
+    .pass-link-joined {
+        grid-area: joined;
+        gap: 0.2rem;
+        margin: 0;
+        font-size: clamp(0.28rem, 1.1vw, 0.35rem);
+        line-height: 1.1;
+    }
+
+    .pass-link-joined > span {
+        width: 0.8rem;
+        border-width: 1px;
+    }
+
+    .pass-link-joined svg {
+        width: 0.55rem;
+        height: 0.55rem;
+    }
+
+    .landing-proof-scene {
+        min-height: 0;
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+        padding: 3.25rem 1rem;
+    }
+
+    .landing-proof-copy h2,
+    .landing-room-examples-heading h2 {
+        font-size: clamp(2.5rem, 12vw, 4.25rem);
+    }
+
+    .landing-proof-object-link,
+    .landing-proof-link-card,
+    .landing-proof-expenses,
+    .landing-proof-plan {
+        width: 100%;
+        justify-self: stretch;
+    }
+
+    .landing-marquee-run li {
+        min-height: 3rem;
+        gap: 0.75rem;
+        padding: 0 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    .landing-marquee-run img {
+        width: 1.6rem;
+    }
+
+    .landing-room-examples {
+        padding: 3.25rem 1rem;
+    }
+
+    .landing-room-examples-heading {
+        display: block;
+    }
+
+    .landing-room-examples ul {
+        grid-template-columns: 1fr 1fr;
+        margin-top: 2rem;
+    }
+}
+
+/* Keep the proof card's demo URL whole at the narrowest supported phone width. */
+@media (max-width: 400px) {
+    .landing-proof-ticket b {
+        font-size: 0.625rem;
+    }
+}
+
+@media (max-width: 359px) {
+    .pass-link-hero-inner {
+        padding-inline: 1rem;
+    }
+
+    .pass-link-layout {
+        grid-template-rows: auto 18rem auto;
+        gap: 0.5rem;
+        padding-block: 1rem;
+    }
+
+    .pass-link-copy h1 {
+        font-size: 1.375rem;
+    }
+
+    .pass-link-form {
+        padding: 0.6rem;
+    }
+
+    .landing-proof-expenses li:nth-child(n) {
+        margin-inline: 0;
+    }
+
+    .landing-room-examples ul {
+        grid-template-columns: 1fr;
+    }
+}
+
+.reduce-animations .pass-link-message-row,
+.reduce-animations .pass-link-shared-wrap,
+.reduce-animations .pass-link-card-people .pass-link-avatar,
+.reduce-animations .pass-link-joined {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pass-link-message-row,
+    .pass-link-shared-wrap,
+    .pass-link-card-people .pass-link-avatar,
+    .pass-link-joined {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+    }
+}
+
+.reduce-animations .pass-link-chat-link,
+.reduce-animations .pass-link-shared-footer > strong > span,
+.reduce-animations .landing-proof-object-link,
+.reduce-animations .landing-room-example-link,
+.reduce-animations .final-cta-link {
+    transform: none !important;
+    transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pass-link-chat-link,
+    .pass-link-shared-footer > strong > span,
+    .landing-proof-object-link,
+    .landing-room-example-link,
+    .final-cta-link {
+        transform: none !important;
+        transition: none !important;
+    }
+}

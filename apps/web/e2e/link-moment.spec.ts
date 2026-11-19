@@ -1,0 +1,86 @@
+import { expect } from '@playwright/test'
+import { test } from './fixtures'
+import { enterCreatedRoom, openCurrentRoomSettings } from './helpers'
+
+const createRoom = async (page: import('@playwright/test').Page, name: string, friend?: string) => {
+    await page.goto('/new')
+    await page.getByTestId('room-name').fill(name)
+    await page.getByTestId('room-currency').selectOption('EUR')
+    await page.getByTestId('creator-name').fill('Ana')
+    if (friend) await page.getByTestId('room-person-name').first().fill(friend)
+    await page.getByTestId('create-room').click()
+    await enterCreatedRoom(page)
+}
+
+test('the created room contains every person drafted in setup', async ({ page }) => {
+    await createRoom(page, 'Roster trip', 'Bea')
+    await expect(page.getByTestId('roster-checkpoint')).toHaveCount(0)
+    await expect(page.getByTestId('room-share-card')).toHaveCount(0)
+    await openCurrentRoomSettings(page)
+    await expect(page.locator('[data-testid="person-row"][data-member="Ana"]')).toBeVisible()
+    await expect(page.locator('[data-testid="person-row"][data-member="Bea"]')).toBeVisible()
+})
+
+test('the in-room hand-off keeps copy inline and makes sharing the primary action', async ({ page }) => {
+    // Register before creation because the room warms its build-scoped preview on arrival.
+    const previewRequestPromise = page.waitForRequest((request) => request.url().includes('/opengraph-image'))
+    await createRoom(page, 'Beer trip')
+
+    await page.waitForURL(/\/r\/beer-trip-/)
+
+    const previewRequest = await previewRequestPromise
+    expect(previewRequest.method()).toBe('GET')
+    // The hash belongs to the build, never to this app: match the shape, never
+    // the value. Asserting the hashless path is what let the 404 ship.
+    expect(new URL(previewRequest.url()).pathname).toMatch(
+        /^\/r\/beer-trip-[A-Za-z0-9_-]{22}\/opengraph-image-[a-z0-9]+$/
+    )
+    expect(previewRequest.headers()).not.toHaveProperty('x-member-token')
+    expect((await previewRequest.response())?.status()).toBe(200)
+
+    await page.getByTestId('share-room').click()
+
+    const qr = page.getByTestId('room-qr')
+    await expect(qr).toBeVisible({ timeout: 15_000 })
+    await expect(qr).toHaveAccessibleName('QR code to join Beer trip')
+    await expect(qr).toContainText('Scan to join in person')
+    await expect(qr.locator('svg')).toHaveCount(1)
+
+    const row = page.getByTestId('room-link-row')
+    await expect(row).toBeVisible({ timeout: 15_000 })
+    await expect(row.getByTestId('room-link')).toContainText('/r/beer-trip-')
+    await expect(row.getByTestId('copy-link')).toBeVisible()
+    await expect(row.getByTestId('copy-link').locator('svg')).toHaveCount(1)
+
+    const share = page.getByTestId('share-link')
+    await expect(share).toBeVisible()
+    await expect(share).toHaveClass(/btn-primary/)
+    await expect(share).toHaveText('Share room link')
+
+    const [rowBox, copyBox] = await Promise.all([row.boundingBox(), row.getByTestId('copy-link').boundingBox()])
+    expect(rowBox).not.toBeNull()
+    expect(copyBox).not.toBeNull()
+    expect(copyBox!.x + copyBox!.width).toBeLessThanOrEqual(rowBox!.x + rowBox!.width + 1)
+    expect(copyBox!.y).toBeGreaterThanOrEqual(rowBox!.y)
+    expect(copyBox!.y + copyBox!.height).toBeLessThanOrEqual(rowBox!.y + rowBox!.height)
+
+    const [qrBox, cardBox] = await Promise.all([
+        qr.locator('svg').boundingBox(),
+        page.getByTestId('room-share-card').boundingBox(),
+    ])
+    expect(qrBox).not.toBeNull()
+    expect(cardBox).not.toBeNull()
+    expect(Math.abs(qrBox!.width - qrBox!.height)).toBeLessThan(1)
+    expect(qrBox!.width).toBeGreaterThanOrEqual(112)
+    expect(qrBox!.x).toBeGreaterThanOrEqual(cardBox!.x)
+    expect(qrBox!.x + qrBox!.width).toBeLessThanOrEqual(cardBox!.x + cardBox!.width)
+
+    // Desktop Chromium has no native share sheet. The primary action still does
+    // useful work there: it copies the link and the inline icon confirms it.
+    await page.context().grantPermissions(['clipboard-read', 'clipboard-write'], {
+        origin: new URL(page.url()).origin,
+    })
+    await page.evaluate(() => Object.defineProperty(navigator, 'share', { configurable: true, value: undefined }))
+    await share.click()
+    await expect(row.getByTestId('copy-link')).toHaveAccessibleName('Copied!')
+})

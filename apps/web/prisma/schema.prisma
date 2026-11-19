@@ -1,0 +1,401 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["split"]
+}
+
+// — models owned by core-domain agent
+// Money is BigInt minor units everywhere; a float never touches it.
+
+enum SplitMode {
+  EQUAL
+  EXACT
+  PERCENTAGE
+  SHARES
+
+  @@schema("split")
+}
+
+model Room {
+  id                          String           @id @default(uuid())
+  // "ski-trip-R7LxQ3TBJV_uQ2PMhzc8rw" — readable name + 128-bit capability.
+  // Earlier rooms keep their three-word or 6-character tails; nothing in the
+  // database lookup interprets tail shape, so every issued link remains valid.
+  slug                        String           @unique
+  name                        String
+  emoji                       String?
+  currency                    String // display/settle currency, ISO 4217
+  coverUrl                    String?
+  // A KEY into the code-side catalog in `lib/themes.ts`, never a colour. Null is
+  // the default palette, so a room written before themes existed and a room set
+  // back to default are the same row.
+  theme                       String?
+  // The language the room was STARTED in, and the only thing that can tell a
+  // link preview which language to unfurl in. A crawler fetching /r/<slug> for
+  // WhatsApp carries no cookie and no useful Accept-Language, so without this
+  // column the one screen a suspicious invitee sees before tapping is always
+  // English. Null means English and is what every room written before this
+  // existed holds; it is never inferred later, because the reader of a preview
+  // is not the room.
+  locale                      String?
+  // Immutable activation latch: the first expense that created a balance
+  // between different members. Deliberately not a relation, so deleting that
+  // expense cannot make a mature room look new again.
+  firstSharedBalanceExpenseId String?
+  createdAt                   DateTime         @default(now())
+  members                     Member[]
+  expenses                    Expense[]
+  settlements                 Settlement[]
+  auditEvents                 RoomAuditEvent[]
+  importBatches               ImportBatch[]
+  feedbackReports             FeedbackReport[]
+  installHandoffs             InstallHandoff[]
+
+  pushSubscriptions PushSubscription[]
+  notificationSends NotificationSend[]
+
+  @@schema("split")
+}
+
+/// A private support report created only after the person sending it reviews
+/// and consents to every attachment. It is intentionally not part of RoomState,
+/// the room audit log, or any readable room relation exposed by an API route.
+/// `roomSnapshot` is a bounded, secret-free server projection captured at send
+/// time; `diagnostics` is the allowlisted browser projection shown in the form.
+model FeedbackReport {
+  id                   String   @id @default(uuid())
+  roomId               String
+  message              String
+  diagnostics          Json?
+  roomSnapshot         Json?
+  screenshot           Bytes?
+  screenshotMimeType   String?
+  screenshotByteLength Int?
+  screenshotWidth      Int?
+  screenshotHeight     Int?
+  createdAt            DateTime @default(now())
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, createdAt])
+  @@index([createdAt])
+  @@schema("split")
+}
+
+/// The room's append-only account of successful state changes. Event payloads
+/// are snapshots, not joins to mutable rows, so a later rename or removal cannot
+/// rewrite what an older event said. The database trigger in the migration
+/// refuses UPDATE and DELETE even if application code regresses.
+model RoomAuditEvent {
+  // Monotonic per database, so room-lock commit order remains readable even
+  // when PostgreSQL transaction timestamps tie or reflect time spent waiting.
+  id              BigInt   @id @default(autoincrement())
+  roomId          String
+  action          String
+  subjectType     String?
+  subjectId       String?
+  actorDeviceHash String? // SHA-256(roomId + device cookie); the raw cookie is never stored
+  deviceOrdinal   Int? // first device seen in this room is 1 ("Device A")
+  actorMemberId   String?
+  actorMemberName String? // immutable display snapshot
+  before          Json?
+  after           Json?
+  detail          Json?
+  createdAt       DateTime @default(now())
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Restrict)
+
+  @@index([roomId, id])
+  @@index([roomId, actorDeviceHash])
+  @@schema("split")
+}
+
+model Member {
+  id            String    @id @default(uuid())
+  roomId        String
+  name          String
+  token         String    @unique // stable server-issued secret, returned when a device selects this member
+  // A KEY into the code-side catalog in `lib/avatars.ts`, never artwork and never
+  // a URL. Null is the persona derived from the name, so a member written before
+  // the picker existed and a member who never opened it are the same row.
+  // Like the roster itself, this is shared table banter: any room link-holder
+  // may cast any room member, but only with an allowlisted key.
+  avatar        String?
+  // A KEY into the curated color pairs in `lib/avatar-palettes.ts`. Nullable
+  // only for rolling deploys and rows written before multicolour avatars; new
+  // writes always choose a concrete allowlisted key.
+  avatarPalette String?
+  userId        String? // future account-linking hook
+  // Creation provenance only: true for a name staged while adding an expense.
+  // It is not removal eligibility and selecting the name does not change it.
+  provisional   Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  removedAt     DateTime? // non-null = Former for future activity; ledger identity remains durable
+  room          Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user          User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  paidExpenses       Expense[]         @relation("ExpensePaidBy")
+  createdExpenses    Expense[]         @relation("ExpenseCreatedBy")
+  shares             ExpenseShare[]
+  reactions          ExpenseReaction[]
+  settlementsFrom    Settlement[]      @relation("SettlementFrom")
+  settlementsTo      Settlement[]      @relation("SettlementTo")
+  createdSettlements Settlement[]      @relation("SettlementCreatedBy")
+
+  pushSubscriptions PushSubscription[]
+  installHandoffs   InstallHandoff[]
+
+  @@index([roomId])
+  @@schema("split")
+}
+
+/// A one-time bridge from an iOS browser tab into the isolated Home Screen app.
+///
+/// WebKit copies cookies at installation but not localStorage. The browser holds
+/// an opaque cookie; only its SHA-256 digest reaches this table, and the row is
+/// short-lived. Deliberately no device id or user relation: one explicit install
+/// intent restores one room, without becoming an anonymous cross-room account.
+model InstallHandoff {
+  tokenHash       String   @id @db.Char(64)
+  roomId          String
+  memberId        String?
+  memberTokenHash String?  @db.Char(64)
+  createdAt       DateTime @default(now())
+  expiresAt       DateTime
+
+  room   Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  member Member? @relation(fields: [memberId], references: [id], onDelete: SetNull)
+
+  @@index([roomId])
+  @@index([expiresAt])
+  @@schema("split")
+}
+
+model Expense {
+  id          String @id @default(uuid())
+  roomId      String
+  description String
+  amountMinor BigInt // in `currency`
+  currency    String // may differ from the room currency
+
+  // Room-currency total and the rate used, frozen at write time so balances never
+  // depend on a live FX feed. Always equals the sum of the shares below.
+  baseAmountMinor BigInt
+  fxRate          Decimal @db.Decimal(24, 12)
+
+  paidById    String
+  createdById String? // attribution from X-Member-Token — never authorization
+  splitMode   SplitMode
+  date        DateTime  @default(now())
+  category    String?
+  createdAt   DateTime  @default(now())
+  deletedAt   DateTime? // soft delete → 6s Undo
+
+  // Null for ordinary expenses and rooms created before append-imports. Imported
+  // rows retain both their immutable batch provenance and their position in the
+  // validated source payload. The compound unique key makes the row timestamp
+  // sequence an ordering aid rather than an identity mechanism.
+  importBatchId  String?
+  importRowIndex Int?
+
+  room        Room              @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  importBatch ImportBatch?      @relation(fields: [importBatchId], references: [id], onDelete: Restrict)
+  paidBy      Member            @relation("ExpensePaidBy", fields: [paidById], references: [id], onDelete: Cascade)
+  createdBy   Member?           @relation("ExpenseCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  shares      ExpenseShare[]
+  reactions   ExpenseReaction[]
+
+  @@unique([importBatchId, importRowIndex])
+  @@index([roomId])
+  @@schema("split")
+}
+
+/// One atomic parsed-source import, whether it created the room or appended to
+/// an existing one. `addedMemberCount` is the number of roster rows that the
+/// write created: the full initial roster for a global import, or only new
+/// mappings for an append.
+///
+/// `fingerprint` is the legacy canonical parsed-ledger identity retained for
+/// old clients and batches. `sourceFingerprint` is the stable identity of the
+/// immutable local export plus its selected raw-file choice; parser upgrades
+/// and UI renames therefore cannot turn a replay into a second ledger write.
+model ImportBatch {
+  id                String   @id @default(uuid())
+  roomId            String
+  fingerprint       String
+  sourceFingerprint String?
+  importedAt        DateTime @db.Timestamp(3)
+  expenseCount      Int
+  addedMemberCount  Int
+
+  room     Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  expenses Expense[]
+
+  @@unique([roomId, fingerprint])
+  @@unique([roomId, sourceFingerprint])
+  @@index([roomId, importedAt])
+  @@schema("split")
+}
+
+/// One person's one emoji on one expense.
+///
+/// Unlike an expense — which anybody holding the link can write, because
+/// impersonation inside a room is visible and fixable — a reaction is social
+/// identity. "María laughed" has to be really María, so the write demands the
+/// server-issued member token, the same proof push subscriptions demand.
+///
+/// `emoji` is validated against the six-strong allowlist in `lib/reactions.ts`,
+/// never against Unicode. The unique key is what makes a repeated tap idempotent
+/// rather than a second row.
+model ExpenseReaction {
+  id        String   @id @default(uuid())
+  expenseId String
+  memberId  String
+  emoji     String
+  createdAt DateTime @default(now())
+
+  expense Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  member  Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([expenseId, memberId, emoji])
+  @@index([expenseId])
+  @@schema("split")
+}
+
+model ExpenseShare {
+  id                 String  @id @default(uuid())
+  expenseId          String
+  memberId           String
+  amountMinor        BigInt // ALWAYS in room currency (post-FX)
+  enteredAmountMinor BigInt? // EXACT mode: verbatim in expense currency — no-drift re-save
+  splitWeight        BigInt? // PERCENTAGE: basis points; SHARES: relative integer weight
+
+  expense Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  member  Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([expenseId, memberId])
+  @@index([expenseId])
+  @@schema("split")
+}
+
+model Settlement {
+  id          String    @id @default(uuid())
+  roomId      String
+  fromId      String
+  toId        String
+  createdById String? // attribution only
+  amountMinor BigInt // room currency
+  method      String? // "cash" | "bank" | "peanut" | null
+  note        String?
+  receiptUrl  String? // pasted documentation only; never fetched or verified
+  createdAt   DateTime  @default(now())
+  deletedAt   DateTime?
+
+  room      Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  from      Member  @relation("SettlementFrom", fields: [fromId], references: [id], onDelete: Cascade)
+  to        Member  @relation("SettlementTo", fields: [toId], references: [id], onDelete: Cascade)
+  createdBy Member? @relation("SettlementCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([roomId])
+  @@schema("split")
+}
+
+/// Cached indicative rates: direct base-units per quote, isolated by destination base.
+model FxRate {
+  id        String   @id @default(uuid())
+  base      String
+  quote     String
+  rate      Decimal  @db.Decimal(24, 12) // units of `base` per 1 unit of `quote`
+  fetchedAt DateTime @default(now())
+
+  @@unique([base, quote])
+  @@schema("split")
+}
+
+// — web push
+// A room member opts a device in, and that device gets a notification when
+// somebody ELSE in the room writes. No accounts exist here, so the identity a
+// subscription carries is the per-room member it was registered as.
+
+/// One delivery channel: this browser, acting as this member, in this room.
+///
+/// The key is (endpoint, roomId), not endpoint alone. A browser has exactly one
+/// push endpoint, so a phone that joins two rooms would collide on a globally
+/// unique endpoint and the second room would silently steal the first room's
+/// channel. Scoping the uniqueness to the room lets one device hold a channel
+/// per room, while a re-subscribe in the same room still updates in place
+/// instead of piling up rows (the keys rotate whenever the browser feels like
+/// it, so the row must be upserted, never appended).
+model PushSubscription {
+  id         String   @id @default(uuid())
+  roomId     String
+  memberId   String
+  endpoint   String // push-service URL; the host is allowlisted at write time
+  p256dh     String
+  auth       String
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([endpoint, roomId])
+  @@index([roomId])
+  @@index([memberId])
+  @@schema("split")
+}
+
+/// The idempotency ledger. A row IS the claim on a notification: inserting it is
+/// what buys the right to send, and the unique `dedupeKey` is what stops a retry
+/// (or two containers racing on the same write) from buzzing everyone twice.
+///
+/// `dedupeKey` is `roomId:template:eventId` for per-event templates and
+/// `roomId:template:dayKey` for the once-a-day ones. `dayKey` stays a column
+/// either way so the per-room daily throttle can count without parsing keys.
+model NotificationSend {
+  id             String   @id @default(uuid())
+  roomId         String
+  template       String
+  dayKey         String // UTC yyyy-mm-dd
+  dedupeKey      String   @unique
+  status         String // claimed | sent | failed
+  errorCode      String?
+  openedCount    Int      @default(0)
+  dismissedCount Int      @default(0)
+  createdAt      DateTime @default(now())
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, template, dayKey])
+  @@schema("split")
+}
+
+// Dormant claim hooks. Split ships without account endpoints or login; these
+// original schema hooks remain so a future identity decision does not require
+// rewriting member history.
+
+model User {
+  id        String        @id @default(uuid())
+  createdAt DateTime      @default(now())
+  accounts  AuthAccount[]
+  members   Member[]
+
+  @@schema("split")
+}
+
+model AuthAccount {
+  id         String   @id @default(uuid())
+  userId     String
+  provider   String
+  providerId String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerId])
+  @@schema("split")
+}

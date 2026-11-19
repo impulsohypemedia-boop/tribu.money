@@ -1,0 +1,129 @@
+version = 1
+SPDX-PackageName = "Peanut Split"
+SPDX-PackageSupplier = "Squirrel Labs Ltd"
+SPDX-PackageDownloadLocation = "https://github.com/peanutprotocol/peanutsplit"
+
+# Peanut Split is mixed-origin. One blanket license would misdescribe it, so the corpora below are
+# annotated separately. Squirrel Labs Ltd is the granting entity for everything it authored; the
+# remaining entries record third-party terms that travel with the files and cannot be overridden
+# here. See docs/current/RIGHTS-REGISTER.md for the evidence behind each block.
+
+# ---------------------------------------------------------------------------
+# Squirrel Labs Ltd work
+# ---------------------------------------------------------------------------
+
+# Application code, migrations, tests, build and run configuration, scripts.
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Squirrel Labs Ltd"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+# Documentation and authored product content. Prose is not a program: CC-BY-4.0 lets people quote,
+# translate and republish the guides without dragging a copyleft program license across an article.
+[[annotations]]
+path = [
+  "docs/**",
+  "README.md",
+  "CONTRIBUTING.md",
+  "MAINTAINERS.md",
+  "ROADMAP.md",
+  "SECURITY.md",
+  "STEWARDSHIP.md",
+  "TRADEMARKS.md",
+  "THIRD_PARTY_NOTICES.md",
+  "apps/web/src/content/**",
+  "apps/web/src/generated/seo/**",
+  "apps/web/src/i18n/messages/**",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "Squirrel Labs Ltd"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# Artwork. The copyright grant is open; the marks themselves are not — see TRADEMARKS.md. A fork may
+# copy, modify and redistribute these files, and may not use them to imply it is Peanut or Split.
+[[annotations]]
+path = [
+  "apps/web/src/assets/mascot/**",
+  "apps/web/src/assets/logos/**",
+  "apps/web/src/assets/bg/**",
+  "apps/web/src/assets/illustrations/**",
+  "apps/web/public/icons/**",
+  "apps/web/public/press/**",
+  "apps/web/public/doodles/**",
+  "apps/web/public/og-default.png",
+  "apps/web/public/icon.png",
+  "apps/web/public/favicon.ico",
+  "design/**",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "Squirrel Labs Ltd"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# ---------------------------------------------------------------------------
+# Third-party material — these terms come with the files
+# ---------------------------------------------------------------------------
+
+[[annotations]]
+path = "apps/web/public/install/**"
+precedence = "override"
+SPDX-FileCopyrightText = ["2026 Lucide Icons and Contributors", "2013-present Cole Bemis"]
+SPDX-License-Identifier = "ISC AND MIT"
+
+# 300 expense-subject geometries traced from Lucide, part of which Lucide itself derives from
+# Feather. Both notices must travel with any distribution that includes them.
+[[annotations]]
+path = "design/doodles/parts/14-expense-subjects.json"
+precedence = "override"
+SPDX-FileCopyrightText = [
+  "Lucide Contributors",
+  "2013-2017 Cole Bemis",
+]
+SPDX-License-Identifier = "ISC AND MIT"
+
+# The generated doodle module aggregates Squirrel Labs drawings with the Lucide-derived geometries
+# above, so it carries all three licenses at once. Regenerate with design/doodles/build.py.
+[[annotations]]
+path = "apps/web/src/components/ui/doodles.ts"
+precedence = "override"
+SPDX-FileCopyrightText = [
+  "Squirrel Labs Ltd",
+  "Lucide Contributors",
+  "2013-2017 Cole Bemis",
+]
+SPDX-License-Identifier = "AGPL-3.0-or-later AND ISC AND MIT"
+
+# Sniglet, with no Reserved Font Name. Copyright strings are read from the fonts' own name tables.
+[[annotations]]
+path = [
+  "apps/web/public/fonts/sniglet-regular.ttf",
+  "apps/web/public/fonts/sniglet-extrabold.ttf",
+]
+precedence = "override"
+SPDX-FileCopyrightText = [
+  "2008 Haley Fiege <haley@kingdomofawesome.com>",
+  "2012 Brenda Gallo <gbrenda1987@gmail.com>",
+  "2013 Pablo Impallari <impallari@gmail.com>",
+]
+SPDX-License-Identifier = "OFL-1.1-no-RFN"
+
+# Gluten, the hero display face, under the OFL with no Reserved Font Name. Only the three
+# unicode-range subsets the browser needs are committed; the Open Graph renderer reads its own copy
+# out of the pinned @fontsource/gluten package. It replaced the proprietary Knerd, which could not
+# be redistributed once this repository went public.
+[[annotations]]
+path = "apps/web/public/fonts/gluten-*.woff2"
+precedence = "override"
+SPDX-FileCopyrightText = "2020 The Gluten Project Authors (https://github.com/Etcetera-Type-Co/Gluten)"
+SPDX-License-Identifier = "OFL-1.1-no-RFN"
+
+# Build output and lockfiles carry no separate grant of their own.
+[[annotations]]
+path = [
+  "pnpm-lock.yaml",
+  "apps/web/pnpm-lock.yaml",
+  "apps/web/public/sw.js",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "Squirrel Labs Ltd and the authors of the bundled dependencies"
+SPDX-License-Identifier = "AGPL-3.0-or-later AND LicenseRef-Bundled-Dependencies"

@@ -1,0 +1,38 @@
+{
+  "name": "peanut-split",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "packageManager": "pnpm@10.17.1",
+  "scripts": {
+    "bootstrap": "pnpm install && cd apps/web && pnpm install --ignore-workspace && pnpm exec prisma generate",
+    "dev": "pnpm --filter @peanut-split/api dev & pnpm --dir apps/web dev",
+    "dev:api": "pnpm --filter @peanut-split/api dev",
+    "dev:web": "pnpm --dir apps/web dev",
+    "build": "pnpm --filter @peanut-split/api build && pnpm --dir apps/web build",
+    "typecheck": "pnpm --filter @peanut-split/api typecheck && pnpm --dir apps/web typecheck",
+    "test": "pnpm docs:check && pnpm licenses:check && pnpm --filter @peanut-split/api test && pnpm --dir apps/web test",
+    "docs:generate": "node scripts/generate-reference-docs.mjs",
+    "docs:check": "node scripts/generate-reference-docs.mjs --check",
+    "licenses:generate": "node scripts/generate-third-party-licenses.mjs",
+    "licenses:check": "node scripts/generate-third-party-licenses.mjs --check",
+    "i18n:audit": "pnpm --dir apps/web run i18n:audit",
+    "marketing-copy:audit": "pnpm --dir apps/web run marketing-copy:audit",
+    "marketing-copy:audit:all": "pnpm --dir apps/web run marketing-copy:audit:all",
+    "ui-icons:audit": "pnpm --dir apps/web run ui-icons:audit",
+    "classes:audit": "pnpm --dir apps/web run classes:audit",
+    "format": "prettier --write . && pnpm --dir apps/web format",
+    "format:check": "prettier --check . && pnpm --dir apps/web lint",
+    "verify": "pnpm typecheck && pnpm i18n:audit && pnpm marketing-copy:audit && pnpm ui-icons:audit && pnpm test && pnpm --filter @peanut-split/api test:integration && pnpm --filter @peanut-split/api verify:settle"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.9",
+    "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "effect@<3.20.0": "^3.22.2",
+      "deepmerge-ts@<8.0.0": "^8.0.2"
+    }
+  }
+}

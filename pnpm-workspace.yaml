@@ -1,0 +1,5 @@
+packages:
+  - 'apps/api'
+# apps/web is not a workspace member yet: it arrived from the rework repo with
+# its own lockfile, and folding it in is part of the merge that also collapses
+# it onto apps/api. Until then it builds standalone from its own directory.

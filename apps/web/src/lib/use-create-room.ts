@@ -1,0 +1,88 @@
+'use client'
+
+import { useRef, useState } from 'react'
+import { roomProps, track } from '@/lib/analytics'
+import { useErrorMessage } from '@/lib/error-messages'
+import { trackRoomCreatedConversion } from '@/lib/google-ads'
+import { writeIdentity } from '@/lib/identity'
+import { markRoomCreatedHere } from '@/lib/install-funnel'
+import { useCreateRoom } from '@/lib/queries'
+import { rememberRoom } from '@/lib/recent-rooms'
+import { normalizePersonName } from '@/lib/person-name'
+import { useFeedback } from '@/lib/use-settings'
+import { trackXRoomCreatedConversion } from '@/lib/x-ads'
+
+export interface CreateRoomFields {
+    name: string
+    emoji: string
+    currency: string
+    creatorName: string
+    memberNames?: string[]
+    /** The template link this came from, if any. A fact about the page, never about the room. */
+    template?: string
+}
+
+/**
+ * Creating a room, once, for both surfaces that can do it: `/new` and the landing hero.
+ *
+ * The write-identity step is why this is shared rather than copied. The member token comes
+ * back from the server exactly once and is never re-issued — a second implementation that
+ * forgot to store it, or stored it after something that can throw, would silently cost that
+ * device its attribution in the room forever.
+ */
+export function useCreateRoomFlow(fallbackMessage: string) {
+    const createRoom = useCreateRoom()
+    const errorMessage = useErrorMessage()
+    const feedback = useFeedback()
+    const [error, setError] = useState<string | null>(null)
+    const submittingRef = useRef(false)
+
+    const submit = async (fields: CreateRoomFields) => {
+        if (submittingRef.current) return null
+        submittingRef.current = true
+        setError(null)
+        try {
+            const state = await createRoom.mutateAsync({
+                name: fields.name.trim(),
+                emoji: fields.emoji,
+                currency: fields.currency,
+                creatorName: fields.creatorName.trim(),
+                memberNames: fields.memberNames?.map(normalizePersonName).filter(Boolean),
+            })
+            // The token is returned exactly once — store it before anything else
+            // can throw, or this device permanently loses its attribution.
+            writeIdentity(state.room.slug, {
+                memberId: state.memberId,
+                token: state.memberToken,
+                name: fields.creatorName.trim(),
+            })
+            markRoomCreatedHere(state.room.slug)
+            rememberRoom({ slug: state.room.slug, name: state.room.name, emoji: state.room.emoji ?? undefined })
+            // No preview warm from here. The room's card lives at a URL only Next
+            // knows and only the room document advertises — and this runs on `/new`
+            // or the landing hero, whose head is still describing that page. The
+            // warm happens where the room itself renders; see `room-preview.ts`.
+            track(
+                'room_created',
+                roomProps(state.room.slug, {
+                    currency: state.room.currency,
+                    ...(fields.template ? { template: fields.template } : {}),
+                })
+            )
+            // The campaigns' conversion, from the one place both surfaces create a room. It
+            // carries nothing about the room, and is silent anywhere the tags are not mounted.
+            trackRoomCreatedConversion()
+            trackXRoomCreatedConversion()
+            // A room came into being — the cork, not the pencil.
+            feedback('pop')
+            return state
+        } catch (err) {
+            setError(errorMessage(err, fallbackMessage))
+            return null
+        } finally {
+            submittingRef.current = false
+        }
+    }
+
+    return { submit, error, pending: createRoom.isPending }
+}

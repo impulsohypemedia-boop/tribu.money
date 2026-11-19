@@ -1,0 +1,52 @@
+services:
+    db:
+        image: postgres:16-alpine
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: split
+            POSTGRES_PASSWORD: split
+            POSTGRES_DB: split
+        ports:
+            - '5433:5432'
+        volumes:
+            - split-pgdata:/var/lib/postgresql/data
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U split -d split']
+            interval: 5s
+            timeout: 5s
+            retries: 10
+
+    app:
+        build:
+            context: .
+            args:
+                NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-http://localhost:3000}
+                NEXT_PUBLIC_SPLIT_V2_ENABLED: ${NEXT_PUBLIC_SPLIT_V2_ENABLED:-}
+                NEXT_PUBLIC_FOSS_RELEASED: ${NEXT_PUBLIC_FOSS_RELEASED:-}
+                NEXT_PUBLIC_BUILD_COMMIT: ${NEXT_PUBLIC_BUILD_COMMIT:-}
+        restart: unless-stopped
+        depends_on:
+            db:
+                condition: service_healthy
+        environment:
+            DATABASE_URL: postgresql://split:split@db:5432/split
+            # Fork-safe defaults: do not claim the official site's indexed guides or call its FX
+            # service unless an operator makes those choices explicitly.
+            SEO_INDEXABLE: ${SEO_INDEXABLE:-false}
+            SPLIT_FX_MODE: ${SPLIT_FX_MODE:-static}
+            SPLIT_FX_ENDPOINT: ${SPLIT_FX_ENDPOINT:-}
+            NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-http://localhost:3000}
+            NEXT_PUBLIC_POSTHOG_KEY: ${NEXT_PUBLIC_POSTHOG_KEY:-}
+            NEXT_PUBLIC_POSTHOG_HOST: ${NEXT_PUBLIC_POSTHOG_HOST:-https://eu.i.posthog.com}
+            SENTRY_DSN: ${SENTRY_DSN:-}
+            SPLIT_OPENROUTER_API_KEY: ${SPLIT_OPENROUTER_API_KEY:-}
+            SPLIT_SCAN_MODEL: ${SPLIT_SCAN_MODEL:-}
+            SPLIT_GEMINI_API_KEY: ${SPLIT_GEMINI_API_KEY:-}
+            SPLIT_GEMINI_PAID_TIER_CONFIRMED: ${SPLIT_GEMINI_PAID_TIER_CONFIRMED:-}
+            SPLIT_GEMINI_MODEL: ${SPLIT_GEMINI_MODEL:-}
+            SPLIT_SCAN_PROXY_URL: ${SPLIT_SCAN_PROXY_URL:-}
+        ports:
+            - '3000:3000'
+
+volumes:
+    split-pgdata:

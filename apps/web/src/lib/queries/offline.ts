@@ -1,0 +1,87 @@
+'use client'
+
+import { useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import {
+    PENDING_ITEM_PREFIX,
+    PENDING_KEY,
+    parseQueue,
+    refreshQueueSnapshot,
+    requestDrain,
+    setQueuePerformer,
+    useQueueNotices,
+    type QueuedWrite,
+} from '../offline-queue'
+import { api } from '../api'
+import { readIdentity } from '../identity'
+import { rememberExpenseCurrency } from '../expense-currencies'
+import { roomKey, roomStateResult, seedRoomState } from './core'
+import { trackExpenseSaved } from '../analytics'
+
+/**
+ * Which rooms lost queued records in another tab.
+ *
+ * `null` means storage was cleared wholesale, so every active room must refresh.
+ */
+export function removedQueueSlugs(event: Pick<StorageEvent, 'key' | 'oldValue' | 'newValue'>): string[] | null {
+    if (event.key === null) return null
+
+    const removed = (() => {
+        if (event.key.startsWith(PENDING_ITEM_PREFIX)) {
+            return event.newValue === null && event.oldValue !== null ? parseQueue(`[${event.oldValue}]`) : []
+        }
+        if (event.key === PENDING_KEY) {
+            const remaining = new Set(parseQueue(event.newValue).map((item) => item.clientKey))
+            return parseQueue(event.oldValue).filter((item) => !remaining.has(item.clientKey))
+        }
+        return []
+    })()
+
+    return [...new Set(removed.map((item) => item.slug))]
+}
+
+/** Record a queued expense only after its server write succeeds. */
+export async function replayQueuedExpense(item: QueuedWrite) {
+    const identity = readIdentity(item.slug)
+    const memberId = identity && (identity.token ?? null) === item.token ? identity.memberId : undefined
+    const state = await api.replayWrite(item)
+    await trackExpenseSaved(item.slug, { ...item.body, clientKey: item.clientKey }, state)
+    rememberExpenseCurrency(item.slug, memberId, item.body.currency)
+    return roomStateResult(state)
+}
+
+/** Configure and drain the device-local offline write queue. */
+export function useOfflineQueueRunner(): void {
+    const queryClient = useQueryClient()
+    useQueueNotices()
+
+    useEffect(() => {
+        setQueuePerformer(async (item) => {
+            const state = await replayQueuedExpense(item)
+            seedRoomState(queryClient, item.slug, state)
+        })
+
+        requestDrain()
+        const onStorage = (event: StorageEvent) => {
+            if (event.key === null || event.key === PENDING_KEY || event.key.startsWith(PENDING_ITEM_PREFIX)) {
+                const removedSlugs = removedQueueSlugs(event)
+                refreshQueueSnapshot()
+                requestDrain()
+                if (removedSlugs === null) {
+                    void queryClient.refetchQueries({ queryKey: ['room'], type: 'active' })
+                } else {
+                    for (const slug of removedSlugs) {
+                        void queryClient.refetchQueries({ queryKey: roomKey(slug) })
+                    }
+                }
+            }
+        }
+        window.addEventListener('storage', onStorage)
+        window.addEventListener('online', requestDrain)
+        return () => {
+            window.removeEventListener('storage', onStorage)
+            window.removeEventListener('online', requestDrain)
+            setQueuePerformer(null)
+        }
+    }, [queryClient])
+}

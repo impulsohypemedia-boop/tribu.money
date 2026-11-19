@@ -1,0 +1,85 @@
+import type { ReactNode } from 'react'
+import { getTranslations } from 'next-intl/server'
+import { ChapterFrame } from './ChapterFrame'
+import { ContentAnalytics } from './ContentAnalytics'
+import { JsonLd } from './JsonLd'
+import { Breadcrumbs } from './Breadcrumbs'
+import { SiteFooter } from './SiteFooter'
+import { LanguageLinks } from './LanguageLinks'
+import { howToSchema } from '@/lib/howto-schema'
+import { absoluteUrl, articleSchema, breadcrumbSchema, faqSchema, formatDate, type Breadcrumb } from '@/lib/seo'
+import type { Locale } from '@/i18n/locales'
+import { basePathFor, type Doc } from '@/lib/content'
+import { pageChapterOrNull, pageRegisterOrNull, pageSkinOrNull } from '@/lib/split-content/recipe'
+import { hashSlug } from '@/lib/split-content/seed'
+
+/**
+ * The frame every content page shares: structured data, a visible trail, the body, the footer.
+ * Routes hand it a doc and a crumb trail and nothing else — a route that wants a different head
+ * has an article problem, not a layout problem.
+ *
+ * `crumbs` is used twice on purpose (rendered + BreadcrumbList) so the two can't disagree.
+ */
+export async function ArticleLayout({
+    doc,
+    crumbs,
+    /** Locales this article exists in. Anything but the current one becomes a link. */
+    translations = [],
+    children,
+}: {
+    doc: Doc
+    crumbs: Breadcrumb[]
+    translations?: Locale[]
+    children: ReactNode
+}) {
+    const { frontmatter } = doc
+    const t = await getTranslations({ locale: doc.locale, namespace: 'content' })
+    const chapter = pageChapterOrNull(doc.collection, doc.slug, frontmatter.tags ?? [], doc.locale)
+    // Flat-register pages resolve a chapter (for analytics) but never get ChapterFrame — see
+    // pageRegisterOrNull's docstring.
+    const register = pageRegisterOrNull(doc.collection, doc.slug, frontmatter.tags ?? [], doc.locale)
+    const skin = pageSkinOrNull(doc.collection, doc.slug, frontmatter.tags ?? [], doc.locale)
+
+    const articleBody = (
+        <>
+            {children}
+            {frontmatter.date && (
+                <div className="mx-auto w-full max-w-xl px-5 pt-4">
+                    <time dateTime={frontmatter.date} className="block text-xs text-grey-1">
+                        {t('published', { date: formatDate(frontmatter.date, doc.locale) })}
+                        {frontmatter.updated && frontmatter.updated !== frontmatter.date
+                            ? ` · ${t('updated', { date: formatDate(frontmatter.updated, doc.locale) })}`
+                            : ''}
+                    </time>
+                </div>
+            )}
+        </>
+    )
+
+    return (
+        <main className="flex min-h-dvh flex-col bg-background">
+            {chapter && <ContentAnalytics template={doc.collection} chapter={chapter} source={doc.slug} />}
+            <JsonLd data={articleSchema(doc)} />
+            <JsonLd data={breadcrumbSchema(crumbs)} />
+            <JsonLd data={faqSchema(frontmatter.faqs)} />
+            <JsonLd data={howToSchema(frontmatter.title, absoluteUrl(frontmatter.canonical ?? doc.href), doc.body)} />
+
+            <Breadcrumbs crumbs={crumbs} />
+            <article className="pb-4">
+                {chapter && register !== 'flat' ? (
+                    <ChapterFrame chapter={chapter} skin={skin ?? 'none'} seed={hashSlug(doc.slug)}>
+                        {articleBody}
+                    </ChapterFrame>
+                ) : (
+                    articleBody
+                )}
+            </article>
+
+            <LanguageLinks path={basePathFor(doc.collection, doc.slug)} current={doc.locale} available={translations} />
+
+            <SiteFooter showLocaleSwitcher={false} />
+        </main>
+    )
+}
+
+export default ArticleLayout

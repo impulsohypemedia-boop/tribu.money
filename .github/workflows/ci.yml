@@ -1,0 +1,265 @@
+# CI exists because a push to `main` is in production in about five minutes with
+# nothing else in front of it. It does NOT block the deploy — Dokploy polls git,
+# not this workflow — so treat a red run as "roll forward now", not as "it was
+# caught in time".
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      expected_head_sha:
+        description: Exact artifact commit this run must validate
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      # apps/api and apps/web use separate PostgreSQL schemas in this database.
+      DATABASE_URL: postgresql://peanut:peanut@localhost:5432/peanut_split_dev
+      TEST_DATABASE_URL: postgresql://peanut:peanut@localhost:5432/peanut_split_dev
+      # Generated Split guides render but stay noindex until a human reviews them live.
+      SEO_INDEXABLE: 'false'
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: peanut
+          POSTGRES_PASSWORD: peanut
+          POSTGRES_DB: peanut_split_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U peanut"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - name: Bind a dispatched run to one exact commit
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        env:
+          ACTUAL_HEAD_SHA: ${{ github.sha }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        run: |
+          set -euo pipefail
+          if [[ ! "${EXPECTED_HEAD_SHA}" =~ ^[0-9a-f]{40}$ ]]; then
+            echo '::error::expected_head_sha must be a lowercase 40-character Git SHA.'
+            exit 1
+          fi
+          if [[ "${ACTUAL_HEAD_SHA}" != "${EXPECTED_HEAD_SHA}" ]]; then
+            echo "::error::Dispatched ref resolved to ${ACTUAL_HEAD_SHA}, not ${EXPECTED_HEAD_SHA}."
+            exit 1
+          fi
+
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+
+      # corepack rather than a pinned action: the two apps declare
+      # different pnpm versions in their own package.json, and corepack
+      # honours whichever directory it is invoked from — the same way the
+      # Docker builds resolve it. Pinning one version here breaks the other.
+      - run: corepack enable
+
+      # `pnpm bootstrap`, not `pnpm install`: apps/web is not a workspace
+      # member, and a plain install inside it resolves the workspace
+      # instead, leaving it with no node_modules. (`setup` is a reserved
+      # pnpm command, hence the name.)
+      - run: pnpm bootstrap
+
+      - run: pnpm typecheck
+
+      # Current schema and HTTP inventories are generated from the live web source.
+      - run: pnpm docs:check
+
+      # The gate CLAUDE.md sends every contributor to — enforced here so
+      # "run it yourself" has a backstop.
+      - run: pnpm format:check
+
+      # Right after typecheck, because it catches the same class of thing a compiler
+      # would if message keys were typed: a key that no longer exists renders as its own
+      # dotted path, which never throws and never fails a test.
+      - run: pnpm i18n:audit
+
+      # Reject hosted-lifetime promises, the old "Split by Peanut" name, and copy
+      # that incorrectly assigns Squirrel Labs' maintenance/funding role to Peanut.
+      - run: pnpm marketing-copy:audit
+
+      # The product has one generated doodle system. Keep library icons, raw UI
+      # SVGs, and platform-dependent emoji controls from quietly creating a second.
+      - run: pnpm ui-icons:audit
+
+      # apps/api's 15 integration tests run against a real database and
+      # create the `app` schema through migrations, not a seed — without
+      # this they fail on missing relations while the unit tests pass.
+      - run: pnpm --filter @peanut-split/api exec prisma migrate deploy
+
+      # Compiles every installed guide body through the production loader, MDX policy, route
+      # metadata and layout. That used to be a separate step here, behind an env variable no
+      # local command set, so eight guides could reach a shippable commit while `pnpm test` was
+      # green. The validator now reads the committed artifact directly and runs with the rest.
+      - run: pnpm test
+
+      - run: pnpm build
+
+  # Builds the exact artifact Dokploy deploys. The 2026-08-03 incident class:
+  # the Docker context is the repo minus .dockerignore, so a file that
+  # typechecks on a full checkout can fail inside the image (e2e-v2 importing
+  # the stripped e2e/). Every step above runs on the full checkout and is
+  # structurally blind to that. Advisory like the rest of CI — Dokploy polls
+  # git, not this workflow — but it turns a silent prod stall into a red X on
+  # the commit, and on a PR it fires before merge.
+  # Build with V2 on: NEXT_PUBLIC flags are compiled into the artifact, and the
+  # ordinary flag-off build above cannot prove the scanner client bundle or the
+  # matching Docker ARG/ENV path is production-buildable.
+  docker-web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bind a dispatched run to one exact commit
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        env:
+          ACTUAL_HEAD_SHA: ${{ github.sha }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        run: |
+          set -euo pipefail
+          if [[ ! "${EXPECTED_HEAD_SHA}" =~ ^[0-9a-f]{40}$ ]]; then
+            echo '::error::expected_head_sha must be a lowercase 40-character Git SHA.'
+            exit 1
+          fi
+          if [[ "${ACTUAL_HEAD_SHA}" != "${EXPECTED_HEAD_SHA}" ]]; then
+            echo "::error::Dispatched ref resolved to ${ACTUAL_HEAD_SHA}, not ${EXPECTED_HEAD_SHA}."
+            exit 1
+          fi
+
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      # peanutsplit.com is the one public origin; the renderer derives every public URL
+      # from it in source, so there is no origin build arg to pass here.
+      - run: >-
+          docker build
+          --build-arg NEXT_PUBLIC_SPLIT_V2_ENABLED=1
+          --build-arg NEXT_PUBLIC_BASE_URL=https://peanutsplit.com
+          apps/web
+
+  # Both OG incidents this year (123a048, 76e8dce) were structurally invisible to
+  # every job above. In each one the app spelled a metadata-image URL by hand while
+  # Next served it with a build-scoped hash on the segment, so the tag pointed at a
+  # 404: rooms unfurled imageless, "Share the story" was a dead button. Nothing
+  # typechecks a URL, the unit tests call the route export directly where no hash
+  # can reach, and the build is perfectly happy. 76e8dce's own message names the
+  # tier gap as the reason it survived for weeks — the spec that asserted the path
+  # was an e2e, and e2e ran only on the nightly cron, which short-circuits when the
+  # default branch has not moved and reports the morning after the deploy anyway.
+  #
+  # This is not the nightly suite moved forward. It is the three files that assert
+  # what a crawler and a share sheet actually receive — the landing card, the room
+  # card the link preview warms, the recap card the share button fetches — on the
+  # `mobile` project alone, because 390x844 is the design target and the desktop
+  # project reads the same tags through a wider viewport. Ten tests. The full
+  # matrix is 35 files across three engines and budgets 45 minutes; a per-push job
+  # that slow stops being read, which is the failure this job exists to fix.
+  #
+  # Advisory in exactly the sense the header describes: Dokploy polls git, so a red
+  # X here means the broken card is already in production and the fix is to roll
+  # forward. Deliberately not continue-on-error — a green check over a red run is
+  # how a check quietly becomes decoration.
+  e2e-unfurl:
+    runs-on: ubuntu-latest
+    # The suite boots its own `next dev` and compiles routes on demand; without a
+    # ceiling a server that never comes up burns the default six hours.
+    timeout-minutes: 20
+    env:
+      # Playwright reads it for `forbidOnly` and its two retries.
+      CI: true
+      # Two variables, one database, because they are read by different processes.
+      # `prisma migrate deploy` takes DATABASE_URL. The Playwright webServer ignores
+      # it completely and hands `next dev` its own pin — `E2E_DATABASE_URL` falling
+      # back to a local `split:split@localhost:5433`, which does not exist on a
+      # runner. Set only the first and the migrations land in a database the app
+      # under test never opens, and every room-creating spec fails on a refused
+      # connection that reads like an app bug. Same database as the `check` job:
+      # apps/web owns the `split` schema in it, apps/api the `app` one.
+      DATABASE_URL: postgresql://peanut:peanut@localhost:5432/peanut_split_dev
+      E2E_DATABASE_URL: postgresql://peanut:peanut@localhost:5432/peanut_split_dev
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: peanut
+          POSTGRES_PASSWORD: peanut
+          POSTGRES_DB: peanut_split_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U peanut"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - name: Bind a dispatched run to one exact commit
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        env:
+          ACTUAL_HEAD_SHA: ${{ github.sha }}
+          EXPECTED_HEAD_SHA: ${{ inputs.expected_head_sha }}
+        run: |
+          set -euo pipefail
+          if [[ ! "${EXPECTED_HEAD_SHA}" =~ ^[0-9a-f]{40}$ ]]; then
+            echo '::error::expected_head_sha must be a lowercase 40-character Git SHA.'
+            exit 1
+          fi
+          if [[ "${ACTUAL_HEAD_SHA}" != "${EXPECTED_HEAD_SHA}" ]]; then
+            echo "::error::Dispatched ref resolved to ${ACTUAL_HEAD_SHA}, not ${EXPECTED_HEAD_SHA}."
+            exit 1
+          fi
+
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+
+      - run: corepack enable
+
+      - run: pnpm bootstrap
+
+      # apps/web talks to its own database, not to apps/api, so this is the only
+      # migration the browser needs.
+      - run: pnpm --dir apps/web exec prisma migrate deploy
+
+      # `--with-deps` installs the host libraries the downloaded browser links
+      # against, which a runner does not carry. One engine: these specs assert
+      # markup and PNG bytes, and cross-engine rendering is what the nightly is for.
+      - run: pnpm --dir apps/web exec playwright install --with-deps chromium
+
+      # `exec playwright test` rather than the `e2e` script, because the arguments
+      # that narrow the run have to reach Playwright rather than pnpm.
+      - run: >-
+          pnpm --dir apps/web exec playwright test
+          --project=mobile
+          e2e/og-card.spec.ts
+          e2e/link-moment.spec.ts
+          e2e/recap.spec.ts
+
+      # Only on failure. A red X on a metadata assertion is unactionable without
+      # the trace — and on a green run the HTML report is a few megabytes of noise.
+      - name: Keep the report and traces
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: e2e-unfurl-${{ github.sha }}
+          path: |
+            apps/web/playwright-report
+            apps/web/test-results
+          if-no-files-found: ignore
+          retention-days: 7

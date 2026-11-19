@@ -132,7 +132,7 @@
             "madeByBrand": "Squirrel Labs",
             "termsLink": "Terms",
             "privacyLink": "Privacy",
-            "operatedBy": "Tribu is operated by Squirrel Labs Ltd, the company behind Peanut (peanut.me). Registered in England and Wales, company number 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
+            "operatedBy": "Tribu is free software under the AGPL-3.0 license."
         },
         "appHome": {
             "landingLink": "What is Tribu?"
@@ -410,7 +410,7 @@
             "messagePlaceholder": "What did you do, what happened, and what did you expect?",
             "messageHint": "Required · at least {minimum} characters. Room links in your text are removed before storage.",
             "attachmentsTitle": "Choose what to attach",
-            "attachmentsIntro": "Every attachment starts off. Turn on only what you want to include for the Squirrel Labs maintainers.",
+            "attachmentsIntro": "Every attachment starts off. Turn on only what you want to include for the Tribu maintainers.",
             "deviceTitle": "Device details",
             "deviceHint": "Browser and OS, viewport, time zone, app mode, and network status.",
             "exactDeviceData": "View exact device data",
@@ -437,12 +437,12 @@
             "imageTooLarge": "That image is too large. Choose a screenshot under 20 MB.",
             "imageUnreadable": "That image could not be read. Choose a JPEG, PNG, or WebP screenshot.",
             "consentTitle": "I agree to send this report",
-            "consentHint": "Squirrel Labs maintainers can read your message and only the attachments selected above. Reports are not sent to analytics or shown in the room, and are scheduled for deletion after 90 days.",
+            "consentHint": "Tribu maintainers can read your message and only the attachments selected above. Reports are not sent to analytics or shown in the room, and are scheduled for deletion after 90 days.",
             "send": "Send report",
             "cancel": "Cancel",
             "sendFailed": "Could not send the report — your text and screenshot are still here.",
             "successTitle": "Report sent",
-            "successBody": "Thanks. The report and selected attachments were saved for the Squirrel Labs maintainers.",
+            "successBody": "Thanks. The report and selected attachments were saved for the Tribu maintainers.",
             "done": "Done"
         },
         "export": {
@@ -1173,7 +1173,7 @@
             "action": "Back to your rooms"
         },
         "loading": {
-            "eyebrow": "Counting peanuts",
+            "eyebrow": "Adding it up",
             "title": "Opening your room…",
             "body": "Balances and expenses are being brought up to date.",
             "exit": "Back to your rooms"

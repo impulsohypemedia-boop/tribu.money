@@ -132,7 +132,7 @@
             "madeByBrand": "Squirrel Labs",
             "termsLink": "Regulamin",
             "privacyLink": "Prywatność",
-            "operatedBy": "Operatorem Tribu jest Squirrel Labs Ltd, firma, która stoi za Peanut (peanut.me). Spółka zarejestrowana w Anglii i Walii pod numerem 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
+            "operatedBy": "Tribu is free software under the AGPL-3.0 license."
         },
         "appHome": {
             "landingLink": "Czym jest Tribu?"
@@ -410,7 +410,7 @@
             "messagePlaceholder": "Opisz wykonane kroki, ich rezultat i oczekiwany efekt.",
             "messageHint": "Wymagane · co najmniej {minimum} znaków. Linki do pokoi w tekście są usuwane przed zapisem.",
             "attachmentsTitle": "Wybierz załączniki",
-            "attachmentsIntro": "Początkowo wszystkie załączniki są wyłączone. Włącz tylko te, które chcesz dołączyć dla opiekunów Tribu w Squirrel Labs.",
+            "attachmentsIntro": "Początkowo wszystkie załączniki są wyłączone. Włącz tylko te, które chcesz dołączyć dla opiekunów Tribu w Tribu.",
             "deviceTitle": "Dane urządzenia",
             "deviceHint": "Przeglądarka i system operacyjny, rozmiar widoku, strefa czasowa, tryb aplikacji oraz stan sieci.",
             "exactDeviceData": "Pokaż dokładne dane urządzenia",
@@ -437,12 +437,12 @@
             "imageTooLarge": "Ten obraz jest za duży. Wybierz zrzut ekranu mniejszy niż 20 MB.",
             "imageUnreadable": "Nie udało się odczytać obrazu. Wybierz zrzut ekranu JPEG, PNG lub WebP.",
             "consentTitle": "Zgadzam się na wysłanie tego zgłoszenia",
-            "consentHint": "Opiekunowie Tribu w Squirrel Labs mogą przeczytać twoją wiadomość oraz tylko wybrane powyżej załączniki. Zgłoszenia nie trafiają do analityki ani nie są wyświetlane w pokoju; ich usunięcie jest planowane po 90 dniach.",
+            "consentHint": "Opiekunowie Tribu w Tribu mogą przeczytać twoją wiadomość oraz tylko wybrane powyżej załączniki. Zgłoszenia nie trafiają do analityki ani nie są wyświetlane w pokoju; ich usunięcie jest planowane po 90 dniach.",
             "send": "Wyślij zgłoszenie",
             "cancel": "Anuluj",
             "sendFailed": "Nie udało się wysłać zgłoszenia — tekst i zrzut ekranu nadal tu są.",
             "successTitle": "Wysłano zgłoszenie",
-            "successBody": "Dziękujemy. Zgłoszenie i wybrane załączniki zapisano dla opiekunów Tribu w Squirrel Labs.",
+            "successBody": "Dziękujemy. Zgłoszenie i wybrane załączniki zapisano dla opiekunów Tribu w Tribu.",
             "done": "Gotowe"
         },
         "export": {
@@ -1173,7 +1173,7 @@
             "action": "Wróć do swoich pokoi"
         },
         "loading": {
-            "eyebrow": "Liczymy orzeszki",
+            "eyebrow": "Adding it up",
             "title": "Otwieramy twój pokój…",
             "body": "Aktualizujemy salda i wydatki.",
             "exit": "Wróć do swoich pokoi"

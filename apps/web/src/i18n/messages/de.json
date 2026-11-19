@@ -132,7 +132,7 @@
             "madeByBrand": "Squirrel Labs",
             "termsLink": "Nutzungsbedingungen",
             "privacyLink": "Datenschutz",
-            "operatedBy": "Tribu wird von der Squirrel Labs Ltd betrieben, dem Unternehmen hinter Peanut (peanut.me). Eingetragen in England und Wales unter der Firmennummer 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
+            "operatedBy": "Tribu is free software under the AGPL-3.0 license."
         },
         "appHome": {
             "landingLink": "Was ist Tribu?"
@@ -410,7 +410,7 @@
             "messagePlaceholder": "Was hast du gemacht, was ist passiert und was hattest du erwartet?",
             "messageHint": "Pflichtfeld · mindestens {minimum} Zeichen. Gruppenlinks in deinem Text werden vor dem Speichern entfernt.",
             "attachmentsTitle": "Anhänge auswählen",
-            "attachmentsIntro": "Zunächst ist kein Anhang ausgewählt. Aktiviere nur, was du für die Tribu-Maintainer bei Squirrel Labs hinzufügen möchtest.",
+            "attachmentsIntro": "Zunächst ist kein Anhang ausgewählt. Aktiviere nur, was du für die Tribu-Maintainer bei Tribu hinzufügen möchtest.",
             "deviceTitle": "Gerätedetails",
             "deviceHint": "Browser und Betriebssystem, Ansichtsgröße, Zeitzone, App-Modus und Netzwerkstatus.",
             "exactDeviceData": "Genaue Gerätedaten anzeigen",
@@ -437,12 +437,12 @@
             "imageTooLarge": "Das Bild ist zu groß. Wähle einen Screenshot unter 20 MB.",
             "imageUnreadable": "Das Bild konnte nicht gelesen werden. Wähle einen Screenshot im Format JPEG, PNG oder WebP.",
             "consentTitle": "Ich stimme dem Senden dieser Meldung zu",
-            "consentHint": "Die Tribu-Maintainer bei Squirrel Labs können deine Nachricht und nur die oben ausgewählten Anhänge lesen. Meldungen werden weder an Analysedienste gesendet noch in der Gruppe angezeigt; ihre Löschung ist nach 90 Tagen vorgesehen.",
+            "consentHint": "Die Tribu-Maintainer bei Tribu können deine Nachricht und nur die oben ausgewählten Anhänge lesen. Meldungen werden weder an Analysedienste gesendet noch in der Gruppe angezeigt; ihre Löschung ist nach 90 Tagen vorgesehen.",
             "send": "Meldung senden",
             "cancel": "Abbrechen",
             "sendFailed": "Die Meldung konnte nicht gesendet werden – dein Text und Screenshot sind noch da.",
             "successTitle": "Meldung gesendet",
-            "successBody": "Danke. Die Meldung und die ausgewählten Anhänge wurden für die Tribu-Maintainer bei Squirrel Labs gespeichert.",
+            "successBody": "Danke. Die Meldung und die ausgewählten Anhänge wurden für die Tribu-Maintainer bei Tribu gespeichert.",
             "done": "Fertig"
         },
         "export": {
@@ -1173,7 +1173,7 @@
             "action": "Zurück zu deinen Gruppen"
         },
         "loading": {
-            "eyebrow": "Erdnüsse werden gezählt",
+            "eyebrow": "Adding it up",
             "title": "Deine Gruppe wird geöffnet…",
             "body": "Salden und Ausgaben werden aktualisiert.",
             "exit": "Zurück zu deinen Gruppen"

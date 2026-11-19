@@ -132,7 +132,7 @@
             "madeByBrand": "Squirrel Labs",
             "termsLink": "Conditions d’utilisation",
             "privacyLink": "Confidentialité",
-            "operatedBy": "Tribu est exploité par Squirrel Labs Ltd, la société derrière Peanut (peanut.me). Immatriculée en Angleterre et au pays de Galles sous le numéro 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
+            "operatedBy": "Tribu is free software under the AGPL-3.0 license."
         },
         "appHome": {
             "landingLink": "Qu’est-ce que Tribu ?"
@@ -410,7 +410,7 @@
             "messagePlaceholder": "Qu’as-tu fait, que s’est-il passé et qu’attendais-tu ?",
             "messageHint": "Obligatoire · au moins {minimum} caractères. Les liens de groupe présents dans ton texte sont supprimés avant l’enregistrement.",
             "attachmentsTitle": "Choisis les éléments à joindre",
-            "attachmentsIntro": "Aucune pièce jointe n’est sélectionnée au départ. Active uniquement ce que tu veux joindre pour l’équipe de maintenance de Tribu chez Squirrel Labs.",
+            "attachmentsIntro": "Aucune pièce jointe n’est sélectionnée au départ. Active uniquement ce que tu veux joindre pour l’équipe de maintenance de Tribu chez Tribu.",
             "deviceTitle": "Détails de l’appareil",
             "deviceHint": "Navigateur et système, taille d’affichage, fuseau horaire, mode de l’application et état du réseau.",
             "exactDeviceData": "Voir les données exactes de l’appareil",
@@ -437,12 +437,12 @@
             "imageTooLarge": "Cette image est trop volumineuse. Choisis une capture de moins de 20 Mo.",
             "imageUnreadable": "Cette image n’a pas pu être lue. Choisis une capture JPEG, PNG ou WebP.",
             "consentTitle": "J’accepte d’envoyer ce signalement",
-            "consentHint": "L’équipe de maintenance de Tribu chez Squirrel Labs peut lire ton message et uniquement les pièces jointes sélectionnées ci-dessus. Les signalements ne sont pas envoyés aux outils d’analyse ni affichés dans le groupe, et leur suppression est prévue après 90 jours.",
+            "consentHint": "L’équipe de maintenance de Tribu chez Tribu peut lire ton message et uniquement les pièces jointes sélectionnées ci-dessus. Les signalements ne sont pas envoyés aux outils d’analyse ni affichés dans le groupe, et leur suppression est prévue après 90 jours.",
             "send": "Envoyer le signalement",
             "cancel": "Annuler",
             "sendFailed": "Impossible d’envoyer le signalement — ton texte et ta capture sont toujours là.",
             "successTitle": "Signalement envoyé",
-            "successBody": "Merci. Le signalement et les pièces jointes sélectionnées ont été enregistrés pour l’équipe de maintenance de Tribu chez Squirrel Labs.",
+            "successBody": "Merci. Le signalement et les pièces jointes sélectionnées ont été enregistrés pour l’équipe de maintenance de Tribu chez Tribu.",
             "done": "Terminé"
         },
         "export": {
@@ -1173,7 +1173,7 @@
             "action": "Retour à tes groupes"
         },
         "loading": {
-            "eyebrow": "Comptage des cacahuètes",
+            "eyebrow": "Adding it up",
             "title": "Ouverture de ton groupe…",
             "body": "Les soldes et les dépenses sont mis à jour.",
             "exit": "Retour à tes groupes"

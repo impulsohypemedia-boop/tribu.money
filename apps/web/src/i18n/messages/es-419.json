@@ -132,7 +132,7 @@
             "madeByBrand": "Squirrel Labs",
             "termsLink": "Términos",
             "privacyLink": "Privacidad",
-            "operatedBy": "Tribu es operado por Squirrel Labs Ltd, la empresa detrás de Peanut (peanut.me). Registrada en Inglaterra y Gales con el número de empresa 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
+            "operatedBy": "Tribu es software libre bajo la licencia AGPL-3.0."
         },
         "appHome": {
             "landingLink": "¿Qué es Tribu?"
@@ -410,7 +410,7 @@
             "messagePlaceholder": "¿Qué hiciste, qué pasó y qué esperabas que ocurriera?",
             "messageHint": "Obligatorio · al menos {minimum} caracteres. Los links de salas se eliminan del texto antes de guardarlo.",
             "attachmentsTitle": "Elige qué adjuntar",
-            "attachmentsIntro": "Todos los adjuntos empiezan desactivados. Activa solo lo que quieras incluir para el equipo de mantenimiento de Tribu en Squirrel Labs.",
+            "attachmentsIntro": "Todos los adjuntos empiezan desactivados. Activa solo lo que quieras incluir para el equipo de mantenimiento de Tribu en Tribu.",
             "deviceTitle": "Detalles del dispositivo",
             "deviceHint": "Navegador y sistema, ventana, zona horaria, modo de app y estado de red.",
             "exactDeviceData": "Ver los datos exactos del dispositivo",
@@ -437,12 +437,12 @@
             "imageTooLarge": "Esa imagen es demasiado grande. Elige una captura de menos de 20 MB.",
             "imageUnreadable": "No se pudo leer esa imagen. Elige una captura JPEG, PNG o WebP.",
             "consentTitle": "Acepto enviar este reporte",
-            "consentHint": "El equipo de mantenimiento de Tribu en Squirrel Labs puede leer tu mensaje y solo los adjuntos seleccionados arriba. Los reportes no se envían a analítica ni aparecen en la sala, y se programan para eliminarse después de 90 días.",
+            "consentHint": "El equipo de mantenimiento de Tribu en Tribu puede leer tu mensaje y solo los adjuntos seleccionados arriba. Los reportes no se envían a analítica ni aparecen en la sala, y se programan para eliminarse después de 90 días.",
             "send": "Enviar reporte",
             "cancel": "Cancelar",
             "sendFailed": "No pudimos enviar el reporte — tu texto y captura siguen aquí.",
             "successTitle": "Reporte enviado",
-            "successBody": "Gracias. El reporte y los adjuntos seleccionados quedaron guardados para el equipo de mantenimiento de Tribu en Squirrel Labs.",
+            "successBody": "Gracias. El reporte y los adjuntos seleccionados quedaron guardados para el equipo de mantenimiento de Tribu en Tribu.",
             "done": "Listo"
         },
         "export": {
@@ -1173,7 +1173,7 @@
             "action": "Volver a tus salas"
         },
         "loading": {
-            "eyebrow": "Contando cacahuates",
+            "eyebrow": "Sacando cuentas",
             "title": "Abriendo tu sala…",
             "body": "Estamos actualizando los saldos y los gastos.",
             "exit": "Volver a tus salas"

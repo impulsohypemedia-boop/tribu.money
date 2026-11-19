@@ -128,8 +128,6 @@
             "colCompare": "Vergleich",
             "colGuides": "Ratgeber",
             "allGuides": "Alle Ratgeber",
-            "madeByPrefix": "mit Liebe gemacht von",
-            "madeByBrand": "Squirrel Labs",
             "termsLink": "Nutzungsbedingungen",
             "privacyLink": "Datenschutz",
             "operatedBy": "Tribu is free software under the AGPL-3.0 license."
@@ -224,107 +222,6 @@
                 "title": "Tribu verwaltet die Abrechnung, nicht dein Geld"
             },
             "done": "Verstanden"
-        },
-        "readMore": {
-            "toggle": "MEHR ÜBER SPLIT",
-            "toggleHint": "Funktionen, Finanzierung und Zugang zu eurer Gruppe.",
-            "join": {
-                "title": "Was deine Freunde sehen",
-                "roomName": "Skireise",
-                "nameLabel": "Dein Name",
-                "namePlaceholder": "Tom",
-                "button": "Gruppe beitreten",
-                "body": "Keine E-Mail, kein Passwort, kein Download."
-            },
-            "features": {
-                "title": "Was Tribu kann",
-                "currency": {
-                    "title": "162 Währungen für eure Gruppe",
-                    "body": "Automatische Umrechnung für 156 Währungen; sechs weitere funktionieren ohne Umrechnung."
-                },
-                "splits": {
-                    "title": "Jede Rechnung passend aufteilen",
-                    "body": "Gleich, prozentual, nach Anteilen, nach genauen Beträgen oder nur unter ausgewählten Personen."
-                },
-                "exact": {
-                    "title": "Berechnung ansehen",
-                    "body": "Öffne einen Saldo, um die Aufschlüsselung zu sehen."
-                },
-                "live": {
-                    "title": "Gemeinsame Ausgabenliste",
-                    "body": "Neue Ausgaben erscheinen bei allen, die online sind."
-                },
-                "offline": {
-                    "title": "Ausgaben offline hinzufügen",
-                    "body": "Neue Ausgaben bleiben auf deinem Gerät und werden gesendet, sobald du wieder online bist. Bearbeiten und Rückzahlungen eintragen geht nur mit Verbindung."
-                },
-                "home": {
-                    "title": "Zum Home-Bildschirm hinzufügen",
-                    "body": "Öffnet sich wie eine App."
-                },
-                "transfers": {
-                    "title": "Ein einfacherer Zahlungsplan",
-                    "body": "Eine kurze Liste, wer wem zahlt."
-                }
-            },
-            "settle": {
-                "title": "Zahlungsarten",
-                "cash": "Bar",
-                "bank": "Überweisung"
-            },
-            "team": {
-                "title": "Das Team dahinter",
-                "intro": "Konrad und Hugo haben Tribu gebaut. Hier erzählen sie, warum.",
-                "konrad": {
-                    "name": "Konrad",
-                    "role": "hat Tribu gebaut",
-                    "quote": "Jede Reise endete gleich: eine Tabelle, die niemand aktualisierte, und eine Person, die still auf den Kosten sitzen blieb."
-                },
-                "hugo": {
-                    "name": "Hugo",
-                    "role": "hat Tribu gebaut",
-                    "quote": "Ich wollte, dass alles nur ein Link ist. Wenn deine Freunde ein Konto anlegen müssen, tun sie es nicht."
-                }
-            },
-            "who": {
-                "title": "Wer Tribu betreut und finanziert",
-                "built": {
-                    "title": "Squirrel Labs betreut Split",
-                    "body": "Derzeit betreut nur Squirrel Labs das Projekt und übernimmt alle Kosten, auch die Arbeitszeit."
-                },
-                "free": {
-                    "title": "Optionale Links",
-                    "body": "Links zu anderen Diensten sind optional. Sie erzwingen nie einen Klick, wiederholen keine Aufforderungen und sperren keine Funktionen."
-                },
-                "data": {
-                    "title": "Gruppenlinks und Nutzungsanalyse",
-                    "body": "Wir erfassen Gruppenlinks nicht in unserer Nutzungsanalyse. Alle mit dem Link können die Gruppe öffnen."
-                }
-            },
-            "faq": {
-                "title": "Häufige Fragen",
-                "retype": {
-                    "q": "Muss ich alles aus dem Gruppenchat noch einmal eingeben?",
-                    "a": "Ja. Tragt jede Ausgabe einmal ein. Alle in der Gruppe können ihre eigenen Ausgaben hinzufügen.",
-                    "import": "Du kannst eine Splitwise-Gruppe importieren und die Salden vorher prüfen. Ältere Ausgaben können zu Anfangssalden zusammengefasst werden."
-                },
-                "access": {
-                    "q": "Wer kann unsere Gruppe sehen?",
-                    "a": "Alle mit dem Link können die Gruppe öffnen. Teilt ihn nur mit eurer Gruppe. Wir bitten Suchmaschinen, Gruppen nicht zu indexieren."
-                },
-                "lost": {
-                    "q": "Wie kommen wir zurück zur Gruppe?",
-                    "a": "Lasst den Link im Gruppenchat, damit ihn alle dort finden. Tribu speichert geöffnete Gruppen außerdem auf diesem Gerät. Auf der Startseite kannst du den Link einfügen und die Gruppe wieder hinzufügen."
-                },
-                "limits": {
-                    "q": "Gibt es ein Tageslimit für Ausgaben?",
-                    "a": "Es gibt kein Tageslimit für Ausgaben."
-                }
-            },
-            "compare": {
-                "line": "Du kommst von einer anderen App zum Kostenteilen?",
-                "link": "Tribu mit Splitwise vergleichen"
-            }
         }
     },
     "locale": {

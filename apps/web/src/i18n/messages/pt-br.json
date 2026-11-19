@@ -128,8 +128,6 @@
             "colCompare": "Comparar",
             "colGuides": "Guias",
             "allGuides": "Todos os guias",
-            "madeByPrefix": "feito com amor por",
-            "madeByBrand": "Squirrel Labs",
             "termsLink": "Termos",
             "privacyLink": "Privacidade",
             "operatedBy": "O Tribu é software livre sob a licença AGPL-3.0."
@@ -224,107 +222,6 @@
                 "title": "O Tribu guarda as contas, não o dinheiro"
             },
             "done": "Entendi"
-        },
-        "readMore": {
-            "toggle": "MAIS SOBRE O SPLIT",
-            "toggleHint": "Recursos, financiamento e acesso à sua sala.",
-            "join": {
-                "title": "O que seus amigos veem",
-                "roomName": "Viagem de esqui",
-                "nameLabel": "Seu nome",
-                "namePlaceholder": "Tom",
-                "button": "Entrar na sala",
-                "body": "Sem cadastro, senha ou download."
-            },
-            "features": {
-                "title": "O que o Tribu faz",
-                "currency": {
-                    "title": "162 moedas para a sala",
-                    "body": "Conversão automática para 156 moedas; outras 6 funcionam sem conversão."
-                },
-                "splits": {
-                    "title": "Escolha como dividir cada conta",
-                    "body": "Por igual, por porcentagem, por partes, por valores exatos ou entre pessoas escolhidas."
-                },
-                "exact": {
-                    "title": "Veja o cálculo",
-                    "body": "Abra qualquer saldo para ver o cálculo."
-                },
-                "live": {
-                    "title": "Lista de despesas compartilhada",
-                    "body": "As despesas novas aparecem para quem está conectado."
-                },
-                "offline": {
-                    "title": "Adicione despesas sem conexão",
-                    "body": "As despesas novas ficam no aparelho e são enviadas quando a conexão volta. Para editar ou registrar pagamentos, é preciso estar conectado."
-                },
-                "home": {
-                    "title": "Coloque na tela de início",
-                    "body": "Abre como um aplicativo."
-                },
-                "transfers": {
-                    "title": "Um plano de pagamentos mais simples",
-                    "body": "Uma lista curta de quem deve pagar a quem."
-                }
-            },
-            "settle": {
-                "title": "Como acertar as contas",
-                "cash": "Dinheiro",
-                "bank": "Transferência"
-            },
-            "team": {
-                "title": "Quem construiu",
-                "intro": "Konrad e Hugo criaram o Tribu. Aqui eles contam por quê.",
-                "konrad": {
-                    "name": "Konrad",
-                    "role": "fez o Split",
-                    "quote": "Toda viagem terminava igual: uma planilha que ninguém atualizava e uma pessoa no prejuízo, calada."
-                },
-                "hugo": {
-                    "name": "Hugo",
-                    "role": "fez o Split",
-                    "quote": "Eu queria que a coisa toda fosse um link. Se seus amigos precisam criar conta, eles não criam."
-                }
-            },
-            "who": {
-                "title": "Quem mantém e financia o Split",
-                "built": {
-                    "title": "A Squirrel Labs mantém o Split",
-                    "body": "Por enquanto, a Squirrel Labs é a única mantenedora e paga todos os custos, inclusive as horas de trabalho."
-                },
-                "free": {
-                    "title": "Links opcionais",
-                    "body": "Os links promocionais são opcionais, sem clique obrigatório, avisos repetidos ou recursos bloqueados."
-                },
-                "data": {
-                    "title": "Links das salas e análise de uso",
-                    "body": "Excluímos os links das salas da nossa análise de uso. Quem tiver o link pode acessar a sala."
-                }
-            },
-            "faq": {
-                "title": "Perguntas frequentes",
-                "retype": {
-                    "q": "Preciso digitar de novo tudo o que está no grupo?",
-                    "a": "Sim. Adicione cada despesa uma vez; cada pessoa na sala pode registrar o que pagou.",
-                    "import": "Você pode importar um grupo do Splitwise e conferir os saldos antes de confirmar. Despesas antigas podem ser agrupadas em saldos iniciais."
-                },
-                "access": {
-                    "q": "Quem consegue ver a nossa sala?",
-                    "a": "Quem tiver o link pode acessar a sala. Compartilhe apenas com seu grupo. Pedimos aos buscadores que não indexem as salas."
-                },
-                "lost": {
-                    "q": "Como a gente volta para a sala?",
-                    "a": "Deixe o link no grupo para todo mundo encontrar por lá. O Tribu também salva neste aparelho as salas que você abre, e você pode colar o link na página inicial para adicionar a sala de novo."
-                },
-                "limits": {
-                    "q": "Há um limite diário de despesas?",
-                    "a": "Não há limite diário de despesas."
-                }
-            },
-            "compare": {
-                "line": "Vindo de outro app de divisão de contas?",
-                "link": "Veja como o Tribu se compara ao Splitwise"
-            }
         }
     },
     "locale": {

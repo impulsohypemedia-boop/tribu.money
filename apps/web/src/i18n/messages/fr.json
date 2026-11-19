@@ -128,8 +128,6 @@
             "colCompare": "Comparer",
             "colGuides": "Guides",
             "allGuides": "Tous les guides",
-            "madeByPrefix": "créé avec amour par",
-            "madeByBrand": "Squirrel Labs",
             "termsLink": "Conditions d’utilisation",
             "privacyLink": "Confidentialité",
             "operatedBy": "Tribu is free software under the AGPL-3.0 license."
@@ -224,107 +222,6 @@
                 "title": "Tribu tient les comptes, pas ton argent"
             },
             "done": "Compris"
-        },
-        "readMore": {
-            "toggle": "EN SAVOIR PLUS SUR SPLIT",
-            "toggleHint": "Fonctions, financement et accès à ton groupe.",
-            "join": {
-                "title": "Ce que voient tes amis",
-                "roomName": "Séjour au ski",
-                "nameLabel": "Ton nom",
-                "namePlaceholder": "Tom",
-                "button": "Rejoindre le groupe",
-                "body": "Pas d’e-mail, de mot de passe ni de téléchargement."
-            },
-            "features": {
-                "title": "Ce que fait Split",
-                "currency": {
-                    "title": "162 devises pour ton groupe",
-                    "body": "Conversion automatique pour 156 devises ; six autres fonctionnent sans conversion."
-                },
-                "splits": {
-                    "title": "Choisis comment répartir chaque dépense",
-                    "body": "À parts égales, en pourcentage, par parts, par montants exacts ou entre certaines personnes."
-                },
-                "exact": {
-                    "title": "Voir le calcul",
-                    "body": "Ouvre un solde pour voir le détail."
-                },
-                "live": {
-                    "title": "Liste de dépenses partagée",
-                    "body": "Les nouvelles dépenses apparaissent pour les personnes connectées."
-                },
-                "offline": {
-                    "title": "Ajoute des dépenses hors ligne",
-                    "body": "Les nouvelles dépenses restent sur ton appareil et sont envoyées au retour de la connexion. Modifier une dépense ou noter un remboursement nécessite une connexion."
-                },
-                "home": {
-                    "title": "Ajoute Tribu à ton écran d’accueil",
-                    "body": "Il s’ouvre comme une application."
-                },
-                "transfers": {
-                    "title": "Un plan de paiement plus simple",
-                    "body": "Une courte liste indiquant qui paie qui."
-                }
-            },
-            "settle": {
-                "title": "Comment régler",
-                "cash": "Espèces",
-                "bank": "Virement bancaire"
-            },
-            "team": {
-                "title": "Les personnes qui l’ont créé",
-                "intro": "Konrad et Hugo ont créé Tribu. Voici pourquoi.",
-                "konrad": {
-                    "name": "Konrad",
-                    "role": "a créé Split",
-                    "quote": "Chaque voyage se terminait de la même façon : un tableur que personne ne mettait à jour et quelqu’un qui, sans rien dire, en était de sa poche."
-                },
-                "hugo": {
-                    "name": "Hugo",
-                    "role": "a créé Split",
-                    "quote": "Je voulais que tout tienne dans un lien. Si tes amis doivent créer un compte, ils ne le feront pas."
-                }
-            },
-            "who": {
-                "title": "Qui maintient et finance Split",
-                "built": {
-                    "title": "Squirrel Labs maintient Split",
-                    "body": "Pour l’instant, Squirrel Labs assure seul la maintenance et prend en charge tous les coûts, y compris le temps de travail."
-                },
-                "free": {
-                    "title": "Liens facultatifs",
-                    "body": "Les liens promotionnels sont facultatifs. Ils ne forcent jamais un clic, ne relancent pas sans cesse et ne bloquent aucune fonction."
-                },
-                "data": {
-                    "title": "Liens de groupe et statistiques",
-                    "body": "Nous excluons les liens de groupe de nos statistiques. Toute personne ayant le lien peut ouvrir le groupe."
-                }
-            },
-            "faq": {
-                "title": "Questions fréquentes",
-                "retype": {
-                    "q": "Dois-je tout ressaisir depuis la conversation du groupe ?",
-                    "a": "Oui. Saisissez chaque dépense une fois. Chaque personne du groupe peut ajouter ce qu’elle a payé.",
-                    "import": "Tu peux importer un groupe Splitwise et vérifier les soldes avant de confirmer. Les anciennes dépenses peuvent être regroupées en soldes initiaux."
-                },
-                "access": {
-                    "q": "Qui peut voir notre groupe ?",
-                    "a": "Toute personne ayant le lien peut ouvrir le groupe. Partage-le uniquement avec ton groupe. Nous demandons aux moteurs de recherche de ne pas indexer les groupes."
-                },
-                "lost": {
-                    "q": "Comment revenir au groupe ?",
-                    "a": "Laisse le lien dans la conversation du groupe pour que chacun puisse le retrouver. Tribu enregistre aussi les groupes ouverts sur cet appareil, et tu peux coller le lien sur la page d’accueil pour l’ajouter de nouveau."
-                },
-                "limits": {
-                    "q": "Y a-t-il une limite quotidienne de dépenses ?",
-                    "a": "Il n’y a pas de limite quotidienne de dépenses."
-                }
-            },
-            "compare": {
-                "line": "Tu viens d’une autre application de partage ?",
-                "link": "Voir comment Tribu se compare à Splitwise"
-            }
         }
     },
     "locale": {

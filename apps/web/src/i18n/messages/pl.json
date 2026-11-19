@@ -128,8 +128,6 @@
             "colCompare": "Porównaj",
             "colGuides": "Poradniki",
             "allGuides": "Wszystkie poradniki",
-            "madeByPrefix": "stworzone z miłością przez",
-            "madeByBrand": "Squirrel Labs",
             "termsLink": "Regulamin",
             "privacyLink": "Prywatność",
             "operatedBy": "Tribu is free software under the AGPL-3.0 license."
@@ -224,107 +222,6 @@
                 "title": "Tribu pilnuje rozliczeń, nie pieniędzy"
             },
             "done": "Rozumiem"
-        },
-        "readMore": {
-            "toggle": "WIĘCEJ O SPLIT",
-            "toggleHint": "Funkcje, finansowanie i dostęp do pokoju.",
-            "join": {
-                "title": "Co widzą znajomi",
-                "roomName": "Wyjazd na narty",
-                "nameLabel": "Twoje imię",
-                "namePlaceholder": "Tomek",
-                "button": "Dołącz do pokoju",
-                "body": "Bez e-maila, hasła ani pobierania."
-            },
-            "features": {
-                "title": "Co potrafi Split",
-                "currency": {
-                    "title": "162 waluty do wyboru",
-                    "body": "Automatyczne przeliczanie 156 walut; 6 kolejnych działa bez przeliczania."
-                },
-                "splits": {
-                    "title": "Wybierz sposób podziału rachunku",
-                    "body": "Po równo, procentowo, na udziały, dokładne kwoty lub wybrane osoby."
-                },
-                "exact": {
-                    "title": "Zobacz wyliczenie",
-                    "body": "Otwórz dowolne saldo, aby zobaczyć wyliczenie."
-                },
-                "live": {
-                    "title": "Wspólna lista wydatków",
-                    "body": "Nowe wydatki pojawiają się u wszystkich osób z połączeniem internetowym."
-                },
-                "offline": {
-                    "title": "Dodawaj wydatki bez internetu",
-                    "body": "Nowe wydatki czekają na urządzeniu i są wysyłane po odzyskaniu połączenia. Edycja i zapisywanie spłat wymagają internetu."
-                },
-                "home": {
-                    "title": "Dodaj do ekranu początkowego",
-                    "body": "Otwiera się jak aplikacja."
-                },
-                "transfers": {
-                    "title": "Prostszy plan płatności",
-                    "body": "Krótka lista: kto komu płaci."
-                }
-            },
-            "settle": {
-                "title": "Jak się rozliczyć",
-                "cash": "Gotówka",
-                "bank": "Przelew bankowy"
-            },
-            "team": {
-                "title": "Kto to zbudował",
-                "intro": "Konrad i Hugo stworzyli Tribu. Oto dlaczego.",
-                "konrad": {
-                    "name": "Konrad",
-                    "role": "stworzył Split",
-                    "quote": "Każdy wyjazd kończył się tak samo: arkuszem, którego nikt nie aktualizował, i jedną osobą, która po cichu wciąż czekała na zwrot pieniędzy."
-                },
-                "hugo": {
-                    "name": "Hugo",
-                    "role": "stworzył Split",
-                    "quote": "Chciałem, żeby całość sprowadzała się do jednego linku. Jeśli znajomi będą musieli zakładać konto, po prostu tego nie zrobią."
-                }
-            },
-            "who": {
-                "title": "Kto utrzymuje i finansuje Split",
-                "built": {
-                    "title": "Squirrel Labs utrzymuje Split",
-                    "body": "Obecnie Squirrel Labs jest jedynym opiekunem projektu i pokrywa wszystkie koszty, w tym czas pracy."
-                },
-                "free": {
-                    "title": "Opcjonalne linki",
-                    "body": "Linki promocyjne są opcjonalne, bez wymuszonych kliknięć, powtarzających się monitów czy blokowania funkcji."
-                },
-                "data": {
-                    "title": "Linki do pokoi a analityka",
-                    "body": "Nie zapisujemy linków do pokoi w naszej analityce. Każdy, kto ma link, może otworzyć pokój."
-                }
-            },
-            "faq": {
-                "title": "Częste pytania",
-                "retype": {
-                    "q": "Czy muszę przepisać wszystko z czatu grupowego?",
-                    "a": "Tak. Każdy wydatek trzeba wpisać raz. Każda osoba w pokoju może dodać to, za co zapłaciła.",
-                    "import": "Możesz zaimportować grupę ze Splitwise i wcześniej sprawdzić salda. Starsze wydatki mogą zostać połączone w salda początkowe."
-                },
-                "access": {
-                    "q": "Kto może zobaczyć nasz pokój?",
-                    "a": "Każdy, kto ma link, może otworzyć pokój. Udostępniaj go tylko swojej grupie. Prosimy wyszukiwarki, by nie indeksowały pokoi."
-                },
-                "lost": {
-                    "q": "Jak wrócić do pokoju?",
-                    "a": "Zostaw link na czacie grupowym, żeby każdy mógł go tam znaleźć. Tribu zapisuje też pokoje otwarte na tym urządzeniu, a ty możesz wkleić link na stronie głównej, aby ponownie dodać pokój."
-                },
-                "limits": {
-                    "q": "Czy jest dzienny limit wydatków?",
-                    "a": "Nie ma dziennego limitu wydatków."
-                }
-            },
-            "compare": {
-                "line": "Korzystasz teraz z innej aplikacji do dzielenia wydatków?",
-                "link": "Zobacz, jak Tribu wypada na tle Splitwise"
-            }
         }
     },
     "locale": {

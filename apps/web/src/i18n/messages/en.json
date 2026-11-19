@@ -128,8 +128,6 @@
             "colCompare": "Compare",
             "colGuides": "Guides",
             "allGuides": "All guides",
-            "madeByPrefix": "made with love by",
-            "madeByBrand": "Squirrel Labs",
             "termsLink": "Terms",
             "privacyLink": "Privacy",
             "operatedBy": "Tribu is free software under the AGPL-3.0 license."
@@ -224,107 +222,6 @@
                 "title": "Tribu keeps the maths, not the money"
             },
             "done": "Got it"
-        },
-        "readMore": {
-            "toggle": "MORE ABOUT SPLIT",
-            "toggleHint": "Features, funding and access to your room.",
-            "join": {
-                "title": "What your friends see",
-                "roomName": "Ski trip",
-                "nameLabel": "Your name",
-                "namePlaceholder": "Tom",
-                "button": "Join the room",
-                "body": "No email, password, or download."
-            },
-            "features": {
-                "title": "What Tribu does",
-                "currency": {
-                    "title": "162 room currencies",
-                    "body": "Automatic conversion for 156 currencies; six more work without conversion."
-                },
-                "splits": {
-                    "title": "Choose how to split each bill",
-                    "body": "Equal, percentages, shares, exact amounts, or selected people."
-                },
-                "exact": {
-                    "title": "See the calculation",
-                    "body": "Open any balance to see the breakdown."
-                },
-                "live": {
-                    "title": "Shared expense list",
-                    "body": "New expenses appear for everyone who is connected."
-                },
-                "offline": {
-                    "title": "Add expenses offline",
-                    "body": "New expenses wait on your device and sync when you reconnect. Editing and recording repayments need a connection."
-                },
-                "home": {
-                    "title": "Add it to your home screen",
-                    "body": "It opens like an app."
-                },
-                "transfers": {
-                    "title": "A simpler payment plan",
-                    "body": "A short list of who pays whom."
-                }
-            },
-            "settle": {
-                "title": "Ways to settle",
-                "cash": "Cash",
-                "bank": "Bank transfer"
-            },
-            "team": {
-                "title": "The people who built it",
-                "intro": "Konrad and Hugo built Tribu. Here is why.",
-                "konrad": {
-                    "name": "Konrad",
-                    "role": "built Split",
-                    "quote": "Every trip ended the same way: a spreadsheet nobody updated, and one person quietly out of pocket."
-                },
-                "hugo": {
-                    "name": "Hugo",
-                    "role": "built Split",
-                    "quote": "I wanted the whole thing to be a link. If your friends have to make an account, they will not."
-                }
-            },
-            "who": {
-                "title": "Who maintains and funds Split",
-                "built": {
-                    "title": "Squirrel Labs maintains Split",
-                    "body": "For now, Squirrel Labs is the sole maintainer and pays every cost, including maintainer work hours."
-                },
-                "free": {
-                    "title": "Optional links",
-                    "body": "Any promotional links are optional. They never require a click, send repeated prompts or block a feature."
-                },
-                "data": {
-                    "title": "Room links and analytics",
-                    "body": "We exclude room links from our analytics. Anyone with the link can access the room."
-                }
-            },
-            "faq": {
-                "title": "Common questions",
-                "retype": {
-                    "q": "Do I have to retype everything from the group chat?",
-                    "a": "Yes. Add each expense once; everyone in the room can enter what they paid.",
-                    "import": "You can import a Splitwise group and check the balances first. Older expenses may be combined into opening balances."
-                },
-                "access": {
-                    "q": "Who can see our room?",
-                    "a": "Anyone with the link can open the room. Share it only with your group. We ask search engines not to index rooms."
-                },
-                "lost": {
-                    "q": "How do we get back to the room?",
-                    "a": "Leave the link in the group chat so everyone can find it there. Tribu also saves rooms you open on this device, and you can paste the link on the home page to add it back."
-                },
-                "limits": {
-                    "q": "Is there a daily limit on expenses?",
-                    "a": "There is no daily expense limit."
-                }
-            },
-            "compare": {
-                "line": "Coming from another splitting app?",
-                "link": "See how Tribu compares to Splitwise"
-            }
         }
     },
     "locale": {

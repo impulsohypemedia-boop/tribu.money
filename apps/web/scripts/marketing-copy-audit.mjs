@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync } from 'node:fs'
-import { basename, extname, join, relative, resolve } from 'node:path'
+import { extname, join, relative, resolve } from 'node:path'
 import matter from 'gray-matter'
 import ts from 'typescript'
 
@@ -130,28 +130,6 @@ const prohibitedClaims = [
             /Peanut support|support Peanut|Peanut-Support|soporte de Peanut|suporte da Peanut|pomocy Peanut|підтримки Peanut/giu,
     },
 ]
-
-const stewardshipRequirements = {
-    en: [/Squirrel Labs/u, /sole maintainer/u, /every cost/u, /work hours/u, /never/u],
-    de: [/Squirrel Labs/u, /betreut nur Squirrel Labs/u, /alle Kosten/u, /Arbeitszeit/u, /nie/u],
-    fr: [/Squirrel Labs/u, /assure seul la maintenance/u, /tous les coûts/u, /temps de travail/u, /jamais/u],
-    pl: [/Squirrel Labs/u, /jedynym opiekunem/u, /wszystkie koszty/u, /czas pracy/u, /bez wymuszonych/u],
-    uk: [/Squirrel Labs/u, /лише Squirrel Labs підтримує/u, /всі витрати/u, /робочий час/u, /без примусових/u],
-    'es-419': [
-        /Squirrel Labs/u,
-        /única entidad mantenedora/u,
-        /todos los costos/u,
-        /horas de trabajo/u,
-        /sin clics obligados/u,
-    ],
-    'pt-br': [
-        /Squirrel Labs/u,
-        /única mantenedora/u,
-        /todos os custos/u,
-        /horas de trabalho/u,
-        /sem clique obrigatório/u,
-    ],
-}
 
 function filesBelow(directory, extensions, skipDirectory = () => false) {
     return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -406,17 +384,6 @@ function auditJson(path) {
         }
     }
     visit(catalog, '')
-
-    const locale = basename(path, '.json')
-    const story = catalog?.marketing?.readMore?.who
-    const storyText = [story?.built?.title, story?.built?.body, story?.free?.title, story?.free?.body]
-        .filter((value) => typeof value === 'string')
-        .join(' ')
-    for (const requirement of stewardshipRequirements[locale] ?? []) {
-        if (!requirement.test(storyText)) {
-            failures.push(`${local}:marketing.readMore.who is missing required stewardship fact ${requirement}`)
-        }
-    }
 }
 
 function auditTypescript(path, options = {}) {

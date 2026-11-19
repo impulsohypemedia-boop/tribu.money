@@ -744,7 +744,7 @@
             "qrLabel": "Código QR para entrar a {room}",
             "roomLink": "Link de la tribu",
             "inviteText": "Texto de la invitación",
-            "copyBlocked": "Tu navegador bloqueó la copia. La invitación completa está seleccionada arriba — cópiala a mano.",
+            "copyBlocked": "Tu navegador bloqueó la copia. La invitación completa está seleccionada arriba — copiala a mano.",
             "copy": "Copiar invitación",
             "copied": "¡Copiado!",
             "share": "Compartir link de la tribu",
@@ -752,7 +752,7 @@
             "shareFailed": "No se abrió el menú para compartir. Copiá la invitación.",
             "anyoneCanJoin": "Cualquiera con este link puede entrar y agregar gastos.",
             "shareTitle": "{room} · Tribu",
-            "shareText": "Abrí el link, elegí tu nombre y agrega lo que pagaste."
+            "shareText": "Abrí el link, elegí tu nombre y agregá lo que pagaste."
         },
         "create": {
             "back": "Volver",

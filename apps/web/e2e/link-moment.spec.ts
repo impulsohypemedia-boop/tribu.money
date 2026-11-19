@@ -42,8 +42,8 @@ test('the in-room hand-off keeps copy inline and makes sharing the primary actio
 
     const qr = page.getByTestId('room-qr')
     await expect(qr).toBeVisible({ timeout: 15_000 })
-    await expect(qr).toHaveAccessibleName('QR code to join Beer trip')
-    await expect(qr).toContainText('Scan to join in person')
+    await expect(qr).toHaveAccessibleName('Código QR para entrar a Beer trip')
+    await expect(qr).toContainText('Escaneá para entrar en persona')
     await expect(qr.locator('svg')).toHaveCount(1)
 
     const row = page.getByTestId('room-link-row')
@@ -55,7 +55,7 @@ test('the in-room hand-off keeps copy inline and makes sharing the primary actio
     const share = page.getByTestId('share-link')
     await expect(share).toBeVisible()
     await expect(share).toHaveClass(/btn-primary/)
-    await expect(share).toHaveText('Share room link')
+    await expect(share).toHaveText('Compartir link de la tribu')
 
     const [rowBox, copyBox] = await Promise.all([row.boundingBox(), row.getByTestId('copy-link').boundingBox()])
     expect(rowBox).not.toBeNull()
@@ -82,5 +82,5 @@ test('the in-room hand-off keeps copy inline and makes sharing the primary actio
     })
     await page.evaluate(() => Object.defineProperty(navigator, 'share', { configurable: true, value: undefined }))
     await share.click()
-    await expect(row.getByTestId('copy-link')).toHaveAccessibleName('Copied!')
+    await expect(row.getByTestId('copy-link')).toHaveAccessibleName('¡Copiado!')
 })

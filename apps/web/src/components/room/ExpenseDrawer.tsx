@@ -22,6 +22,7 @@ import {
     CURATED_EXPENSE_CATEGORY_IDS,
     getExpenseCategorySubject,
     isExpenseCategoryId,
+    matchExpenseCategory,
     type ExpenseCategoryId,
 } from '@/lib/expense-category'
 import {
@@ -74,7 +75,12 @@ import { expenseCurrencyShortlist, readExpenseCurrencies, rememberExpenseCurrenc
 import { convertMinorForPreview, useRate } from '@/lib/use-rate'
 import { useMotionAllowed } from '@/lib/use-motion'
 import { useFeedback } from '@/lib/use-settings'
-import { activeMembers, activityRoleMembers, isFormerMember } from '@/lib/members'
+import { activeMembers, activityRoleMembers, defaultSplitMembers, isFormerMember } from '@/lib/members'
+import { createClientKey } from '@/lib/offline-queue'
+import { useStartRecurring, useStopRecurring } from '@/lib/queries/recurring'
+import { useLinkPotExpense } from '@/lib/queries/pots'
+import { openPots } from '@/lib/pots'
+import { SettingToggle } from '@/components/ui/SettingToggle'
 import { useShake } from '@/hooks/useShake'
 import { CurrencyTag } from './CurrencyTag'
 import { MemberAvatar } from './MemberAvatar'
@@ -87,6 +93,8 @@ import { ScanButton } from './scan/ScanButton'
 import { ScanFlow } from './scan/ScanFlow'
 
 interface ExpenseDrawerProps {
+    /** A new expense opens already set to repeat every month (the ＋ menu's "Gasto fijo"). */
+    startMonthly?: boolean
     open: boolean
     /** Keep the logical draft session mounted while another surface (currently
      * JoinGate after token rotation) temporarily owns the screen. */
@@ -130,6 +138,7 @@ export function ExpenseDrawer({
     token,
     meId,
     expense,
+    startMonthly = false,
     onFirstSharedBalance,
     onMatureContribution,
     defaultPaidById,
@@ -159,8 +168,32 @@ export function ExpenseDrawer({
     const [recentCurrencies, setRecentCurrencies] = useState<string[]>([])
 
     const activeRoster = useMemo(() => activeMembers(state.members), [state.members])
+    // Who an untouched EQUAL split covers: everyone active except honored guests.
+    const defaultSplitIds = useMemo(() => defaultSplitMembers(state.members).map((m) => m.id), [state.members])
+    const startRecurring = useStartRecurring(slug)
+    const stopRecurring = useStopRecurring(slug)
+    /** The monthly template this expense belongs to, while it still repeats. */
+    const activeRecurringId =
+        expense?.recurringId && (state.recurring ?? []).some((item) => item.id === expense.recurringId)
+            ? expense.recurringId
+            : null
+    const startsRepeating = activeRecurringId !== null || (!expense && !!startMonthly)
+    const [repeatMonthly, setRepeatMonthly] = useState(startsRepeating)
+    useEffect(() => setRepeatMonthly(startsRepeating), [startsRepeating, open])
+    const linkPotExpense = useLinkPotExpense(slug, token)
+    /** The vaquita this expense can be paid from: the one it already belongs to, else the newest open one. */
+    const pot = useMemo(() => {
+        const open = openPots(state)
+        return open.find((candidate) => candidate.id === expense?.potId) ?? open.at(-1) ?? null
+    }, [state, expense?.potId])
+    const [fromPot, setFromPot] = useState(!!expense?.potId)
+    useEffect(() => setFromPot(!!expense?.potId), [expense?.potId, open])
     const [values, setValues] = useState<ExpenseFormValues>(() =>
-        emptyExpenseForm({ currency: state.room.currency, members: activeRoster, paidById: defaultPaidById })
+        emptyExpenseForm({
+            currency: state.room.currency,
+            members: defaultSplitMembers(state.members),
+            paidById: defaultPaidById,
+        })
     )
     const initialValuesRef = useRef(values)
     /** Role-specific draft preservation. If a poll marks a selected person
@@ -339,7 +372,7 @@ export function ExpenseDrawer({
             ? expenseToFormValues(expense, currencies, locale)
             : emptyExpenseForm({
                   currency: recents[0] ?? state.room.currency,
-                  members: activeRoster,
+                  members: defaultSplitMembers(state.members),
                   paidById: defaultPaidById,
               })
         initialValuesRef.current = initialValues
@@ -564,7 +597,7 @@ export function ExpenseDrawer({
             patch({ splitMode: 'EQUAL' })
             return
         }
-        const participants = values.participantsTouched ? values.participantIds : activeRoster.map((m) => m.id)
+        const participants = values.participantsTouched ? values.participantIds : defaultSplitIds
         if (mode === 'EXACT') {
             if (Object.keys(values.exactInputs).length > 0) {
                 patch({ splitMode: mode })
@@ -609,7 +642,7 @@ export function ExpenseDrawer({
     const toggleParticipant = (memberId: string) => {
         // First touch materialises "everyone right now"; until then the form's
         // list is a stale snapshot and the wire omits it (server = everyone).
-        const current = values.participantsTouched ? values.participantIds : activeRoster.map((m) => m.id)
+        const current = values.participantsTouched ? values.participantIds : defaultSplitIds
         const has = current.includes(memberId)
         patch({
             participantsTouched: true,
@@ -629,9 +662,7 @@ export function ExpenseDrawer({
 
         const select = (memberId: string) => {
             if (values.splitMode === 'EQUAL') {
-                const current = values.participantsTouched
-                    ? values.participantIds
-                    : activeRoster.map((member) => member.id)
+                const current = values.participantsTouched ? values.participantIds : defaultSplitIds
                 patch({
                     participantsTouched: true,
                     participantIds: current.includes(memberId) ? current : [...current, memberId],
@@ -881,6 +912,8 @@ export function ExpenseDrawer({
             ...buildExpenseBody(valuesToSave, currencies, locale),
             ...(manualFxRate ? { manualFxRate } : {}),
         }
+        // The pot's money is in its keeper's account, so only the keeper's expense can be the pot's.
+        const potIdToSave = fromPot && pot && body.paidById === pot.keeperId ? pot.id : null
         try {
             if (expense) {
                 const input: ExpenseUpdateInput = {
@@ -895,6 +928,16 @@ export function ExpenseDrawer({
                 const roomWasMature = state.room.hasReachedSharedBalance === true
                 const updated = await updateExpense.mutateAsync({ id: expense.id, input })
                 rememberExpenseCurrency(slug, meId, body.currency)
+                if (repeatMonthly && !activeRecurringId) await startRecurring.mutateAsync(expense.id)
+                if (!repeatMonthly && activeRecurringId) await stopRecurring.mutateAsync(activeRecurringId)
+                const savedPotId = expense.potId ?? null
+                if (potIdToSave !== savedPotId) {
+                    await linkPotExpense.mutateAsync(
+                        potIdToSave
+                            ? { potId: potIdToSave, expenseId: expense.id, linked: true }
+                            : { potId: savedPotId!, expenseId: expense.id, linked: false }
+                    )
+                }
                 track(
                     'expense_edited',
                     roomProps(slug, { splitMode: body.splitMode, foreign: body.currency !== state.room.currency })
@@ -910,8 +953,29 @@ export function ExpenseDrawer({
                 // Capture before the mutation seeds its returned RoomState. The expense that creates
                 // the latch is aha itself, not a later mature-room contribution.
                 const roomWasMature = state.room.hasReachedSharedBalance === true
-                const { createdFirstSharedBalance, queuedLocally } = await addExpense.mutateAsync(body)
+                // A repeating expense needs its id to start the template, so it picks its own key.
+                // So does one the vaquita paid.
+                const clientKey = repeatMonthly || potIdToSave ? createClientKey() : undefined
+                const { createdFirstSharedBalance, queuedLocally } = await addExpense.mutateAsync(
+                    clientKey ? { ...body, clientKey } : body
+                )
                 if (!queuedLocally) rememberExpenseCurrency(slug, meId, body.currency)
+                if (potIdToSave && clientKey && !queuedLocally) {
+                    await linkPotExpense
+                        .mutateAsync({ potId: potIdToSave, expenseId: clientKey, linked: true })
+                        .catch((error: unknown) =>
+                            toast.error(errorMessage(error, t('potLinkFailed')), { duration: TOAST_MS.actionable })
+                        )
+                }
+                if (clientKey && repeatMonthly) {
+                    if (queuedLocally) toast.error(t('repeatOffline'), { duration: TOAST_MS.actionable })
+                    else
+                        await startRecurring
+                            .mutateAsync(clientKey)
+                            .catch((error: unknown) =>
+                                toast.error(errorMessage(error, t('repeatFailed')), { duration: TOAST_MS.actionable })
+                            )
+                }
                 onMatureContribution?.({ roomWasMature, queuedLocally, createdFirstSharedBalance })
 
                 // Save succeeded and the room has reached its first actionable
@@ -1047,7 +1111,7 @@ export function ExpenseDrawer({
         values.splitMode === 'EQUAL'
             ? values.participantsTouched
                 ? values.participantIds
-                : activeRoster.map((member) => member.id)
+                : defaultSplitIds
             : values.splitMode === 'EXACT'
               ? exactParticipantIds(values, currencies, locale)
               : weightedParticipantIds(values, locale)
@@ -1187,6 +1251,18 @@ export function ExpenseDrawer({
         label: categoryLabels[id],
         doodle: getExpenseCategorySubject(id).doodle,
     }))
+    // What "Auto" will pick, shown on the chip as they type: "asado" reads as Comida right away.
+    const autoMatch = values.description.trim() ? matchExpenseCategory(values.description) : null
+    const autoCategory =
+        autoMatch && autoMatch.rule !== 'fallback'
+            ? {
+                  doodle: autoMatch.subject.doodle,
+                  label:
+                      autoMatch.category.id in categoryLabels
+                          ? categoryLabels[autoMatch.category.id as keyof typeof categoryLabels]
+                          : null,
+              }
+            : null
 
     return (
         <Drawer
@@ -1263,7 +1339,7 @@ export function ExpenseDrawer({
                     <div className="shrink-0 px-4 pb-2">
                         {canSwitchRoom ? (
                             <Link
-                                href="/app?manage=1&add=1"
+                                href="/tribus?add=1"
                                 aria-label={`${state.room.name}: ${tHeader('openRoomSwitcher')}`}
                                 data-testid="expense-drawer-room-switcher"
                                 className="flex min-h-11 items-center justify-between gap-2 rounded-sm border border-n-1 bg-white px-3 text-sm font-bold"
@@ -1335,6 +1411,7 @@ export function ExpenseDrawer({
                         category={{
                             value: isExpenseCategoryId(values.category) ? values.category : null,
                             options: categoryOptions,
+                            auto: autoCategory,
                             onChange: (category: ExpenseCategoryId | null) => {
                                 patch({ category })
                                 dispatchWorkflow({ type: 'form-field-edited' })
@@ -1705,8 +1782,9 @@ export function ExpenseDrawer({
                                 {values.splitMode === 'EQUAL' ? (
                                     <ul aria-label={t('whoShares')} className="grid grid-cols-2 gap-2">
                                         {participantRoster.map((member) => {
-                                            const checked =
-                                                !values.participantsTouched || values.participantIds.includes(member.id)
+                                            const checked = values.participantsTouched
+                                                ? values.participantIds.includes(member.id)
+                                                : defaultSplitIds.includes(member.id)
                                             return (
                                                 <li key={member.id}>
                                                     <button
@@ -2145,6 +2223,29 @@ export function ExpenseDrawer({
                                 dispatchWorkflow({ type: 'editor-closed' })
                             }}
                             onClose={() => dispatchWorkflow({ type: 'editor-closed' })}
+                        />
+                    )}
+
+                    <SettingToggle
+                        label={t('repeatMonthly')}
+                        hint={t('repeatMonthlyHint')}
+                        checked={repeatMonthly}
+                        onChange={setRepeatMonthly}
+                        testId="expense-repeat-monthly"
+                    />
+
+                    {pot && (
+                        <SettingToggle
+                            label={t('payFromPot', { name: pot.name })}
+                            hint={t('payFromPotHint', {
+                                keeper: state.members.find((member) => member.id === pot.keeperId)?.name ?? '',
+                            })}
+                            checked={fromPot && values.paidById === pot.keeperId}
+                            onChange={(next) => {
+                                setFromPot(next)
+                                if (next) patch({ paidById: pot.keeperId, newPaidByName: '' })
+                            }}
+                            testId="expense-pay-from-pot"
                         />
                     )}
 

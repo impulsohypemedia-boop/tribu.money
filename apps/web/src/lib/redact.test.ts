@@ -5,15 +5,15 @@ import { redactField, redactRoomSlugs, redactTelemetryEvent } from '@/lib/redact
 
 describe('redactRoomSlugs', () => {
     it('scrubs the room page URL', () => {
-        expect(redactRoomSlugs('https://peanutsplit.com/r/ski-trip-x7k2m9')).toBe('https://peanutsplit.com/r/[slug]')
+        expect(redactRoomSlugs('https://tribu.money/r/ski-trip-x7k2m9')).toBe('https://tribu.money/r/[slug]')
         expect(redactRoomSlugs('/r/ski-trip-x7k2m9/')).toBe('/r/[slug]/')
         expect(redactRoomSlugs('/r/ski-trip-x7k2m9?joined=1')).toBe('/r/[slug]?joined=1')
     })
 
     it('scrubs the API paths a fetch breadcrumb records', () => {
         expect(redactRoomSlugs('/api/rooms/ski-trip-x7k2m9/expenses')).toBe('/api/rooms/[slug]/expenses')
-        expect(redactRoomSlugs('https://peanutsplit.com/api/rooms/ski-trip-x7k2m9')).toBe(
-            'https://peanutsplit.com/api/rooms/[slug]'
+        expect(redactRoomSlugs('https://tribu.money/api/rooms/ski-trip-x7k2m9')).toBe(
+            'https://tribu.money/api/rooms/[slug]'
         )
     })
 
@@ -21,8 +21,8 @@ describe('redactRoomSlugs', () => {
         expect(redactRoomSlugs('/r/ski-trip-x7k2m9/card/alterego?a=theCloser&p=disco-octopus')).toBe(
             '/r/[slug]/card/alterego'
         )
-        expect(redactRoomSlugs('https://peanutsplit.com/r/ski-trip-x7k2m9/card/crew')).toBe(
-            'https://peanutsplit.com/r/[slug]/card/crew'
+        expect(redactRoomSlugs('https://tribu.money/r/ski-trip-x7k2m9/card/crew')).toBe(
+            'https://tribu.money/r/[slug]/card/crew'
         )
         // A breadcrumb often carries a fragment after the query; only the query goes.
         expect(redactRoomSlugs('/r/ski-trip-x7k2m9/card/alterego?a=hypeCrew&p=wizard-frog#top')).toBe(
@@ -54,8 +54,8 @@ describe('redactTelemetryEvent', () => {
             message: `Could not load /r/${capability}`,
             transaction: `/r/${capability}`,
             request: {
-                url: `https://peanutsplit.com/r/${capability}`,
-                headers: { Referer: `https://peanutsplit.com/r/${capability}`, referer: `/r/${capability}` },
+                url: `https://tribu.money/r/${capability}`,
+                headers: { Referer: `https://tribu.money/r/${capability}`, referer: `/r/${capability}` },
             },
             exception: { values: [{ value: `Fetch failed at /api/rooms/${capability}/expenses` }] },
             breadcrumbs: [
@@ -74,7 +74,7 @@ describe('redactTelemetryEvent', () => {
         expect(event).toMatchObject({
             message: 'Could not load /r/[slug]',
             transaction: '/r/[slug]',
-            request: { url: 'https://peanutsplit.com/r/[slug]' },
+            request: { url: 'https://tribu.money/r/[slug]' },
             exception: { values: [{ value: 'Fetch failed at /api/rooms/[slug]/expenses' }] },
             breadcrumbs: [{ message: 'Navigated from /r/[slug]' }],
         })

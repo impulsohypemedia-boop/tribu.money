@@ -45,12 +45,12 @@ export const OG_CACHE_CONTROL = 'public, max-age=300, s-maxage=300, stale-while-
 export const INK = '#211C17'
 export const MUTED = '#5F646D'
 /** primary-1. The Peanut mark's pink: stamps and confetti, never body ink. */
-export const PINK = '#FF90E8'
+export const PINK = '#7DD3C0'
 /** secondary-1, the default field — and the confetti's third colour. */
-export const YELLOW = '#FFC900'
+export const YELLOW = '#FF7A45'
 
 /** The domain the card prints, resolved rather than typed. A literal would say
- *  `peanutsplit.com` on a preview deploy, where it is the one thing on the card
+ *  `tribu.money` on a preview deploy, where it is the one thing on the card
  *  a stranger could act on and the one place it would be wrong. */
 export const cardDomain = (): string => siteUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '')
 
@@ -217,7 +217,7 @@ function TornEdge({ notchColor, offset }: { notchColor: string; offset: number }
 }
 
 /**
- * "PEANUT SPLIT" is the brand and stays put in every language. The line beside
+ * "TRIBU" is the brand and stays put in every language. The line beside
  * it is either a localized sentence (the unfurl, which travels WITH a link) or
  * the domain (every card that travels alone as a file, where the printed domain
  * is the only thing a stranger who sees it can act on).
@@ -233,7 +233,7 @@ export function Wordmark({ note, noteColor, height = 96 }: { note: string; noteC
                 padding: '0 56px',
             }}
         >
-            <div style={{ display: 'flex', fontFamily: DISPLAY_FONT, fontSize: 34, color: INK }}>PEANUT SPLIT</div>
+            <div style={{ display: 'flex', fontFamily: DISPLAY_FONT, fontSize: 34, color: INK }}>TRIBU</div>
             <div style={{ display: 'flex', fontSize: 26, color: noteColor }}>{note}</div>
         </div>
     )

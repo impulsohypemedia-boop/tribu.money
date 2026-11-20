@@ -38,6 +38,7 @@ import { discardSharedReceipt } from '@/lib/shared-receipt'
 import { daySpan } from '@/lib/story'
 import { themeVars } from '@/lib/themes'
 import { useRoomIdentity } from '@/lib/use-identity'
+import { useLemonWalletLink } from '@/components/lemon/useLemonWalletLink'
 import { useMotionAllowed } from '@/lib/use-motion'
 import { AchievementMoment } from './AchievementMoment'
 import { AllSettled } from './AllSettled'
@@ -49,6 +50,9 @@ import { JoinGate } from './JoinGate'
 import { LatecomerBanner } from './LatecomerBanner'
 import { RoomErrorState, RoomHeaderSkeleton, RoomNotFound, RoomSkeleton } from './RoomStates'
 import { RoomHeader } from './RoomHeader'
+import { MonthSummaryCard } from './MonthSummary'
+import { TribeMilestones } from './TribeMilestones'
+import { VaquitaCard, VaquitaRoomPanel } from './Vaquita'
 import { SettleDrawer } from './SettleDrawer'
 import { ShareDrawer } from './ShareDrawer'
 
@@ -185,6 +189,7 @@ export function RoomScreen({ slug }: { slug: string }) {
             name: state.room.name,
             emoji: state.room.emoji ?? undefined,
             theme: state.room.theme ?? undefined,
+            ...(state.room.kind === 'vaquita' ? { kind: 'vaquita' as const } : {}),
         })
     }, [slug, state])
 
@@ -443,10 +448,17 @@ export function RoomScreen({ slug }: { slug: string }) {
         })()
     }, [consumeSharedReceipt, error, params.add, params.shared])
 
+    // Before the early returns below: hooks must run in the same order on every render.
+    useLemonWalletLink(
+        slug,
+        (identity && state?.members.find((member) => member.id === identity.memberId && isActiveMember(member))) ||
+            null,
+        identity?.token
+    )
     if (isApiError(error, 'NOT_FOUND')) return <RoomNotFound slug={slug} addExpense={params.add} />
     if (error && !state) return <RoomErrorState onRetry={() => void refetch()} />
 
-    const closeDrawers = () => setParams({ add: null, expense: null, settle: null })
+    const closeDrawers = () => setParams({ add: null, fijo: null, expense: null, settle: null })
 
     const onJoined = (next: MemberIdentity) => {
         setDisplacedIdentity(null)
@@ -633,6 +645,31 @@ export function RoomScreen({ slug }: { slug: string }) {
                                     }
                                 />
                             )}
+                            {!needsJoin && (
+                                <div className="px-4">
+                                    {state.room.kind === 'vaquita' ? (
+                                        <VaquitaRoomPanel
+                                            slug={slug}
+                                            state={state}
+                                            currencies={currencies}
+                                            meId={meId}
+                                            token={identity?.token}
+                                        />
+                                    ) : (
+                                        <>
+                                            <VaquitaCard
+                                                slug={slug}
+                                                state={state}
+                                                currencies={currencies}
+                                                meId={meId}
+                                                token={identity?.token}
+                                            />
+                                            <MonthSummaryCard state={state} currencies={currencies} />
+                                        </>
+                                    )}
+                                    <TribeMilestones slug={slug} state={state} />
+                                </div>
+                            )}
                             <ExpenseList
                                 state={state}
                                 currencies={currencies}
@@ -700,6 +737,7 @@ export function RoomScreen({ slug }: { slug: string }) {
                         token={identity?.token}
                         meId={meId}
                         expense={editing}
+                        startMonthly={params.fijo}
                         onFirstSharedBalance={() => openPostAhaShare(true)}
                         onMatureContribution={(result) => {
                             noteMatureContribution(slug, result)

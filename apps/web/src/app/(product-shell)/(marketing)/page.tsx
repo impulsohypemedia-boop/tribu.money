@@ -1,8 +1,6 @@
-import { FinalCta } from '@/components/marketing/FinalCta'
-import { Hero } from '@/components/marketing/Hero'
-import { LandingProof } from '@/components/marketing/LandingProof'
-import { ReadMore } from '@/components/marketing/ReadMore'
+import { HowItWorks } from '@/components/marketing/HowItWorks'
 import { SiteFooter } from '@/components/marketing/SiteFooter'
+import { TribuHero } from '@/components/marketing/TribuHero'
 import { YourRooms } from '@/components/marketing/YourRooms'
 import { StandaloneLandingRedirect } from '@/components/pwa/StandaloneLandingRedirect'
 import enMessages from '@/i18n/messages/en.json'
@@ -18,7 +16,7 @@ import { pageMetadata } from '@/lib/seo'
 const heroSubtitle = enMessages.marketing.hero.subtitle
 
 export const metadata = pageMetadata({
-    title: 'Peanut Split — good accounting makes good friends',
+    title: 'Tribu: gastos compartidos con tu gente',
     description: heroSubtitle,
     path: '/',
     type: 'website',
@@ -28,11 +26,9 @@ export default function LandingPage() {
     return (
         <main data-testid="marketing-home" className="flex min-h-dvh flex-col bg-background">
             <StandaloneLandingRedirect />
-            <Hero />
+            <TribuHero />
             <YourRooms surface="landing" />
-            <LandingProof />
-            <ReadMore />
-            <FinalCta />
+            <HowItWorks />
             <SiteFooter />
         </main>
     )

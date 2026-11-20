@@ -74,7 +74,7 @@ const questions: ExecutiveQuestion[] = [
         choices: [
             {
                 id: 'peanutsplit-seo',
-                label: 'peanutsplit.com + SEO',
+                label: 'tribu.money + SEO',
                 description: 'Keep the current domain and invest in static localized public pages.',
                 recommended: true,
             },
@@ -125,19 +125,19 @@ const questions: ExecutiveQuestion[] = [
         consequence:
             '“Peanut domain + SEO” resolves the strategy but not the canonical URLs. This choice determines redirects, cookie scope, sitemap ownership, analytics boundaries, and the route architecture.',
         recommendation:
-            'Decision recorded: keep the app, PWA, and native SEO on peanutsplit.com. Keep split.peanut.me only as a one-way compatibility alias; defer the separate generated-content pipeline until it is retargeted without peanut-ui.',
+            'Decision recorded: keep the app, PWA, and native SEO on tribu.money. Keep app.tribu.money only as a one-way compatibility alias; defer the separate generated-content pipeline until it is retargeted without peanut-ui.',
         recordedChoice: 'peanutsplit-all',
         choices: [
             {
                 id: 'peanutsplit-all',
                 label: 'Everything on PeanutSplit',
-                description: 'App, PWA, and SEO content all live on peanutsplit.com.',
+                description: 'App, PWA, and SEO content all live on tribu.money.',
                 recommended: true,
             },
             {
                 id: 'subdomain-all',
                 label: 'Everything on subdomain',
-                description: 'Product and content both live at split.peanut.me.',
+                description: 'Product and content both live at app.tribu.money.',
             },
             {
                 id: 'subpath-all',
@@ -192,7 +192,7 @@ function readStoredAnswers(): AnswerRecords {
 }
 
 function buildExecutiveBrief(records: AnswerRecords): string {
-    const lines = ['# Peanut Split executive decisions', '', `Exported: ${new Date().toISOString()}`, '']
+    const lines = ['# Tribu executive decisions', '', `Exported: ${new Date().toISOString()}`, '']
 
     for (const question of questions) {
         const answer = records[question.id] ?? emptyAnswer()

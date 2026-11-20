@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { AnimatePresence, motion } from 'motion/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'sonner'
-import { peanutThinking } from '@/assets/mascot'
+import { tribuPensando } from '@/assets/mascot'
 import type { ApiExpense, CurrencyInfo, RoomState } from '@/lib/api-types'
 import { cn } from '@/lib/cn'
 import { personalExpenseImpact } from '@/lib/expense-impact'
@@ -213,6 +213,8 @@ export function ExpenseList({
     savedActionsDisabled = false,
 }: ExpenseListProps) {
     const t = useTranslations('room.expenses')
+    const tPot = useTranslations('room.pot')
+    const isVaquita = state.room.kind === 'vaquita'
     const tDates = useTranslations('dates')
     const tOffline = useTranslations('offline')
     const locale = useLocale()
@@ -368,13 +370,13 @@ export function ExpenseList({
                     data-motion-surface
                 >
                     <Image
-                        src={peanutThinking}
+                        src={tribuPensando}
                         alt=""
                         unoptimized
                         className="h-20 w-20 object-contain sm:h-32 sm:w-32"
                     />
                 </motion.div>
-                <p className="text-h6">{t('emptyTitle')}</p>
+                <p className="text-h6">{isVaquita ? tPot('emptyTitle') : t('emptyTitle')}</p>
                 <div className="flex w-full max-w-[18rem] flex-col gap-3">
                     <Button
                         variant="primary"
@@ -384,7 +386,7 @@ export function ExpenseList({
                         onClick={onShare}
                         data-testid="empty-share"
                     >
-                        {t('emptyShare')}
+                        {isVaquita ? tPot('emptyShare') : t('emptyShare')}
                     </Button>
                     <Button
                         variant="stroke"
@@ -686,6 +688,22 @@ export function ExpenseList({
                                                         heading and two unnamed rows read identically. */}
                                                     {expenseRowLabel(expense.description, expense.date, dayOptions)}
                                                 </span>
+                                                {expense.recurringId && (
+                                                    <span
+                                                        className="mt-0.5 inline-block rounded-full bg-secondary-1/30 px-2 py-0.5 text-h10 font-bold uppercase tracking-wide text-n-1"
+                                                        data-testid="expense-recurring-chip"
+                                                    >
+                                                        {t('monthlyChip')}
+                                                    </span>
+                                                )}
+                                                {expense.potId && (
+                                                    <span
+                                                        className="ml-1 mt-0.5 inline-block rounded-full bg-primary-3 px-2 py-0.5 text-h10 font-bold uppercase tracking-wide text-n-1"
+                                                        data-testid="expense-pot-chip"
+                                                    >
+                                                        {t('potChip')}
+                                                    </span>
+                                                )}
                                                 {queuedExpense && (
                                                     <span className="block text-h10 uppercase tracking-wide text-grey-1">
                                                         {blockedWrite

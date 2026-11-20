@@ -76,6 +76,58 @@ function InertBackground() {
 }
 
 /**
+ * Keeps an open sheet inside the part of the screen the software keyboard leaves visible.
+ *
+ * vaul's own `repositionInputs` snapshots a pixel height when the keyboard opens and pins the
+ * sheet with it. On iOS Safari, which also scrolls the page under a fixed element when a field
+ * takes focus, that left the sheet cut off at the top of the screen with the backdrop over the
+ * rest, and the field being typed in hidden. Instead this follows `visualViewport`: while the
+ * keyboard is up, the sheet's bottom edge sits on top of the keyboard and its height is capped to
+ * what is visible, so its own body scrolls and the focused field is brought into view. With the
+ * keyboard down, the inline styles go and the sheet is back to its normal layout.
+ */
+function useKeyboardAwareSheet(sheetRef: React.RefObject<HTMLElement | null>) {
+    React.useEffect(() => {
+        const viewport = window.visualViewport
+        if (!viewport) return
+        let frame = 0
+        const update = () => {
+            const sheet = sheetRef.current
+            if (!sheet) return
+            const covered = window.innerHeight - viewport.height
+            // Browser chrome collapsing changes the height by less than a keyboard does.
+            if (covered < 120) {
+                sheet.style.removeProperty('bottom')
+                sheet.style.removeProperty('max-height')
+                return
+            }
+            const below = Math.max(0, window.innerHeight - (viewport.offsetTop + viewport.height))
+            sheet.style.bottom = `${below}px`
+            sheet.style.maxHeight = `${Math.max(160, viewport.height - 12)}px`
+            const active = document.activeElement
+            if (active instanceof HTMLElement && sheet.contains(active) && active.matches('input, textarea, select')) {
+                active.scrollIntoView({ block: 'nearest' })
+            }
+        }
+        const schedule = () => {
+            cancelAnimationFrame(frame)
+            frame = requestAnimationFrame(update)
+        }
+        viewport.addEventListener('resize', schedule)
+        viewport.addEventListener('scroll', schedule)
+        // A field focused while the keyboard is already up does not resize the viewport.
+        document.addEventListener('focusin', schedule)
+        schedule()
+        return () => {
+            cancelAnimationFrame(frame)
+            viewport.removeEventListener('resize', schedule)
+            viewport.removeEventListener('scroll', schedule)
+            document.removeEventListener('focusin', schedule)
+        }
+    }, [sheetRef])
+}
+
+/**
  * `autoFocus` is vaul's, and it defaults to FALSE: it cancels the dialog's
  * open-autofocus, so focus stayed on whatever opened the sheet. The focus trap
  * only pulls focus back to the last element it saw INSIDE the dialog, so with
@@ -86,12 +138,15 @@ function InertBackground() {
 const Drawer = ({
     shouldScaleBackground = true,
     autoFocus = true,
+    repositionInputs = false,
     ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) => {
     return (
         <DrawerPrimitive.Root
             shouldScaleBackground={shouldScaleBackground}
             autoFocus={autoFocus}
+            // Keyboard handling is `useKeyboardAwareSheet`'s; see there for why not vaul's.
+            repositionInputs={repositionInputs}
             snapToSequentialPoint
             {...props}
         />
@@ -121,12 +176,22 @@ const DrawerContent = React.forwardRef<
      *  dialog's own "focus the trigger again" had no trigger to find and closing
      *  dropped focus on `<body>`. Remember what the sheet took focus from. */
     const openerRef = React.useRef<HTMLElement | null>(null)
+    const sheetRef = React.useRef<HTMLDivElement | null>(null)
+    useKeyboardAwareSheet(sheetRef)
+    const setRefs = React.useCallback(
+        (node: HTMLDivElement | null) => {
+            sheetRef.current = node
+            if (typeof ref === 'function') ref(node)
+            else if (ref) ref.current = node
+        },
+        [ref]
+    )
 
     return (
         <DrawerPortal>
             <DrawerOverlay />
             <DrawerPrimitive.Content
-                ref={ref}
+                ref={setRefs}
                 className={twMerge(
                     // The sheet stops short of the top on purpose. That strip is the
                     // only backdrop a phone has to tap on, and it is where you watch

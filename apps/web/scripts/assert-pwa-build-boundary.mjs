@@ -21,16 +21,13 @@ const matching = (pattern) => chunks.filter((file) => pattern.test(file.replaceA
 
 const globalEntries = chunks.filter((file) => /^(?:main|main-app)-[^/]+\.js$/.test(basename(file)))
 const productLayouts = matching(/\/app\/\(product-shell\)\/layout-[^/]+\.js$/)
-const contentLayouts = matching(/\/app\/\(split-content\)\/layout-[^/]+\.js$/)
 
 assert.ok(existsSync(join(appRoot, 'public/sw.js')), 'Serwist did not emit public/sw.js')
 assert.ok(globalEntries.length > 0, 'Next emitted no global client entry')
 assert.equal(productLayouts.length, 1, 'expected one compiled product root layout')
-assert.equal(contentLayouts.length, 1, 'expected one compiled content root layout')
 
 const globalSource = sourceOf(globalEntries)
 const productSource = sourceOf(productLayouts)
-const contentSource = sourceOf(contentLayouts)
 
 // `register: false` must still expose the supported Serwist window instance before React effects,
 // while eliminating the global call and the default reconnect reload from content's shared entry.
@@ -49,10 +46,5 @@ assert.match(
     'product layout has no native ordering fallback'
 )
 assert.match(productSource, /addEventListener\(["']online["']/, 'product layout lost reconnect reload behavior')
-assert.doesNotMatch(
-    contentSource,
-    /serwist\.register|serviceWorker\.register|addEventListener\(["']online["']/,
-    'content layout owns a PWA side effect'
-)
 
 process.stdout.write('PWA build boundary: product-only registration verified.\n')

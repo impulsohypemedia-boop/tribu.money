@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: 'Design system — Peanut Split',
-    description: 'The code-derived Peanut Split design system and implementation audit.',
+    title: 'Design system — Tribu',
+    description: 'The code-derived Tribu design system and implementation audit.',
     robots: { index: false, follow: false },
 }
 

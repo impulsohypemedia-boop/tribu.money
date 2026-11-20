@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useRef, type RefObject } from 'react'
 import { useTranslations } from 'next-intl'
 import { CharacterSheet } from '@/components/room/CharacterSheet'
@@ -62,14 +63,23 @@ export function RoomHeader({
     // Resolved rather than held, so a member disappearing under an open sheet
     // closes it instead of leaving a sheet about nobody — which is also what an
     // unknown or stale id in the URL does.
+    const tShell = useTranslations('appShell.nav')
     const characterMember = sheets.character ? (activeMember(members, sheets.character) ?? null) : null
 
     return (
         // The room's field colour, with the classic yellow as the literal
         // fallback — a room with no theme renders the exact bytes it did before
         // this variable existed.
-        <header className="sticky top-0 z-10 border-b border-n-1 bg-[var(--split-theme-field,#FFC900)]">
-            <div className="flex items-center gap-3 px-4 py-3">
+        <header className="sticky top-0 z-10 border-b border-n-1 bg-[var(--split-theme-field,#FF7A45)]">
+            <div className="flex items-center gap-2 py-3 pl-2 pr-4">
+                <Link
+                    href="/app"
+                    aria-label={tShell('backHome')}
+                    data-testid="room-back-home"
+                    className="flex size-9 shrink-0 items-center justify-center rounded-full hover:bg-white/30"
+                >
+                    <Icon name="arrow-left" size={22} aria-hidden="true" />
+                </Link>
                 <button
                     ref={headerSettingsRef}
                     type="button"
@@ -178,6 +188,7 @@ export function RoomHeader({
                 member={characterMember}
                 members={members}
                 token={identity?.token}
+                meId={identity?.memberId}
             />
         </header>
     )

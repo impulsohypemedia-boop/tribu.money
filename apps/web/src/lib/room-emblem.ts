@@ -6,7 +6,6 @@ import { FALLBACK_DOODLE, roomDoodleFor } from '@/lib/room-doodle'
  * value stays untouched while every visual room surface uses Split's own drawing;
  * text-only surfaces omit the emblem. */
 const LEGACY_EMBLEM_DOODLES: Record<string, DoodleName> = {
-    '🥜': 'peanut',
     '🏔️': 'mountain',
     '🏝️': 'island',
     '🍕': 'pizza',

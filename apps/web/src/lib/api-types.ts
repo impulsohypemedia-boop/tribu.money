@@ -9,7 +9,8 @@
 export type SplitMode = 'EQUAL' | 'EXACT' | 'PERCENTAGE' | 'SHARES'
 
 /** Free-form on the wire; the UI knows about these three. */
-export type SettlementMethod = 'cash' | 'bank' | 'peanut'
+/** `peanut` survives only to render settlements recorded before the fork. */
+export type SettlementMethod = 'cash' | 'bank' | 'crypto' | 'lemon' | 'peanut'
 
 export interface CurrencyInfo {
     code: string
@@ -33,6 +34,8 @@ export interface ApiRoom {
     name: string
     emoji: string | null
     currency: string
+    /** A tribu shares expenses; a vaquita is built around one shared pot. Optional for older caches. */
+    kind?: 'tribu' | 'vaquita'
     coverUrl: string | null
     /** A key into the catalog in `lib/themes.ts`. null = the default palette. */
     theme: string | null
@@ -57,6 +60,21 @@ export interface ApiMember {
     removedAt?: string | null
     /** Server-derived exact-balance eligibility for leaving the active roster. */
     canRemove?: boolean
+    /** Lemon wallet this member is paid at, proven by a signature. Lowercase hex. */
+    walletAddress?: string | null
+    lemonTag?: string | null
+    /** Where this member asks to be paid outside Lemon (`lib/payout.ts`). Typed by the member. */
+    payoutToken?: string | null
+    payoutNetwork?: string | null
+    payoutAddress?: string | null
+    /** In the room but not chipping in: left out of new expenses unless picked by hand. */
+    honoredGuest?: boolean
+}
+
+export interface MemberProfileInput {
+    honoredGuest?: boolean
+    /** null clears the payout details. Only the member themself may change them. */
+    payout?: { token: string; network: string; address: string } | null
 }
 
 export interface ApiShare {
@@ -100,6 +118,10 @@ export interface ApiExpense {
     shares: ApiShare[]
     /** Oldest first, id as tiebreaker. Empty for an expense nobody reacted to. */
     reactions: ApiReaction[]
+    /** The monthly template this expense belongs to, if it repeats. */
+    recurringId?: string | null
+    /** The vaquita that paid this expense from its keeper's account. */
+    potId?: string | null
 }
 
 export interface ApiSettlement {
@@ -113,6 +135,14 @@ export interface ApiSettlement {
     note: string | null
     /** User-pasted documentation; Split never fetches or verifies it. */
     receiptUrl?: string | null
+    /** Set only for method `lemon`, after the server checked the transfer on chain. */
+    txHash?: string | null
+    chainId?: number | null
+    token?: string | null
+    /** Method `crypto` only: the network the payer says they used. */
+    network?: string | null
+    /** Token base units. */
+    tokenAmount?: string | null
     createdAt: string
 }
 
@@ -123,12 +153,59 @@ export interface ApiTransfer {
     amountMinor: string
 }
 
+export interface ApiRecurringExpense {
+    id: string
+    description: string
+    /** In `currency`, as typed on the expense it was copied from. */
+    amountMinor: string
+    currency: string
+    paidById: string | null
+    /** 1–31; a shorter month uses its last day. */
+    dayOfMonth: number
+}
+
+export interface ApiPotContribution {
+    id: string
+    memberId: string
+    /** Room currency. */
+    amountMinor: string
+    /** The payment to the keeper it was recorded as; null for the keeper's own money. */
+    settlementId: string | null
+    createdAt: string
+}
+
+/** La vaquita: a shared pot held in the keeper's own account. Amounts in room currency. */
+export interface ApiPot {
+    id: string
+    name: string
+    keeperId: string
+    targetMinor: string | null
+    /** Per person per month. */
+    quotaMinor: string | null
+    dueDate: string | null
+    createdAt: string
+    closedAt: string | null
+    contributions: ApiPotContribution[]
+}
+
+export interface PotInput {
+    name: string
+    keeperId: string
+    targetMinor?: string | null
+    quotaMinor?: string | null
+    dueDate?: string | null
+}
+
 export interface RoomState {
     room: ApiRoom
     members: ApiMember[]
     /** Non-deleted only, newest expense date first. */
     expenses: ApiExpense[]
     settlements: ApiSettlement[]
+    /** Monthly expenses still repeating. Optional only for older cached responses. */
+    recurring?: ApiRecurringExpense[]
+    /** Every vaquita, open and closed, oldest first. Optional only for older cached responses. */
+    pots?: ApiPot[]
     /** memberId → net position in room-currency minor units. Sums to "0". */
     balances: Record<string, string>
     suggestedTransfers: ApiTransfer[]
@@ -145,6 +222,8 @@ export type RoomHistoryAction =
     | 'member_removed'
     | 'member_restored'
     | 'member_avatar_updated'
+    | 'member_profile_updated'
+    | 'pot_updated'
     | 'expense_added'
     | 'expense_edited'
     | 'expense_deleted'
@@ -210,6 +289,9 @@ export interface CreateRoomInput {
     creatorName: string
     /** Additional people in the room, excluding the creator. */
     memberNames?: string[]
+    kind?: 'tribu' | 'vaquita'
+    /** A vaquita's goal; its pot is kept by the creator. */
+    pot?: { targetMinor?: string | null; quotaMinor?: string | null; dueDate?: string | null }
 }
 
 export interface CreateMemberInput {
@@ -300,6 +382,24 @@ export interface SettlementInput {
     method?: SettlementMethod | string | null
     note?: string | null
     receiptUrl?: string | null
+    /** Paying ahead: allows more than the debt; the extra stays as credit for later expenses. */
+    advance?: boolean
+    /** Method `crypto` only: the stablecoin and network the payer used. */
+    crypto?: { token: 'USDC' | 'USDT'; network: string }
+    /** Method `lemon` only: the transfer the server checks on chain before recording. */
+    lemon?: { txHash: string; token: 'USDC' | 'USDT'; tokenAmount: string }
+}
+
+export interface LemonQuote {
+    chainId: number
+    quotes: { token: 'USDC' | 'USDT'; address: string; decimals: number; usdCents: string; tokenAmount: string }[]
+}
+
+export interface WalletLinkInput {
+    wallet: string
+    message: string
+    signature: string
+    lemonTag?: string | null
 }
 
 // ─── push ───────────────────────────────────────────────────────────────────

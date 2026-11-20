@@ -45,7 +45,7 @@ describe('iOS launch screens', () => {
             .filter((entry) => entry.isDirectory())
             .map((entry) => entry.name)
             .sort()
-        expect(folders).toEqual(['dev', 'doodles', 'fonts', 'icons', 'install', 'press'])
+        expect(folders).toEqual(['fonts', 'icons', 'install'])
         expect(readFileSync(path.join(WEB, 'next.config.js'), 'utf8')).toContain("'install/*.svg'")
     })
 })

@@ -18,7 +18,6 @@
     "licenses:check": "node scripts/generate-third-party-licenses.mjs --check",
     "i18n:audit": "pnpm --dir apps/web run i18n:audit",
     "marketing-copy:audit": "pnpm --dir apps/web run marketing-copy:audit",
-    "marketing-copy:audit:all": "pnpm --dir apps/web run marketing-copy:audit:all",
     "ui-icons:audit": "pnpm --dir apps/web run ui-icons:audit",
     "classes:audit": "pnpm --dir apps/web run classes:audit",
     "format": "prettier --write . && pnpm --dir apps/web format",

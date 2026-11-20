@@ -37,6 +37,11 @@ const roomArgs = {
             orderBy: [{ date: 'desc' }, { createdAt: 'desc' }, { id: 'desc' }],
         },
         settlements: { where: { deletedAt: null }, orderBy: { createdAt: 'desc' } },
+        recurringExpenses: { where: { stoppedAt: null }, orderBy: { createdAt: 'asc' } },
+        pots: {
+            include: { contributions: { where: { deletedAt: null }, orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] } },
+            orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+        },
     },
 } satisfies Prisma.RoomDefaultArgs
 
@@ -125,6 +130,7 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             name: room.name,
             emoji: room.emoji,
             currency: room.currency,
+            kind: room.kind === 'vaquita' ? 'vaquita' : 'tribu',
             coverUrl: room.coverUrl,
             theme: room.theme,
             hasReachedSharedBalance: room.firstSharedBalanceExpenseId !== null,
@@ -138,6 +144,12 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             createdAt: m.createdAt.toISOString(),
             removedAt: m.removedAt?.toISOString() ?? null,
             canRemove: m.canRemove,
+            walletAddress: m.walletAddress,
+            lemonTag: m.lemonTag,
+            payoutToken: m.payoutToken,
+            payoutNetwork: m.payoutNetwork,
+            payoutAddress: m.payoutAddress,
+            honoredGuest: m.honoredGuest,
         })),
         expenses: room.expenses.map((e) => ({
             id: e.id,
@@ -153,6 +165,8 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             date: e.date.toISOString(),
             category: e.category,
             createdAt: e.createdAt.toISOString(),
+            recurringId: e.recurringId,
+            potId: e.potId,
             shares: e.shares.map((s) => ({
                 memberId: s.memberId,
                 amountMinor: s.amountMinor.toString(),
@@ -163,6 +177,34 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             // "did I react" flag are a rendering decision, not a wire fact.
             reactions: e.reactions.map((r) => ({ emoji: r.emoji, memberId: r.memberId })),
         })),
+        recurring: (room.recurringExpenses ?? []).map((r) => {
+            const body = r.body as { amountMinor?: string; currency?: string; paidById?: string }
+            return {
+                id: r.id,
+                description: r.description,
+                amountMinor: body.amountMinor ?? '0',
+                currency: body.currency ?? room.currency,
+                paidById: body.paidById ?? null,
+                dayOfMonth: r.dayOfMonth,
+            }
+        }),
+        pots: (room.pots ?? []).map((pot) => ({
+            id: pot.id,
+            name: pot.name,
+            keeperId: pot.keeperId,
+            targetMinor: pot.targetMinor?.toString() ?? null,
+            quotaMinor: pot.quotaMinor?.toString() ?? null,
+            dueDate: pot.dueDate?.toISOString() ?? null,
+            createdAt: pot.createdAt.toISOString(),
+            closedAt: pot.closedAt?.toISOString() ?? null,
+            contributions: pot.contributions.map((c) => ({
+                id: c.id,
+                memberId: c.memberId,
+                amountMinor: c.amountMinor.toString(),
+                settlementId: c.settlementId,
+                createdAt: c.createdAt.toISOString(),
+            })),
+        })),
         settlements: room.settlements.map((s) => ({
             id: s.id,
             fromId: s.fromId,
@@ -172,6 +214,11 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             method: s.method,
             note: s.note,
             receiptUrl: s.receiptUrl,
+            txHash: s.txHash,
+            chainId: s.chainId,
+            token: s.token,
+            network: s.network,
+            tokenAmount: s.tokenAmount,
             createdAt: s.createdAt.toISOString(),
         })),
         balances: Object.fromEntries([...balances.entries()].map(([id, net]) => [id, net.toString()])),

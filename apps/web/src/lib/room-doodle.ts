@@ -173,7 +173,7 @@ const KEYWORDS: ReadonlyArray<readonly [DoodleName | string, readonly string[]]>
 
 /** Nothing matched. The peanut is the app's own mark, so an unrecognised room still looks like
  *  it belongs here rather than like a missing asset. */
-export const FALLBACK_DOODLE: DoodleName = 'peanut'
+export const FALLBACK_DOODLE: DoodleName = 'tribu'
 
 /**
  * The drawing for a room name, or the peanut.

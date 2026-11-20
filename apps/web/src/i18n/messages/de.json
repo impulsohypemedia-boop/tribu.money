@@ -17,7 +17,7 @@
                 "linkPrompt": "Alle tragen ihre Ausgaben selbst ein",
                 "joined": "Bea, Jules und Mo haben den Link geöffnet"
             },
-            "stageSummary": "Ein Gruppenlink von Peanut Split wird im Gruppenchat geteilt, damit alle dieselbe Gruppe öffnen und ihre Ausgaben eintragen können.",
+            "stageSummary": "Ein Gruppenlink von Tribu wird im Gruppenchat geteilt, damit alle dieselbe Gruppe öffnen und ihre Ausgaben eintragen können.",
             "validation": {
                 "roomRequired": "Gib der Gruppe zuerst einen Namen.",
                 "creatorRequired": "Sag uns, wer du bist."
@@ -41,10 +41,10 @@
             "recovery": {
                 "title": "Du hast schon einen Gruppenlink?",
                 "label": "Gruppenlink einfügen",
-                "placeholder": "peanutsplit.com/r/your-room-…",
+                "placeholder": "tribu.money/r/your-room-…",
                 "hint": "Speichert die Gruppe auf diesem Gerät.",
                 "submit": "Gruppe hinzufügen",
-                "invalid": "Füge einen vollständigen Peanut Split-Gruppenlink ein.",
+                "invalid": "Füge einen vollständigen Tribu-Gruppenlink ein.",
                 "notFound": "Wir konnten die Gruppe nicht finden. Prüfe, ob du den vollständigen Link eingefügt hast.",
                 "failed": "Wir konnten die Gruppe gerade nicht prüfen. Es wurde nichts gespeichert – versuche es noch einmal.",
                 "openingSaved": "{room} wird geöffnet und ist auf diesem Gerät gespeichert.",
@@ -124,67 +124,64 @@
             "createSplit": "Gruppe erstellen",
             "toolsLink": "Rechner",
             "importLink": "Aus Splitwise importieren",
-            "sourceStewardship": "Quellcode",
             "colCompare": "Vergleich",
             "colGuides": "Ratgeber",
             "allGuides": "Alle Ratgeber",
-            "madeByPrefix": "mit Liebe gemacht von",
-            "madeByBrand": "Squirrel Labs",
             "termsLink": "Nutzungsbedingungen",
             "privacyLink": "Datenschutz",
-            "operatedBy": "Peanut Split wird von der Squirrel Labs Ltd betrieben, dem Unternehmen hinter Peanut (peanut.me). Eingetragen in England und Wales unter der Firmennummer 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
+            "operatedBy": "Tribu is free software under the AGPL-3.0 license."
         },
         "appHome": {
-            "landingLink": "Was ist Split?"
+            "landingLink": "Was ist Tribu?"
         },
         "install": {
-            "title": "Split installieren",
+            "title": "Tribu installieren",
             "body": "Komm schneller zu dieser Gruppe zurück. Kein App-Store. Kein Konto.",
             "bodySettled": "Diese Reise – und die nächste – erreichst du mit einem Fingertipp.",
-            "announcement": "Split kann installiert werden.",
-            "cta": "Split installieren",
+            "announcement": "Tribu kann installiert werden.",
+            "cta": "Tribu installieren",
             "ctaSteps": "Installationsschritte anzeigen",
             "dismiss": "Nicht jetzt",
             "row": {
-                "label": "Split installieren",
-                "labelIos": "Split zum Home-Bildschirm hinzufügen",
-                "installed": "Split ist installiert.",
+                "label": "Tribu installieren",
+                "labelIos": "Tribu zum Home-Bildschirm hinzufügen",
+                "installed": "Tribu ist installiert.",
                 "preparing": "Wird vorbereitet…",
-                "checkLabel": "Split-Symbol",
+                "checkLabel": "Tribu-Symbol",
                 "checkLabelIos": "Symbol auf dem Home-Bildschirm",
                 "checkAction": "Prüfen"
             },
             "browser": {
-                "title": "Split installieren",
+                "title": "Tribu installieren",
                 "body": "Nutze die Installationsoption deines Browsers – nicht „Verknüpfung erstellen“.",
                 "bodyAndroid": "Öffne das Browsermenü. Wähle „App installieren“ – nicht „Verknüpfung erstellen“.",
                 "embedded": "In einer anderen App? Wähle zuerst „Im Browser öffnen“.",
                 "step1Android": "Tippe in Chrome auf „Mehr“.",
                 "step2Android": "Wähle „Zum Startbildschirm hinzufügen“ oder „Installieren und Verknüpfung erstellen“.",
                 "step3Android": "Wähle „Installieren“ oder „App installieren“.",
-                "step4Android": "Prüfe, ob der Name „Split“ lautet, und tippe auf „Installieren“.",
+                "step4Android": "Prüfe, ob der Name „Tribu“ lautet, und tippe auf „Installieren“.",
                 "step1Other": "Öffne das Menü deines Browsers.",
                 "step2Other": "Wähle „App installieren“. Auf dem Mac wählst du „Zum Dock hinzufügen“.",
-                "step3Other": "Achte darauf, dass der Name „Split“ lautet, und bestätige.",
+                "step3Other": "Achte darauf, dass der Name „Tribu“ lautet, und bestätige.",
                 "noOption": "Keine Installationsoption? Öffne diese Seite in Chrome.",
                 "install": "Installieren"
             },
             "ios": {
-                "title": "Split zum Home-Bildschirm hinzufügen",
+                "title": "Tribu zum Home-Bildschirm hinzufügen",
                 "step1": "Tippe auf „Teilen“. Falls es nicht sichtbar ist, tippe zuerst auf „Mehr“.",
                 "step2": "Tippe auf „Zum Home-Bildschirm“.",
                 "step3": "Aktiviere „Als Web-App öffnen“, falls die Option angezeigt wird.",
                 "step4": "Tippe auf „Hinzufügen“.",
-                "openAfter": "Öffne Split danach über das neue Symbol.",
+                "openAfter": "Öffne Tribu danach über das neue Symbol.",
                 "body": "Nutze das Teilen-Menü deines Browsers.",
                 "prepareFailed": "Diese Gruppe konnte nicht vorbereitet werden. Versuche es gleich noch einmal.",
                 "add": "Hinzufügen"
             },
             "repair": {
-                "announcement": "Du kannst dein Split-Symbol prüfen.",
+                "announcement": "Du kannst dein Tribu-Symbol prüfen.",
                 "title": "Altes Gruppensymbol ersetzen",
-                "body": "Auf dem Symbol steht Split? Dann passt alles. Es zeigt einen Gruppennamen? Dann ersetze es.",
-                "cardBody": "Zeigt dein Symbol einen Gruppennamen? Ersetze es durch Split.",
+                "body": "Auf dem Symbol steht Tribu? Dann passt alles. Es zeigt einen Gruppennamen? Dann ersetze es.",
+                "cardBody": "Zeigt dein Symbol einen Gruppennamen? Ersetze es durch Tribu.",
                 "cta": "Symbol prüfen",
                 "copyFirst": "Kopiere den Gruppenlink, bevor du das alte Symbol entfernst.",
                 "step1": "Entferne das Symbol mit dem Gruppennamen.",
@@ -198,12 +195,12 @@
                 "copied": "Gruppenlink kopiert.",
                 "copyFailed": "Der Link konnte nicht kopiert werden. Öffne ihn erneut dort, wo er geteilt wurde.",
                 "missing": "Hier ist kein Gruppenlink. Öffne ihn erneut dort, wo er geteilt wurde.",
-                "check": "Installiere nur, wenn der Name „Split“ lautet.",
+                "check": "Installiere nur, wenn der Name „Tribu“ lautet.",
                 "back": "Zurück zur Gruppe"
             },
             "page": {
                 "preparing": "Browser wird geprüft…",
-                "installed": "Split ist installiert.",
+                "installed": "Tribu ist installiert.",
                 "continue": "Zurück zu Split",
                 "copyRoom": "Ursprünglichen Gruppenlink kopieren",
                 "roomRecovery": "Ist die Gruppe nach der Installation verschwunden? Öffne den ursprünglichen Gruppenlink einmal."
@@ -221,109 +218,23 @@
                 "title": "Geöffnete Gruppen bleiben auf diesem Gerät"
             },
             "money": {
-                "title": "Split verwaltet die Abrechnung, nicht dein Geld"
+                "title": "Tribu verwaltet die Abrechnung, nicht dein Geld"
             },
             "done": "Verstanden"
         },
-        "readMore": {
-            "toggle": "MEHR ÜBER SPLIT",
-            "toggleHint": "Funktionen, Finanzierung und Zugang zu eurer Gruppe.",
-            "join": {
-                "title": "Was deine Freunde sehen",
-                "roomName": "Skireise",
-                "nameLabel": "Dein Name",
-                "namePlaceholder": "Tom",
-                "button": "Gruppe beitreten",
-                "body": "Keine E-Mail, kein Passwort, kein Download."
+        "howItWorks": {
+            "title": "That easy",
+            "create": {
+                "title": "Start your tribe",
+                "body": "Name it and add your people. No account needed."
             },
-            "features": {
-                "title": "Was Split kann",
-                "currency": {
-                    "title": "162 Währungen für eure Gruppe",
-                    "body": "Automatische Umrechnung für 156 Währungen; sechs weitere funktionieren ohne Umrechnung."
-                },
-                "splits": {
-                    "title": "Jede Rechnung passend aufteilen",
-                    "body": "Gleich, prozentual, nach Anteilen, nach genauen Beträgen oder nur unter ausgewählten Personen."
-                },
-                "exact": {
-                    "title": "Berechnung ansehen",
-                    "body": "Öffne einen Saldo, um die Aufschlüsselung zu sehen."
-                },
-                "live": {
-                    "title": "Gemeinsame Ausgabenliste",
-                    "body": "Neue Ausgaben erscheinen bei allen, die online sind."
-                },
-                "offline": {
-                    "title": "Ausgaben offline hinzufügen",
-                    "body": "Neue Ausgaben bleiben auf deinem Gerät und werden gesendet, sobald du wieder online bist. Bearbeiten und Rückzahlungen eintragen geht nur mit Verbindung."
-                },
-                "home": {
-                    "title": "Zum Home-Bildschirm hinzufügen",
-                    "body": "Öffnet sich wie eine App."
-                },
-                "transfers": {
-                    "title": "Ein einfacherer Zahlungsplan",
-                    "body": "Eine kurze Liste, wer wem zahlt."
-                }
+            "share": {
+                "title": "Share the link",
+                "body": "Everyone joins from the group chat and adds what they paid."
             },
             "settle": {
-                "title": "Zahlungsarten",
-                "cash": "Bar",
-                "bank": "Überweisung"
-            },
-            "team": {
-                "title": "Das Team dahinter",
-                "intro": "Konrad und Hugo haben Split gebaut. Hier erzählen sie, warum.",
-                "konrad": {
-                    "name": "Konrad",
-                    "role": "hat Split gebaut",
-                    "quote": "Jede Reise endete gleich: eine Tabelle, die niemand aktualisierte, und eine Person, die still auf den Kosten sitzen blieb."
-                },
-                "hugo": {
-                    "name": "Hugo",
-                    "role": "hat Split gebaut",
-                    "quote": "Ich wollte, dass alles nur ein Link ist. Wenn deine Freunde ein Konto anlegen müssen, tun sie es nicht."
-                }
-            },
-            "who": {
-                "title": "Wer Split betreut und finanziert",
-                "built": {
-                    "title": "Squirrel Labs betreut Split",
-                    "body": "Derzeit betreut nur Squirrel Labs das Projekt und übernimmt alle Kosten, auch die Arbeitszeit."
-                },
-                "free": {
-                    "title": "Optionale Links",
-                    "body": "Links zu anderen Diensten sind optional. Sie erzwingen nie einen Klick, wiederholen keine Aufforderungen und sperren keine Funktionen."
-                },
-                "data": {
-                    "title": "Gruppenlinks und Nutzungsanalyse",
-                    "body": "Wir erfassen Gruppenlinks nicht in unserer Nutzungsanalyse. Alle mit dem Link können die Gruppe öffnen."
-                }
-            },
-            "faq": {
-                "title": "Häufige Fragen",
-                "retype": {
-                    "q": "Muss ich alles aus dem Gruppenchat noch einmal eingeben?",
-                    "a": "Ja. Tragt jede Ausgabe einmal ein. Alle in der Gruppe können ihre eigenen Ausgaben hinzufügen.",
-                    "import": "Du kannst eine Splitwise-Gruppe importieren und die Salden vorher prüfen. Ältere Ausgaben können zu Anfangssalden zusammengefasst werden."
-                },
-                "access": {
-                    "q": "Wer kann unsere Gruppe sehen?",
-                    "a": "Alle mit dem Link können die Gruppe öffnen. Teilt ihn nur mit eurer Gruppe. Wir bitten Suchmaschinen, Gruppen nicht zu indexieren."
-                },
-                "lost": {
-                    "q": "Wie kommen wir zurück zur Gruppe?",
-                    "a": "Lasst den Link im Gruppenchat, damit ihn alle dort finden. Split speichert geöffnete Gruppen außerdem auf diesem Gerät. Auf der Startseite kannst du den Link einfügen und die Gruppe wieder hinzufügen."
-                },
-                "limits": {
-                    "q": "Gibt es ein Tageslimit für Ausgaben?",
-                    "a": "Es gibt kein Tageslimit für Ausgaben."
-                }
-            },
-            "compare": {
-                "line": "Du kommst von einer anderen App zum Kostenteilen?",
-                "link": "Split mit Splitwise vergleichen"
+                "title": "Settle in a tap",
+                "body": "Tribu works out who pays whom. Inside Lemon you pay in USDC or USDT."
             }
         }
     },
@@ -410,7 +321,7 @@
             "messagePlaceholder": "Was hast du gemacht, was ist passiert und was hattest du erwartet?",
             "messageHint": "Pflichtfeld · mindestens {minimum} Zeichen. Gruppenlinks in deinem Text werden vor dem Speichern entfernt.",
             "attachmentsTitle": "Anhänge auswählen",
-            "attachmentsIntro": "Zunächst ist kein Anhang ausgewählt. Aktiviere nur, was du für die Split-Maintainer bei Squirrel Labs hinzufügen möchtest.",
+            "attachmentsIntro": "Zunächst ist kein Anhang ausgewählt. Aktiviere nur, was du für die Tribu-Maintainer bei Tribu hinzufügen möchtest.",
             "deviceTitle": "Gerätedetails",
             "deviceHint": "Browser und Betriebssystem, Ansichtsgröße, Zeitzone, App-Modus und Netzwerkstatus.",
             "exactDeviceData": "Genaue Gerätedaten anzeigen",
@@ -437,12 +348,12 @@
             "imageTooLarge": "Das Bild ist zu groß. Wähle einen Screenshot unter 20 MB.",
             "imageUnreadable": "Das Bild konnte nicht gelesen werden. Wähle einen Screenshot im Format JPEG, PNG oder WebP.",
             "consentTitle": "Ich stimme dem Senden dieser Meldung zu",
-            "consentHint": "Die Split-Maintainer bei Squirrel Labs können deine Nachricht und nur die oben ausgewählten Anhänge lesen. Meldungen werden weder an Analysedienste gesendet noch in der Gruppe angezeigt; ihre Löschung ist nach 90 Tagen vorgesehen.",
+            "consentHint": "Die Tribu-Maintainer bei Tribu können deine Nachricht und nur die oben ausgewählten Anhänge lesen. Meldungen werden weder an Analysedienste gesendet noch in der Gruppe angezeigt; ihre Löschung ist nach 90 Tagen vorgesehen.",
             "send": "Meldung senden",
             "cancel": "Abbrechen",
             "sendFailed": "Die Meldung konnte nicht gesendet werden – dein Text und Screenshot sind noch da.",
             "successTitle": "Meldung gesendet",
-            "successBody": "Danke. Die Meldung und die ausgewählten Anhänge wurden für die Split-Maintainer bei Squirrel Labs gespeichert.",
+            "successBody": "Danke. Die Meldung und die ausgewählten Anhänge wurden für die Tribu-Maintainer bei Tribu gespeichert.",
             "done": "Fertig"
         },
         "export": {
@@ -529,6 +440,8 @@
                 "member_removed": "hat eine Person als „ehemalig“ markiert",
                 "member_restored": "hat eine Person reaktiviert",
                 "member_avatar_updated": "hat die Figur einer Person bearbeitet",
+                "member_profile_updated": "edited a person’s profile",
+                "pot_updated": "updated the pot",
                 "expense_added": "hat eine Ausgabe hinzugefügt",
                 "expense_edited": "hat eine Ausgabe bearbeitet",
                 "expense_deleted": "hat eine Ausgabe gelöscht",
@@ -602,7 +515,9 @@
             },
             "emptyInvite": "Andere einladen",
             "emptyShare": "Gruppe teilen",
-            "emptyAdd": "Ausgabe hinzufügen"
+            "emptyAdd": "Ausgabe hinzufügen",
+            "monthlyChip": "Monthly",
+            "potChip": "Pot"
         },
         "states": {
             "errorTitle": "Diese Gruppe konnte nicht geladen werden",
@@ -643,7 +558,7 @@
             "topPayer": "{name} hat am meisten vorgestreckt",
             "share": "Geschichte teilen",
             "sharing": "Wird vorbereitet…",
-            "shareTitle": "Peanut Split",
+            "shareTitle": "Tribu",
             "shareText": "Wir haben alles ausgeglichen.",
             "copied": "Rückblick kopiert – füge ihn ein, wo du möchtest.",
             "downloaded": "Rückblick in deinen Downloads gespeichert.",
@@ -778,7 +693,14 @@
             "equallyShort": "gleichmäßig",
             "exactShort": "genau",
             "percentageShort": "nach Prozent",
-            "sharesShort": "nach Anteilen"
+            "sharesShort": "nach Anteilen",
+            "repeatMonthly": "Repeats every month",
+            "repeatMonthlyHint": "Rent, bills, subscriptions… Tribu adds it again on the same day every month.",
+            "repeatOffline": "Saved offline. Turn on \"Repeats every month\" once you are back online.",
+            "repeatFailed": "The expense was saved, but it could not be set to repeat.",
+            "payFromPot": "Paid by the pot “{name}”",
+            "payFromPotHint": "Comes out of the money {keeper} keeps.",
+            "potLinkFailed": "The expense was saved, but we could not mark it as paid by the pot."
         },
         "settle": {
             "formerName": "{name} · Inaktiv",
@@ -791,12 +713,8 @@
             "cash": "Bar",
             "bank": "Bank",
             "peanut": "Peanut",
-            "peanutNote": "Öffnet Peanut in einem neuen Tab. Split erfasst die Zahlung hier auch dann, wenn kein Geld gesendet wird.",
             "note": "Notiz (optional)",
             "notePlaceholder": "Am Freitag gesendet",
-            "receiptLink": "Beleglink (optional)",
-            "receiptLinkPlaceholder": "https://…",
-            "receiptLinkHint": "Wird nur als Nachweis gespeichert. Split öffnet oder prüft den Link nicht.",
             "record": "Zahlung erfassen",
             "back": "Zurück",
             "recorded": "{from} hat an {to} gezahlt",
@@ -807,7 +725,30 @@
             "amountFormatInvalid": "Prüfe die Trennzeichen und Nachkommastellen des Betrags.",
             "amountTooHigh": "Das ist mehr, als {name} schuldet.",
             "recordedTitle": "Gerade erfasst",
-            "amountTooHighYou": "Das ist mehr, als du schuldest."
+            "amountTooHighYou": "Das ist mehr, als du schuldest.",
+            "lemon": "Lemon",
+            "lemonNote": "Paid from your Lemon wallet, in digital dollars.",
+            "lemonQuote": "You will send {amount} {token} from your Lemon.",
+            "lemonPay": "Pay with Lemon",
+            "lemonPaying": "Waiting for Lemon…",
+            "lemonConfirming": "Confirming the payment…",
+            "lemonPayTitle": "Payment to {name} on Tribu",
+            "lemonFailed": "The payment did not go through. No money moved.",
+            "lemonSignInNeeded": "Sign in with Lemon to pay from here.",
+            "lemonOnlyPayer": "Only {name} can pay this debt with Lemon.",
+            "lemonLinking": "Connecting your Lemon to this group. Try again in a moment.",
+            "lemonPayeeNoWallet": "{name} has not opened this group from Lemon yet, so there is nowhere to send it.",
+            "lemonTokenUnavailable": "{token} is not available on this network.",
+            "tapHint": "Did someone already pay? Tap their row to mark it paid.",
+            "markPaid": "Mark paid",
+            "payAhead": "Pay ahead",
+            "payAheadHint": "Anything extra stays as credit for {name} and comes off the next expenses.",
+            "creditNote": "<amount></amount> stays as credit for {name}.",
+            "pot": "Pot contribution",
+            "crypto": "Crypto",
+            "cryptoNote": "Send it from your wallet to the one above, then mark it here. Tribu does not check it.",
+            "cryptoNoWallet": "{name} has not added a wallet yet. Ask them to add it in their profile.",
+            "cryptoMismatch": "Heads up: {name} asked for {token} on {network}."
         },
         "share": {
             "title": "Gruppe teilen",
@@ -830,7 +771,7 @@
             "shared": "Gruppenlink gesendet.",
             "shareFailed": "Das Teilen-Menü wurde nicht geöffnet. Kopiere stattdessen die Einladung.",
             "anyoneCanJoin": "Alle mit diesem Link können beitreten und Ausgaben hinzufügen.",
-            "shareTitle": "{room} · Peanut Split",
+            "shareTitle": "{room} · Tribu",
             "shareText": "Öffne den Link, wähle deinen Namen und trage ein, was du bezahlt hast."
         },
         "create": {
@@ -915,7 +856,7 @@
             "step1": "Beleg scannen · Positionen prüfen",
             "step2": "Beleg scannen · Wer hatte was?",
             "reading": "Beleg wird gelesen…",
-            "privacyNote": "Split sendet das Foto einmalig und speichert es nicht.",
+            "privacyNote": "Tribu sendet das Foto einmalig und speichert es nicht.",
             "reviewTitle": "Positionen prüfen",
             "reviewBody": "Korrigiere Fehler, lösche, was dir nicht gehört, und ergänze Fehlendes.",
             "reviewFromMerchant": "Von {merchant}. Korrigiere Fehler und ergänze Fehlendes.",
@@ -1055,7 +996,63 @@
             "removing": "Wird rückgängig gemacht…",
             "confirmNo": "Behalten",
             "removed": "Zahlungseintrag rückgängig gemacht. Gruppensalden aktualisiert.",
-            "removeFailed": "Der Zahlungseintrag konnte nicht rückgängig gemacht werden – versuche es noch einmal."
+            "removeFailed": "Der Zahlungseintrag konnte nicht rückgängig gemacht werden – versuche es noch einmal.",
+            "txLink": "View the transaction"
+        },
+        "storyCard": {
+            "tripSettled": "All square!",
+            "tripGoing": "How the group is doing",
+            "tripCaption": "spent together",
+            "potReached": "Pot complete!",
+            "potClosed": "Pot closed",
+            "potGoing": "How the pot is doing",
+            "potCaption": "{count, plural, =0 {nobody has chipped in yet} one {raised by # person} other {raised by #}}",
+            "potGoal": "Goal: {amount}",
+            "share": "Share to stories",
+            "sharing": "Preparing the image…",
+            "shareLabel": "Share an image for stories"
+        },
+        "milestones": {
+            "cardTitle": "Group milestones",
+            "cardLine": "{reached} of {total} reached together",
+            "title": "Group milestones",
+            "intro": "Everyone reaches them together. Nobody competes.",
+            "close": "Close",
+            "unlocked": "Group milestone! {title}",
+            "items": {
+                "first-expense": {
+                    "title": "Off we go",
+                    "body": "The first expense is in."
+                },
+                "expenses-10": {
+                    "title": "10 expenses, zero fights",
+                    "body": "Ten expenses logged together."
+                },
+                "everyone-paid": {
+                    "title": "Everyone chipped in",
+                    "body": "Each person paid at least once."
+                },
+                "first-payment": {
+                    "title": "First payment",
+                    "body": "Someone already paid to even up."
+                },
+                "all-square": {
+                    "title": "All square",
+                    "body": "Nobody owes anybody anything."
+                },
+                "three-currencies": {
+                    "title": "Globetrotters",
+                    "body": "Expenses in three currencies."
+                },
+                "pot-goal": {
+                    "title": "Pot complete",
+                    "body": "The pot reached its goal."
+                },
+                "expenses-50": {
+                    "title": "Well-oiled crew",
+                    "body": "Fifty expenses and still together."
+                }
+            }
         },
         "achievements": {
             "crew": {
@@ -1128,6 +1125,119 @@
             "slideLeave": "Zum Verlassen schieben",
             "leaveFailed": "Die Gruppe konnte nicht verlassen werden. Versuche es erneut.",
             "cancel": "Abbrechen"
+        },
+        "profile": {
+            "myWallet": "My wallet",
+            "theirWallet": "{name}'s wallet",
+            "walletHint": "Pick the coin and network and paste your address, so people know where to send your money.",
+            "token": "Coin",
+            "network": "Network",
+            "address": "Address",
+            "addressInvalid": "That is not a {network} address. Check you copied all of it.",
+            "save": "Save wallet",
+            "saved": "Wallet saved",
+            "edit": "Change",
+            "remove": "Remove",
+            "cancel": "Cancel",
+            "failed": "Could not save. Try again.",
+            "noWallet": "{name} has not added a wallet yet.",
+            "payTo": "Send to {name}",
+            "copy": "Copy address",
+            "copied": "Address copied",
+            "showQr": "Show QR",
+            "hideQr": "Hide QR",
+            "networkWarning": "Send only on {network}. Money sent on another network can be lost.",
+            "honoredGuest": "Honored guest",
+            "honoredGuestHint": "{name} is in the group but does not chip in. New expenses leave them out unless you add them."
+        },
+        "monthly": {
+            "title": "Monthly expenses",
+            "unnamed": "Unnamed",
+            "everyMonth": "day {day} of every month, paid by {name}",
+            "stop": "Stop",
+            "stopped": "It no longer repeats. Past months stay.",
+            "stopFailed": "Could not stop it. Try again."
+        },
+        "monthSummary": {
+            "cardTitle": "This month",
+            "cardLine": "This month: <amount></amount> across {count, plural, one {# expense} other {# expenses}}",
+            "title": "Month summary",
+            "close": "Close",
+            "previousMonth": "Previous month",
+            "nextMonth": "Next month",
+            "quietMonth": "No expenses this month.",
+            "together": "Spent together",
+            "expenseCount": "{count, plural, one {# expense} other {# expenses}}",
+            "moreThanBefore": "{pct}% more than the month before",
+            "lessThanBefore": "{pct}% less than the month before",
+            "sameAsBefore": "same as the month before",
+            "onWhat": "On what",
+            "eachOne": "What each person put in",
+            "put": "put in",
+            "part": "their part",
+            "biggest": "The biggest expense was {name}: <amount></amount>.",
+            "unnamed": "an unnamed one",
+            "someone": "Someone",
+            "fullHistory": "See full history"
+        },
+        "pot": {
+            "someone": "Someone",
+            "unnamed": "Untitled",
+            "close": "Close",
+            "cancel": "Cancel",
+            "startTitle": "Start a pot",
+            "startHint": "Pool money for something and one person keeps it.",
+            "cardKeeper": "Kept by {name}",
+            "createTitle": "New pot",
+            "nameLabel": "What is it for?",
+            "namePlaceholder": "Beach trip",
+            "keeperLabel": "Who keeps the money?",
+            "keeperHint": "The money stays in that person's account. Tribu never touches it.",
+            "targetLabel": "Goal (optional)",
+            "quotaLabel": "Monthly amount per person (optional)",
+            "dueLabel": "By when? (optional)",
+            "createSubmit": "Start the pot",
+            "created": "Pot started",
+            "nameMissing": "Say what the pot is for.",
+            "amountInvalid": "Check the amount.",
+            "whoMissing": "Pick who is putting money in.",
+            "held": "In the pot",
+            "progress": "{pct}% of <amount></amount>",
+            "missing": "<amount></amount> to go",
+            "reached": "Goal reached!",
+            "fronted": "{name} paid <amount></amount> out of pocket; that stays in their favour.",
+            "keeperBadge": "Pot keeper",
+            "keeperLine": "The money is in {name}'s account.",
+            "keeperNote": "Each contribution is recorded as a payment to {name}, and what the pot pays comes out of their account.",
+            "projected": "At this pace you reach the goal in {month}.",
+            "suggested": "To get there by {month}, each person puts in <amount></amount> a month.",
+            "quotaTitle": "This month · <amount></amount>",
+            "quotaAllIn": "Everyone has put in this month.",
+            "quotaMissing": "<amount></amount> to go",
+            "put": "Put money in",
+            "putWho": "Who is putting in?",
+            "putAmount": "How much?",
+            "putSubmit": "Record contribution",
+            "putDone": "Contribution recorded",
+            "putNote": "Recorded as a payment from {name} to {keeper}.",
+            "byMemberTitle": "What each person put in",
+            "spentTitle": "What the pot paid",
+            "spentEmpty": "To pay with the pot, add the expense paid by {name} and turn on “Paid by the pot”.",
+            "historyTitle": "Contributions",
+            "remove": "Remove this contribution",
+            "removed": "Contribution removed",
+            "closePot": "Close the pot",
+            "closeHint": "What is left stays in favour of whoever put it in, in their balances. No money moves.",
+            "closeConfirm": "Close",
+            "closedToast": "Pot closed",
+            "startAnother": "Start another pot",
+            "newTitle": "New pot",
+            "newNamePlaceholder": "Gift for Lu",
+            "newKeeperHint": "You keep the money: it stays in your account. Tribu never touches it.",
+            "closedLabel": "This pot is closed.",
+            "yourVaquitas": "Your pots",
+            "emptyTitle": "Pot ready",
+            "emptyShare": "Share pot"
         }
     },
     "slideToConfirm": {
@@ -1141,7 +1251,7 @@
         "notifyMe": "Benachrichtigungen zu {room}",
         "cta": "Benachrichtige mich",
         "on": "Ein",
-        "iosNeedsPwa": "Füge Split zu deinem Home-Bildschirm hinzu.",
+        "iosNeedsPwa": "Füge Tribu zu deinem Home-Bildschirm hinzu.",
         "iosHow": "Wie?",
         "denied": "In deinen Browsereinstellungen blockiert.",
         "unknown": "Der Status konnte gerade nicht geprüft werden – möglicherweise erhält dieses Gerät weiterhin Benachrichtigungen.",
@@ -1163,7 +1273,7 @@
             "action": "Zurück zu deinen Gruppen"
         },
         "loading": {
-            "eyebrow": "Erdnüsse werden gezählt",
+            "eyebrow": "Adding it up",
             "title": "Deine Gruppe wird geöffnet…",
             "body": "Salden und Ausgaben werden aktualisiert.",
             "exit": "Zurück zu deinen Gruppen"
@@ -1177,7 +1287,7 @@
         "MALFORMED_JSON": "Beim Senden ist etwas schiefgelaufen – versuche es noch einmal.",
         "JSON_REQUIRED": "Beim Senden ist etwas schiefgelaufen – versuche es noch einmal.",
         "REQUEST_TOO_LARGE": "Diese Anfrage ist zu groß zum Senden.",
-        "CROSS_SITE_REQUEST": "Diese Anfrage konnte nicht bestätigt werden – öffne Split erneut und versuche es noch einmal.",
+        "CROSS_SITE_REQUEST": "Diese Anfrage konnte nicht bestätigt werden – öffne Tribu erneut und versuche es noch einmal.",
         "NOT_FOUND": "Diese Gruppe gibt es nicht.",
         "EXPENSE_NOT_FOUND": "Diese Ausgabe ist nicht mehr vorhanden – aktualisiere die Gruppe.",
         "SETTLEMENT_NOT_FOUND": "Diese Zahlung ist nicht mehr vorhanden – aktualisiere die Gruppe.",
@@ -1211,7 +1321,7 @@
         "SETTLEMENT_EXCEEDS_DEBT": "Die Zahlung ist höher als die aktuelle Schuld – aktualisiere die Gruppe und prüfe den Betrag.",
         "IDEMPOTENCY_KEY_REUSED": "Dieser Speicherschlüssel wurde bereits in einer anderen Gruppe verwendet – versuche erneut zu speichern.",
         "MEMBER_TOKEN_INVALID": "Wähle deinen Namen erneut aus, um fortzufahren.",
-        "INSTALL_HANDOFF_UNAVAILABLE": "Die gespeicherten Installationsdaten sind nicht mehr verfügbar – öffne diese Gruppe im Browser und füge Split erneut hinzu.",
+        "INSTALL_HANDOFF_UNAVAILABLE": "Die gespeicherten Installationsdaten sind nicht mehr verfügbar – öffne diese Gruppe im Browser und füge Tribu erneut hinzu.",
         "SCAN_UNAVAILABLE": "Das Scannen von Belegen ist hier nicht aktiviert.",
         "SCAN_IMAGE_TOO_LARGE": "Das Bild ist zu groß – nimm ein neues Foto auf.",
         "SCAN_BAD_IMAGE": "Das Bild konnte nicht gesendet werden – fotografiere es noch einmal.",
@@ -1229,7 +1339,22 @@
         "NO_RATE": "Für diese Währung gibt es keinen Wechselkurs zur Gruppenwährung. Verwende stattdessen die Gruppenwährung.",
         "MANUAL_FX_RATE_REQUIRED": "Gib für diese benutzerdefinierte Währung einen manuellen Kurs ein.",
         "MANUAL_FX_RATE_INVALID": "Dieser Kurs ist ungültig oder rundet den umgerechneten Betrag auf null.",
-        "MANUAL_FX_RATE_NOT_ALLOWED": "Manuelle Kurse sind nur bei benutzerdefinierten Ausgabenwährungen möglich."
+        "MANUAL_FX_RATE_NOT_ALLOWED": "Manuelle Kurse sind nur bei benutzerdefinierten Ausgabenwährungen möglich.",
+        "LEMON_PROOF_INVALID": "Lemon could not confirm that wallet is yours.",
+        "LEMON_PROOF_STALE": "Your Lemon session expired. Open Tribu from Lemon again.",
+        "LEMON_TX_INVALID": "That payment cannot be recorded.",
+        "LEMON_TX_UNDERPAID": "The payment sent is less than the debt.",
+        "LEMON_TX_PENDING": "The payment is still being confirmed.",
+        "LEMON_TX_FAILED": "The transaction failed on the network. The payment was not recorded.",
+        "LEMON_TX_MISMATCH": "That transaction does not match this payment.",
+        "LEMON_TX_ALREADY_RECORDED": "That payment is already recorded.",
+        "LEMON_WALLET_MISSING": "Both people need to have opened the group from Lemon.",
+        "NOT_THIS_MEMBER": "Only that person can connect their wallet.",
+        "PAYOUT_ADDRESS_INVALID": "That address does not fit the chosen network.",
+        "RECURRING_CURRENCY_UNSUPPORTED": "An expense in a custom currency cannot repeat on its own.",
+        "POT_NOT_FOUND": "We could not find that pot.",
+        "POT_CLOSED": "This pot is already closed.",
+        "POT_PAYER_NOT_KEEPER": "For the pot to pay, the expense must be paid by the person who keeps it."
     },
     "derivation": {
         "title": "So kommt dieser Betrag zustande",
@@ -1313,8 +1438,8 @@
         },
         "groups": {
             "label": "Gruppe aus der Datei",
-            "hint": "Der Download eines Split-Pro-Kontos kann mehrere Gruppen enthalten. Wähle eine davon aus, um daraus jetzt eine Gruppe zu erstellen.",
-            "existingHint": "Der Download eines Split-Pro-Kontos kann mehrere Gruppen enthalten. Wähle die Gruppe aus, deren Ausgaben du zu dieser Gruppe hinzufügen möchtest.",
+            "hint": "Der Download eines Tribu-Pro-Kontos kann mehrere Gruppen enthalten. Wähle eine davon aus, um daraus jetzt eine Gruppe zu erstellen.",
+            "existingHint": "Der Download eines Tribu-Pro-Kontos kann mehrere Gruppen enthalten. Wähle die Gruppe aus, deren Ausgaben du zu dieser Gruppe hinzufügen möchtest.",
             "skippedTitle": "Einige Gruppen können nicht importiert werden",
             "skipped": "{name}: {reason}"
         },
@@ -1385,7 +1510,7 @@
             "title": "Gut zu wissen",
             "more": "… und {count, plural, one {# weiterer Hinweis} other {# weitere Hinweise}}.",
             "ROW_UNBALANCED": "Zeile {row} geht schon in der Datei selbst nicht auf und wurde deshalb ausgelassen.",
-            "ROW_UNSUPPORTED_CURRENCY": "Zeile {row} verwendet {detail}, was Split noch nicht unterstützt, und wurde deshalb ausgelassen.",
+            "ROW_UNSUPPORTED_CURRENCY": "Zeile {row} verwendet {detail}, was Tribu noch nicht unterstützt, und wurde deshalb ausgelassen.",
             "ROW_NO_PAYER": "In Zeile {row} fehlt, wer bezahlt hat. Die Zeile wurde deshalb ausgelassen.",
             "ROW_ZERO_COST": "Zeile {row} enthält keinen Betrag und wurde deshalb ausgelassen.",
             "ROW_BAD_AMOUNT": "Der Betrag in Zeile {row} konnte nicht gelesen werden. Die Zeile wurde deshalb ausgelassen.",
@@ -1403,7 +1528,7 @@
             "SPLITPRO_SPLIT_MODE_FLATTENED": "Prozent- und Anteilsaufteilungen aus Split Pro behalten ihre endgültigen Beträge, werden aber als feste Beträge importiert. Bei einer späteren Bearbeitung bleiben die ursprünglichen Gewichtungen nicht erhalten.",
             "SPLITPRO_MISSING_NAMES": "{count, plural, one {Split Pro hat im Backup den Namen einer Person ausgelassen. Die betroffene Person steht unten als „Mitglied“ – benenne sie vor dem Erstellen der Gruppe um.} other {Split Pro hat im Backup die Namen von # Personen ausgelassen. Die betroffenen Personen stehen unten als „Mitglied“ – benenne sie vor dem Erstellen der Gruppe um.}}",
             "SPLITPRO_BALANCES_SKIPPED": "{count, plural, one {Ein Saldo im Split Pro-Backup ist unvollständig und wurde deshalb ausgelassen} other {# Salden im Split Pro-Backup sind unvollständig und wurden deshalb ausgelassen}}. Vergleiche die Vorschau vor dem Erstellen der Gruppe mit Split Pro.",
-            "SPLITPRO_UNSUPPORTED_CURRENCY": "Split kann {detail} nicht umrechnen. Salden in dieser Währung wurden deshalb ausgelassen. Wähle einen anderen Export, wenn diese Salden wichtig sind."
+            "SPLITPRO_UNSUPPORTED_CURRENCY": "Tribu kann {detail} nicht umrechnen. Salden in dieser Währung wurden deshalb ausgelassen. Wähle einen anderen Export, wenn diese Salden wichtig sind."
         },
         "errors": {
             "NOT_SPLITWISE_CSV": "Wir erkennen diese Datei nicht. Wähle eine .csv-Datei einer Splitwise-Gruppe, eine Freundes-CSV aus Split Pro oder die Datei splitpro_data.json von der Kontoseite in Split Pro.",
@@ -1442,12 +1567,101 @@
         "start": "Gruppe erstellen",
         "expired": "Das Foto ist nicht angekommen. Teile es erneut.",
         "unavailable": "Das Scannen von Belegen ist noch nicht aktiviert.",
-        "open": "Split öffnen"
+        "open": "Tribu öffnen"
+    },
+    "appShell": {
+        "nav": {
+            "label": "Menu",
+            "home": "Home",
+            "tribus": "Groups",
+            "vaquitas": "Pots",
+            "me": "Me",
+            "add": "Add something",
+            "backHome": "Back to home"
+        },
+        "add": {
+            "title": "What do you want to add?",
+            "whichTribu": "In which group?",
+            "close": "Close",
+            "needTribu": "Start a group first.",
+            "expense": {
+                "title": "An expense",
+                "hint": "Something someone paid, to split."
+            },
+            "fixed": {
+                "title": "A monthly expense",
+                "hint": "Rent, bills, Netflix: added every month."
+            },
+            "vaquita": {
+                "title": "A pot",
+                "hint": "Pool money for something, with a goal."
+            },
+            "tribu": {
+                "title": "A new group",
+                "hint": "A new group to share expenses."
+            }
+        },
+        "home": {
+            "loading": "Checking your groups…",
+            "emptyTitle": "Welcome to Tribu!",
+            "emptyBody": "Start a group to share expenses or a pot to pool money.",
+            "startTribu": "Start a group",
+            "startVaquita": "Start a pot",
+            "allSquare": "You're square with everyone",
+            "allSquareHint": "Nobody owes you and you owe nobody.",
+            "notJoined": "You're not in any group yet",
+            "notJoinedHint": "Open a group and pick your name to see your numbers here.",
+            "owedToMe": "You're owed",
+            "iOwe": "You owe",
+            "youPass": "you pay",
+            "youGet": "you get",
+            "fixedTitle": "Coming up this month",
+            "fixedDone": "already added",
+            "fixedComing": "added that day",
+            "fixedToday": "added today",
+            "potsTitle": "Your pots",
+            "seeAll": "See all",
+            "tribusTitle": "Your groups",
+            "potReached": "Goal reached!",
+            "potMissing": "{pct}% · <amount></amount> to go",
+            "potNoGoal": "No goal"
+        },
+        "vaquitas": {
+            "new": "Start a pot",
+            "hint": "A pot pools money for something: a gift, a trip, a barbecue. One person keeps it.",
+            "emptyTitle": "No pots yet",
+            "emptyBody": "When you start one, you'll see here how much is in and how much is left.",
+            "closedTitle": "Closed"
+        },
+        "me": {
+            "walletTitle": "My wallet",
+            "walletHint": "Where you want to be paid. Add it once and it goes on all your groups.",
+            "token": "Token",
+            "network": "Network",
+            "address": "Address",
+            "addressInvalid": "That doesn't look like a {network} address.",
+            "walletSave": "Save",
+            "walletSaveAll": "{count, plural, one {Save to my group} other {Save to my # groups}}",
+            "walletSaved": "{count, plural, =0 {Wallet saved} one {Wallet saved to your group} other {Wallet saved to your # groups}}",
+            "walletPartial": "{count, plural, one {Couldn't save to one group. Try again.} other {Couldn't save to # groups. Try again.}}",
+            "walletStatus": "On {done} of {total} groups",
+            "milestonesTitle": "Milestones",
+            "milestonesEmpty": "No milestones yet. They show up as you use your groups.",
+            "milestonesTotal": "{count, plural, one {# milestone across your groups} other {# milestones across your groups}}",
+            "activityTitle": "History",
+            "activityEmpty": "Expenses and payments you add will show up here.",
+            "activity": {
+                "paid": "You paid: {label}",
+                "shared": "You shared: {label}",
+                "sent": "You paid {label}",
+                "received": "{label} paid you"
+            }
+        }
     },
     "card": {
         "invite": {
             "label": "Gemeinsame Gruppenausgaben",
-            "line": "Alle tragen ihre Ausgaben ein. Split zeigt, wer wem wie viel schuldet.",
+            "line": "Alle tragen ihre Ausgaben ein. Tribu zeigt, wer wem wie viel schuldet.",
             "inviter": "{name} lädt dich ein:",
             "inviterFallback": "Du bist eingeladen:",
             "roster": "SCHON DABEI",

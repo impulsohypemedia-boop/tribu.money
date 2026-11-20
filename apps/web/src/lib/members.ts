@@ -43,3 +43,16 @@ export const balanceMembers = <T extends { id: string } & MembershipState>(
     members: readonly T[],
     balances: Readonly<Record<string, string>>
 ): T[] => members.filter((member) => isActiveMember(member) || BigInt(balances[member.id] ?? '0') !== 0n)
+
+/**
+ * Who a new expense is split between when nobody picks: the active roster minus honored guests,
+ * the people the room covers. If everybody is a guest, nobody would be left, so it falls back
+ * to the whole active roster. Client and server both use this so the default means one thing.
+ */
+export const defaultSplitMembers = <T extends MembershipState & { honoredGuest?: boolean }>(
+    members: readonly T[]
+): T[] => {
+    const active = activeMembers(members)
+    const payers = active.filter((member) => !member.honoredGuest)
+    return payers.length > 0 ? payers : active
+}

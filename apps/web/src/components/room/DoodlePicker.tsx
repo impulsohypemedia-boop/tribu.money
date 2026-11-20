@@ -23,7 +23,7 @@ import { RoomDrawingEditor } from './RoomDrawingEditor'
  * already showing the peanut, so the first tile is where the eye already is.
  */
 export const ROOM_DOODLES = [
-    'peanut',
+    'tribu',
     'mountain',
     'island',
     'pizza',

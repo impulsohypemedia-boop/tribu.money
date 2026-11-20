@@ -3,7 +3,7 @@ import { ShareTarget } from '@/components/pwa/ShareTarget'
 import { splitV2Enabled } from '@/lib/flags'
 
 export const metadata: Metadata = {
-    title: 'Add a bill — Peanut Split',
+    title: 'Add a bill — Tribu',
     // A POST landing pad. Nothing here should ever be crawled or followed.
     robots: { index: false, follow: false },
 }

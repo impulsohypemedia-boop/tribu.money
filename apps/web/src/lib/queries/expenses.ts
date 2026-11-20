@@ -18,7 +18,7 @@ import {
     queuedExpenseId,
 } from '../offline-queue'
 import { roomKey, roomStateResult, seedRoomState } from './core'
-import { activeMembers } from '../members'
+import { activeMembers, defaultSplitMembers } from '../members'
 import { trackExpenseSaved } from '../analytics'
 
 interface AddExpenseContext {
@@ -153,7 +153,7 @@ export function addExpenseMutationOptions(
             // This first cache read is deliberately before the first await: it
             // is the roster visible at the instant Save was pressed.
             const submitState = queryClient.getQueryData<RoomState>(roomKey(slug))
-            const submitRoster = activeMembers(submitState?.members ?? []).map((member) => member.id)
+            const submitRoster = defaultSplitMembers(submitState?.members ?? []).map((member) => member.id)
             // An empty roster is not a freeze — it is the same implicit "whoever
             // is in the room" the server would resolve, so it is never recorded
             // as one.

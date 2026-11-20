@@ -17,7 +17,7 @@ import {
 
 const coreColors = [
     { name: 'Ink', token: 'n-1 / black', value: '#211C17', role: 'Text, borders, hard shadows and dark actions' },
-    { name: 'Split yellow', token: 'primary-1', value: '#FFC900', role: 'Primary action, brand field and selection' },
+    { name: 'Split yellow', token: 'primary-1', value: '#FF7A45', role: 'Primary action, brand field and selection' },
     { name: 'Canvas', token: 'background', value: '#FAF4F0', role: 'App background and warm negative space' },
     { name: 'Paper', token: 'white', value: '#FFFFFF', role: 'Controls, cards, sheets and foreground surfaces' },
     { name: 'Muted ink', token: 'grey-1 / n-3', value: '#5F646D', role: 'Secondary copy and non-critical metadata' },
@@ -25,7 +25,7 @@ const coreColors = [
     {
         name: 'Peanut pink',
         token: 'secondary-1',
-        value: '#FF90E8',
+        value: '#7DD3C0',
         role: 'Peanut attribution and rare delight; never primary',
     },
     { name: 'Error ink', token: 'error', value: '#B3261E', role: 'Destructive/error semantics only' },
@@ -135,8 +135,8 @@ export default function DesignSystemPage() {
                             Friendly bookkeeping, drawn with a firm hand.
                         </h1>
                         <p className="mt-6 max-w-2xl text-lg leading-7 sm:text-xl sm:leading-8">
-                            This is the visual and interaction contract already shipping in Peanut Split. It names the
-                            rules, shows the real components, and marks the seams that still need consolidation.
+                            This is the visual and interaction contract already shipping in Tribu. It names the rules,
+                            shows the real components, and marks the seams that still need consolidation.
                         </p>
                         <div className="mt-8 flex flex-wrap gap-3">
                             <Link
@@ -156,7 +156,7 @@ export default function DesignSystemPage() {
                     </div>
                     <div className="relative hidden min-h-72 lg:block" aria-hidden="true">
                         <div className="shadow-primary-8 absolute right-4 top-0 grid size-64 rotate-3 place-items-center rounded-full border-2 border-n-1 bg-secondary-1">
-                            <Doodle name="peanut" size={174} weight={1.15} />
+                            <Doodle name="tribu" size={174} weight={1.15} />
                         </div>
                         <div className="shadow-4 absolute bottom-0 left-1 rounded-sm border border-n-1 bg-white p-4">
                             <p className="font-display text-2xl font-extrabold">Link. Room. Sorted.</p>
@@ -720,7 +720,7 @@ export default function DesignSystemPage() {
                     id="accessibility"
                     eyebrow="08 · behavior"
                     title="The baseline is touch, keyboard, assistive technology and a moving train"
-                    intro="Peanut Split is used in group chats, on phones, in bright rooms and with unreliable connections. The robust path is the normal path."
+                    intro="Tribu is used in group chats, on phones, in bright rooms and with unreliable connections. The robust path is the normal path."
                 >
                     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                         {[
@@ -785,9 +785,7 @@ export default function DesignSystemPage() {
                                     Plain is the win condition. Warmth comes from a price, place, time or physical
                                     object.
                                 </Rule>
-                                <Rule>
-                                    State limits in Peanut Split’s own words before anyone has to discover them.
-                                </Rule>
+                                <Rule>State limits in Tribu’s own words before anyone has to discover them.</Rule>
                                 <Rule>
                                     Humour is scarce and never sits next to a balance, promise, error or instruction.
                                 </Rule>

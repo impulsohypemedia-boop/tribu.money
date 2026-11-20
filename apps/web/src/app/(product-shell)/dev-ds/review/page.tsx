@@ -5,8 +5,8 @@ import { DocChrome } from '../_components/DocChrome'
 import { ReviewPicker } from './_components/ReviewPicker'
 
 export const metadata: Metadata = {
-    title: 'UX review — Peanut Split',
-    description: 'Representative UX mockups and recorded decisions for Peanut Split design-system changes.',
+    title: 'UX review — Tribu',
+    description: 'Representative UX mockups and recorded decisions for Tribu design-system changes.',
 }
 
 const noMockupItems = [

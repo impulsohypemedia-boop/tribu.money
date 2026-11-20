@@ -317,7 +317,7 @@ export function HeroCreateForm({
                     data-motion-surface
                 >
                     <span data-testid="hero-slug-preview">
-                        peanutsplit.com/r/
+                        tribu.money/r/
                         <span className={stem ? '' : 'text-grey-1'}>{stem || tCreate('namePlaceholderSlug')}</span>
                         <span className="tracking-widest text-grey-1">{SLUG_TAIL_HINT}</span>
                     </span>

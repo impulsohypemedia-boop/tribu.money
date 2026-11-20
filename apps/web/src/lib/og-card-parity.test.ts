@@ -56,27 +56,11 @@ describe('landing OG card', () => {
  * one fails on the push rather than in someone's group chat.
  */
 const OG_IMAGE_ROUTES = [
-    '(product-shell)/(marketing)/[page]/[country]/opengraph-image.tsx',
-    '(product-shell)/(marketing)/[page]/opengraph-image.tsx',
-    '(product-shell)/(marketing)/blog/[slug]/opengraph-image.tsx',
-    '(product-shell)/(marketing)/blog/opengraph-image.tsx',
-    '(product-shell)/(marketing)/es-419/[page]/opengraph-image.tsx',
-    '(product-shell)/(marketing)/es-419/blog/[slug]/opengraph-image.tsx',
-    '(product-shell)/(marketing)/es-419/blog/opengraph-image.tsx',
-    '(product-shell)/(marketing)/import/opengraph-image.tsx',
     '(product-shell)/(marketing)/opengraph-image.alt.txt',
     '(product-shell)/(marketing)/opengraph-image.png',
-    '(product-shell)/(marketing)/pt-br/[page]/opengraph-image.tsx',
-    '(product-shell)/(marketing)/pt-br/blog/[slug]/opengraph-image.tsx',
-    '(product-shell)/(marketing)/pt-br/blog/opengraph-image.tsx',
-    '(product-shell)/(marketing)/t/[template]/opengraph-image.tsx',
-    '(product-shell)/(marketing)/t/opengraph-image.tsx',
-    '(product-shell)/(marketing)/tools/opengraph-image.tsx',
+    '(product-shell)/import/opengraph-image.tsx',
     '(product-shell)/r/[slug]/opengraph-image.tsx',
     '(product-shell)/r/[slug]/recap/opengraph-image.tsx',
-    '(split-content)/es-419/guides/[slug]/opengraph-image.tsx',
-    '(split-content)/guides/[slug]/opengraph-image.tsx',
-    '(split-content)/pt-br/guides/[slug]/opengraph-image.tsx',
 ] as const
 
 describe('social image inventory', () => {

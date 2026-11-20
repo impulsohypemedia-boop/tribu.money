@@ -1,0 +1,11 @@
+<svg width="1705" height="1705" viewBox="0 0 1705 1705" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Tribu's provisional mark: three people, side by side, on an orange disc.
+     `scripts/generate-icons.mjs` reads this file and pulls out the `mark` group on its own for
+     the icons a platform masks into a square. Keep the two ids. -->
+<path id="ground" d="M852.5 43.5C1299.3 43.5 1661.5 405.702 1661.5 852.5C1661.5 1299.3 1299.3 1661.5 852.5 1661.5C405.702 1661.5 43.5 1299.3 43.5 852.5C43.5 405.702 405.702 43.5 852.5 43.5Z" fill="#FF7A45" stroke="black" stroke-width="55"/>
+<g id="mark">
+<circle cx="852.5" cy="640" r="250" fill="white" stroke="black" stroke-width="54"/>
+<circle cx="610" cy="1060" r="250" fill="#7DD3C0" stroke="black" stroke-width="54"/>
+<circle cx="1095" cy="1060" r="250" fill="#FFE9DF" stroke="black" stroke-width="54"/>
+</g>
+</svg>

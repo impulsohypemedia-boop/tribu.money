@@ -183,7 +183,7 @@ describe('unlocksFor', () => {
     it('carries a drawable persona even for a legacy row with no avatar', () => {
         const room = settledState(['a', 'b'], [{ paidById: 'a' }])
         const alterego = unlocksFor(room, 'a').find((unlock) => unlock.type === 'alterego')
-        expect(alterego?.detail.persona).toBe('doodle-peanut')
+        expect(alterego?.detail.persona).toBe('doodle-tribu')
     })
 })
 

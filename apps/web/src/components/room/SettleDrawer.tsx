@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'motion/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'sonner'
@@ -8,7 +9,7 @@ import { BaseInput } from '@/components/ui/BaseInput'
 import { Button } from '@/components/ui/Button'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/Drawer'
 import { DrawerActions, DrawerBody } from '@/components/ui/DrawerLayout'
-import { Icon } from '@/components/ui/Icon'
+import { Icon, type IconName } from '@/components/ui/Icon'
 import type { ApiMember, ApiTransfer, CurrencyInfo, RoomState, SettlementMethod } from '@/lib/api-types'
 import { roomProps, track } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
@@ -16,11 +17,24 @@ import { useErrorMessage } from '@/lib/error-messages'
 import { decimalsOf, formatAmountInput, parseAmountToMinor } from '@/lib/money'
 import { createClientKey } from '@/lib/offline-queue'
 import { useAddSettlement } from '@/lib/queries'
+import { api, ApiRequestError } from '@/lib/api'
+import { formatTokenUnits, lemonNetwork, type StablecoinSymbol } from '@/lib/lemon/chain'
+import { payStablecoin } from '@/lib/lemon/client'
+import { useInLemon, useLemon } from '@/components/lemon/LemonProvider'
 import { TOAST_MS } from '@/lib/toasts'
 import { useMotionAllowed } from '@/lib/use-motion'
 import { useFeedback } from '@/lib/use-settings'
 import { isFormerMember } from '@/lib/members'
 import { AllSettled } from './AllSettled'
+import { PayoutCard } from '@/components/room/MemberProfile'
+import { SettingToggle } from '@/components/ui/SettingToggle'
+import {
+    DEFAULT_PAYOUT_NETWORK,
+    PAYOUT_NETWORK_KEYS,
+    PAYOUT_NETWORKS,
+    payoutOf,
+    type PayoutNetwork,
+} from '@/lib/payout'
 import { MemberAvatar } from './MemberAvatar'
 import { AnimatedMoney, Money } from './Money'
 
@@ -36,24 +50,22 @@ interface SettleDrawerProps {
     me?: ApiMember | null
 }
 
-/** The Peanut link is the one transactional reference allowed by the official-host budget, and
- *  it sits as an equal among cash and bank transfer — by product guardrail.
- *  code=squirrel gets a new user past peanut.me's invite wall (squirrel is the
- *  system inviter); campaign=split awards the Split badge and skips the waitlist.
- *  Without them the settle link dead-ends for anyone not already invited. */
-const PEANUT_URL = 'https://peanut.me/send?utm_source=split&utm_medium=settle&code=squirrel&campaign=split'
-
 /**
  * Built inside the component so the labels can be translated, but each key is still written out
  * literally — a `t(\`settle.${id}\`)` loop would save two lines and cost the audit script its
  * ability to prove all six strings exist in all three catalogs.
  */
-const methodOptions = (t: (key: string) => string) =>
+const methodOptions = (t: (key: string) => string, inLemon: boolean) =>
     [
         { id: 'cash', label: t('cash'), icon: 'banknote' },
         { id: 'bank', label: t('bank'), icon: 'wallet' },
-        { id: 'peanut', label: t('peanut'), icon: 'sparkles' },
-    ] satisfies { id: SettlementMethod; label: string; icon: 'banknote' | 'wallet' | 'sparkles' }[]
+        { id: 'crypto', label: t('crypto'), icon: 'hand-coins' },
+        ...(inLemon ? [{ id: 'lemon', label: t('lemon'), icon: 'sparkles' } as const] : []),
+    ] satisfies { id: SettlementMethod; label: string; icon: IconName }[]
+
+/** How long to keep asking the server to confirm a sent Lemon payment before handing it to the room's history. */
+const LEMON_CONFIRM_ATTEMPTS = 20
+const LEMON_CONFIRM_INTERVAL_MS = 3000
 
 /** Stable identity for a suggested transfer — it has no id of its own. */
 const transferKey = (transfer: ApiTransfer) => `${transfer.fromId}-${transfer.toId}-${transfer.amountMinor}`
@@ -93,8 +105,13 @@ export function SettleDrawer({
     const motionAllowed = useMotionAllowed()
     const [selected, setSelected] = useState<ApiTransfer | null>(null)
     const [method, setMethod] = useState<SettlementMethod>('cash')
+    const [payAhead, setPayAhead] = useState(false)
     const [note, setNote] = useState('')
-    const [receiptUrl, setReceiptUrl] = useState('')
+    const inLemon = useInLemon()
+    const { session: lemonSession } = useLemon()
+    const [stablecoin, setStablecoin] = useState<StablecoinSymbol>('USDC')
+    const [cryptoNetwork, setCryptoNetwork] = useState<PayoutNetwork>(DEFAULT_PAYOUT_NETWORK)
+    const [lemonStage, setLemonStage] = useState<'idle' | 'paying' | 'confirming'>('idle')
     const [error, setError] = useState<string | null>(null)
     /**
      * The amount, as typed. Pre-filled with the suggestion, because the suggestion
@@ -131,7 +148,11 @@ export function SettleDrawer({
     const [collapsing, setCollapsing] = useState(false)
     const timers = useRef<number[]>([])
     const recordingRef = useRef(false)
-    const requestRef = useRef<{ signature: string; clientKey: string } | null>(null)
+    const requestRef = useRef<{
+        signature: string
+        clientKey: string
+        lemon?: { txHash: string; token: StablecoinSymbol; tokenAmount: string }
+    } | null>(null)
 
     const clearTimers = useCallback(() => {
         timers.current.forEach((id) => window.clearTimeout(id))
@@ -145,7 +166,7 @@ export function SettleDrawer({
         setSelected(null)
         setMethod('cash')
         setNote('')
-        setReceiptUrl('')
+        setLemonStage('idle')
         setAmount('')
         setError(null)
         setFrozen(null)
@@ -159,11 +180,6 @@ export function SettleDrawer({
         // Only on open — a poll landing mid-confirm must not reset the sheet.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open])
-
-    // The Peanut option was actually rendered — the denominator of THE metric.
-    useEffect(() => {
-        if (open && selected) track('peanut_option_shown', roomProps(slug))
-    }, [open, selected, slug])
 
     const nameOf = (id: string) => state.members.find((member) => member.id === id)?.name ?? tExpenses('someone')
     const displayName = (id: string) => {
@@ -182,6 +198,7 @@ export function SettleDrawer({
     const pick = (transfer: ApiTransfer) => {
         setSelected(transfer)
         setAmount(formatAmountInput(transfer.amountMinor, decimals, locale))
+        setPayAhead(false)
         setError(null)
     }
 
@@ -195,20 +212,48 @@ export function SettleDrawer({
      * UI check gives immediate feedback; the server check is what prevents two
      * concurrent taps or devices from spending the same outstanding debt.
      */
-    const enteredMinor = (): { minor: string } | { problem: string } => {
+    const enteredMinor = (): { minor: string; advance: boolean } | { problem: string } => {
         if (!selected) return { problem: t('amountInvalid') }
         const parsed = parseAmountToMinor(amount, decimals, locale)
         if (parsed === null) return { problem: t('amountFormatInvalid') }
         if (BigInt(parsed) <= 0n) return { problem: t('amountInvalid') }
-        if (BigInt(parsed) > BigInt(selected.amountMinor))
+        const over = BigInt(parsed) > BigInt(selected.amountMinor)
+        // Paying more than owed is allowed outside Lemon only once the payer has said the extra
+        // is credit on purpose (the switch under the amount); otherwise it is a typo.
+        if (over && method !== 'lemon' && payAhead) return { minor: parsed, advance: true }
+        if (over)
             return {
                 problem:
                     selected.fromId === me?.id
                         ? t('amountTooHighYou')
                         : t('amountTooHigh', { name: displayName(selected.fromId) }),
             }
-        return { minor: parsed }
+        return { minor: parsed, advance: false }
     }
+
+    /** Why "Pagar con Lemon" cannot run for this debt from this phone, or null when it can. */
+    const lemonProblem = (transfer: ApiTransfer): string | null => {
+        if (!lemonSession) return t('lemonSignInNeeded')
+        if (transfer.fromId !== me?.id) return t('lemonOnlyPayer', { name: displayName(transfer.fromId) })
+        if (!me?.walletAddress) return t('lemonLinking')
+        const payee = state.members.find((member) => member.id === transfer.toId)
+        if (!payee?.walletAddress) return t('lemonPayeeNoWallet', { name: displayName(transfer.toId) })
+        if (!lemonNetwork().tokens[stablecoin]) return t('lemonTokenUnavailable', { token: stablecoin })
+        return null
+    }
+
+    const quoteMinor = (() => {
+        if (method !== 'lemon' || !selected) return null
+        const parsed = parseAmountToMinor(amount, decimals, locale)
+        return parsed !== null && BigInt(parsed) > 0n ? parsed : null
+    })()
+    const lemonQuote = useQuery({
+        queryKey: ['lemon-quote', slug, quoteMinor],
+        queryFn: () => api.lemonQuote(slug, quoteMinor as string),
+        enabled: quoteMinor !== null,
+        staleTime: 30_000,
+    })
+    const quotedToken = lemonQuote.data?.quotes.find((quote) => quote.token === stablecoin)
 
     const record = async () => {
         if (!selected || recordingRef.current) return
@@ -223,36 +268,88 @@ export function SettleDrawer({
         const partial = entered.minor !== selected.amountMinor
         const key = transferKey(selected)
         const trimmedNote = note.trim()
-        // A receipt is proof of the Peanut handoff, not generic settlement
-        // metadata. Keep a stale value out of both retry identity and the wire
-        // body if the person changes their mind and chooses cash or bank.
-        const trimmedReceiptUrl = method === 'peanut' ? receiptUrl.trim() : ''
-        const signature = [selected.fromId, selected.toId, entered.minor, method, trimmedNote, trimmedReceiptUrl].join(
-            '\u0000'
-        )
-        const clientKey = requestRef.current?.signature === signature ? requestRef.current.clientKey : createClientKey()
-        requestRef.current = { signature, clientKey }
+        const signature = [
+            selected.fromId,
+            selected.toId,
+            entered.minor,
+            method,
+            stablecoin,
+            cryptoNetwork,
+            trimmedNote,
+        ].join('\u0000')
+        const sameRequest = requestRef.current?.signature === signature
+        const clientKey = sameRequest && requestRef.current ? requestRef.current.clientKey : createClientKey()
+        // A Lemon payment that was sent but not yet recorded is reused on the next tap, never paid twice.
+        let lemon = sameRequest ? requestRef.current?.lemon : undefined
+        requestRef.current = { signature, clientKey, lemon }
+
+        if (method === 'lemon' && !lemon) {
+            const problem = lemonProblem(selected)
+            if (problem) {
+                feedback('error', { haptic: 'error' })
+                setError(problem)
+                recordingRef.current = false
+                return
+            }
+            setLemonStage('paying')
+            try {
+                const payee = state.members.find((member) => member.id === selected.toId)
+                const config = lemonNetwork().tokens[stablecoin]
+                const quote = (await api.lemonQuote(slug, entered.minor)).quotes.find((q) => q.token === stablecoin)
+                if (!payee?.walletAddress || !config || !quote) throw new Error('lemon payment unavailable')
+                const paid = await payStablecoin({
+                    token: config,
+                    to: payee.walletAddress,
+                    tokenAmount: quote.tokenAmount,
+                    title: t('lemonPayTitle', { name: displayName(selected.toId) }),
+                })
+                if (paid.status === 'cancelled') {
+                    setLemonStage('idle')
+                    recordingRef.current = false
+                    return
+                }
+                if (paid.status === 'failed') throw new Error(paid.message)
+                lemon = { txHash: paid.txHash, token: stablecoin, tokenAmount: quote.tokenAmount }
+                requestRef.current = { signature, clientKey, lemon }
+            } catch {
+                setLemonStage('idle')
+                feedback('error', { haptic: 'error' })
+                setError(t('lemonFailed'))
+                recordingRef.current = false
+                return
+            }
+        }
+        if (lemon) setLemonStage('confirming')
+
         // Hold the list we are looking at *before* the mutation lands, so the row
         // is still mounted when we ask it to leave.
         setFrozen(state.suggestedTransfers)
-        // Opened inside the click handler so Safari does not treat it as a popup.
-        if (method === 'peanut') {
-            track('peanut_link_clicked', roomProps(slug))
-            window.open(PEANUT_URL, '_blank', 'noopener,noreferrer')
-        }
         // The ids the room already held, so the one that comes back can be told
         // apart from them — the POST answers with the whole room, not the row.
         const before = new Set(state.settlements.map((settlement) => settlement.id))
         try {
-            const next = await addSettlement.mutateAsync({
+            const input = {
                 clientKey,
                 fromId: selected.fromId,
                 toId: selected.toId,
                 amountMinor: entered.minor,
                 method,
                 note: trimmedNote || null,
-                ...(method === 'peanut' ? { receiptUrl: trimmedReceiptUrl || null } : {}),
-            })
+                ...(entered.advance ? { advance: true } : {}),
+                ...(lemon ? { lemon } : {}),
+                ...(method === 'crypto' ? { crypto: { token: stablecoin, network: cryptoNetwork } } : {}),
+            }
+            let next: RoomState | null = null
+            for (let attempt = 1; next === null; attempt++) {
+                try {
+                    next = await addSettlement.mutateAsync(input)
+                } catch (err) {
+                    const pending = err instanceof ApiRequestError && err.code === 'LEMON_TX_PENDING'
+                    if (!pending || attempt >= LEMON_CONFIRM_ATTEMPTS) throw err
+                    await new Promise((resolve) => window.setTimeout(resolve, LEMON_CONFIRM_INTERVAL_MS))
+                }
+            }
+            setLemonStage('idle')
             const created =
                 next.settlements.find((settlement) => settlement.id === clientKey) ??
                 next.settlements.find((settlement) => !before.has(settlement.id))
@@ -292,6 +389,7 @@ export function SettleDrawer({
             timers.current.push(window.setTimeout(() => setCollapsing(true), STAMP_MS))
             timers.current.push(window.setTimeout(done, STAMP_MS + COLLAPSE_MS))
         } catch (err) {
+            setLemonStage('idle')
             setFrozen(null)
             setSettledKey(null)
             setCollapsing(false)
@@ -323,7 +421,14 @@ export function SettleDrawer({
     const recorded = state.settlements.filter((settlement) => recordedIds.includes(settlement.id))
 
     return (
-        <Drawer open={open && !suspended} onOpenChange={(next) => !next && !suspended && onClose()}>
+        <Drawer
+            open={open && !suspended}
+            onOpenChange={(next) => !next && !suspended && onClose()}
+            // Vaul's input repositioning moved the sheet when the phone keyboard opened, leaving
+            // the note field under the keyboard while the typed text showed elsewhere. Native
+            // positioning plus an explicit scroll keeps the field in view, as in ExpenseDrawer.
+            repositionInputs={false}
+        >
             <DrawerContent>
                 <DrawerHeader>
                     <DrawerTitle className="text-h5">{selected ? t('recordTitle') : t('listTitle')}</DrawerTitle>
@@ -342,6 +447,7 @@ export function SettleDrawer({
 
                     {!nothingToSettle && !selected && (
                         <>
+                            <p className="text-sm text-grey-1">{t('tapHint')}</p>
                             <ul className="flex flex-col gap-2">
                                 {/* `initial` left on (the default) so the list deals itself
                                     out on open. The sheet unmounts when it closes, so this
@@ -467,12 +573,19 @@ export function SettleDrawer({
                                                             {displayName(transfer.toId)}
                                                         </span>
                                                     </span>
-                                                    <Money
-                                                        minor={transfer.amountMinor}
-                                                        currency={state.room.currency}
-                                                        catalog={currencies}
-                                                        className="shrink-0 text-h7"
-                                                    />
+                                                    <span className="flex shrink-0 flex-col items-end gap-1">
+                                                        <Money
+                                                            minor={transfer.amountMinor}
+                                                            currency={state.room.currency}
+                                                            catalog={currencies}
+                                                            className="text-h7"
+                                                        />
+                                                        {!settled && (
+                                                            <span className="rounded-full border border-n-1 bg-primary-3 px-2 py-1 text-[11px] font-bold leading-none text-n-1">
+                                                                {t('markPaid')}
+                                                            </span>
+                                                        )}
+                                                    </span>
                                                 </button>
                                             </motion.li>
                                         )
@@ -607,6 +720,15 @@ export function SettleDrawer({
                                     </span>
                                 </span>
                             </div>
+                            {(() => {
+                                // Where the payee asked to be paid outside Lemon, so the payer
+                                // can send it from their own wallet before marking it paid.
+                                const payee = state.members.find((member) => member.id === selected.toId)
+                                const payout = payee ? payoutOf(payee) : null
+                                return payout && method !== 'lemon' ? (
+                                    <PayoutCard payout={payout} name={displayName(selected.toId)} />
+                                ) : null
+                            })()}
                             {/* The suggestion, editable. It arrives filled in, so
                                 the common case is still one tap — but a debt that
                                 was half paid can be recorded as half paid instead
@@ -649,29 +771,73 @@ export function SettleDrawer({
                                     />
                                 </span>
                             </motion.label>
+                            {method !== 'lemon' && (
+                                <div className="grid gap-2">
+                                    <SettingToggle
+                                        label={t('payAhead')}
+                                        hint={t('payAheadHint', { name: displayName(selected.fromId) })}
+                                        checked={payAhead}
+                                        onChange={(next) => {
+                                            setPayAhead(next)
+                                            setError(null)
+                                        }}
+                                        testId="settle-pay-ahead"
+                                    />
+                                    {(() => {
+                                        const parsed = parseAmountToMinor(amount, decimals, locale)
+                                        if (!payAhead || parsed === null) return null
+                                        const extra = BigInt(parsed) - BigInt(selected.amountMinor)
+                                        if (extra <= 0n) return null
+                                        return (
+                                            <p className="text-sm text-grey-1" data-testid="settle-credit-note">
+                                                {t.rich('creditNote', {
+                                                    name: displayName(selected.fromId),
+                                                    amount: () => (
+                                                        <Money
+                                                            minor={extra.toString()}
+                                                            currency={state.room.currency}
+                                                            catalog={currencies}
+                                                        />
+                                                    ),
+                                                })}
+                                            </p>
+                                        )
+                                    })()}
+                                </div>
+                            )}
 
                             <div className="flex flex-col gap-2">
                                 <span className="text-h8 uppercase tracking-wide text-grey-1">{t('howPaid')}</span>
-                                <div className="grid grid-cols-3 gap-2">
-                                    {methodOptions(t).map((option) => {
+                                <div className={cn('grid gap-2', inLemon ? 'grid-cols-4' : 'grid-cols-3')}>
+                                    {methodOptions(t, inLemon).map((option) => {
                                         const active = method === option.id
-                                        const isPeanut = option.id === 'peanut'
+                                        const isLemon = option.id === 'lemon'
                                         return (
                                             <button
                                                 key={option.id}
                                                 type="button"
                                                 onClick={() => {
                                                     setMethod(option.id)
-                                                    if (!isPeanut) setReceiptUrl('')
+                                                    if (option.id === 'crypto') {
+                                                        // Start from where the payee asked to be paid.
+                                                        const payee = state.members.find(
+                                                            (member) => member.id === selected.toId
+                                                        )
+                                                        const payout = payee ? payoutOf(payee) : null
+                                                        if (payout) {
+                                                            setStablecoin(payout.token)
+                                                            setCryptoNetwork(payout.network)
+                                                        }
+                                                    }
+                                                    setError(null)
                                                     feedback('tick')
-                                                    if (isPeanut) track('peanut_option_clicked', roomProps(slug))
                                                 }}
                                                 aria-pressed={active}
                                                 data-testid={`method-${option.id}`}
                                                 className={cn(
                                                     'flex min-h-13 flex-col items-center gap-1 rounded-sm border border-n-1 p-3 text-center transition-transform active:translate-y-[2px]',
                                                     active
-                                                        ? isPeanut
+                                                        ? isLemon
                                                             ? 'shadow-4 bg-secondary-1'
                                                             : 'shadow-4 bg-primary-1'
                                                         : 'bg-white'
@@ -683,7 +849,100 @@ export function SettleDrawer({
                                         )
                                     })}
                                 </div>
-                                {method === 'peanut' && <p className="text-sm text-grey-1">{t('peanutNote')}</p>}
+                                {method === 'crypto' && (
+                                    <div className="flex flex-col gap-2" data-testid="crypto-panel">
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {(['USDT', 'USDC'] as const).map((symbol) => (
+                                                <button
+                                                    key={symbol}
+                                                    type="button"
+                                                    onClick={() => setStablecoin(symbol)}
+                                                    aria-pressed={stablecoin === symbol}
+                                                    data-testid={`crypto-token-${symbol}`}
+                                                    className={cn(
+                                                        'min-h-11 rounded-sm border border-n-1 px-3 text-h8',
+                                                        stablecoin === symbol ? 'shadow-4 bg-primary-1' : 'bg-white'
+                                                    )}
+                                                >
+                                                    {symbol}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="flex flex-wrap gap-2" data-testid="crypto-network">
+                                            {PAYOUT_NETWORK_KEYS.map((network) => (
+                                                <button
+                                                    key={network}
+                                                    type="button"
+                                                    onClick={() => setCryptoNetwork(network)}
+                                                    aria-pressed={cryptoNetwork === network}
+                                                    className={cn(
+                                                        'rounded-full border border-n-1 px-3 py-1.5 text-sm font-bold',
+                                                        cryptoNetwork === network ? 'bg-n-1 text-white' : 'bg-white'
+                                                    )}
+                                                >
+                                                    {PAYOUT_NETWORKS[network].label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <p className="text-sm text-grey-1">
+                                            {(() => {
+                                                const payee = state.members.find(
+                                                    (member) => member.id === selected.toId
+                                                )
+                                                const payout = payee ? payoutOf(payee) : null
+                                                if (!payout)
+                                                    return t('cryptoNoWallet', { name: displayName(selected.toId) })
+                                                if (payout.network !== cryptoNetwork || payout.token !== stablecoin)
+                                                    return t('cryptoMismatch', {
+                                                        name: displayName(selected.toId),
+                                                        token: payout.token,
+                                                        network: PAYOUT_NETWORKS[payout.network].label,
+                                                    })
+                                                return t('cryptoNote')
+                                            })()}
+                                        </p>
+                                    </div>
+                                )}
+                                {method === 'lemon' && (
+                                    <div className="flex flex-col gap-2" data-testid="lemon-panel">
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {(['USDC', 'USDT'] as const).map((symbol) => (
+                                                <button
+                                                    key={symbol}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setStablecoin(symbol)
+                                                        setError(null)
+                                                        feedback('tick')
+                                                    }}
+                                                    aria-pressed={stablecoin === symbol}
+                                                    disabled={!lemonNetwork().tokens[symbol]}
+                                                    data-testid={`token-${symbol}`}
+                                                    className={cn(
+                                                        'min-h-11 rounded-sm border border-n-1 px-3 text-h8 disabled:opacity-40',
+                                                        stablecoin === symbol ? 'shadow-4 bg-primary-1' : 'bg-white'
+                                                    )}
+                                                >
+                                                    {symbol}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <p className="text-sm text-grey-1" data-testid="lemon-quote">
+                                            {quotedToken
+                                                ? t('lemonQuote', {
+                                                      amount: formatTokenUnits(
+                                                          BigInt(quotedToken.tokenAmount),
+                                                          quotedToken.decimals
+                                                      ),
+                                                      token: stablecoin,
+                                                  })
+                                                : t('lemonNote')}
+                                        </p>
+                                        {selected && lemonProblem(selected) && (
+                                            <p className="text-sm font-bold text-n-1">{lemonProblem(selected)}</p>
+                                        )}
+                                    </div>
+                                )}
                             </div>
 
                             <label className="flex flex-col gap-2">
@@ -693,27 +952,14 @@ export function SettleDrawer({
                                     onChange={(event) => setNote(event.target.value)}
                                     placeholder={t('notePlaceholder')}
                                     maxLength={280}
+                                    onFocus={(event) => {
+                                        const field = event.currentTarget
+                                        // Wait for the keyboard to finish opening before scrolling.
+                                        window.setTimeout(() => field.scrollIntoView({ block: 'center' }), 300)
+                                    }}
                                     data-testid="settle-note"
                                 />
                             </label>
-
-                            {method === 'peanut' && (
-                                <label className="flex flex-col gap-2">
-                                    <span className="text-h8 uppercase tracking-wide text-grey-1">
-                                        {t('receiptLink')}
-                                    </span>
-                                    <BaseInput
-                                        value={receiptUrl}
-                                        onChange={(event) => setReceiptUrl(event.target.value)}
-                                        placeholder={t('receiptLinkPlaceholder')}
-                                        inputMode="url"
-                                        autoComplete="url"
-                                        maxLength={2048}
-                                        data-testid="settle-receipt-url"
-                                    />
-                                    <span className="text-sm text-grey-1">{t('receiptLinkHint')}</span>
-                                </label>
-                            )}
 
                             {error && (
                                 <p role="alert" className="text-sm font-bold text-error">
@@ -726,11 +972,17 @@ export function SettleDrawer({
                                     variant="primary"
                                     shadowSize="4"
                                     onClick={record}
-                                    loading={addSettlement.isPending}
+                                    loading={addSettlement.isPending || lemonStage !== 'idle'}
                                     className="justify-center text-h6"
                                     data-testid="record-settlement"
                                 >
-                                    {t('record')}
+                                    {lemonStage === 'paying'
+                                        ? t('lemonPaying')
+                                        : lemonStage === 'confirming'
+                                          ? t('lemonConfirming')
+                                          : method === 'lemon'
+                                            ? t('lemonPay')
+                                            : t('record')}
                                 </Button>
                                 <Button variant="stroke" className="justify-center" onClick={() => setSelected(null)}>
                                     {t('back')}

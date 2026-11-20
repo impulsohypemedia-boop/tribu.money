@@ -3,8 +3,6 @@
 import { useMutation, useQueryClient, type UseMutationResult } from '@tanstack/react-query'
 import { api } from '../api'
 import type { ImportIntoRoomInput, ImportIntoRoomResult, ImportRoomInput, RoomStateWithMember } from '../api-types'
-import { trackRoomCreatedConversion } from '../google-ads'
-import { trackXRoomCreatedConversion } from '../x-ads'
 import { seedRoomState } from './core'
 
 /** A successful import is a complete room creation: it seeds the same cache and reports the same conversion. */
@@ -14,8 +12,6 @@ export function useImportRoom(): UseMutationResult<RoomStateWithMember, Error, I
         mutationFn: (input: ImportRoomInput) => api.importRoom(input),
         onSuccess: (state) => {
             seedRoomState(queryClient, state.room.slug, state)
-            trackRoomCreatedConversion()
-            trackXRoomCreatedConversion()
         },
     })
 }

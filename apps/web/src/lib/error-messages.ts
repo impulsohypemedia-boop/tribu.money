@@ -29,6 +29,21 @@ import { ApiRequestError } from './api'
  * `pnpm i18n:audit` cannot check a key it never sees written down.
  */
 export const KNOWN_ERROR_CODES = [
+    'LEMON_PROOF_INVALID',
+    'LEMON_PROOF_STALE',
+    'LEMON_TX_INVALID',
+    'LEMON_TX_UNDERPAID',
+    'LEMON_TX_PENDING',
+    'LEMON_TX_FAILED',
+    'LEMON_TX_MISMATCH',
+    'LEMON_TX_ALREADY_RECORDED',
+    'LEMON_WALLET_MISSING',
+    'NOT_THIS_MEMBER',
+    'PAYOUT_ADDRESS_INVALID',
+    'RECURRING_CURRENCY_UNSUPPORTED',
+    'POT_NOT_FOUND',
+    'POT_CLOSED',
+    'POT_PAYER_NOT_KEEPER',
     'NETWORK_ERROR',
     'INTERNAL',
     'VALIDATION_ERROR',

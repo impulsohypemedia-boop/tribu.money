@@ -82,7 +82,7 @@ describe('word boundaries', () => {
         // Slugs and paths stay English by decision, so ASCII inside one is not a dropped accent.
         expect(found('[dividir la cuenta](/split-bill-no-signup#codigo)', 'es-419')).toEqual([])
         expect(found('usa `codigo` como identificador', 'es-419')).toEqual([])
-        expect(found('https://peanutsplit.com/es-419/codigo-facil', 'es-419')).toEqual([])
+        expect(found('https://tribu.money/es-419/codigo-facil', 'es-419')).toEqual([])
         expect(found('<CTA href="/nao-usuario" text="Comece" />', 'pt-br')).toEqual([])
     })
 })

@@ -17,7 +17,7 @@
                 "linkPrompt": "Кожен додає свої витрати",
                 "joined": "Беа, Джулс і Мо відкрили посилання"
             },
-            "stageSummary": "Посилання на кімнату Peanut Split поширюється в груповому чаті, тож усі друзі можуть відкрити ту саму кімнату й додати витрати.",
+            "stageSummary": "Посилання на кімнату Tribu поширюється в груповому чаті, тож усі друзі можуть відкрити ту саму кімнату й додати витрати.",
             "validation": {
                 "roomRequired": "Спочатку назви кімнату.",
                 "creatorRequired": "Скажи нам, хто ти."
@@ -41,10 +41,10 @@
             "recovery": {
                 "title": "Уже маєш посилання на кімнату?",
                 "label": "Встав посилання на кімнату",
-                "placeholder": "peanutsplit.com/r/tvoia-kimnata-…",
+                "placeholder": "tribu.money/r/tvoia-kimnata-…",
                 "hint": "Збереже кімнату на цьому пристрої.",
                 "submit": "Додати цю кімнату",
-                "invalid": "Встав повне посилання на кімнату Peanut Split.",
+                "invalid": "Встав повне посилання на кімнату Tribu.",
                 "notFound": "Не вдалося знайти цю кімнату. Перевір, чи вставлено все посилання.",
                 "failed": "Зараз не вдалося перевірити кімнату. Нічого не збережено — спробуй ще раз.",
                 "openingSaved": "Відкриваємо кімнату «{room}». Її збережено на цьому пристрої.",
@@ -124,31 +124,28 @@
             "createSplit": "Створити кімнату",
             "toolsLink": "Калькулятори",
             "importLink": "Імпорт зі Splitwise",
-            "sourceStewardship": "Вихідний код",
             "colCompare": "Порівняти",
             "colGuides": "Посібники",
             "allGuides": "Усі посібники",
-            "madeByPrefix": "створено з любов’ю командою",
-            "madeByBrand": "Squirrel Labs",
             "termsLink": "Умови",
             "privacyLink": "Конфіденційність",
-            "operatedBy": "Оператор Peanut Split — Squirrel Labs Ltd, компанія, що стоїть за Peanut (peanut.me). Зареєстрована в Англії та Уельсі під номером 14558823, Office One, 1 Coldbath Square, Farringdon, London EC1R 5HL."
+            "operatedBy": "Tribu is free software under the AGPL-3.0 license."
         },
         "appHome": {
-            "landingLink": "Що таке Split?"
+            "landingLink": "Що таке Tribu?"
         },
         "install": {
             "title": "Установити Split",
             "body": "Повертайся до цієї кімнати швидше. Без магазину застосунків. Без облікового запису.",
             "bodySettled": "Нехай ця подорож — і наступна — завжди буде на відстані одного натискання.",
-            "announcement": "Split можна встановити.",
+            "announcement": "Tribu можна встановити.",
             "cta": "Установити Split",
             "ctaSteps": "Показати кроки встановлення",
             "dismiss": "Не зараз",
             "row": {
                 "label": "Установити Split",
-                "labelIos": "Додати Split на початковий екран",
-                "installed": "Split установлено.",
+                "labelIos": "Додати Tribu на початковий екран",
+                "installed": "Tribu установлено.",
                 "preparing": "Готуємо…",
                 "checkLabel": "Піктограма Split",
                 "checkLabelIos": "Піктограма на початковому екрані",
@@ -162,29 +159,29 @@
                 "step1Android": "У Chrome натисни «Ще».",
                 "step2Android": "Вибери «Додати на головний екран» або «Установити та створити ярлик».",
                 "step3Android": "Вибери «Установити» або «Установити застосунок».",
-                "step4Android": "Перевір, що назва — «Split», і натисни «Установити».",
+                "step4Android": "Перевір, що назва — «Tribu», і натисни «Установити».",
                 "step1Other": "Відкрий меню браузера.",
                 "step2Other": "Вибери «Установити застосунок». На Mac вибери «Додати в Dock».",
-                "step3Other": "Переконайся, що назва — «Split», і підтвердь.",
+                "step3Other": "Переконайся, що назва — «Tribu», і підтвердь.",
                 "noOption": "Немає функції встановлення? Відкрий цю сторінку в Chrome.",
                 "install": "Установити"
             },
             "ios": {
-                "title": "Додати Split на початковий екран",
+                "title": "Додати Tribu на початковий екран",
                 "step1": "Натисни «Поширити». Якщо не бачиш цього пункту, спочатку натисни «Ще».",
                 "step2": "Натисни «На початковий екран».",
                 "step3": "Увімкни «Відкрити як вебзастосунок», якщо бачиш цей пункт.",
                 "step4": "Натисни «Додати».",
-                "openAfter": "Потім відкрий Split із нової піктограми.",
+                "openAfter": "Потім відкрий Tribu із нової піктограми.",
                 "body": "Скористайся меню «Поширити» у браузері.",
                 "prepareFailed": "Не вдалося підготувати цю кімнату. Спробуй ще раз за мить.",
                 "add": "Додати"
             },
             "repair": {
-                "announcement": "Можна перевірити піктограму Split.",
+                "announcement": "Можна перевірити піктограму Tribu.",
                 "title": "Заміни стару піктограму кімнати",
-                "body": "На піктограмі написано Split? Усе гаразд. Є назва кімнати? Заміни її.",
-                "cardBody": "На піктограмі є назва кімнати? Заміни її на Split.",
+                "body": "На піктограмі написано Tribu? Усе гаразд. Є назва кімнати? Заміни її.",
+                "cardBody": "На піктограмі є назва кімнати? Заміни її на Tribu.",
                 "cta": "Перевірити піктограму",
                 "copyFirst": "Скопіюй посилання на кімнату, перш ніж видаляти стару піктограму.",
                 "step1": "Видали піктограму з назвою кімнати.",
@@ -198,12 +195,12 @@
                 "copied": "Посилання на кімнату скопійовано.",
                 "copyFailed": "Не вдалося скопіювати посилання. Відкрий його знову там, де ним поділилися.",
                 "missing": "Тут немає посилання на кімнату. Відкрий його знову там, де ним поділилися.",
-                "check": "Установлюй лише тоді, коли назва — «Split».",
+                "check": "Установлюй лише тоді, коли назва — «Tribu».",
                 "back": "Назад до кімнати"
             },
             "page": {
                 "preparing": "Перевіряємо цей браузер…",
-                "installed": "Split установлено.",
+                "installed": "Tribu установлено.",
                 "continue": "Назад до Split",
                 "copyRoom": "Скопіювати початкове посилання на кімнату",
                 "roomRecovery": "Після встановлення кімната зникла? Один раз відкрий її початкове посилання."
@@ -221,109 +218,23 @@
                 "title": "Відкриті кімнати залишаються на цьому пристрої"
             },
             "money": {
-                "title": "Split зберігає розрахунки, а не гроші"
+                "title": "Tribu зберігає розрахунки, а не гроші"
             },
             "done": "Зрозуміло"
         },
-        "readMore": {
-            "toggle": "БІЛЬШЕ ПРО SPLIT",
-            "toggleHint": "Функції, фінансування та доступ до кімнати.",
-            "join": {
-                "title": "Що бачать твої друзі",
-                "roomName": "Лижна подорож",
-                "nameLabel": "Твоє ім’я",
-                "namePlaceholder": "Том",
-                "button": "Приєднатися до кімнати",
-                "body": "Без реєстрації, паролів і завантажень."
+        "howItWorks": {
+            "title": "That easy",
+            "create": {
+                "title": "Start your tribe",
+                "body": "Name it and add your people. No account needed."
             },
-            "features": {
-                "title": "Що вміє Split",
-                "currency": {
-                    "title": "162 валюти",
-                    "body": "Автоматична конвертація для 156 валют; ще 6 працюють без конвертації."
-                },
-                "splits": {
-                    "title": "Обери спосіб розподілу рахунку",
-                    "body": "Порівну, за відсотками, частками, точними сумами або між вибраними учасниками."
-                },
-                "exact": {
-                    "title": "Переглянь розрахунок",
-                    "body": "Відкрий будь-який баланс, щоб побачити розрахунок."
-                },
-                "live": {
-                    "title": "Спільний список витрат",
-                    "body": "Нові витрати з’являються в усіх, хто має з’єднання."
-                },
-                "offline": {
-                    "title": "Додавай витрати без інтернету",
-                    "body": "Нові витрати зберігаються на пристрої та надсилаються після відновлення зв’язку. Для редагування й запису повернених коштів потрібне з’єднання."
-                },
-                "home": {
-                    "title": "Додай на початковий екран",
-                    "body": "Відкривається як застосунок."
-                },
-                "transfers": {
-                    "title": "Простіший план платежів",
-                    "body": "Короткий список: хто кому має заплатити."
-                }
+            "share": {
+                "title": "Share the link",
+                "body": "Everyone joins from the group chat and adds what they paid."
             },
             "settle": {
-                "title": "Як розрахуватися",
-                "cash": "Готівка",
-                "bank": "Банківський переказ"
-            },
-            "team": {
-                "title": "Хто це створив",
-                "intro": "Konrad і Hugo створили Split. Ось чому.",
-                "konrad": {
-                    "name": "Конрад",
-                    "role": "створив Split",
-                    "quote": "Кожна подорож закінчувалася однаково: таблиця, яку ніхто не оновлював, і одна людина, яка мовчки залишалася в мінусі."
-                },
-                "hugo": {
-                    "name": "Г’юґо",
-                    "role": "створив Split",
-                    "quote": "Я хотів, щоб усе було просто посиланням. Якщо друзям треба створювати обліковий запис, вони цього не зроблять."
-                }
-            },
-            "who": {
-                "title": "Хто підтримує та фінансує Split",
-                "built": {
-                    "title": "Squirrel Labs підтримує Split",
-                    "body": "Наразі лише Squirrel Labs підтримує проєкт і оплачує всі витрати, зокрема робочий час."
-                },
-                "free": {
-                    "title": "Необов’язкові посилання",
-                    "body": "Рекламні посилання необов’язкові, без примусових кліків, повторних нагадувань чи блокування функцій."
-                },
-                "data": {
-                    "title": "Посилання на кімнати й аналітика",
-                    "body": "Ми не записуємо посилання на кімнати у власну аналітику. Кожен із посиланням може відкрити кімнату."
-                }
-            },
-            "faq": {
-                "title": "Поширені запитання",
-                "retype": {
-                    "q": "Треба передруковувати все з групового чату?",
-                    "a": "Так. Кожну витрату потрібно внести один раз. Усі в кімнаті можуть додати те, за що заплатили.",
-                    "import": "Можна імпортувати групу зі Splitwise та перевірити баланси перед підтвердженням. Старі витрати можуть бути об’єднані в початкові баланси."
-                },
-                "access": {
-                    "q": "Хто може бачити нашу кімнату?",
-                    "a": "Кожен із посиланням може відкрити кімнату. Ділися ним лише зі своєю групою. Ми просимо пошуковики не індексувати кімнати."
-                },
-                "lost": {
-                    "q": "Як повернутися до кімнати?",
-                    "a": "Залиш посилання в груповому чаті, щоб усі могли його знайти. Split також зберігає кімнати, відкриті на цьому пристрої, а посилання можна вставити на головній сторінці, щоб додати кімнату знову."
-                },
-                "limits": {
-                    "q": "Чи є денний ліміт витрат?",
-                    "a": "Денного ліміту витрат немає."
-                }
-            },
-            "compare": {
-                "line": "Переходиш з іншого застосунку для розподілу витрат?",
-                "link": "Порівняй Split зі Splitwise"
+                "title": "Settle in a tap",
+                "body": "Tribu works out who pays whom. Inside Lemon you pay in USDC or USDT."
             }
         }
     },
@@ -410,7 +321,7 @@
             "messagePlaceholder": "Що було зроблено, що сталося й що мало статися?",
             "messageHint": "Обов’язково · щонайменше {minimum} символів. Посилання на кімнати в тексті видаляються перед збереженням.",
             "attachmentsTitle": "Вибери вкладення",
-            "attachmentsIntro": "Спочатку всі вкладення вимкнені. Увімкни лише те, що хочеш додати для команди супроводу Split у Squirrel Labs.",
+            "attachmentsIntro": "Спочатку всі вкладення вимкнені. Увімкни лише те, що хочеш додати для команди супроводу Tribu у Tribu.",
             "deviceTitle": "Дані пристрою",
             "deviceHint": "Браузер і ОС, розмір вікна, часовий пояс, режим застосунку та стан мережі.",
             "exactDeviceData": "Переглянути точні дані пристрою",
@@ -437,12 +348,12 @@
             "imageTooLarge": "Це зображення завелике. Вибери знімок екрана до 20 МБ.",
             "imageUnreadable": "Не вдалося прочитати зображення. Вибери знімок екрана у форматі JPEG, PNG або WebP.",
             "consentTitle": "Я погоджуюся надіслати цей звіт",
-            "consentHint": "Команда супроводу Split у Squirrel Labs зможе прочитати твоє повідомлення й лише вибрані вище вкладення. Звіти не надсилаються в аналітику й не показуються в кімнаті; їх заплановано видалити через 90 днів.",
+            "consentHint": "Команда супроводу Tribu у Tribu зможе прочитати твоє повідомлення й лише вибрані вище вкладення. Звіти не надсилаються в аналітику й не показуються в кімнаті; їх заплановано видалити через 90 днів.",
             "send": "Надіслати звіт",
             "cancel": "Скасувати",
             "sendFailed": "Не вдалося надіслати звіт — текст і знімок екрана досі тут.",
             "successTitle": "Звіт надіслано",
-            "successBody": "Дякуємо. Звіт і вибрані вкладення збережено для команди супроводу Split у Squirrel Labs.",
+            "successBody": "Дякуємо. Звіт і вибрані вкладення збережено для команди супроводу Tribu у Tribu.",
             "done": "Готово"
         },
         "export": {
@@ -529,6 +440,8 @@
                 "member_removed": "— зміна статусу на «Не бере участі»",
                 "member_restored": "— поновлення учасника",
                 "member_avatar_updated": "— зміна персонажа учасника",
+                "member_profile_updated": "edited a person’s profile",
+                "pot_updated": "updated the pot",
                 "expense_added": "— додавання витрати",
                 "expense_edited": "— редагування витрати",
                 "expense_deleted": "— видалення витрати",
@@ -602,7 +515,9 @@
             },
             "emptyInvite": "Запросити інших",
             "emptyShare": "Поділитися кімнатою",
-            "emptyAdd": "Додати витрату"
+            "emptyAdd": "Додати витрату",
+            "monthlyChip": "Monthly",
+            "potChip": "Pot"
         },
         "states": {
             "errorTitle": "Не вдалося завантажити цю кімнату",
@@ -643,7 +558,7 @@
             "topPayer": "Найбільший внесок за групу: {name}",
             "share": "Поділитися історією",
             "sharing": "Готуємо…",
-            "shareTitle": "Peanut Split",
+            "shareTitle": "Tribu",
             "shareText": "Ми повністю розрахувалися.",
             "copied": "Підсумок скопійовано — встав його де завгодно.",
             "downloaded": "Підсумок збережено в завантаженнях.",
@@ -778,7 +693,14 @@
             "equallyShort": "порівну",
             "exactShort": "точні суми",
             "percentageShort": "у відсотках",
-            "sharesShort": "за частками"
+            "sharesShort": "за частками",
+            "repeatMonthly": "Repeats every month",
+            "repeatMonthlyHint": "Rent, bills, subscriptions… Tribu adds it again on the same day every month.",
+            "repeatOffline": "Saved offline. Turn on \"Repeats every month\" once you are back online.",
+            "repeatFailed": "The expense was saved, but it could not be set to repeat.",
+            "payFromPot": "Paid by the pot “{name}”",
+            "payFromPotHint": "Comes out of the money {keeper} keeps.",
+            "potLinkFailed": "The expense was saved, but we could not mark it as paid by the pot."
         },
         "settle": {
             "formerName": "{name} · Неактивний учасник",
@@ -791,12 +713,8 @@
             "cash": "Готівка",
             "bank": "Банк",
             "peanut": "Peanut",
-            "peanutNote": "Відкриває Peanut у новій вкладці. Split запише платіж тут, навіть якщо переказ не відбудеться.",
             "note": "Нотатка (необов’язково)",
             "notePlaceholder": "Надіслано в п’ятницю",
-            "receiptLink": "Посилання на квитанцію (необов’язково)",
-            "receiptLinkPlaceholder": "https://…",
-            "receiptLinkHint": "Split не відкриває й не перевіряє це посилання.",
             "record": "Записати платіж",
             "back": "Назад",
             "recorded": "Платіж: {from} → {to}",
@@ -807,7 +725,30 @@
             "amountFormatInvalid": "Перевір роздільники й знаки після коми в сумі.",
             "amountTooHigh": "Це більше, ніж {name} має віддати.",
             "recordedTitle": "Щойно записано",
-            "amountTooHighYou": "Це більше, ніж ти маєш віддати."
+            "amountTooHighYou": "Це більше, ніж ти маєш віддати.",
+            "lemon": "Lemon",
+            "lemonNote": "Paid from your Lemon wallet, in digital dollars.",
+            "lemonQuote": "You will send {amount} {token} from your Lemon.",
+            "lemonPay": "Pay with Lemon",
+            "lemonPaying": "Waiting for Lemon…",
+            "lemonConfirming": "Confirming the payment…",
+            "lemonPayTitle": "Payment to {name} on Tribu",
+            "lemonFailed": "The payment did not go through. No money moved.",
+            "lemonSignInNeeded": "Sign in with Lemon to pay from here.",
+            "lemonOnlyPayer": "Only {name} can pay this debt with Lemon.",
+            "lemonLinking": "Connecting your Lemon to this group. Try again in a moment.",
+            "lemonPayeeNoWallet": "{name} has not opened this group from Lemon yet, so there is nowhere to send it.",
+            "lemonTokenUnavailable": "{token} is not available on this network.",
+            "tapHint": "Did someone already pay? Tap their row to mark it paid.",
+            "markPaid": "Mark paid",
+            "payAhead": "Pay ahead",
+            "payAheadHint": "Anything extra stays as credit for {name} and comes off the next expenses.",
+            "creditNote": "<amount></amount> stays as credit for {name}.",
+            "pot": "Pot contribution",
+            "crypto": "Crypto",
+            "cryptoNote": "Send it from your wallet to the one above, then mark it here. Tribu does not check it.",
+            "cryptoNoWallet": "{name} has not added a wallet yet. Ask them to add it in their profile.",
+            "cryptoMismatch": "Heads up: {name} asked for {token} on {network}."
         },
         "share": {
             "title": "Поділитися кімнатою",
@@ -830,7 +771,7 @@
             "shared": "Посилання на кімнату надіслано.",
             "shareFailed": "Меню поширення не відкрилося. Натомість скопіюй запрошення.",
             "anyoneCanJoin": "Кожен із цим посиланням може приєднатися й додавати витрати.",
-            "shareTitle": "{room} · Peanut Split",
+            "shareTitle": "{room} · Tribu",
             "shareText": "Приєднуйся й додай свої витрати."
         },
         "create": {
@@ -915,7 +856,7 @@
             "step1": "Відскануй чек · перевір позиції",
             "step2": "Відскануй чек · хто що брав",
             "reading": "Читаємо чек…",
-            "privacyNote": "Split надсилає фото один раз і не зберігає його.",
+            "privacyNote": "Tribu надсилає фото один раз і не зберігає його.",
             "reviewTitle": "Перевір позиції",
             "reviewBody": "Виправ помилки, видали те, що не твоє, і додай пропущене.",
             "reviewFromMerchant": "Продавець: {merchant}. Виправ помилки й додай пропущене.",
@@ -1055,7 +996,63 @@
             "removing": "Скасовуємо…",
             "confirmNo": "Залишити",
             "removed": "Запис платежу скасовано. Баланси кімнати оновлено.",
-            "removeFailed": "Не вдалося скасувати запис платежу — спробуй ще раз."
+            "removeFailed": "Не вдалося скасувати запис платежу — спробуй ще раз.",
+            "txLink": "View the transaction"
+        },
+        "storyCard": {
+            "tripSettled": "All square!",
+            "tripGoing": "How the group is doing",
+            "tripCaption": "spent together",
+            "potReached": "Pot complete!",
+            "potClosed": "Pot closed",
+            "potGoing": "How the pot is doing",
+            "potCaption": "{count, plural, =0 {nobody has chipped in yet} one {raised by # person} few {raised by #} many {raised by #} other {raised by #}}",
+            "potGoal": "Goal: {amount}",
+            "share": "Share to stories",
+            "sharing": "Preparing the image…",
+            "shareLabel": "Share an image for stories"
+        },
+        "milestones": {
+            "cardTitle": "Group milestones",
+            "cardLine": "{reached} of {total} reached together",
+            "title": "Group milestones",
+            "intro": "Everyone reaches them together. Nobody competes.",
+            "close": "Close",
+            "unlocked": "Group milestone! {title}",
+            "items": {
+                "first-expense": {
+                    "title": "Off we go",
+                    "body": "The first expense is in."
+                },
+                "expenses-10": {
+                    "title": "10 expenses, zero fights",
+                    "body": "Ten expenses logged together."
+                },
+                "everyone-paid": {
+                    "title": "Everyone chipped in",
+                    "body": "Each person paid at least once."
+                },
+                "first-payment": {
+                    "title": "First payment",
+                    "body": "Someone already paid to even up."
+                },
+                "all-square": {
+                    "title": "All square",
+                    "body": "Nobody owes anybody anything."
+                },
+                "three-currencies": {
+                    "title": "Globetrotters",
+                    "body": "Expenses in three currencies."
+                },
+                "pot-goal": {
+                    "title": "Pot complete",
+                    "body": "The pot reached its goal."
+                },
+                "expenses-50": {
+                    "title": "Well-oiled crew",
+                    "body": "Fifty expenses and still together."
+                }
+            }
         },
         "achievements": {
             "crew": {
@@ -1128,6 +1125,119 @@
             "slideLeave": "Проведи, щоб вийти",
             "leaveFailed": "Не вдалося вийти з кімнати. Спробуй ще раз.",
             "cancel": "Скасувати"
+        },
+        "profile": {
+            "myWallet": "My wallet",
+            "theirWallet": "{name}'s wallet",
+            "walletHint": "Pick the coin and network and paste your address, so people know where to send your money.",
+            "token": "Coin",
+            "network": "Network",
+            "address": "Address",
+            "addressInvalid": "That is not a {network} address. Check you copied all of it.",
+            "save": "Save wallet",
+            "saved": "Wallet saved",
+            "edit": "Change",
+            "remove": "Remove",
+            "cancel": "Cancel",
+            "failed": "Could not save. Try again.",
+            "noWallet": "{name} has not added a wallet yet.",
+            "payTo": "Send to {name}",
+            "copy": "Copy address",
+            "copied": "Address copied",
+            "showQr": "Show QR",
+            "hideQr": "Hide QR",
+            "networkWarning": "Send only on {network}. Money sent on another network can be lost.",
+            "honoredGuest": "Honored guest",
+            "honoredGuestHint": "{name} is in the group but does not chip in. New expenses leave them out unless you add them."
+        },
+        "monthly": {
+            "title": "Monthly expenses",
+            "unnamed": "Unnamed",
+            "everyMonth": "day {day} of every month, paid by {name}",
+            "stop": "Stop",
+            "stopped": "It no longer repeats. Past months stay.",
+            "stopFailed": "Could not stop it. Try again."
+        },
+        "monthSummary": {
+            "cardTitle": "This month",
+            "cardLine": "Цього місяця: <amount></amount>, {count, plural, one {# витрата} few {# витрати} many {# витрат} other {# витрати}}",
+            "title": "Month summary",
+            "close": "Close",
+            "previousMonth": "Previous month",
+            "nextMonth": "Next month",
+            "quietMonth": "No expenses this month.",
+            "together": "Spent together",
+            "expenseCount": "{count, plural, one {# витрата} few {# витрати} many {# витрат} other {# витрати}}",
+            "moreThanBefore": "{pct}% more than the month before",
+            "lessThanBefore": "{pct}% less than the month before",
+            "sameAsBefore": "same as the month before",
+            "onWhat": "On what",
+            "eachOne": "What each person put in",
+            "put": "put in",
+            "part": "their part",
+            "biggest": "The biggest expense was {name}: <amount></amount>.",
+            "unnamed": "an unnamed one",
+            "someone": "Someone",
+            "fullHistory": "See full history"
+        },
+        "pot": {
+            "someone": "Someone",
+            "unnamed": "Untitled",
+            "close": "Close",
+            "cancel": "Cancel",
+            "startTitle": "Start a pot",
+            "startHint": "Pool money for something and one person keeps it.",
+            "cardKeeper": "Kept by {name}",
+            "createTitle": "New pot",
+            "nameLabel": "What is it for?",
+            "namePlaceholder": "Beach trip",
+            "keeperLabel": "Who keeps the money?",
+            "keeperHint": "The money stays in that person's account. Tribu never touches it.",
+            "targetLabel": "Goal (optional)",
+            "quotaLabel": "Monthly amount per person (optional)",
+            "dueLabel": "By when? (optional)",
+            "createSubmit": "Start the pot",
+            "created": "Pot started",
+            "nameMissing": "Say what the pot is for.",
+            "amountInvalid": "Check the amount.",
+            "whoMissing": "Pick who is putting money in.",
+            "held": "In the pot",
+            "progress": "{pct}% of <amount></amount>",
+            "missing": "<amount></amount> to go",
+            "reached": "Goal reached!",
+            "fronted": "{name} paid <amount></amount> out of pocket; that stays in their favour.",
+            "keeperBadge": "Pot keeper",
+            "keeperLine": "The money is in {name}'s account.",
+            "keeperNote": "Each contribution is recorded as a payment to {name}, and what the pot pays comes out of their account.",
+            "projected": "At this pace you reach the goal in {month}.",
+            "suggested": "To get there by {month}, each person puts in <amount></amount> a month.",
+            "quotaTitle": "This month · <amount></amount>",
+            "quotaAllIn": "Everyone has put in this month.",
+            "quotaMissing": "<amount></amount> to go",
+            "put": "Put money in",
+            "putWho": "Who is putting in?",
+            "putAmount": "How much?",
+            "putSubmit": "Record contribution",
+            "putDone": "Contribution recorded",
+            "putNote": "Recorded as a payment from {name} to {keeper}.",
+            "byMemberTitle": "What each person put in",
+            "spentTitle": "What the pot paid",
+            "spentEmpty": "To pay with the pot, add the expense paid by {name} and turn on “Paid by the pot”.",
+            "historyTitle": "Contributions",
+            "remove": "Remove this contribution",
+            "removed": "Contribution removed",
+            "closePot": "Close the pot",
+            "closeHint": "What is left stays in favour of whoever put it in, in their balances. No money moves.",
+            "closeConfirm": "Close",
+            "closedToast": "Pot closed",
+            "startAnother": "Start another pot",
+            "newTitle": "New pot",
+            "newNamePlaceholder": "Gift for Lu",
+            "newKeeperHint": "You keep the money: it stays in your account. Tribu never touches it.",
+            "closedLabel": "This pot is closed.",
+            "yourVaquitas": "Your pots",
+            "emptyTitle": "Pot ready",
+            "emptyShare": "Share pot"
         }
     },
     "slideToConfirm": {
@@ -1141,7 +1251,7 @@
         "notifyMe": "Сповіщати мене про кімнату «{room}»",
         "cta": "Сповіщати мене",
         "on": "Увімк.",
-        "iosNeedsPwa": "Додай Split на початковий екран.",
+        "iosNeedsPwa": "Додай Tribu на початковий екран.",
         "iosHow": "Як?",
         "denied": "Заблоковано в налаштуваннях браузера.",
         "unknown": "Зараз не вдалося перевірити — цей пристрій усе ще може їх отримувати.",
@@ -1163,7 +1273,7 @@
             "action": "Назад до своїх кімнат"
         },
         "loading": {
-            "eyebrow": "Рахуємо горішки",
+            "eyebrow": "Adding it up",
             "title": "Відкриваємо твою кімнату…",
             "body": "Оновлюємо баланси й витрати.",
             "exit": "Назад до своїх кімнат"
@@ -1177,7 +1287,7 @@
         "MALFORMED_JSON": "Під час надсилання щось пішло не так — спробуй ще раз.",
         "JSON_REQUIRED": "Під час надсилання щось пішло не так — спробуй ще раз.",
         "REQUEST_TOO_LARGE": "Цей запит завеликий для надсилання.",
-        "CROSS_SITE_REQUEST": "Не вдалося перевірити цей запит — знову відкрий Split і повтори спробу.",
+        "CROSS_SITE_REQUEST": "Не вдалося перевірити цей запит — знову відкрий Tribu і повтори спробу.",
         "NOT_FOUND": "Цієї кімнати не існує.",
         "EXPENSE_NOT_FOUND": "Цієї витрати тут уже немає — онови кімнату.",
         "SETTLEMENT_NOT_FOUND": "Цього платежу тут уже немає — онови кімнату.",
@@ -1211,7 +1321,7 @@
         "SETTLEMENT_EXCEEDS_DEBT": "Цей платіж перевищує поточний борг — онови й перевір суму.",
         "IDEMPOTENCY_KEY_REUSED": "Цей ключ збереження вже використано в іншій кімнаті — спробуй зберегти ще раз.",
         "MEMBER_TOKEN_INVALID": "Знову вибери своє ім’я, щоб продовжити.",
-        "INSTALL_HANDOFF_UNAVAILABLE": "Збережені дані для встановлення більше недоступні — відкрий цю кімнату в браузері й знову додай Split.",
+        "INSTALL_HANDOFF_UNAVAILABLE": "Збережені дані для встановлення більше недоступні — відкрий цю кімнату в браузері й знову додай Tribu.",
         "SCAN_UNAVAILABLE": "Сканування чеків тут не ввімкнено.",
         "SCAN_IMAGE_TOO_LARGE": "Це зображення завелике — зроби нове фото.",
         "SCAN_BAD_IMAGE": "Не вдалося надіслати зображення — спробуй сфотографувати ще раз.",
@@ -1229,7 +1339,22 @@
         "NO_RATE": "Між цією валютою й валютою кімнати немає курсу, тому конвертація неможлива. Використай валюту кімнати.",
         "MANUAL_FX_RATE_REQUIRED": "Укажи власний курс цієї нестандартної валюти.",
         "MANUAL_FX_RATE_INVALID": "Власний курс недійсний або округлює конвертовану суму до нуля.",
-        "MANUAL_FX_RATE_NOT_ALLOWED": "Власні курси доступні лише для нестандартних валют витрат."
+        "MANUAL_FX_RATE_NOT_ALLOWED": "Власні курси доступні лише для нестандартних валют витрат.",
+        "LEMON_PROOF_INVALID": "Lemon could not confirm that wallet is yours.",
+        "LEMON_PROOF_STALE": "Your Lemon session expired. Open Tribu from Lemon again.",
+        "LEMON_TX_INVALID": "That payment cannot be recorded.",
+        "LEMON_TX_UNDERPAID": "The payment sent is less than the debt.",
+        "LEMON_TX_PENDING": "The payment is still being confirmed.",
+        "LEMON_TX_FAILED": "The transaction failed on the network. The payment was not recorded.",
+        "LEMON_TX_MISMATCH": "That transaction does not match this payment.",
+        "LEMON_TX_ALREADY_RECORDED": "That payment is already recorded.",
+        "LEMON_WALLET_MISSING": "Both people need to have opened the group from Lemon.",
+        "NOT_THIS_MEMBER": "Only that person can connect their wallet.",
+        "PAYOUT_ADDRESS_INVALID": "That address does not fit the chosen network.",
+        "RECURRING_CURRENCY_UNSUPPORTED": "An expense in a custom currency cannot repeat on its own.",
+        "POT_NOT_FOUND": "We could not find that pot.",
+        "POT_CLOSED": "This pot is already closed.",
+        "POT_PAYER_NOT_KEEPER": "For the pot to pay, the expense must be paid by the person who keeps it."
     },
     "derivation": {
         "title": "Звідки ця сума",
@@ -1385,7 +1510,7 @@
             "title": "Варто знати",
             "more": "…і ще {count, plural, one {# попередження} few {# попередження} many {# попереджень} other {# попередження}}.",
             "ROW_UNBALANCED": "Рядок {row} не сходиться в самому файлі, тому його пропущено.",
-            "ROW_UNSUPPORTED_CURRENCY": "Валюта рядка {row} — {detail}; Split її ще не підтримує, тому рядок пропущено.",
+            "ROW_UNSUPPORTED_CURRENCY": "Валюта рядка {row} — {detail}; Tribu її ще не підтримує, тому рядок пропущено.",
             "ROW_NO_PAYER": "У рядку {row} не вказано платника, тому його пропущено.",
             "ROW_ZERO_COST": "У рядку {row} немає суми, тому його пропущено.",
             "ROW_BAD_AMOUNT": "У рядку {row} є сума, яку не вдалося прочитати, тому його пропущено.",
@@ -1403,7 +1528,7 @@
             "SPLITPRO_SPLIT_MODE_FLATTENED": "Розподіли у відсотках і частках зі Split Pro зберігають кінцеві суми, але додаються як фіксовані суми. Подальше редагування не збереже початкових пропорцій.",
             "SPLITPRO_MISSING_NAMES": "{count, plural, one {У резервній копії Split Pro немає імені однієї людини. Нижче її позначено як «Учасник» — перейменуй її перед створенням кімнати.} few {У резервній копії Split Pro немає імен # людей. Нижче їх позначено як «Учасник» — перейменуй їх перед створенням кімнати.} many {У резервній копії Split Pro немає імен # людей. Нижче їх позначено як «Учасник» — перейменуй їх перед створенням кімнати.} other {У резервній копії Split Pro немає імені # людини. Нижче її позначено як «Учасник» — перейменуй її перед створенням кімнати.}}",
             "SPLITPRO_BALANCES_SKIPPED": "Через неповні дані в резервній копії Split Pro пропущено {count, plural, one {# баланс} few {# баланси} many {# балансів} other {# балансу}}. Перед створенням кімнати порівняй попередній перегляд зі Split Pro.",
-            "SPLITPRO_UNSUPPORTED_CURRENCY": "Split не може конвертувати {detail}, тому баланси в цій валюті пропущено. Якщо вони важливі, вибери інший експорт."
+            "SPLITPRO_UNSUPPORTED_CURRENCY": "Tribu не може конвертувати {detail}, тому баланси в цій валюті пропущено. Якщо вони важливі, вибери інший експорт."
         },
         "errors": {
             "NOT_SPLITWISE_CSV": "Ми не розпізнаємо цей файл. Вибери .csv групи Splitwise, .csv друга зі Split Pro або splitpro_data.json зі сторінки «Обліковий запис» у Split Pro.",
@@ -1443,6 +1568,95 @@
         "expired": "Фото не надійшло. Поділися ним знову.",
         "unavailable": "Сканування чеків ще не ввімкнено.",
         "open": "Відкрити Split"
+    },
+    "appShell": {
+        "nav": {
+            "label": "Menu",
+            "home": "Home",
+            "tribus": "Groups",
+            "vaquitas": "Pots",
+            "me": "Me",
+            "add": "Add something",
+            "backHome": "Back to home"
+        },
+        "add": {
+            "title": "What do you want to add?",
+            "whichTribu": "In which group?",
+            "close": "Close",
+            "needTribu": "Start a group first.",
+            "expense": {
+                "title": "An expense",
+                "hint": "Something someone paid, to split."
+            },
+            "fixed": {
+                "title": "A monthly expense",
+                "hint": "Rent, bills, Netflix: added every month."
+            },
+            "vaquita": {
+                "title": "A pot",
+                "hint": "Pool money for something, with a goal."
+            },
+            "tribu": {
+                "title": "A new group",
+                "hint": "A new group to share expenses."
+            }
+        },
+        "home": {
+            "loading": "Checking your groups…",
+            "emptyTitle": "Welcome to Tribu!",
+            "emptyBody": "Start a group to share expenses or a pot to pool money.",
+            "startTribu": "Start a group",
+            "startVaquita": "Start a pot",
+            "allSquare": "You're square with everyone",
+            "allSquareHint": "Nobody owes you and you owe nobody.",
+            "notJoined": "You're not in any group yet",
+            "notJoinedHint": "Open a group and pick your name to see your numbers here.",
+            "owedToMe": "You're owed",
+            "iOwe": "You owe",
+            "youPass": "you pay",
+            "youGet": "you get",
+            "fixedTitle": "Coming up this month",
+            "fixedDone": "already added",
+            "fixedComing": "added that day",
+            "fixedToday": "added today",
+            "potsTitle": "Your pots",
+            "seeAll": "See all",
+            "tribusTitle": "Your groups",
+            "potReached": "Goal reached!",
+            "potMissing": "{pct}% · <amount></amount> to go",
+            "potNoGoal": "No goal"
+        },
+        "vaquitas": {
+            "new": "Start a pot",
+            "hint": "A pot pools money for something: a gift, a trip, a barbecue. One person keeps it.",
+            "emptyTitle": "No pots yet",
+            "emptyBody": "When you start one, you'll see here how much is in and how much is left.",
+            "closedTitle": "Closed"
+        },
+        "me": {
+            "walletTitle": "My wallet",
+            "walletHint": "Where you want to be paid. Add it once and it goes on all your groups.",
+            "token": "Token",
+            "network": "Network",
+            "address": "Address",
+            "addressInvalid": "That doesn't look like a {network} address.",
+            "walletSave": "Save",
+            "walletSaveAll": "{count, plural, one {Save to my group} few {Save to my # groups} many {Save to my # groups} other {Save to my # groups}}",
+            "walletSaved": "{count, plural, =0 {Wallet saved} one {Wallet saved to your group} few {Wallet saved to your # groups} many {Wallet saved to your # groups} other {Wallet saved to your # groups}}",
+            "walletPartial": "{count, plural, one {Couldn't save to one group. Try again.} few {Couldn't save to # groups. Try again.} many {Couldn't save to # groups. Try again.} other {Couldn't save to # groups. Try again.}}",
+            "walletStatus": "On {done} of {total} groups",
+            "milestonesTitle": "Milestones",
+            "milestonesEmpty": "No milestones yet. They show up as you use your groups.",
+            "milestonesTotal": "{count, plural, one {# milestone across your groups} few {# milestones across your groups} many {# milestones across your groups} other {# milestones across your groups}}",
+            "activityTitle": "History",
+            "activityEmpty": "Expenses and payments you add will show up here.",
+            "activity": {
+                "paid": "You paid: {label}",
+                "shared": "You shared: {label}",
+                "sent": "You paid {label}",
+                "received": "{label} paid you"
+            }
+        }
     },
     "card": {
         "invite": {

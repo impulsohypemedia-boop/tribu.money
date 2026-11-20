@@ -13,7 +13,7 @@ export function DocChrome({ children, page }: { children: React.ReactNode; page:
             <header className="sticky top-0 z-40 border-b border-n-1 bg-primary-1">
                 <div className="mx-auto flex min-h-16 max-w-[90rem] flex-wrap items-center justify-between gap-2 px-4 py-2 sm:gap-4 sm:px-6 lg:px-8">
                     <Link href="/dev-ds" className="flex items-center gap-2 font-display text-xl font-extrabold">
-                        <Doodle name="peanut" size={30} weight={1.8} />
+                        <Doodle name="tribu" size={30} weight={1.8} />
                         <span>Split / system</span>
                     </Link>
                     <nav aria-label="Design system">
@@ -42,7 +42,7 @@ export function DocChrome({ children, page }: { children: React.ReactNode; page:
             <footer className="border-t border-n-1 bg-white">
                 <div className="mx-auto flex max-w-[90rem] flex-col gap-2 px-4 py-8 text-sm text-grey-1 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
                     <p>Code-derived on 3 August 2026. Canonical implementation always wins over this description.</p>
-                    <p className="font-bold text-n-1">Peanut Split · internal engineering reference</p>
+                    <p className="font-bold text-n-1">Tribu · internal engineering reference</p>
                 </div>
             </footer>
         </main>

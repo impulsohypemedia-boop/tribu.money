@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'motion/react'
 import { useTranslations } from 'next-intl'
-import { peanutCheering } from '@/assets/mascot'
+import { tribuFestejo } from '@/assets/mascot'
 import { type DoodleName } from '@/components/ui/doodles'
 import { recapPath } from '@/lib/recap'
 import { storyBucketFor } from '@/lib/story'
@@ -14,6 +14,7 @@ import { useMotionAllowed } from '@/lib/use-motion'
 import { useFeedback, useSettings } from '@/lib/use-settings'
 import { Confetti } from './Confetti'
 import { RecapShareButton } from './RecapShareButton'
+import { StoryShareButton } from './StoryShareButton'
 
 /**
  * Signature moment #6. Deliberately screenshot-worthy — this is the state people
@@ -135,7 +136,7 @@ export function AllSettled({ compact = false, celebrate = false, summary, emblem
                 className="relative"
             >
                 <Image
-                    src={peanutCheering}
+                    src={tribuFestejo}
                     alt=""
                     unoptimized
                     className={compact ? 'h-20 w-20 object-contain' : 'h-28 w-28 object-contain'}
@@ -198,7 +199,8 @@ export function AllSettled({ compact = false, celebrate = false, summary, emblem
                     the version with the numbers on it, minted rather than cropped. */}
                 {slug && (
                     <div className="mt-3 flex w-full max-w-xs flex-col items-center gap-2">
-                        <RecapShareButton slug={slug} />
+                        <StoryShareButton slug={slug} />
+                        <RecapShareButton slug={slug} variant="stroke" />
                         <Link href={recapPath(slug)} className="text-sm font-bold text-n-1 underline">
                             {tRecap('seeRecap')}
                         </Link>

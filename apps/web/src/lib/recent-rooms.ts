@@ -14,12 +14,7 @@ import { roomUpdatesStorageKey } from '@/lib/room-updates'
 
 export const RECENT_ROOMS_KEY = 'ps:recent'
 export const RECENT_ROOMS_LIMIT = 12
-const CANONICAL_ROOM_HOSTS = new Set([
-    'peanutsplit.com',
-    'www.peanutsplit.com',
-    'split.peanut.me',
-    'www.split.peanut.me',
-])
+const CANONICAL_ROOM_HOSTS = new Set(['tribu.money', 'www.tribu.money', 'app.tribu.money', 'www.app.tribu.money'])
 const ROOM_PATH = /^\/r\/([^/]+)\/?$/
 /** A readable stem, then a capability. New rooms carry a 22-character base64url
  * token (128 random bits); three-word and six-character tails remain accepted
@@ -41,6 +36,8 @@ export interface RecentRoom {
      * written by an older build can only ever be a no-op.
      */
     theme?: string
+    /** Set for a vaquita, so the home screen can list vaquitas apart from tribus. */
+    kind?: 'vaquita'
     /** Epoch milliseconds. ISO strings are also accepted on read and normalised. */
     lastSeenAt: number
 }
@@ -56,11 +53,11 @@ const browserStorage = (): Storage | null => {
 }
 
 /**
- * Pull a room credential out of a pasted Peanut Split link.
+ * Pull a room credential out of a pasted Tribu link.
  *
- * Accepts the canonical production host, the former split.peanut.me alias,
+ * Accepts the canonical production host, the former app.tribu.money alias,
  * the host currently serving the app (so localhost and previews work), a bare
- * `peanutsplit.com/r/...` link, or a same-site `/r/...` path. Query strings and fragments are harmless
+ * `tribu.money/r/...` link, or a same-site `/r/...` path. Query strings and fragments are harmless
  * chat-client decoration and are discarded. Everything else is rejected before
  * a request is made.
  */
@@ -111,13 +108,14 @@ const toEpochMs = (value: unknown): number => {
 
 const normalise = (value: unknown): RecentRoom | null => {
     if (typeof value !== 'object' || value === null) return null
-    const { slug, name, emoji, theme, lastSeenAt } = value as Record<string, unknown>
+    const { slug, name, emoji, theme, kind, lastSeenAt } = value as Record<string, unknown>
     if (typeof slug !== 'string' || !ROOM_SLUG.test(slug)) return null
     return {
         slug,
         name: typeof name === 'string' && name.length > 0 ? name : slug,
         emoji: typeof emoji === 'string' && emoji.length > 0 ? emoji : undefined,
         theme: typeof theme === 'string' && theme.length > 0 ? theme : undefined,
+        ...(kind === 'vaquita' ? { kind: 'vaquita' as const } : {}),
         lastSeenAt: toEpochMs(lastSeenAt),
     }
 }
@@ -171,6 +169,7 @@ export function rememberRoom(room: Omit<RecentRoom, 'lastSeenAt'> & { lastSeenAt
         name: room.name,
         emoji: room.emoji,
         theme: room.theme,
+        ...(room.kind === 'vaquita' ? { kind: 'vaquita' as const } : {}),
         lastSeenAt: room.lastSeenAt ?? Date.now(),
     }
     const existingRooms = readRecentRooms()

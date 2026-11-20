@@ -18,6 +18,8 @@ import type {
     ImportIntoRoomResult,
     ImportRoomInput,
     MemberAvatarInput,
+    MemberProfileInput,
+    PotInput,
     ModelStatus,
     ParsedReceipt,
     PushSubscribeInput,
@@ -29,6 +31,8 @@ import type {
     RoomStateWithAddedMember,
     RoomStateWithMember,
     SettlementInput,
+    LemonQuote,
+    WalletLinkInput,
 } from './api-types'
 import type { FeedbackReportInput, FeedbackReportResult } from './feedback-contract'
 
@@ -354,6 +358,20 @@ export const api = {
     addSettlement: (slug: string, input: SettlementInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/settlements`, { method: 'POST', body: input, token }),
 
+    lemonNonce: () => request<{ nonce: string }>('/api/lemon/nonce', { cache: 'no-store' }),
+
+    lemonQuote: (slug: string, amountMinor: string) =>
+        request<LemonQuote>(`/api/rooms/${encode(slug)}/lemon-quote?amountMinor=${encode(amountMinor)}`, {
+            cache: 'no-store',
+        }),
+
+    linkWallet: (slug: string, memberId: string, input: WalletLinkInput, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}/wallet`, {
+            method: 'POST',
+            body: input,
+            token,
+        }),
+
     deleteSettlement: (slug: string, id: string, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/settlements/${encode(id)}`, { method: 'DELETE', token }),
 
@@ -417,6 +435,56 @@ export const api = {
      *  shared-room edit: the room link is the credential. */
     setMemberAvatar: (slug: string, memberId: string, input: MemberAvatarInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}`, {
+            method: 'PATCH',
+            body: input,
+            token,
+        }),
+
+    startRecurring: (slug: string, expenseId: string) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/recurring`, { method: 'POST', body: { expenseId } }),
+
+    stopRecurring: (slug: string, recurringId: string) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/recurring/${encode(recurringId)}`, { method: 'DELETE' }),
+
+    createPot: (slug: string, input: PotInput, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots`, { method: 'POST', body: input, token }),
+
+    updatePot: (slug: string, potId: string, input: Partial<PotInput> & { closed?: boolean }, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}`, { method: 'PATCH', body: input, token }),
+
+    addPotContribution: (
+        slug: string,
+        potId: string,
+        input: { memberId: string; amountMinor: string },
+        token?: string | null
+    ) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/contributions`, {
+            method: 'POST',
+            body: input,
+            token,
+        }),
+
+    removePotContribution: (slug: string, potId: string, contributionId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/contributions/${encode(contributionId)}`, {
+            method: 'DELETE',
+            token,
+        }),
+
+    linkPotExpense: (slug: string, potId: string, expenseId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/expenses`, {
+            method: 'POST',
+            body: { expenseId },
+            token,
+        }),
+
+    unlinkPotExpense: (slug: string, potId: string, expenseId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/expenses/${encode(expenseId)}`, {
+            method: 'DELETE',
+            token,
+        }),
+
+    setMemberProfile: (slug: string, memberId: string, input: MemberProfileInput, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}/profile`, {
             method: 'PATCH',
             body: input,
             token,

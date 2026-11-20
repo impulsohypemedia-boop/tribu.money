@@ -11,6 +11,7 @@ import { api } from '../api'
 import type {
     CreateRoomInput,
     MemberAvatarInput,
+    MemberProfileInput,
     RoomState,
     RoomStateWithAddedMember,
     RoomStateWithMember,
@@ -200,6 +201,33 @@ export function useSetAvatar(slug: string, memberId: string, token?: string | nu
             return { previous }
         },
         onError: (_error, _selection, context) => {
+            if (context?.previous) queryClient.setQueryData(roomKey(slug), context.previous)
+        },
+        onSuccess: (state) => seedRoomState(queryClient, slug, state),
+    })
+}
+
+/** Honored-guest flag and payout details. Optimistic only for the flag: an address is checked
+ * by the server and must not look saved before it is. */
+export function useSetMemberProfile(slug: string, memberId: string, token?: string | null) {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: (input: MemberProfileInput) => api.setMemberProfile(slug, memberId, input, token),
+        onMutate: async (input) => {
+            if (input.honoredGuest === undefined) return { previous: undefined }
+            await queryClient.cancelQueries({ queryKey: roomKey(slug) })
+            const previous = queryClient.getQueryData<RoomState>(roomKey(slug))
+            if (previous) {
+                queryClient.setQueryData<RoomState>(roomKey(slug), {
+                    ...previous,
+                    members: previous.members.map((member) =>
+                        member.id === memberId ? { ...member, honoredGuest: input.honoredGuest } : member
+                    ),
+                })
+            }
+            return { previous }
+        },
+        onError: (_error, _input, context) => {
             if (context?.previous) queryClient.setQueryData(roomKey(slug), context.previous)
         },
         onSuccess: (state) => seedRoomState(queryClient, slug, state),

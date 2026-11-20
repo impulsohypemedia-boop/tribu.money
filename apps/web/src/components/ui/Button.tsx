@@ -18,7 +18,7 @@ import {
 export type { ButtonSize, ButtonVariant } from './button-style'
 
 // Ported from peanut-ui's Bruddle Button, renamed for Split's palette:
-// variant="primary" shadowSize="4" is the primary CTA and paints YELLOW (#FFC900).
+// variant="primary" shadowSize="4" is the primary CTA and paints YELLOW (#FF7A45).
 /** A tap is the lightest cue there is — the same duration use-settings gives 'tick'. */
 const TAP_HAPTIC_MS = 5
 

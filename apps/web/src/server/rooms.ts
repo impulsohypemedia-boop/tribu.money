@@ -32,7 +32,7 @@ export interface CreatedMember {
  * remember at all.
  */
 export async function createRoom(
-    body: CreateRoomBody,
+    body: Omit<CreateRoomBody, 'kind'> & { kind?: CreateRoomBody['kind'] },
     locale: string | null = null,
     request: Request = new Request('http://localhost')
 ): Promise<{ room: RoomWithRelations } & CreatedMember> {
@@ -49,6 +49,7 @@ export async function createRoom(
                         name,
                         emoji: body.emoji ?? null,
                         currency: body.currency,
+                        kind: body.kind ?? 'tribu',
                         locale,
                         members: {
                             create: {
@@ -104,6 +105,20 @@ export async function createRoom(
                                 avatarPalette: member.avatarPalette,
                                 provisional: member.provisional,
                             },
+                        },
+                    })
+                }
+                if (body.kind === 'vaquita') {
+                    const positive = (value: string | null | undefined) =>
+                        value && BigInt(value) > 0n ? BigInt(value) : null
+                    await tx.pot.create({
+                        data: {
+                            roomId: created.id,
+                            name: created.name,
+                            keeperId: creator.id,
+                            targetMinor: positive(body.pot?.targetMinor),
+                            quotaMinor: positive(body.pot?.quotaMinor),
+                            dueDate: body.pot?.dueDate ? new Date(body.pot.dueDate) : null,
                         },
                     })
                 }

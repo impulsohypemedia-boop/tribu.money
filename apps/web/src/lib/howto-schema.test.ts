@@ -54,7 +54,7 @@ describe('extractSteps', () => {
 
 describe('howToSchema', () => {
     it('returns null when the body has no Steps block, the same contract as faqSchema on an empty list', () => {
-        expect(howToSchema('How to split a bill', 'https://peanutsplit.com/blog/x', 'no steps in here')).toBeNull()
+        expect(howToSchema('How to split a bill', 'https://tribu.money/blog/x', 'no steps in here')).toBeNull()
     })
 
     it('builds a HowTo node with one HowToStep per Step, in position order', () => {
@@ -65,11 +65,11 @@ describe('howToSchema', () => {
             '</Steps>',
         ].join('\n')
 
-        expect(howToSchema('Move a Splitwise group', 'https://peanutsplit.com/splitwise-daily-limit', body)).toEqual({
+        expect(howToSchema('Move a Splitwise group', 'https://tribu.money/splitwise-daily-limit', body)).toEqual({
             '@context': 'https://schema.org',
             '@type': 'HowTo',
             name: 'Move a Splitwise group',
-            mainEntityOfPage: 'https://peanutsplit.com/splitwise-daily-limit',
+            mainEntityOfPage: 'https://tribu.money/splitwise-daily-limit',
             step: [
                 { '@type': 'HowToStep', position: 1, name: 'Export the group', text: 'Open settings and export.' },
                 { '@type': 'HowToStep', position: 2, name: 'Import and review', text: 'Drop in the CSV.' },

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import type { ReactNode } from 'react'
-import { peanutPointing } from '@/assets/mascot'
+import { tribuSenalando } from '@/assets/mascot'
 
 /** Shared room-card layout for the two optional device actions. */
 export function DeviceSetupCard({ children }: { children: ReactNode }) {
@@ -10,7 +10,7 @@ export function DeviceSetupCard({ children }: { children: ReactNode }) {
             data-testid="device-setup-card"
         >
             <Image
-                src={peanutPointing}
+                src={tribuSenalando}
                 alt=""
                 aria-hidden="true"
                 unoptimized

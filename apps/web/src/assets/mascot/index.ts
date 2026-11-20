@@ -1,16 +1,16 @@
-import peanutCheering from './peanut-cheering.webp'
-import peanutWavingHello from './peanut-waving-hello.webp'
-import peanutThinking from './peanut-thinking.webp'
-import peanutSad from './peanut-sad.webp'
-import peanutPointing from './peanut-pointing.webp'
+import tribuFestejo from './tribu-festejo.svg'
+import tribuHola from './tribu-hola.svg'
+import tribuPensando from './tribu-pensando.svg'
+import tribuTriste from './tribu-triste.svg'
+import tribuSenalando from './tribu-senalando.svg'
 
 /** Settle celebration / all-settled-up moment. */
-export { peanutCheering }
+export { tribuFestejo }
 /** Landing + join gate. */
-export { peanutWavingHello }
+export { tribuHola }
 /** Empty states. */
-export { peanutThinking }
+export { tribuPensando }
 /** Error states. */
-export { peanutSad }
+export { tribuTriste }
 /** Directional nudge towards a next action. */
-export { peanutPointing }
+export { tribuSenalando }

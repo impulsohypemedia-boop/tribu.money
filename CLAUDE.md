@@ -1,4 +1,15 @@
-# Working rules — peanutsplit
+# Working rules — Tribu (fork of Peanut Split)
+
+Tribu is a fork of Peanut Split (AGPL-3.0), shipped as a Lemon mini app and a PWA at tribu.money.
+The rules below are inherited from upstream. Where they differ, these win:
+
+- Tribu settles debts with Lemon: USDC or USDT on Polygon, sent through the Lemon mini-app SDK and
+  checked on chain before it is recorded (`src/lib/lemon`, `src/server/lemon`). Peanut settlement,
+  the marketing/SEO content engine and ad tags are removed.
+- Members inside Lemon link a wallet with a signed sign-in; that is the one account-like fact Tribu
+  stores. Rooms stay link-based for everyone else.
+- Work goes through a branch and a pull request on `impulsohypemedia-boop/tribu.money`; nothing is
+  pushed straight to `main`.
 
 This repo does **not** follow mono's always-PR workflow. Split is growth-owned, deliberately small, and meant to be shippable (and killable) in an afternoon. `mono/CONTRIBUTING.md` governs `peanut-ui` and `peanut-api-ts`; the rules below govern this repo and win where they differ.
 

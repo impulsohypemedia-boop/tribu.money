@@ -208,7 +208,7 @@ async function callOpenRouter(call: ModelCall, config: ModelConfig): Promise<str
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${config.apiKey}`,
                 'HTTP-Referer': siteUrl,
-                'X-Title': 'Peanut Split',
+                'X-Title': 'Tribu',
             },
             body: JSON.stringify({
                 model: config.model,

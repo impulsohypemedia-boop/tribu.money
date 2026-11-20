@@ -4,6 +4,7 @@ import { JsonLd } from '@/components/marketing/JsonLd'
 import { SiteFooter } from '@/components/marketing/SiteFooter'
 import { FEEDBACK_RETENTION_DAYS } from '@/lib/feedback-contract'
 import { breadcrumbSchema, pageMetadata, pageTitle } from '@/lib/seo'
+import { SOURCE_URL } from '@/lib/source'
 
 /**
  * DRAFT. Tribu's operator, legal entity and contact are not decided yet, so this page only states
@@ -54,6 +55,13 @@ export default function PrivacyPage() {
                 <p>
                     Los reportes de problemas que nos mandes se borran a los {FEEDBACK_RETENTION_DAYS} días. No vendemos
                     datos ni usamos tags de publicidad.
+                </p>
+                <p className="text-sm leading-6 text-n-1/70">
+                    Tribu es software libre bajo la licencia AGPL-3.0. El código está en{' '}
+                    <a href={SOURCE_URL} target="_blank" rel="noopener noreferrer" className="underline">
+                        GitHub
+                    </a>
+                    .
                 </p>
             </div>
 

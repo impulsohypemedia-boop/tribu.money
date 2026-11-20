@@ -4,7 +4,7 @@
             "title": "Las cuentas claras, la tribu unida.",
             "controlTitleAccessible": "PÁSALO",
             "titleAccessible": "Las <highlight>cuentas claras</highlight> mantienen las <highlight>buenas amistades</highlight>",
-            "subtitle": "Armá tu tribu, cargá los gastos y Tribu te dice quién le debe a quién. Saldás en dólares digitales con Lemon.",
+            "subtitle": "Armá tu tribu, cargá los gastos y Tribu te dice quién le debe a quién.",
             "cta": "Crear la tribu",
             "linkExplainerTrigger": "Cómo funciona el link",
             "chat": {
@@ -124,7 +124,6 @@
             "createSplit": "Crear una tribu",
             "toolsLink": "Calculadoras",
             "importLink": "Importar de Splitwise",
-            "sourceStewardship": "Código abierto",
             "colCompare": "Comparar",
             "colGuides": "Guías",
             "allGuides": "Todas las guías",
@@ -235,7 +234,7 @@
             },
             "settle": {
                 "title": "Saldá en un toque",
-                "body": "Tribu calcula quién le paga a quién. Desde Lemon pagás en USDC o USDT."
+                "body": "Tribu calcula quién le paga a quién. Cuando alguien paga, lo marca y la cuenta se actualiza."
             }
         }
     },

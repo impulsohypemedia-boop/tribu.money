@@ -124,7 +124,6 @@
             "createSplit": "Start a split",
             "toolsLink": "Calculators",
             "importLink": "Import from Splitwise",
-            "sourceStewardship": "Open source",
             "colCompare": "Compare",
             "colGuides": "Guides",
             "allGuides": "All guides",
@@ -235,7 +234,7 @@
             },
             "settle": {
                 "title": "Settle in a tap",
-                "body": "Tribu works out who pays whom. Inside Lemon you pay in USDC or USDT."
+                "body": "Tribu works out who pays whom. When someone pays, they mark it and the balance updates."
             }
         }
     },

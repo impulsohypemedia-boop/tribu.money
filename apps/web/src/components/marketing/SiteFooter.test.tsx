@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it, vi } from 'vitest'
-import { SiteFooter, SOURCE_URL } from './SiteFooter'
+import { SiteFooter } from './SiteFooter'
 
 vi.mock('next-intl', () => ({
     useLocale: () => 'es-419',
@@ -10,11 +10,7 @@ vi.mock('next-intl', () => ({
 describe('SiteFooter', () => {
     const html = renderToStaticMarkup(<SiteFooter />)
 
-    it('links the public source, as the AGPL requires for a hosted fork', () => {
-        expect(html).toContain(`href="${SOURCE_URL}"`)
-    })
-
-    it('links the privacy notice', () => {
+    it('links the privacy notice, which carries the AGPL source link', () => {
         expect(html).toContain('href="/privacy"')
     })
 

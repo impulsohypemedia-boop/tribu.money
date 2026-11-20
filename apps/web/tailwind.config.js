@@ -340,7 +340,7 @@ module.exports = {
                     '@apply border-2 border-n-1': {},
                 },
                 '.input': {
-                    '@apply h-16 w-full rounded-sm border border-n-1 bg-white px-5 text-base md:text-sm font-bold text-n-1 outline-none transition-colors placeholder:text-n-3':
+                    '@apply h-16 w-full rounded-sm border-2 border-[#DCC5B4] bg-white focus:border-[#FF7A45] px-5 text-base md:text-sm font-bold text-n-1 outline-none transition-colors placeholder:text-n-3':
                         {},
                 },
             })

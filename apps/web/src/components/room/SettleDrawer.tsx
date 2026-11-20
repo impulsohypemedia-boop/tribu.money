@@ -396,7 +396,14 @@ export function SettleDrawer({
     const recorded = state.settlements.filter((settlement) => recordedIds.includes(settlement.id))
 
     return (
-        <Drawer open={open && !suspended} onOpenChange={(next) => !next && !suspended && onClose()}>
+        <Drawer
+            open={open && !suspended}
+            onOpenChange={(next) => !next && !suspended && onClose()}
+            // Vaul's input repositioning moved the sheet when the phone keyboard opened, leaving
+            // the note field under the keyboard while the typed text showed elsewhere. Native
+            // positioning plus an explicit scroll keeps the field in view, as in ExpenseDrawer.
+            repositionInputs={false}
+        >
             <DrawerContent>
                 <DrawerHeader>
                     <DrawerTitle className="text-h5">{selected ? t('recordTitle') : t('listTitle')}</DrawerTitle>
@@ -812,6 +819,11 @@ export function SettleDrawer({
                                     onChange={(event) => setNote(event.target.value)}
                                     placeholder={t('notePlaceholder')}
                                     maxLength={280}
+                                    onFocus={(event) => {
+                                        const field = event.currentTarget
+                                        // Wait for the keyboard to finish opening before scrolling.
+                                        window.setTimeout(() => field.scrollIntoView({ block: 'center' }), 300)
+                                    }}
                                     data-testid="settle-note"
                                 />
                             </label>

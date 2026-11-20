@@ -22,6 +22,7 @@ import {
     CURATED_EXPENSE_CATEGORY_IDS,
     getExpenseCategorySubject,
     isExpenseCategoryId,
+    matchExpenseCategory,
     type ExpenseCategoryId,
 } from '@/lib/expense-category'
 import {
@@ -1246,6 +1247,18 @@ export function ExpenseDrawer({
         label: categoryLabels[id],
         doodle: getExpenseCategorySubject(id).doodle,
     }))
+    // What "Auto" will pick, shown on the chip as they type: "asado" reads as Comida right away.
+    const autoMatch = values.description.trim() ? matchExpenseCategory(values.description) : null
+    const autoCategory =
+        autoMatch && autoMatch.rule !== 'fallback'
+            ? {
+                  doodle: autoMatch.subject.doodle,
+                  label:
+                      autoMatch.category.id in categoryLabels
+                          ? categoryLabels[autoMatch.category.id as keyof typeof categoryLabels]
+                          : null,
+              }
+            : null
 
     return (
         <Drawer
@@ -1394,6 +1407,7 @@ export function ExpenseDrawer({
                         category={{
                             value: isExpenseCategoryId(values.category) ? values.category : null,
                             options: categoryOptions,
+                            auto: autoCategory,
                             onChange: (category: ExpenseCategoryId | null) => {
                                 patch({ category })
                                 dispatchWorkflow({ type: 'form-field-edited' })

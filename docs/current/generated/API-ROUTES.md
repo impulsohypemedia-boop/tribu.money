@@ -3,9 +3,9 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/src/app/**/route.ts`  
-Input SHA-256: `0ec7c4f70b1216474107d39036418a0b45cdea74ee5ce334d44cee32ad1d5ed9`
+Input SHA-256: `f4c7235cf5eddfd4f7c6f026c0c7b0f1d42a60a23901c52c42816005e02be5ce`
 
-Exported operations: 54
+Exported operations: 55
 
 | Method   | Path                                                         | Handler                                                                                  |
 | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
@@ -62,6 +62,7 @@ Exported operations: 54
 | `GET`    | `/r/:slug/card/:kind`                                        | `apps/web/src/app/(product-shell)/r/[slug]/card/[kind]/route.ts`                         |
 | `POST`   | `/r/:slug/card/:kind`                                        | `apps/web/src/app/(product-shell)/r/[slug]/card/[kind]/route.ts`                         |
 | `GET`    | `/r/:slug/recap/card`                                        | `apps/web/src/app/(product-shell)/r/[slug]/recap/card/route.ts`                          |
+| `GET`    | `/r/:slug/recap/story`                                       | `apps/web/src/app/(product-shell)/r/[slug]/recap/story/route.ts`                         |
 | `GET`    | `/readiness`                                                 | `apps/web/src/app/readiness/route.ts`                                                    |
 
 This inventory proves exported verbs and paths only. Read `../API.md` and the handler source for trust,

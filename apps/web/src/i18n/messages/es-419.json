@@ -999,6 +999,61 @@
             "removeFailed": "No se pudo eliminar ese pago — probá de nuevo.",
             "txLink": "Ver la transacción"
         },
+        "storyCard": {
+            "tripSettled": "¡Todos a mano!",
+            "tripGoing": "Así va la tribu",
+            "tripCaption": "gastamos juntos",
+            "potReached": "¡Vaquita completa!",
+            "potClosed": "Vaquita cerrada",
+            "potGoing": "Así va la vaquita",
+            "potCaption": "{count, plural, =0 {todavía nadie puso} one {lo puso # persona} other {lo juntamos entre #}}",
+            "potGoal": "Meta: {amount}",
+            "share": "Compartir en stories",
+            "sharing": "Preparando la imagen…",
+            "shareLabel": "Compartir una imagen para stories"
+        },
+        "milestones": {
+            "cardTitle": "Logros de la tribu",
+            "cardLine": "{reached} de {total} logrados juntos",
+            "title": "Logros de la tribu",
+            "intro": "Los logran entre todos. Nadie compite con nadie.",
+            "close": "Cerrar",
+            "unlocked": "¡Logro de la tribu! {title}",
+            "items": {
+                "first-expense": {
+                    "title": "Arrancamos",
+                    "body": "Se cargó el primer gasto."
+                },
+                "expenses-10": {
+                    "title": "10 gastos y cero peleas",
+                    "body": "Diez gastos anotados entre todos."
+                },
+                "everyone-paid": {
+                    "title": "Todos pusieron",
+                    "body": "Cada persona pagó al menos una vez."
+                },
+                "first-payment": {
+                    "title": "Primer pago",
+                    "body": "Alguien ya pasó plata para quedar a mano."
+                },
+                "all-square": {
+                    "title": "Todos a mano",
+                    "body": "Nadie tiene que pasarle nada a nadie."
+                },
+                "three-currencies": {
+                    "title": "Trotamundos",
+                    "body": "Gastos en tres monedas distintas."
+                },
+                "pot-goal": {
+                    "title": "Vaquita completa",
+                    "body": "Llegaron a la meta de la vaquita."
+                },
+                "expenses-50": {
+                    "title": "Equipo aceitado",
+                    "body": "Cincuenta gastos y siguen juntos."
+                }
+            }
+        },
         "achievements": {
             "crew": {
                 "title": "{count, plural, one {# nombre en esta cuenta} other {# nombres en esta cuenta}}",

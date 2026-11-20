@@ -53,4 +53,4 @@ export type RecapShareTier = 'files' | 'clipboard' | 'download'
 
 /** No slug in the filename — it would put the credential in a Downloads folder,
  *  a screenshot of a file picker, and every "recently shared" list. */
-export const RECAP_FILE_NAME = 'peanut-split-recap.png'
+export const RECAP_FILE_NAME = 'tribu-recap.png'

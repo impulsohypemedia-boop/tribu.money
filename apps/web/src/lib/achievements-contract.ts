@@ -81,12 +81,12 @@ export function achievementCardPath(slug: string, kind: CardKind, params?: Alter
 /** No slug in a filename — it would put the credential in a Downloads folder, a screenshot of a
  *  file picker, and every "recently shared" list. `lib/recap.ts` makes the same call. */
 export const CARD_FILE_NAME: Record<CardKind, string> = {
-    invite: 'peanut-split-invite.png',
-    crew: 'peanut-split-crew.png',
-    passport: 'peanut-split-passport.png',
-    alterego: 'peanut-split-alter-ego.png',
-    stats: 'peanut-split-trip.png',
-    landing: 'peanut-split-all-square.png',
+    invite: 'tribu-invite.png',
+    crew: 'tribu-crew.png',
+    passport: 'tribu-passport.png',
+    alterego: 'tribu-alter-ego.png',
+    stats: 'tribu-trip.png',
+    landing: 'tribu-all-square.png',
 }
 
 /** The order the WRAPPED deck is presented in. `recap` leads: it is the strongest moment and the

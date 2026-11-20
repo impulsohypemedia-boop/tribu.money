@@ -999,6 +999,61 @@
             "removeFailed": "Impossible d’annuler cet enregistrement de paiement — réessaie.",
             "txLink": "View the transaction"
         },
+        "storyCard": {
+            "tripSettled": "All square!",
+            "tripGoing": "How the group is doing",
+            "tripCaption": "spent together",
+            "potReached": "Pot complete!",
+            "potClosed": "Pot closed",
+            "potGoing": "How the pot is doing",
+            "potCaption": "{count, plural, =0 {nobody has chipped in yet} one {raised by # person} other {raised by #}}",
+            "potGoal": "Goal: {amount}",
+            "share": "Share to stories",
+            "sharing": "Preparing the image…",
+            "shareLabel": "Share an image for stories"
+        },
+        "milestones": {
+            "cardTitle": "Group milestones",
+            "cardLine": "{reached} of {total} reached together",
+            "title": "Group milestones",
+            "intro": "Everyone reaches them together. Nobody competes.",
+            "close": "Close",
+            "unlocked": "Group milestone! {title}",
+            "items": {
+                "first-expense": {
+                    "title": "Off we go",
+                    "body": "The first expense is in."
+                },
+                "expenses-10": {
+                    "title": "10 expenses, zero fights",
+                    "body": "Ten expenses logged together."
+                },
+                "everyone-paid": {
+                    "title": "Everyone chipped in",
+                    "body": "Each person paid at least once."
+                },
+                "first-payment": {
+                    "title": "First payment",
+                    "body": "Someone already paid to even up."
+                },
+                "all-square": {
+                    "title": "All square",
+                    "body": "Nobody owes anybody anything."
+                },
+                "three-currencies": {
+                    "title": "Globetrotters",
+                    "body": "Expenses in three currencies."
+                },
+                "pot-goal": {
+                    "title": "Pot complete",
+                    "body": "The pot reached its goal."
+                },
+                "expenses-50": {
+                    "title": "Well-oiled crew",
+                    "body": "Fifty expenses and still together."
+                }
+            }
+        },
         "achievements": {
             "crew": {
                 "title": "{count, plural, one {# nom dans ce registre} other {# noms dans ce registre}}",

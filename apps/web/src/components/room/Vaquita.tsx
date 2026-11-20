@@ -18,6 +18,7 @@ import { decimalsOf, formatAmountInput, parseAmountToMinor } from '@/lib/money'
 import { potSummary } from '@/lib/pots'
 import { useAddPotContribution, useRemovePotContribution, useUpdatePot } from '@/lib/queries/pots'
 import { TOAST_MS } from '@/lib/toasts'
+import { StoryShareButton } from './StoryShareButton'
 import { Money } from './Money'
 
 type Props = {
@@ -526,6 +527,9 @@ export function VaquitaRoomPanel(props: Props) {
         <section className="mb-6 grid gap-3" data-testid="vaquita-room">
             {pot.closedAt && <p className="text-sm font-bold text-grey-1">{t('closedLabel')}</p>}
             <PotDetails pot={pot} onStartAnother={() => router.push('/new?tipo=vaquita')} {...props} />
+            {(pot.closedAt || potSummary(pot, props.state).missingMinor === '0') && (
+                <StoryShareButton slug={props.slug} />
+            )}
         </section>
     )
 }

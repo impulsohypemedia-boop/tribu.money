@@ -51,6 +51,7 @@ import { LatecomerBanner } from './LatecomerBanner'
 import { RoomErrorState, RoomHeaderSkeleton, RoomNotFound, RoomSkeleton } from './RoomStates'
 import { RoomHeader } from './RoomHeader'
 import { MonthSummaryCard } from './MonthSummary'
+import { TribeMilestones } from './TribeMilestones'
 import { VaquitaCard, VaquitaRoomPanel } from './Vaquita'
 import { SettleDrawer } from './SettleDrawer'
 import { ShareDrawer } from './ShareDrawer'
@@ -666,6 +667,7 @@ export function RoomScreen({ slug }: { slug: string }) {
                                             <MonthSummaryCard state={state} currencies={currencies} />
                                         </>
                                     )}
+                                    <TribeMilestones slug={slug} state={state} />
                                 </div>
                             )}
                             <ExpenseList

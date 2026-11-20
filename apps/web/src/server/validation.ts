@@ -259,6 +259,12 @@ export const settlementSchema = z.object({
     method: z.string().trim().max(20).nullish(),
     note: z.string().trim().max(280).nullish(),
     receiptUrl: receiptUrl.nullish(),
+    /**
+     * Paying ahead on purpose: the amount may exceed what the payer owes, and the extra stays as
+     * credit in their favour that later expenses use up. Without it the debt is a hard ceiling,
+     * so a typo cannot silently flip who owes whom. Never allowed with `lemon`.
+     */
+    advance: z.boolean().optional(),
     /** Method `lemon` only: the stablecoin transfer that paid this debt. */
     lemon: z
         .object({

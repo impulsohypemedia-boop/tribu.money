@@ -475,15 +475,15 @@
             "you": "Vos",
             "settled": "a mano",
             "owes": "pasa",
-            "getsBack": "recibe",
+            "getsBack": "tiene a favor",
             "nothingYet": "nada aún",
             "youOwe": "pasás",
-            "youGetBack": "recibís",
+            "youGetBack": "tenés a favor",
             "former": "Inactiva",
             "pair": {
-                "owesYou": "{name} te pasa",
-                "youOwe": "Le pasás a {name}",
-                "owes": "{debtor} le pasa a {creditor}"
+                "owesYou": "Tenés a favor con {name}",
+                "youOwe": "{name} tiene a favor con vos",
+                "owes": "{creditor} tiene a favor con {debtor}"
             }
         },
         "expenses": {
@@ -730,7 +730,10 @@
             "lemonPayeeNoWallet": "{name} todavía no abrió este grupo desde Lemon, así que no tiene dónde recibir.",
             "lemonTokenUnavailable": "{token} no está disponible en esta red.",
             "tapHint": "¿Alguien ya pagó? Tocá su fila y marcalo como pagado.",
-            "markPaid": "Marcar pagado"
+            "markPaid": "Marcar pagado",
+            "payAhead": "Pagar de más",
+            "payAheadHint": "Lo que sobre queda a favor de {name} y se descuenta de los próximos gastos.",
+            "creditNote": "Quedan <amount></amount> a favor de {name}."
         },
         "share": {
             "title": "Compartir tribu",

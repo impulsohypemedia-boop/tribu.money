@@ -730,7 +730,10 @@
             "lemonPayeeNoWallet": "{name} has not opened this group from Lemon yet, so there is nowhere to send it.",
             "lemonTokenUnavailable": "{token} is not available on this network.",
             "tapHint": "Did someone already pay? Tap their row to mark it paid.",
-            "markPaid": "Mark paid"
+            "markPaid": "Mark paid",
+            "payAhead": "Pay ahead",
+            "payAheadHint": "Anything extra stays as credit for {name} and comes off the next expenses.",
+            "creditNote": "<amount></amount> stays as credit for {name}."
         },
         "share": {
             "title": "Поділитися кімнатою",

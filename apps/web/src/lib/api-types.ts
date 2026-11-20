@@ -323,6 +323,8 @@ export interface SettlementInput {
     method?: SettlementMethod | string | null
     note?: string | null
     receiptUrl?: string | null
+    /** Paying ahead: allows more than the debt; the extra stays as credit for later expenses. */
+    advance?: boolean
     /** Method `lemon` only: the transfer the server checks on chain before recording. */
     lemon?: { txHash: string; token: 'USDC' | 'USDT'; tokenAmount: string }
 }

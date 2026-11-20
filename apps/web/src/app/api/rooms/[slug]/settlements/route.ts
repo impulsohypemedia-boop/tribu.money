@@ -125,7 +125,8 @@ export const POST = (request: Request, ctx: Ctx) =>
                 const payerDebt = -(balances.get(body.fromId) ?? 0n)
                 const payeeCredit = balances.get(body.toId) ?? 0n
                 const ceiling = payerDebt < payeeCredit ? payerDebt : payeeCredit
-                if (ceiling <= 0n || amountMinor > ceiling)
+                const advance = body.advance === true && !body.lemon
+                if (!advance && (ceiling <= 0n || amountMinor > ceiling))
                     throw badRequest('settlement exceeds the current debt', 'SETTLEMENT_EXCEEDS_DEBT')
 
                 const settlement = await tx.settlement.create({

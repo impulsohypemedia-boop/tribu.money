@@ -27,6 +27,7 @@ import { useFeedback } from '@/lib/use-settings'
 import { isFormerMember } from '@/lib/members'
 import { AllSettled } from './AllSettled'
 import { PayoutCard } from '@/components/room/MemberProfile'
+import { SettingToggle } from '@/components/ui/SettingToggle'
 import { payoutOf } from '@/lib/payout'
 import { MemberAvatar } from './MemberAvatar'
 import { AnimatedMoney, Money } from './Money'
@@ -97,6 +98,7 @@ export function SettleDrawer({
     const motionAllowed = useMotionAllowed()
     const [selected, setSelected] = useState<ApiTransfer | null>(null)
     const [method, setMethod] = useState<SettlementMethod>('cash')
+    const [payAhead, setPayAhead] = useState(false)
     const [note, setNote] = useState('')
     const inLemon = useInLemon()
     const { session: lemonSession } = useLemon()
@@ -188,6 +190,7 @@ export function SettleDrawer({
     const pick = (transfer: ApiTransfer) => {
         setSelected(transfer)
         setAmount(formatAmountInput(transfer.amountMinor, decimals, locale))
+        setPayAhead(false)
         setError(null)
     }
 
@@ -201,19 +204,23 @@ export function SettleDrawer({
      * UI check gives immediate feedback; the server check is what prevents two
      * concurrent taps or devices from spending the same outstanding debt.
      */
-    const enteredMinor = (): { minor: string } | { problem: string } => {
+    const enteredMinor = (): { minor: string; advance: boolean } | { problem: string } => {
         if (!selected) return { problem: t('amountInvalid') }
         const parsed = parseAmountToMinor(amount, decimals, locale)
         if (parsed === null) return { problem: t('amountFormatInvalid') }
         if (BigInt(parsed) <= 0n) return { problem: t('amountInvalid') }
-        if (BigInt(parsed) > BigInt(selected.amountMinor))
+        const over = BigInt(parsed) > BigInt(selected.amountMinor)
+        // Paying more than owed is allowed outside Lemon only once the payer has said the extra
+        // is credit on purpose (the switch under the amount); otherwise it is a typo.
+        if (over && method !== 'lemon' && payAhead) return { minor: parsed, advance: true }
+        if (over)
             return {
                 problem:
                     selected.fromId === me?.id
                         ? t('amountTooHighYou')
                         : t('amountTooHigh', { name: displayName(selected.fromId) }),
             }
-        return { minor: parsed }
+        return { minor: parsed, advance: false }
     }
 
     /** Why "Pagar con Lemon" cannot run for this debt from this phone, or null when it can. */
@@ -314,6 +321,7 @@ export function SettleDrawer({
                 amountMinor: entered.minor,
                 method,
                 note: trimmedNote || null,
+                ...(entered.advance ? { advance: true } : {}),
                 ...(lemon ? { lemon } : {}),
             }
             let next: RoomState | null = null
@@ -748,6 +756,40 @@ export function SettleDrawer({
                                     />
                                 </span>
                             </motion.label>
+                            {method !== 'lemon' && (
+                                <div className="grid gap-2">
+                                    <SettingToggle
+                                        label={t('payAhead')}
+                                        hint={t('payAheadHint', { name: displayName(selected.fromId) })}
+                                        checked={payAhead}
+                                        onChange={(next) => {
+                                            setPayAhead(next)
+                                            setError(null)
+                                        }}
+                                        testId="settle-pay-ahead"
+                                    />
+                                    {(() => {
+                                        const parsed = parseAmountToMinor(amount, decimals, locale)
+                                        if (!payAhead || parsed === null) return null
+                                        const extra = BigInt(parsed) - BigInt(selected.amountMinor)
+                                        if (extra <= 0n) return null
+                                        return (
+                                            <p className="text-sm text-grey-1" data-testid="settle-credit-note">
+                                                {t.rich('creditNote', {
+                                                    name: displayName(selected.fromId),
+                                                    amount: () => (
+                                                        <Money
+                                                            minor={extra.toString()}
+                                                            currency={state.room.currency}
+                                                            catalog={currencies}
+                                                        />
+                                                    ),
+                                                })}
+                                            </p>
+                                        )
+                                    })()}
+                                </div>
+                            )}
 
                             <div className="flex flex-col gap-2">
                                 <span className="text-h8 uppercase tracking-wide text-grey-1">{t('howPaid')}</span>

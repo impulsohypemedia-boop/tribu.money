@@ -1,6 +1,7 @@
 /**
  * Member profiles against the real handler and database: the honored-guest flag, which anyone in
- * the room may flip, and payout details, which only the member themself may set.
+ * the room may flip, and payout details, which only the member themself may set. Also paying
+ * ahead, which turns the extra into credit that later expenses use up.
  */
 import { beforeEach, describe, expect, it } from 'vitest'
 import { truncateAll } from '@/server/test/db'
@@ -10,6 +11,7 @@ import { POST as postRoom } from '@/app/api/rooms/route'
 import { POST as postMember } from '@/app/api/rooms/[slug]/members/route'
 import { PATCH as patchProfile } from '@/app/api/rooms/[slug]/members/[memberId]/profile/route'
 import { POST as postExpense } from '@/app/api/rooms/[slug]/expenses/route'
+import { POST as postSettlement } from '@/app/api/rooms/[slug]/settlements/route'
 import type { ApiError, RoomState, RoomStateWithMember } from '@/lib/api-types'
 
 const BASE = 'http://localhost'
@@ -179,5 +181,67 @@ describe('honored guests', () => {
             },
         })
         expect(expense.body.expenses[0].shares).toHaveLength(3)
+    })
+})
+
+describe('paying ahead', () => {
+    const addExpense = (slug: string, paidById: string, amountMinor: string) =>
+        call<RoomState>(postExpense as Handler, {
+            path: `/api/rooms/${slug}/expenses`,
+            method: 'POST',
+            params: { slug },
+            body: { description: 'Netflix', amountMinor, currency: 'USD', paidById, splitMode: 'EQUAL' },
+        })
+    const settle = (slug: string, body: Record<string, unknown>) =>
+        call<RoomState & ApiError>(postSettlement as Handler, {
+            path: `/api/rooms/${slug}/settlements`,
+            method: 'POST',
+            params: { slug },
+            body,
+        })
+
+    it('keeps the debt as a ceiling unless the payer says it is on purpose', async () => {
+        const room = await makeRoom()
+        await addExpense(room.slug, room.ana.id, '900') // each owes Ana 300
+        const typo = await settle(room.slug, { fromId: room.bruno.id, toId: room.ana.id, amountMinor: '3000' })
+        expect(typo.status).toBe(400)
+        expect(typo.body.error.code).toBe('SETTLEMENT_EXCEEDS_DEBT')
+    })
+
+    it('records the extra as credit, and the next expenses use it up', async () => {
+        const room = await makeRoom()
+        await addExpense(room.slug, room.ana.id, '900')
+        const ahead = await settle(room.slug, {
+            fromId: room.bruno.id,
+            toId: room.ana.id,
+            amountMinor: '1200',
+            advance: true,
+        })
+        expect(ahead.status).toBe(201)
+        // Bruno owed 300 and paid 1200: 900 in his favour.
+        expect(ahead.body.balances[room.bruno.id]).toBe('900')
+
+        // Three more months at 900 split three ways: 300 each, all from Bruno's credit.
+        for (let month = 0; month < 3; month++) await addExpense(room.slug, room.ana.id, '900')
+        const after = await addExpense(room.slug, room.ana.id, '3')
+        expect(after.status).toBe(201)
+        const final = after.body.balances
+        // 900 credit - 3 x 300 = 0, then the 3-cent expense: Bruno owes 1.
+        expect(final[room.bruno.id]).toBe('-1')
+        const total = Object.values(final).reduce((sum, value) => sum + BigInt(value), 0n)
+        expect(total).toBe(0n)
+    })
+
+    it('can pay ahead even when nothing is owed yet', async () => {
+        const room = await makeRoom()
+        const ahead = await settle(room.slug, {
+            fromId: room.bruno.id,
+            toId: room.ana.id,
+            amountMinor: '600',
+            advance: true,
+        })
+        expect(ahead.status).toBe(201)
+        expect(ahead.body.balances[room.bruno.id]).toBe('600')
+        expect(ahead.body.balances[room.ana.id]).toBe('-600')
     })
 })

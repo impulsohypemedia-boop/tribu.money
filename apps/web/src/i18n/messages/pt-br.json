@@ -730,7 +730,10 @@
             "lemonPayeeNoWallet": "{name} ainda não abriu este grupo pelo Lemon, então não há onde receber.",
             "lemonTokenUnavailable": "{token} não está disponível nesta rede.",
             "tapHint": "Did someone already pay? Tap their row to mark it paid.",
-            "markPaid": "Mark paid"
+            "markPaid": "Mark paid",
+            "payAhead": "Pay ahead",
+            "payAheadHint": "Anything extra stays as credit for {name} and comes off the next expenses.",
+            "creditNote": "<amount></amount> stays as credit for {name}."
         },
         "share": {
             "title": "Compartilhar sala",

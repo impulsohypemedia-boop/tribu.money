@@ -212,3 +212,40 @@ describe('la vaquita', () => {
         expect(late.body.error.code).toBe('POT_CLOSED')
     })
 })
+
+describe('a vaquita as its own room', () => {
+    it('opens with its pot already armed and kept by whoever created it', async () => {
+        const { status, body } = await call(postRoom as Handler, {
+            path: '/api/rooms',
+            method: 'POST',
+            body: {
+                name: 'Regalo para Lu',
+                currency: 'USD',
+                creatorName: 'Ana',
+                kind: 'vaquita',
+                pot: { targetMinor: '30000', quotaMinor: '5000' },
+            },
+        })
+        expect(status).toBe(201)
+        const created = body as unknown as RoomStateWithMember
+        expect(created.room.kind).toBe('vaquita')
+        expect(created.pots).toHaveLength(1)
+        expect(created.pots?.[0]).toMatchObject({
+            name: 'Regalo para Lu',
+            keeperId: created.memberId,
+            targetMinor: '30000',
+            quotaMinor: '5000',
+        })
+    })
+
+    it('leaves a tribu without a pot', async () => {
+        const { body } = await call(postRoom as Handler, {
+            path: '/api/rooms',
+            method: 'POST',
+            body: { name: 'Casa', currency: 'USD', creatorName: 'Ana' },
+        })
+        const created = body as unknown as RoomStateWithMember
+        expect(created.room.kind).toBe('tribu')
+        expect(created.pots ?? []).toHaveLength(0)
+    })
+})

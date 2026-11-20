@@ -130,6 +130,7 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             name: room.name,
             emoji: room.emoji,
             currency: room.currency,
+            kind: room.kind === 'vaquita' ? 'vaquita' : 'tribu',
             coverUrl: room.coverUrl,
             theme: room.theme,
             hasReachedSharedBalance: room.firstSharedBalanceExpenseId !== null,

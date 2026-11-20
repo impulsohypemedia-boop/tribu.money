@@ -34,6 +34,8 @@ export interface ApiRoom {
     name: string
     emoji: string | null
     currency: string
+    /** A tribu shares expenses; a vaquita is built around one shared pot. Optional for older caches. */
+    kind?: 'tribu' | 'vaquita'
     coverUrl: string | null
     /** A key into the catalog in `lib/themes.ts`. null = the default palette. */
     theme: string | null
@@ -287,6 +289,9 @@ export interface CreateRoomInput {
     creatorName: string
     /** Additional people in the room, excluding the creator. */
     memberNames?: string[]
+    kind?: 'tribu' | 'vaquita'
+    /** A vaquita's goal; its pot is kept by the creator. */
+    pot?: { targetMinor?: string | null; quotaMinor?: string | null; dueDate?: string | null }
 }
 
 export interface CreateMemberInput {

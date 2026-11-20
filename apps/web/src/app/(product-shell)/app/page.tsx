@@ -29,11 +29,12 @@ export default async function AppHomePage({
         source?: string | string[]
     }>
 }) {
-    const [tCreate, tFooter, tRooms, tHeader] = await Promise.all([
+    const [tCreate, tFooter, tRooms, tHeader, tPot] = await Promise.all([
         getTranslations('room.create'),
         getTranslations('marketing.footer'),
         getTranslations('marketing.rooms'),
         getTranslations('room.header'),
+        getTranslations('room.pot'),
     ])
     const { add, manage, install, repair, source } = await searchParams
     const addExpense = add === '1'
@@ -69,6 +70,16 @@ export default async function AppHomePage({
                         >
                             {tCreate('title')}
                             <Doodle name="iconarrowright" size={22} weight={2.2} />
+                        </Link>
+                        <Link
+                            href="/new?tipo=vaquita"
+                            data-testid="app-new-vaquita"
+                            className={buttonClassName({
+                                variant: 'stroke',
+                                className: 'justify-center text-h6 no-underline',
+                            })}
+                        >
+                            {tPot('startTitle')}
                         </Link>
                         <Link
                             href="/import"

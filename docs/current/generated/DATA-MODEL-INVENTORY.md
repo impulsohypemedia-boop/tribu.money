@@ -3,7 +3,7 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `a0580f7ff084c0533fbdb3b7ced04d96a7441c5eabbf1b831e1eb1fa20601630`
+Input SHA-256: `d68af14ebb0f17396b7ea27d711c05ac0191fc67f74c89d18819c6acb84a1c21`
 
 PostgreSQL namespace: `split`  
 Models: 18  
@@ -18,6 +18,7 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `name`                        | `String`             | —                                    |
 | `emoji`                       | `String?`            | —                                    |
 | `currency`                    | `String`             | // display/settle currency, ISO 4217 |
+| `kind`                        | `String`             | @default("tribu")                    |
 | `coverUrl`                    | `String?`            | —                                    |
 | `theme`                       | `String?`            | —                                    |
 | `locale`                      | `String?`            | —                                    |
@@ -202,6 +203,7 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `chainId`     | `Int?`      | —                                                                                            |
 | `token`       | `String?`   | // "USDC" \| "USDT"                                                                          |
 | `tokenAmount` | `String?`   | // token base units, decimal string                                                          |
+| `network`     | `String?`   | —                                                                                            |
 | `createdAt`   | `DateTime`  | @default(now())                                                                              |
 | `deletedAt`   | `DateTime?` | —                                                                                            |
 | `room`        | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade)                             |

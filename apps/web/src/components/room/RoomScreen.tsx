@@ -51,7 +51,7 @@ import { LatecomerBanner } from './LatecomerBanner'
 import { RoomErrorState, RoomHeaderSkeleton, RoomNotFound, RoomSkeleton } from './RoomStates'
 import { RoomHeader } from './RoomHeader'
 import { MonthSummaryCard } from './MonthSummary'
-import { VaquitaCard } from './Vaquita'
+import { VaquitaCard, VaquitaRoomPanel } from './Vaquita'
 import { SettleDrawer } from './SettleDrawer'
 import { ShareDrawer } from './ShareDrawer'
 
@@ -188,6 +188,7 @@ export function RoomScreen({ slug }: { slug: string }) {
             name: state.room.name,
             emoji: state.room.emoji ?? undefined,
             theme: state.room.theme ?? undefined,
+            ...(state.room.kind === 'vaquita' ? { kind: 'vaquita' as const } : {}),
         })
     }, [slug, state])
 
@@ -645,14 +646,26 @@ export function RoomScreen({ slug }: { slug: string }) {
                             )}
                             {!needsJoin && (
                                 <div className="px-4">
-                                    <VaquitaCard
-                                        slug={slug}
-                                        state={state}
-                                        currencies={currencies}
-                                        meId={meId}
-                                        token={identity?.token}
-                                    />
-                                    <MonthSummaryCard state={state} currencies={currencies} />
+                                    {state.room.kind === 'vaquita' ? (
+                                        <VaquitaRoomPanel
+                                            slug={slug}
+                                            state={state}
+                                            currencies={currencies}
+                                            meId={meId}
+                                            token={identity?.token}
+                                        />
+                                    ) : (
+                                        <>
+                                            <VaquitaCard
+                                                slug={slug}
+                                                state={state}
+                                                currencies={currencies}
+                                                meId={meId}
+                                                token={identity?.token}
+                                            />
+                                            <MonthSummaryCard state={state} currencies={currencies} />
+                                        </>
+                                    )}
                                 </div>
                             )}
                             <ExpenseList

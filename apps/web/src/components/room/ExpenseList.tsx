@@ -213,6 +213,8 @@ export function ExpenseList({
     savedActionsDisabled = false,
 }: ExpenseListProps) {
     const t = useTranslations('room.expenses')
+    const tPot = useTranslations('room.pot')
+    const isVaquita = state.room.kind === 'vaquita'
     const tDates = useTranslations('dates')
     const tOffline = useTranslations('offline')
     const locale = useLocale()
@@ -374,7 +376,7 @@ export function ExpenseList({
                         className="h-20 w-20 object-contain sm:h-32 sm:w-32"
                     />
                 </motion.div>
-                <p className="text-h6">{t('emptyTitle')}</p>
+                <p className="text-h6">{isVaquita ? tPot('emptyTitle') : t('emptyTitle')}</p>
                 <div className="flex w-full max-w-[18rem] flex-col gap-3">
                     <Button
                         variant="primary"
@@ -384,7 +386,7 @@ export function ExpenseList({
                         onClick={onShare}
                         data-testid="empty-share"
                     >
-                        {t('emptyShare')}
+                        {isVaquita ? tPot('emptyShare') : t('emptyShare')}
                     </Button>
                     <Button
                         variant="stroke"

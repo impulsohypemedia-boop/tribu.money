@@ -752,8 +752,8 @@
         },
         "share": {
             "title": "Compartir tribu",
-            "postAhaTitle": "Primera división lista",
-            "postAhaSubtitle": "Compartila con el grupo.",
+            "postAhaTitle": "¡Listo, quedó cargado!",
+            "postAhaSubtitle": "Mandale el link al grupo así lo ven y cargan lo suyo.",
             "postAhaBalance": "{from} le pasa a {to}",
             "notNow": "Ahora no",
             "done": "Listo",
@@ -1175,7 +1175,14 @@
             "closeHint": "Lo que sobra queda a favor de quienes pusieron, en sus saldos. No se mueve plata.",
             "closeConfirm": "Cerrar",
             "closedToast": "Vaquita cerrada",
-            "startAnother": "Armar otra vaquita"
+            "startAnother": "Armar otra vaquita",
+            "newTitle": "Nueva vaquita",
+            "newNamePlaceholder": "Regalo para Lu",
+            "newKeeperHint": "Vos guardás la plata: queda en tu cuenta. Tribu no la toca.",
+            "closedLabel": "Esta vaquita está cerrada.",
+            "yourVaquitas": "Tus vaquitas",
+            "emptyTitle": "Vaquita lista",
+            "emptyShare": "Compartir vaquita"
         }
     },
     "slideToConfirm": {

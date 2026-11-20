@@ -101,6 +101,15 @@ export const createRoomSchema = z.object({
     currency: currencyCode,
     creatorName: personName,
     memberNames: z.array(personName).optional(),
+    /** A vaquita room starts with its pot, kept by the creator. */
+    kind: z.enum(['tribu', 'vaquita']).default('tribu'),
+    pot: z
+        .object({
+            targetMinor: minorAmount.nullish(),
+            quotaMinor: minorAmount.nullish(),
+            dueDate: z.string().datetime({ offset: true }).nullish(),
+        })
+        .optional(),
 })
 
 export const createMemberSchema = z.object({

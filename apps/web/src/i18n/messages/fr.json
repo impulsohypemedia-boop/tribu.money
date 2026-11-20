@@ -1175,7 +1175,14 @@
             "closeHint": "What is left stays in favour of whoever put it in, in their balances. No money moves.",
             "closeConfirm": "Close",
             "closedToast": "Pot closed",
-            "startAnother": "Start another pot"
+            "startAnother": "Start another pot",
+            "newTitle": "New pot",
+            "newNamePlaceholder": "Gift for Lu",
+            "newKeeperHint": "You keep the money: it stays in your account. Tribu never touches it.",
+            "closedLabel": "This pot is closed.",
+            "yourVaquitas": "Your pots",
+            "emptyTitle": "Pot ready",
+            "emptyShare": "Share pot"
         }
     },
     "slideToConfirm": {

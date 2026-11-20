@@ -29,6 +29,8 @@ model Room {
   name                        String
   emoji                       String?
   currency                    String // display/settle currency, ISO 4217
+  // "tribu" shares expenses; "vaquita" is a room built around one shared pot.
+  kind                        String             @default("tribu")
   coverUrl                    String?
   // A KEY into the code-side catalog in `lib/themes.ts`, never a colour. Null is
   // the default palette, so a room written before themes existed and a room set

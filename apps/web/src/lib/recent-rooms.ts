@@ -36,6 +36,8 @@ export interface RecentRoom {
      * written by an older build can only ever be a no-op.
      */
     theme?: string
+    /** Set for a vaquita, so the home screen can list vaquitas apart from tribus. */
+    kind?: 'vaquita'
     /** Epoch milliseconds. ISO strings are also accepted on read and normalised. */
     lastSeenAt: number
 }
@@ -106,13 +108,14 @@ const toEpochMs = (value: unknown): number => {
 
 const normalise = (value: unknown): RecentRoom | null => {
     if (typeof value !== 'object' || value === null) return null
-    const { slug, name, emoji, theme, lastSeenAt } = value as Record<string, unknown>
+    const { slug, name, emoji, theme, kind, lastSeenAt } = value as Record<string, unknown>
     if (typeof slug !== 'string' || !ROOM_SLUG.test(slug)) return null
     return {
         slug,
         name: typeof name === 'string' && name.length > 0 ? name : slug,
         emoji: typeof emoji === 'string' && emoji.length > 0 ? emoji : undefined,
         theme: typeof theme === 'string' && theme.length > 0 ? theme : undefined,
+        ...(kind === 'vaquita' ? { kind: 'vaquita' as const } : {}),
         lastSeenAt: toEpochMs(lastSeenAt),
     }
 }
@@ -166,6 +169,7 @@ export function rememberRoom(room: Omit<RecentRoom, 'lastSeenAt'> & { lastSeenAt
         name: room.name,
         emoji: room.emoji,
         theme: room.theme,
+        ...(room.kind === 'vaquita' ? { kind: 'vaquita' as const } : {}),
         lastSeenAt: room.lastSeenAt ?? Date.now(),
     }
     const existingRooms = readRecentRooms()

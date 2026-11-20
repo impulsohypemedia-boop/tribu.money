@@ -19,10 +19,13 @@ export const metadata: Metadata = {
  * matters is autofocused.
  */
 export default async function NewRoomPage({ searchParams }: { searchParams: Promise<Query> }) {
+    const query = await searchParams
+    // `?tipo=vaquita` opens the same form for a vaquita.
+    const kind = query.tipo === 'vaquita' ? 'vaquita' : 'tribu'
     return (
         <>
             <main data-frame="card" className="split-app-frame mx-auto min-h-dvh w-full max-w-xl bg-background">
-                <CreateRoomForm prefill={readPrefill(await searchParams)} />
+                <CreateRoomForm prefill={readPrefill(query)} kind={kind} />
             </main>
             {/* The other page a room is created from. It is noindex and no ad points at it, but
                 the conversion fires here, and each tag has to be loaded to receive it. */}

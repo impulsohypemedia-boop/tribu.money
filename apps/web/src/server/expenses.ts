@@ -27,7 +27,7 @@ import {
 } from '@/server/split'
 import type { RoomWithRelations } from '@/server/roomState'
 import type { CatchUpExpenseBody, ExpenseBody } from '@/server/validation'
-import { activeMembers, isFormerMember } from '@/lib/members'
+import { activeMembers, defaultSplitMembers, isFormerMember } from '@/lib/members'
 
 export interface ExpenseWrite {
     description: string
@@ -340,7 +340,9 @@ export async function buildExpense(
             throw badRequest('percentage shares must add up to 100%', 'PERCENTAGES_DO_NOT_ADD_UP')
         shares = apportionWeightedShares(baseAmountMinor, parsed)
     } else {
-        const ids = body.participantIds?.length ? body.participantIds : activeMembers(room.members).map((m) => m.id)
+        const ids = body.participantIds?.length
+            ? body.participantIds
+            : defaultSplitMembers(room.members).map((m) => m.id)
         if (ids.length === 0) throw badRequest('an expense needs at least one participant', 'NO_PARTICIPANTS')
         assertNoDuplicates(ids)
         ids.forEach((id) => requireMember(room, id, 'participant', existingParticipantIds))

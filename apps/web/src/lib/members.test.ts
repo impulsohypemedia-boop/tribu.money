@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { activeMember, activeMembers, activityRoleMembers, balanceMembers, formerMembers } from './members'
+import {
+    activeMember,
+    activeMembers,
+    activityRoleMembers,
+    balanceMembers,
+    defaultSplitMembers,
+    formerMembers,
+} from './members'
 
 const members = [
     { id: 'ana', removedAt: null },
@@ -33,5 +40,19 @@ describe('active roster versus ledger directory', () => {
             'caro',
         ])
         expect(activityRoleMembers(members, new Set()).map((member) => member.id)).toEqual(['ana', 'bea'])
+    })
+})
+
+describe('defaultSplitMembers', () => {
+    const ana = { id: 'ana', removedAt: null, honoredGuest: false }
+    const abu = { id: 'abu', removedAt: null, honoredGuest: true }
+    const gone = { id: 'gone', removedAt: '2026-01-01T00:00:00.000Z', honoredGuest: false }
+
+    it('leaves out honored guests and Former members', () => {
+        expect(defaultSplitMembers([ana, abu, gone]).map((m) => m.id)).toEqual(['ana'])
+    })
+
+    it('falls back to the active roster when everybody is a guest', () => {
+        expect(defaultSplitMembers([abu, gone]).map((m) => m.id)).toEqual(['abu'])
     })
 })

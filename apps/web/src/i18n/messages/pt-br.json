@@ -440,6 +440,7 @@
                 "member_removed": "marcou uma pessoa como anterior",
                 "member_restored": "reativou uma pessoa",
                 "member_avatar_updated": "editou o personagem de uma pessoa",
+                "member_profile_updated": "edited a person’s profile",
                 "expense_added": "adicionou uma despesa",
                 "expense_edited": "editou uma despesa",
                 "expense_deleted": "excluiu uma despesa",
@@ -1051,6 +1052,30 @@
             "slideLeave": "Deslize para sair",
             "leaveFailed": "Não foi possível sair da sala. Tente de novo.",
             "cancel": "Cancelar"
+        },
+        "profile": {
+            "myWallet": "My wallet",
+            "theirWallet": "{name}'s wallet",
+            "walletHint": "Pick the coin and network and paste your address, so people know where to send your money.",
+            "token": "Coin",
+            "network": "Network",
+            "address": "Address",
+            "addressInvalid": "That is not a {network} address. Check you copied all of it.",
+            "save": "Save wallet",
+            "saved": "Wallet saved",
+            "edit": "Change",
+            "remove": "Remove",
+            "cancel": "Cancel",
+            "failed": "Could not save. Try again.",
+            "noWallet": "{name} has not added a wallet yet.",
+            "payTo": "Send to {name}",
+            "copy": "Copy address",
+            "copied": "Address copied",
+            "showQr": "Show QR",
+            "hideQr": "Hide QR",
+            "networkWarning": "Send only on {network}. Money sent on another network can be lost.",
+            "honoredGuest": "Honored guest",
+            "honoredGuestHint": "{name} is in the group but does not chip in. New expenses leave them out unless you add them."
         }
     },
     "slideToConfirm": {
@@ -1162,7 +1187,8 @@
         "LEMON_TX_MISMATCH": "Essa transação não corresponde a este pagamento.",
         "LEMON_TX_ALREADY_RECORDED": "Esse pagamento já está registrado.",
         "LEMON_WALLET_MISSING": "As duas pessoas precisam ter aberto o grupo pelo Lemon.",
-        "NOT_THIS_MEMBER": "Só essa pessoa pode conectar a própria carteira."
+        "NOT_THIS_MEMBER": "Só essa pessoa pode conectar a própria carteira.",
+        "PAYOUT_ADDRESS_INVALID": "That address does not fit the chosen network."
     },
     "derivation": {
         "title": "De onde vem esse número",

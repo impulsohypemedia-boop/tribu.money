@@ -74,7 +74,7 @@ import { expenseCurrencyShortlist, readExpenseCurrencies, rememberExpenseCurrenc
 import { convertMinorForPreview, useRate } from '@/lib/use-rate'
 import { useMotionAllowed } from '@/lib/use-motion'
 import { useFeedback } from '@/lib/use-settings'
-import { activeMembers, activityRoleMembers, isFormerMember } from '@/lib/members'
+import { activeMembers, activityRoleMembers, defaultSplitMembers, isFormerMember } from '@/lib/members'
 import { useShake } from '@/hooks/useShake'
 import { CurrencyTag } from './CurrencyTag'
 import { MemberAvatar } from './MemberAvatar'
@@ -159,8 +159,14 @@ export function ExpenseDrawer({
     const [recentCurrencies, setRecentCurrencies] = useState<string[]>([])
 
     const activeRoster = useMemo(() => activeMembers(state.members), [state.members])
+    // Who an untouched EQUAL split covers: everyone active except honored guests.
+    const defaultSplitIds = useMemo(() => defaultSplitMembers(state.members).map((m) => m.id), [state.members])
     const [values, setValues] = useState<ExpenseFormValues>(() =>
-        emptyExpenseForm({ currency: state.room.currency, members: activeRoster, paidById: defaultPaidById })
+        emptyExpenseForm({
+            currency: state.room.currency,
+            members: defaultSplitMembers(state.members),
+            paidById: defaultPaidById,
+        })
     )
     const initialValuesRef = useRef(values)
     /** Role-specific draft preservation. If a poll marks a selected person
@@ -339,7 +345,7 @@ export function ExpenseDrawer({
             ? expenseToFormValues(expense, currencies, locale)
             : emptyExpenseForm({
                   currency: recents[0] ?? state.room.currency,
-                  members: activeRoster,
+                  members: defaultSplitMembers(state.members),
                   paidById: defaultPaidById,
               })
         initialValuesRef.current = initialValues
@@ -564,7 +570,7 @@ export function ExpenseDrawer({
             patch({ splitMode: 'EQUAL' })
             return
         }
-        const participants = values.participantsTouched ? values.participantIds : activeRoster.map((m) => m.id)
+        const participants = values.participantsTouched ? values.participantIds : defaultSplitIds
         if (mode === 'EXACT') {
             if (Object.keys(values.exactInputs).length > 0) {
                 patch({ splitMode: mode })
@@ -609,7 +615,7 @@ export function ExpenseDrawer({
     const toggleParticipant = (memberId: string) => {
         // First touch materialises "everyone right now"; until then the form's
         // list is a stale snapshot and the wire omits it (server = everyone).
-        const current = values.participantsTouched ? values.participantIds : activeRoster.map((m) => m.id)
+        const current = values.participantsTouched ? values.participantIds : defaultSplitIds
         const has = current.includes(memberId)
         patch({
             participantsTouched: true,
@@ -629,9 +635,7 @@ export function ExpenseDrawer({
 
         const select = (memberId: string) => {
             if (values.splitMode === 'EQUAL') {
-                const current = values.participantsTouched
-                    ? values.participantIds
-                    : activeRoster.map((member) => member.id)
+                const current = values.participantsTouched ? values.participantIds : defaultSplitIds
                 patch({
                     participantsTouched: true,
                     participantIds: current.includes(memberId) ? current : [...current, memberId],
@@ -1047,7 +1051,7 @@ export function ExpenseDrawer({
         values.splitMode === 'EQUAL'
             ? values.participantsTouched
                 ? values.participantIds
-                : activeRoster.map((member) => member.id)
+                : defaultSplitIds
             : values.splitMode === 'EXACT'
               ? exactParticipantIds(values, currencies, locale)
               : weightedParticipantIds(values, locale)
@@ -1705,8 +1709,9 @@ export function ExpenseDrawer({
                                 {values.splitMode === 'EQUAL' ? (
                                     <ul aria-label={t('whoShares')} className="grid grid-cols-2 gap-2">
                                         {participantRoster.map((member) => {
-                                            const checked =
-                                                !values.participantsTouched || values.participantIds.includes(member.id)
+                                            const checked = values.participantsTouched
+                                                ? values.participantIds.includes(member.id)
+                                                : defaultSplitIds.includes(member.id)
                                             return (
                                                 <li key={member.id}>
                                                     <button

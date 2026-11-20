@@ -26,6 +26,8 @@ import { useMotionAllowed } from '@/lib/use-motion'
 import { useFeedback } from '@/lib/use-settings'
 import { isFormerMember } from '@/lib/members'
 import { AllSettled } from './AllSettled'
+import { PayoutCard } from '@/components/room/MemberProfile'
+import { payoutOf } from '@/lib/payout'
 import { MemberAvatar } from './MemberAvatar'
 import { AnimatedMoney, Money } from './Money'
 
@@ -695,6 +697,15 @@ export function SettleDrawer({
                                     </span>
                                 </span>
                             </div>
+                            {(() => {
+                                // Where the payee asked to be paid outside Lemon, so the payer
+                                // can send it from their own wallet before marking it paid.
+                                const payee = state.members.find((member) => member.id === selected.toId)
+                                const payout = payee ? payoutOf(payee) : null
+                                return payout && method !== 'lemon' ? (
+                                    <PayoutCard payout={payout} name={displayName(selected.toId)} />
+                                ) : null
+                            })()}
                             {/* The suggestion, editable. It arrives filled in, so
                                 the common case is still one tap — but a debt that
                                 was half paid can be recorded as half paid instead

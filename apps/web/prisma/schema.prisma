@@ -115,33 +115,40 @@ model RoomAuditEvent {
 }
 
 model Member {
-  id            String    @id @default(uuid())
-  roomId        String
-  name          String
-  token         String    @unique // stable server-issued secret, returned when a device selects this member
+  id             String    @id @default(uuid())
+  roomId         String
+  name           String
+  token          String    @unique // stable server-issued secret, returned when a device selects this member
   // A KEY into the code-side catalog in `lib/avatars.ts`, never artwork and never
   // a URL. Null is the persona derived from the name, so a member written before
   // the picker existed and a member who never opened it are the same row.
   // Like the roster itself, this is shared table banter: any room link-holder
   // may cast any room member, but only with an allowlisted key.
-  avatar        String?
+  avatar         String?
   // A KEY into the curated color pairs in `lib/avatar-palettes.ts`. Nullable
   // only for rolling deploys and rows written before multicolour avatars; new
   // writes always choose a concrete allowlisted key.
-  avatarPalette String?
-  userId        String? // future account-linking hook
+  avatarPalette  String?
+  userId         String? // future account-linking hook
   // Lemon wallet this member is paid at. Set only by a holder of this member's token, with a
   // signature from that wallet (`server/lemon/identity.ts`). Lowercase hex.
   walletAddress  String?
   lemonTag       String?
   walletLinkedAt DateTime?
+  // Where this member asks to be paid outside Lemon, typed by the member themself. Shown to the
+  // people who owe them; never used to send a payment, so it needs no signature.
+  payoutToken    String? // USDT | USDC
+  payoutNetwork  String? // key from lib/payout.ts
+  payoutAddress  String?
+  // Shares the room but does not chip in: new expenses leave them out unless picked by hand.
+  honoredGuest   Boolean   @default(false)
   // Creation provenance only: true for a name staged while adding an expense.
   // It is not removal eligibility and selecting the name does not change it.
-  provisional   Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  removedAt     DateTime? // non-null = Former for future activity; ledger identity remains durable
-  room          Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  user          User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  provisional    Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  removedAt      DateTime? // non-null = Former for future activity; ledger identity remains durable
+  room           Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user           User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   paidExpenses       Expense[]         @relation("ExpensePaidBy")
   createdExpenses    Expense[]         @relation("ExpenseCreatedBy")

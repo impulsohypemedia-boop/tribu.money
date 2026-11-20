@@ -440,6 +440,7 @@
                 "member_removed": "marcó a una persona como anterior",
                 "member_restored": "reactivó a una persona",
                 "member_avatar_updated": "editó el personaje de una persona",
+                "member_profile_updated": "editó el perfil de una persona",
                 "expense_added": "agregó un gasto",
                 "expense_edited": "editó un gasto",
                 "expense_deleted": "eliminó un gasto",
@@ -1051,6 +1052,30 @@
             "slideLeave": "Deslizá para salir",
             "leaveFailed": "No pudimos salir de la tribu. Intentá de nuevo.",
             "cancel": "Cancelar"
+        },
+        "profile": {
+            "myWallet": "Mi wallet",
+            "theirWallet": "Wallet de {name}",
+            "walletHint": "Elegí la moneda, la red y pegá tu dirección. Así los que te tienen que pasar plata saben a dónde mandarla.",
+            "token": "Moneda",
+            "network": "Red",
+            "address": "Dirección",
+            "addressInvalid": "Esa dirección no es de {network}. Revisá que la copiaste completa.",
+            "save": "Guardar wallet",
+            "saved": "Wallet guardada",
+            "edit": "Cambiar",
+            "remove": "Sacar",
+            "cancel": "Cancelar",
+            "failed": "No se pudo guardar. Probá de nuevo.",
+            "noWallet": "{name} todavía no cargó su wallet.",
+            "payTo": "Mandale a {name}",
+            "copy": "Copiar",
+            "copied": "Dirección copiada",
+            "showQr": "Ver QR",
+            "hideQr": "Ocultar QR",
+            "networkWarning": "Mandá solo por la red {network}. Si usás otra red, la plata se puede perder.",
+            "honoredGuest": "Invitado de honor",
+            "honoredGuestHint": "{name} está en la tribu pero no pone plata. Los gastos nuevos lo dejan afuera, salvo que lo sumes a mano."
         }
     },
     "slideToConfirm": {
@@ -1162,7 +1187,8 @@
         "LEMON_TX_MISMATCH": "Esa transacción no coincide con este pago.",
         "LEMON_TX_ALREADY_RECORDED": "Ese pago ya está registrado.",
         "LEMON_WALLET_MISSING": "Las dos personas tienen que haber abierto el grupo desde Lemon.",
-        "NOT_THIS_MEMBER": "Solo esa persona puede conectar su wallet."
+        "NOT_THIS_MEMBER": "Solo esa persona puede conectar su wallet.",
+        "PAYOUT_ADDRESS_INVALID": "Esa dirección no corresponde a la red elegida."
     },
     "derivation": {
         "title": "Cómo sale este número",

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { isValidCode, MAX_SIGNED_MINOR, normaliseCode, parseManualFxRate } from '@/server/money'
 import { isAvatarKey } from '@/lib/avatars'
 import { isAvatarPaletteKey } from '@/lib/avatar-palettes'
+import { isPayoutNetwork, isPayoutToken } from '@/lib/payout'
 import { normalizePersonName } from '@/lib/person-name'
 import { isReactionEmoji } from '@/lib/reactions'
 import { isRoomDrawing } from '@/lib/room-drawing'
@@ -484,6 +485,27 @@ export const memberAvatarSchema = z.object({
     avatarPalette: z.string().max(40).refine(isAvatarPaletteKey, { message: 'unknown avatar palette' }).optional(),
 })
 
+/**
+ * A member's own profile: the honored-guest flag and where they ask to be paid. The address is
+ * checked against its network in the route, where a mismatch can name the field.
+ */
+export const memberProfileSchema = z
+    .object({
+        honoredGuest: z.boolean().optional(),
+        payout: z
+            .object({
+                token: z.string().refine(isPayoutToken, { message: 'unknown token' }),
+                network: z.string().refine(isPayoutNetwork, { message: 'unknown network' }),
+                address: z.string().max(120),
+            })
+            .nullable()
+            .optional(),
+    })
+    .refine((body) => body.honoredGuest !== undefined || body.payout !== undefined, {
+        message: 'nothing to change',
+    })
+
+export type MemberProfileBody = z.infer<typeof memberProfileSchema>
 export type RoomSettingsBody = z.infer<typeof roomSettingsSchema>
 export type ReactionBody = z.infer<typeof reactionSchema>
 export type MemberAvatarBody = z.infer<typeof memberAvatarSchema>

@@ -178,6 +178,7 @@ export function RoomHeader({
                 member={characterMember}
                 members={members}
                 token={identity?.token}
+                meId={identity?.memberId}
             />
         </header>
     )

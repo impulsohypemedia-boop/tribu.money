@@ -61,6 +61,18 @@ export interface ApiMember {
     /** Lemon wallet this member is paid at, proven by a signature. Lowercase hex. */
     walletAddress?: string | null
     lemonTag?: string | null
+    /** Where this member asks to be paid outside Lemon (`lib/payout.ts`). Typed by the member. */
+    payoutToken?: string | null
+    payoutNetwork?: string | null
+    payoutAddress?: string | null
+    /** In the room but not chipping in: left out of new expenses unless picked by hand. */
+    honoredGuest?: boolean
+}
+
+export interface MemberProfileInput {
+    honoredGuest?: boolean
+    /** null clears the payout details. Only the member themself may change them. */
+    payout?: { token: string; network: string; address: string } | null
 }
 
 export interface ApiShare {
@@ -155,6 +167,7 @@ export type RoomHistoryAction =
     | 'member_removed'
     | 'member_restored'
     | 'member_avatar_updated'
+    | 'member_profile_updated'
     | 'expense_added'
     | 'expense_edited'
     | 'expense_deleted'

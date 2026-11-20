@@ -18,6 +18,7 @@ import type {
     ImportIntoRoomResult,
     ImportRoomInput,
     MemberAvatarInput,
+    MemberProfileInput,
     ModelStatus,
     ParsedReceipt,
     PushSubscribeInput,
@@ -433,6 +434,13 @@ export const api = {
      *  shared-room edit: the room link is the credential. */
     setMemberAvatar: (slug: string, memberId: string, input: MemberAvatarInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}`, {
+            method: 'PATCH',
+            body: input,
+            token,
+        }),
+
+    setMemberProfile: (slug: string, memberId: string, input: MemberProfileInput, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}/profile`, {
             method: 'PATCH',
             body: input,
             token,

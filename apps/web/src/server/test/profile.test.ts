@@ -232,6 +232,33 @@ describe('paying ahead', () => {
         expect(total).toBe(0n)
     })
 
+    it('records a crypto payment with its token and network', async () => {
+        const room = await makeRoom()
+        await addExpense(room.slug, room.ana.id, '900')
+        const paid = await settle(room.slug, {
+            fromId: room.bruno.id,
+            toId: room.ana.id,
+            amountMinor: '300',
+            method: 'crypto',
+            crypto: { token: 'USDT', network: 'tron' },
+        })
+        expect(paid.status).toBe(201)
+        expect(paid.body.settlements[0]).toMatchObject({
+            method: 'crypto',
+            token: 'USDT',
+            network: 'tron',
+            txHash: null,
+        })
+        const bad = await settle(room.slug, {
+            fromId: room.abu.id,
+            toId: room.ana.id,
+            amountMinor: '300',
+            method: 'crypto',
+            crypto: { token: 'USDT', network: 'solana' },
+        })
+        expect(bad.status).toBe(400)
+    })
+
     it('can pay ahead even when nothing is owed yet', async () => {
         const room = await makeRoom()
         const ahead = await settle(room.slug, {

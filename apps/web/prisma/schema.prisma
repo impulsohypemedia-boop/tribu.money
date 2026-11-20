@@ -315,6 +315,8 @@ model Settlement {
   chainId     Int?
   token       String? // "USDC" | "USDT"
   tokenAmount String? // token base units, decimal string
+  // Method "crypto": a stablecoin sent outside Tribu, recorded on the payer's word like cash.
+  network     String?
   createdAt   DateTime  @default(now())
   deletedAt   DateTime?
 

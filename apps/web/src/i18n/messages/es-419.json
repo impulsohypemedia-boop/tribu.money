@@ -744,7 +744,11 @@
             "payAhead": "Pagar de más",
             "payAheadHint": "Lo que sobre queda a favor de {name} y se descuenta de los próximos gastos.",
             "creditNote": "Quedan <amount></amount> a favor de {name}.",
-            "pot": "Aporte a la vaquita"
+            "pot": "Aporte a la vaquita",
+            "crypto": "Cripto",
+            "cryptoNote": "Mandalo desde tu wallet a la de arriba y después marcalo acá. Tribu no lo verifica.",
+            "cryptoNoWallet": "{name} todavía no cargó su wallet. Pedile que la cargue en su perfil.",
+            "cryptoMismatch": "Ojo: {name} pidió {token} en {network}."
         },
         "share": {
             "title": "Compartir tribu",

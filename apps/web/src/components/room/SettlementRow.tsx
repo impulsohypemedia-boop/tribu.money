@@ -18,6 +18,7 @@ import { useMotionAllowed } from '@/lib/use-motion'
 import { useFeedback } from '@/lib/use-settings'
 import { MemberAvatar } from './MemberAvatar'
 import { Money } from './Money'
+import { PAYOUT_NETWORKS, isPayoutNetwork } from '@/lib/payout'
 
 interface SettlementRowProps {
     slug: string
@@ -93,6 +94,16 @@ export function SettlementRow({
                 return settlement.token ? `${tSettle('lemon')} · ${settlement.token}` : tSettle('lemon')
             case 'peanut':
                 return tSettle('peanut')
+            case 'crypto':
+                return [
+                    tSettle('crypto'),
+                    settlement.token,
+                    settlement.network && isPayoutNetwork(settlement.network)
+                        ? PAYOUT_NETWORKS[settlement.network].label
+                        : null,
+                ]
+                    .filter(Boolean)
+                    .join(' · ')
             case 'pot':
                 return tSettle('pot')
             default:

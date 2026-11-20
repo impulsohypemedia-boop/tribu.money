@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { isValidCode, MAX_SIGNED_MINOR, normaliseCode, parseManualFxRate } from '@/server/money'
 import { isAvatarKey } from '@/lib/avatars'
 import { isAvatarPaletteKey } from '@/lib/avatar-palettes'
-import { isPayoutNetwork, isPayoutToken } from '@/lib/payout'
+import { PAYOUT_NETWORK_KEYS, PAYOUT_TOKENS, isPayoutNetwork, isPayoutToken, type PayoutNetwork } from '@/lib/payout'
 import { normalizePersonName } from '@/lib/person-name'
 import { isReactionEmoji } from '@/lib/reactions'
 import { isRoomDrawing } from '@/lib/room-drawing'
@@ -265,6 +265,13 @@ export const settlementSchema = z.object({
      * so a typo cannot silently flip who owes whom. Never allowed with `lemon`.
      */
     advance: z.boolean().optional(),
+    /** Method `crypto` only: what was sent, as the payer says. Nothing is checked on chain. */
+    crypto: z
+        .object({
+            token: z.enum(PAYOUT_TOKENS),
+            network: z.enum(PAYOUT_NETWORK_KEYS as [PayoutNetwork, ...PayoutNetwork[]]),
+        })
+        .optional(),
     /** Method `lemon` only: the stablecoin transfer that paid this debt. */
     lemon: z
         .object({

@@ -139,6 +139,9 @@ export const POST = (request: Request, ctx: Ctx) =>
                         method: body.method ?? null,
                         note: body.note ?? null,
                         receiptUrl: body.receiptUrl ?? null,
+                        ...(body.crypto && body.method === 'crypto' && !body.lemon
+                            ? { token: body.crypto.token, network: body.crypto.network }
+                            : {}),
                         ...(body.lemon
                             ? {
                                   txHash: body.lemon.txHash.toLowerCase(),

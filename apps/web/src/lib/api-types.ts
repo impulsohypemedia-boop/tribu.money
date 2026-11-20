@@ -10,7 +10,7 @@ export type SplitMode = 'EQUAL' | 'EXACT' | 'PERCENTAGE' | 'SHARES'
 
 /** Free-form on the wire; the UI knows about these three. */
 /** `peanut` survives only to render settlements recorded before the fork. */
-export type SettlementMethod = 'cash' | 'bank' | 'lemon' | 'peanut'
+export type SettlementMethod = 'cash' | 'bank' | 'crypto' | 'lemon' | 'peanut'
 
 export interface CurrencyInfo {
     code: string
@@ -137,6 +137,8 @@ export interface ApiSettlement {
     txHash?: string | null
     chainId?: number | null
     token?: string | null
+    /** Method `crypto` only: the network the payer says they used. */
+    network?: string | null
     /** Token base units. */
     tokenAmount?: string | null
     createdAt: string
@@ -377,6 +379,8 @@ export interface SettlementInput {
     receiptUrl?: string | null
     /** Paying ahead: allows more than the debt; the extra stays as credit for later expenses. */
     advance?: boolean
+    /** Method `crypto` only: the stablecoin and network the payer used. */
+    crypto?: { token: 'USDC' | 'USDT'; network: string }
     /** Method `lemon` only: the transfer the server checks on chain before recording. */
     lemon?: { txHash: string; token: 'USDC' | 'USDT'; tokenAmount: string }
 }

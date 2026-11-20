@@ -744,7 +744,11 @@
             "payAhead": "Pay ahead",
             "payAheadHint": "Anything extra stays as credit for {name} and comes off the next expenses.",
             "creditNote": "<amount></amount> stays as credit for {name}.",
-            "pot": "Pot contribution"
+            "pot": "Pot contribution",
+            "crypto": "Crypto",
+            "cryptoNote": "Send it from your wallet to the one above, then mark it here. Tribu does not check it.",
+            "cryptoNoWallet": "{name} has not added a wallet yet. Ask them to add it in their profile.",
+            "cryptoMismatch": "Heads up: {name} asked for {token} on {network}."
         },
         "share": {
             "title": "Share room",

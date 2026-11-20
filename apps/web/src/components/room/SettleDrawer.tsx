@@ -9,7 +9,7 @@ import { BaseInput } from '@/components/ui/BaseInput'
 import { Button } from '@/components/ui/Button'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/Drawer'
 import { DrawerActions, DrawerBody } from '@/components/ui/DrawerLayout'
-import { Icon } from '@/components/ui/Icon'
+import { Icon, type IconName } from '@/components/ui/Icon'
 import type { ApiMember, ApiTransfer, CurrencyInfo, RoomState, SettlementMethod } from '@/lib/api-types'
 import { roomProps, track } from '@/lib/analytics'
 import { cn } from '@/lib/cn'
@@ -28,7 +28,13 @@ import { isFormerMember } from '@/lib/members'
 import { AllSettled } from './AllSettled'
 import { PayoutCard } from '@/components/room/MemberProfile'
 import { SettingToggle } from '@/components/ui/SettingToggle'
-import { payoutOf } from '@/lib/payout'
+import {
+    DEFAULT_PAYOUT_NETWORK,
+    PAYOUT_NETWORK_KEYS,
+    PAYOUT_NETWORKS,
+    payoutOf,
+    type PayoutNetwork,
+} from '@/lib/payout'
 import { MemberAvatar } from './MemberAvatar'
 import { AnimatedMoney, Money } from './Money'
 
@@ -53,8 +59,9 @@ const methodOptions = (t: (key: string) => string, inLemon: boolean) =>
     [
         { id: 'cash', label: t('cash'), icon: 'banknote' },
         { id: 'bank', label: t('bank'), icon: 'wallet' },
+        { id: 'crypto', label: t('crypto'), icon: 'hand-coins' },
         ...(inLemon ? [{ id: 'lemon', label: t('lemon'), icon: 'sparkles' } as const] : []),
-    ] satisfies { id: SettlementMethod; label: string; icon: 'banknote' | 'wallet' | 'sparkles' }[]
+    ] satisfies { id: SettlementMethod; label: string; icon: IconName }[]
 
 /** How long to keep asking the server to confirm a sent Lemon payment before handing it to the room's history. */
 const LEMON_CONFIRM_ATTEMPTS = 20
@@ -103,6 +110,7 @@ export function SettleDrawer({
     const inLemon = useInLemon()
     const { session: lemonSession } = useLemon()
     const [stablecoin, setStablecoin] = useState<StablecoinSymbol>('USDC')
+    const [cryptoNetwork, setCryptoNetwork] = useState<PayoutNetwork>(DEFAULT_PAYOUT_NETWORK)
     const [lemonStage, setLemonStage] = useState<'idle' | 'paying' | 'confirming'>('idle')
     const [error, setError] = useState<string | null>(null)
     /**
@@ -260,9 +268,15 @@ export function SettleDrawer({
         const partial = entered.minor !== selected.amountMinor
         const key = transferKey(selected)
         const trimmedNote = note.trim()
-        const signature = [selected.fromId, selected.toId, entered.minor, method, stablecoin, trimmedNote].join(
-            '\u0000'
-        )
+        const signature = [
+            selected.fromId,
+            selected.toId,
+            entered.minor,
+            method,
+            stablecoin,
+            cryptoNetwork,
+            trimmedNote,
+        ].join('\u0000')
         const sameRequest = requestRef.current?.signature === signature
         const clientKey = sameRequest && requestRef.current ? requestRef.current.clientKey : createClientKey()
         // A Lemon payment that was sent but not yet recorded is reused on the next tap, never paid twice.
@@ -323,6 +337,7 @@ export function SettleDrawer({
                 note: trimmedNote || null,
                 ...(entered.advance ? { advance: true } : {}),
                 ...(lemon ? { lemon } : {}),
+                ...(method === 'crypto' ? { crypto: { token: stablecoin, network: cryptoNetwork } } : {}),
             }
             let next: RoomState | null = null
             for (let attempt = 1; next === null; attempt++) {
@@ -793,7 +808,7 @@ export function SettleDrawer({
 
                             <div className="flex flex-col gap-2">
                                 <span className="text-h8 uppercase tracking-wide text-grey-1">{t('howPaid')}</span>
-                                <div className={cn('grid gap-2', inLemon ? 'grid-cols-3' : 'grid-cols-2')}>
+                                <div className={cn('grid gap-2', inLemon ? 'grid-cols-4' : 'grid-cols-3')}>
                                     {methodOptions(t, inLemon).map((option) => {
                                         const active = method === option.id
                                         const isLemon = option.id === 'lemon'
@@ -803,6 +818,17 @@ export function SettleDrawer({
                                                 type="button"
                                                 onClick={() => {
                                                     setMethod(option.id)
+                                                    if (option.id === 'crypto') {
+                                                        // Start from where the payee asked to be paid.
+                                                        const payee = state.members.find(
+                                                            (member) => member.id === selected.toId
+                                                        )
+                                                        const payout = payee ? payoutOf(payee) : null
+                                                        if (payout) {
+                                                            setStablecoin(payout.token)
+                                                            setCryptoNetwork(payout.network)
+                                                        }
+                                                    }
                                                     setError(null)
                                                     feedback('tick')
                                                 }}
@@ -823,6 +849,60 @@ export function SettleDrawer({
                                         )
                                     })}
                                 </div>
+                                {method === 'crypto' && (
+                                    <div className="flex flex-col gap-2" data-testid="crypto-panel">
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {(['USDT', 'USDC'] as const).map((symbol) => (
+                                                <button
+                                                    key={symbol}
+                                                    type="button"
+                                                    onClick={() => setStablecoin(symbol)}
+                                                    aria-pressed={stablecoin === symbol}
+                                                    data-testid={`crypto-token-${symbol}`}
+                                                    className={cn(
+                                                        'min-h-11 rounded-sm border border-n-1 px-3 text-h8',
+                                                        stablecoin === symbol ? 'shadow-4 bg-primary-1' : 'bg-white'
+                                                    )}
+                                                >
+                                                    {symbol}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="flex flex-wrap gap-2" data-testid="crypto-network">
+                                            {PAYOUT_NETWORK_KEYS.map((network) => (
+                                                <button
+                                                    key={network}
+                                                    type="button"
+                                                    onClick={() => setCryptoNetwork(network)}
+                                                    aria-pressed={cryptoNetwork === network}
+                                                    className={cn(
+                                                        'rounded-full border border-n-1 px-3 py-1.5 text-sm font-bold',
+                                                        cryptoNetwork === network ? 'bg-n-1 text-white' : 'bg-white'
+                                                    )}
+                                                >
+                                                    {PAYOUT_NETWORKS[network].label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <p className="text-sm text-grey-1">
+                                            {(() => {
+                                                const payee = state.members.find(
+                                                    (member) => member.id === selected.toId
+                                                )
+                                                const payout = payee ? payoutOf(payee) : null
+                                                if (!payout)
+                                                    return t('cryptoNoWallet', { name: displayName(selected.toId) })
+                                                if (payout.network !== cryptoNetwork || payout.token !== stablecoin)
+                                                    return t('cryptoMismatch', {
+                                                        name: displayName(selected.toId),
+                                                        token: payout.token,
+                                                        network: PAYOUT_NETWORKS[payout.network].label,
+                                                    })
+                                                return t('cryptoNote')
+                                            })()}
+                                        </p>
+                                    </div>
+                                )}
                                 {method === 'lemon' && (
                                     <div className="flex flex-col gap-2" data-testid="lemon-panel">
                                         <div className="grid grid-cols-2 gap-2">

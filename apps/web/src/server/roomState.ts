@@ -216,6 +216,7 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             txHash: s.txHash,
             chainId: s.chainId,
             token: s.token,
+            network: s.network,
             tokenAmount: s.tokenAmount,
             createdAt: s.createdAt.toISOString(),
         })),

@@ -1092,6 +1092,28 @@
             "stop": "Stop",
             "stopped": "It no longer repeats. Past months stay.",
             "stopFailed": "Could not stop it. Try again."
+        },
+        "monthSummary": {
+            "cardTitle": "This month",
+            "cardLine": "W tym miesiącu: <amount></amount>, {count, plural, one {# wydatek} few {# wydatki} many {# wydatków} other {# wydatku}}",
+            "title": "Month summary",
+            "close": "Close",
+            "previousMonth": "Previous month",
+            "nextMonth": "Next month",
+            "quietMonth": "No expenses this month.",
+            "together": "Spent together",
+            "expenseCount": "{count, plural, one {# wydatek} few {# wydatki} many {# wydatków} other {# wydatku}}",
+            "moreThanBefore": "{pct}% more than the month before",
+            "lessThanBefore": "{pct}% less than the month before",
+            "sameAsBefore": "same as the month before",
+            "onWhat": "On what",
+            "eachOne": "What each person put in",
+            "put": "put in",
+            "part": "their part",
+            "biggest": "The biggest expense was {name}: <amount></amount>.",
+            "unnamed": "an unnamed one",
+            "someone": "Someone",
+            "fullHistory": "See full history"
         }
     },
     "slideToConfirm": {

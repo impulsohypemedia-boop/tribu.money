@@ -9,7 +9,7 @@ import { Money } from './Money'
 
 const MAX_MONTHS = 6
 
-const categoryKey: Record<ExpenseCategoryId, string> = {
+export const categoryKey: Record<ExpenseCategoryId, string> = {
     'food-drink': 'foodDrink',
     transport: 'transport',
     'travel-stays': 'travelStays',

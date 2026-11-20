@@ -1092,6 +1092,28 @@
             "stop": "Dejar de repetir",
             "stopped": "Ya no se repite. Lo cargado hasta hoy queda.",
             "stopFailed": "No se pudo frenar. Probá de nuevo."
+        },
+        "monthSummary": {
+            "cardTitle": "Resumen del mes",
+            "cardLine": "Este mes: <amount></amount> en {count, plural, one {# gasto} other {# gastos}}",
+            "title": "Resumen del mes",
+            "close": "Cerrar",
+            "previousMonth": "Mes anterior",
+            "nextMonth": "Mes siguiente",
+            "quietMonth": "Este mes la tribu no cargó gastos.",
+            "together": "Entre todos gastaron",
+            "expenseCount": "{count, plural, one {# gasto} other {# gastos}}",
+            "moreThanBefore": "{pct}% más que el mes anterior",
+            "lessThanBefore": "{pct}% menos que el mes anterior",
+            "sameAsBefore": "igual que el mes anterior",
+            "onWhat": "En qué",
+            "eachOne": "Lo que puso cada uno",
+            "put": "puso",
+            "part": "su parte",
+            "biggest": "El gasto más grande fue {name}: <amount></amount>.",
+            "unnamed": "uno sin nombre",
+            "someone": "Alguien",
+            "fullHistory": "Ver historial completo"
         }
     },
     "slideToConfirm": {

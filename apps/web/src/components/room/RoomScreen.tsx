@@ -50,6 +50,7 @@ import { JoinGate } from './JoinGate'
 import { LatecomerBanner } from './LatecomerBanner'
 import { RoomErrorState, RoomHeaderSkeleton, RoomNotFound, RoomSkeleton } from './RoomStates'
 import { RoomHeader } from './RoomHeader'
+import { MonthSummaryCard } from './MonthSummary'
 import { SettleDrawer } from './SettleDrawer'
 import { ShareDrawer } from './ShareDrawer'
 
@@ -641,6 +642,7 @@ export function RoomScreen({ slug }: { slug: string }) {
                                     }
                                 />
                             )}
+                            {!needsJoin && <MonthSummaryCard state={state} currencies={currencies} />}
                             <ExpenseList
                                 state={state}
                                 currencies={currencies}

@@ -1576,7 +1576,8 @@
             "tribus": "Tribus",
             "vaquitas": "Vaquitas",
             "me": "Yo",
-            "add": "Cargar algo"
+            "add": "Cargar algo",
+            "backHome": "Volver al inicio"
         },
         "add": {
             "title": "¿Qué querés cargar?",

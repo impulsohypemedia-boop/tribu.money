@@ -1576,7 +1576,8 @@
             "tribus": "Groups",
             "vaquitas": "Pots",
             "me": "Me",
-            "add": "Add something"
+            "add": "Add something",
+            "backHome": "Back to home"
         },
         "add": {
             "title": "What do you want to add?",

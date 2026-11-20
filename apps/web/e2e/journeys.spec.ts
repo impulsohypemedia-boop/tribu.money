@@ -259,7 +259,7 @@ test('the locale cookie puts the room into Spanish', async ({ page, context, req
     // One string per surface rather than a full catalogue diff — the key-parity audit already
     // owns completeness; this states that the room actually resolves the cookie.
     await expect(page.getByRole('heading', { name: 'Saldos' })).toBeVisible({ timeout: 15_000 })
-    await expect(page.getByTestId('open-settle')).toContainText('Saldar cuentas')
+    await expect(page.getByTestId('open-settle')).toContainText('Quedar a mano')
     await expect(page.getByTestId('open-add-expense')).toContainText('Agregar gasto')
 
     await page.getByTestId('open-settle').click()

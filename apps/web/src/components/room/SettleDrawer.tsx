@@ -415,6 +415,7 @@ export function SettleDrawer({
 
                     {!nothingToSettle && !selected && (
                         <>
+                            <p className="text-sm text-grey-1">{t('tapHint')}</p>
                             <ul className="flex flex-col gap-2">
                                 {/* `initial` left on (the default) so the list deals itself
                                     out on open. The sheet unmounts when it closes, so this
@@ -540,12 +541,19 @@ export function SettleDrawer({
                                                             {displayName(transfer.toId)}
                                                         </span>
                                                     </span>
-                                                    <Money
-                                                        minor={transfer.amountMinor}
-                                                        currency={state.room.currency}
-                                                        catalog={currencies}
-                                                        className="shrink-0 text-h7"
-                                                    />
+                                                    <span className="flex shrink-0 flex-col items-end gap-1">
+                                                        <Money
+                                                            minor={transfer.amountMinor}
+                                                            currency={state.room.currency}
+                                                            catalog={currencies}
+                                                            className="text-h7"
+                                                        />
+                                                        {!settled && (
+                                                            <span className="rounded-full border border-n-1 bg-primary-3 px-2 py-1 text-[11px] font-bold leading-none text-n-1">
+                                                                {t('markPaid')}
+                                                            </span>
+                                                        )}
+                                                    </span>
                                                 </button>
                                             </motion.li>
                                         )

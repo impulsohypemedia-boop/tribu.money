@@ -727,7 +727,9 @@
             "lemonOnlyPayer": "Só {name} pode pagar esta dívida com o Lemon.",
             "lemonLinking": "Conectando seu Lemon a este grupo. Tente de novo em instantes.",
             "lemonPayeeNoWallet": "{name} ainda não abriu este grupo pelo Lemon, então não há onde receber.",
-            "lemonTokenUnavailable": "{token} não está disponível nesta rede."
+            "lemonTokenUnavailable": "{token} não está disponível nesta rede.",
+            "tapHint": "Did someone already pay? Tap their row to mark it paid.",
+            "markPaid": "Mark paid"
         },
         "share": {
             "title": "Compartilhar sala",

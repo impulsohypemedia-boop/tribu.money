@@ -123,7 +123,7 @@ describe('achievement cards', () => {
             {
                 inviter: 'Te invitaron a',
                 label: 'Gastos compartidos',
-                line: 'Todos agregan. Calculamos quién debe.',
+                line: 'Todos cargan. Tribu hace las cuentas.',
                 rosterLabel: 'YA ESTÁN EN LA TRIBU',
                 rosterLine: '5 personas ya están',
                 count: 5,

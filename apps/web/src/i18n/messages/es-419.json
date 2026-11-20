@@ -4,7 +4,7 @@
             "title": "Las cuentas claras, la tribu unida.",
             "controlTitleAccessible": "PÁSALO",
             "titleAccessible": "Las <highlight>cuentas claras</highlight> mantienen las <highlight>buenas amistades</highlight>",
-            "subtitle": "Armá tu tribu, cargá los gastos y Tribu te dice quién le debe a quién.",
+            "subtitle": "Armá tu tribu, cargá los gastos y Tribu calcula cómo quedar a mano.",
             "cta": "Crear la tribu",
             "linkExplainerTrigger": "Cómo funciona el link",
             "chat": {
@@ -81,7 +81,7 @@
                 "oneLink": "UN LINK",
                 "anyCurrency": "CUALQUIER MONEDA",
                 "noMath": "CERO CUENTAS",
-                "even": "SIN DEUDAS"
+                "even": "A MANO"
             },
             "examples": {
                 "title": "DIVIDÍ LO QUE SEA.",
@@ -253,7 +253,7 @@
     },
     "room": {
         "actions": {
-            "settleUp": "Saldar cuentas",
+            "settleUp": "Quedar a mano",
             "addExpense": "Agregar gasto"
         },
         "header": {
@@ -472,17 +472,17 @@
         "balances": {
             "title": "Saldos",
             "you": "Vos",
-            "settled": "sin deudas",
-            "owes": "debe",
-            "getsBack": "le deben",
+            "settled": "a mano",
+            "owes": "pasa",
+            "getsBack": "recibe",
             "nothingYet": "nada aún",
-            "youOwe": "debés",
-            "youGetBack": "te deben",
+            "youOwe": "pasás",
+            "youGetBack": "recibís",
             "former": "Inactiva",
             "pair": {
-                "owesYou": "{name} te debe",
-                "youOwe": "Le debés a {name}",
-                "owes": "{debtor} le debe a {creditor}"
+                "owesYou": "{name} te pasa",
+                "youOwe": "Le pasás a {name}",
+                "owes": "{debtor} le pasa a {creditor}"
             }
         },
         "expenses": {
@@ -504,10 +504,10 @@
             "filedByYou": "Agregado por vos",
             "filedByAnon": "Agregado de forma anónima",
             "personalImpact": {
-                "outgoingNamed": "Se sumó a lo que le debés a {name}",
-                "outgoing": "Se sumó a lo que debés",
-                "incomingNamed": "Se sumó a lo que {name} te debe",
-                "incoming": "Los demás te deben por este gasto",
+                "outgoingNamed": "Se sumó a lo que le pasás a {name}",
+                "outgoing": "Se sumó a lo que pasás",
+                "incomingNamed": "Se sumó a lo que {name} te pasa",
+                "incoming": "Los demás te pasan su parte de este gasto",
                 "neutral": "No cambió tu saldo",
                 "notInSplit": "No participaste en la división"
             },
@@ -519,7 +519,7 @@
             "errorTitle": "No pudimos cargar esta tribu",
             "errorBody": "Seguro es la conexión. No se perdió nada — probá otra vez.",
             "staleTitle": "Esta tribu puede estar desactualizada",
-            "staleBody": "Mostramos la última tribu cargada. Editar o eliminar gastos guardados y saldar cuentas queda pausado hasta actualizar. Aún podés agregar un gasto.",
+            "staleBody": "Mostramos la última tribu cargada. Editar o eliminar gastos guardados y marcar pagos queda pausado hasta actualizar. Igual podés agregar un gasto.",
             "retry": "Intentar de nuevo",
             "pullToRefresh": {
                 "pull": "Deslizá hacia abajo para actualizar",
@@ -564,8 +564,8 @@
             "ctaTitle": "Ahora te toca a ti",
             "cta": "Empezar tu propia tribu",
             "yourLine": "Pusiste {amount} · {position}",
-            "youOwe": "debés {amount}",
-            "youGetBack": "te deben {amount}",
+            "youOwe": "pasás {amount}",
+            "youGetBack": "recibís {amount}",
             "youSettled": "estás a mano"
         },
         "expenseDrawer": {
@@ -693,28 +693,28 @@
         },
         "settle": {
             "formerName": "{name} · Inactiva",
-            "listTitle": "Quién le debe a quién",
-            "recordTitle": "Registrar un pago",
-            "nothingToSettle": "Nada que saldar todavía — agregá un gasto primero.",
+            "listTitle": "Para quedar a mano",
+            "recordTitle": "Marcar como pagado",
+            "nothingToSettle": "Todavía no hay cuentas — agregá un gasto primero.",
             "you": "Vos",
-            "stillOutstanding": "Falta por saldar",
+            "stillOutstanding": "Falta para quedar a mano",
             "howPaid": "¿Cómo se pagó?",
             "cash": "Efectivo",
             "bank": "Banco",
             "peanut": "Pago externo",
             "note": "Nota (opcional)",
             "notePlaceholder": "Enviado el viernes",
-            "record": "Registrar pago",
+            "record": "Marcar como pagado",
             "back": "Volver",
-            "recorded": "{from} pagó a {to}",
+            "recorded": "{from} le pasó a {to}",
             "failed": "no se pudo registrar ese pago — probá de nuevo",
             "amountLabel": "¿Cuánto se pagó?",
-            "amountHint": "La deuda completa es",
+            "amountHint": "El total pendiente es",
             "amountInvalid": "Ingresá un monto mayor que cero.",
             "amountFormatInvalid": "Revisá los separadores y decimales del monto.",
-            "amountTooHigh": "Es más de lo que debe {name}.",
+            "amountTooHigh": "Es más de lo que le falta pasar a {name}.",
             "recordedTitle": "Registrado recién",
-            "amountTooHighYou": "Eso es más de lo que debés.",
+            "amountTooHighYou": "Es más de lo que te falta pasar.",
             "lemon": "Lemon",
             "lemonNote": "Se paga desde tu wallet de Lemon, en dólares digitales.",
             "lemonQuote": "Vas a enviar {amount} {token} desde tu Lemon.",
@@ -724,16 +724,18 @@
             "lemonPayTitle": "Pago a {name} en Tribu",
             "lemonFailed": "El pago no salió. No se movió plata.",
             "lemonSignInNeeded": "Iniciá sesión con Lemon para pagar desde acá.",
-            "lemonOnlyPayer": "Solo {name} puede pagar esta deuda con Lemon.",
+            "lemonOnlyPayer": "Solo {name} puede hacer este pago con Lemon.",
             "lemonLinking": "Estamos conectando tu Lemon a este grupo. Probá de nuevo en un momento.",
             "lemonPayeeNoWallet": "{name} todavía no abrió este grupo desde Lemon, así que no tiene dónde recibir.",
-            "lemonTokenUnavailable": "{token} no está disponible en esta red."
+            "lemonTokenUnavailable": "{token} no está disponible en esta red.",
+            "tapHint": "¿Alguien ya pagó? Tocá su fila y marcalo como pagado.",
+            "markPaid": "Marcar pagado"
         },
         "share": {
             "title": "Compartir tribu",
             "postAhaTitle": "Primera división lista",
             "postAhaSubtitle": "Compartila con el grupo.",
-            "postAhaBalance": "{from} le debe a {to}",
+            "postAhaBalance": "{from} le pasa a {to}",
             "notNow": "Ahora no",
             "done": "Listo",
             "close": "Cerrar compartir"
@@ -940,7 +942,7 @@
             "reviewBody": "Seleccioná los gastos que compartió {name}. Las divisiones iguales de todo el grupo empiezan seleccionadas; las personalizadas necesitan edición manual.",
             "selectedCount": "{count, plural, =0 {Nada seleccionado} one {# seleccionado} other {# seleccionados}}",
             "noChange": "Sin cambios anteriores",
-            "projectedOwe": "Después del cambio, {name} debe {amount}",
+            "projectedOwe": "Después del cambio, {name} pasa {amount}",
             "projectedBack": "Después del cambio, {name} recibe {amount}",
             "projectedSettled": "Después del cambio, {name} queda al día",
             "wholeGroup": "Todo el grupo · {from} → {to} personas",
@@ -1129,7 +1131,7 @@
         "SETTLEMENT_PAYER_NOT_MEMBER": "Quien pagó no está en esta tribu — recarga y probá de nuevo.",
         "SETTLEMENT_PAYEE_NOT_MEMBER": "Quien recibió no está en esta tribu — recarga y probá de nuevo.",
         "SETTLEMENT_SAME_MEMBER": "Un pago necesita dos personas distintas.",
-        "SETTLEMENT_EXCEEDS_DEBT": "Ese pago supera lo que se debe ahora — recarga y revisa el monto.",
+        "SETTLEMENT_EXCEEDS_DEBT": "Ese pago es más de lo que falta — actualizá y revisá el monto.",
         "IDEMPOTENCY_KEY_REUSED": "Esa clave de guardado ya se usó en otra tribu — intenta guardar de nuevo.",
         "MEMBER_TOKEN_INVALID": "Elegí tu nombre de nuevo para continuar.",
         "INSTALL_HANDOFF_UNAVAILABLE": "Ese traspaso guardado para instalar ya no está disponible — abrí esta tribu en tu navegador y volvé a agregar Tribu.",
@@ -1358,7 +1360,7 @@
         }
     },
     "preview": {
-        "roomDescription": "Súmate a la cuenta — mira quién debe qué y agrega lo que pagaste.",
+        "roomDescription": "Sumate a la cuenta: mirá cuánto pone cada uno y cargá lo que pagaste.",
         "statNone": "Todavía no hay gastos",
         "statOne": "1 gasto · {amount} hasta ahora",
         "statMany": "{count} gastos · {amount} hasta ahora",
@@ -1378,7 +1380,7 @@
     "card": {
         "invite": {
             "label": "Gastos compartidos",
-            "line": "Todos agregan. Calculamos quién debe.",
+            "line": "Todos cargan. Tribu hace las cuentas.",
             "inviter": "{name} te invita a",
             "inviterFallback": "Te invitaron a",
             "roster": "YA ESTÁN EN LA TRIBU",

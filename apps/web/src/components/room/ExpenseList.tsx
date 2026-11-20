@@ -686,6 +686,14 @@ export function ExpenseList({
                                                         heading and two unnamed rows read identically. */}
                                                     {expenseRowLabel(expense.description, expense.date, dayOptions)}
                                                 </span>
+                                                {expense.recurringId && (
+                                                    <span
+                                                        className="mt-0.5 inline-block rounded-full bg-secondary-1/30 px-2 py-0.5 text-h10 font-bold uppercase tracking-wide text-n-1"
+                                                        data-testid="expense-recurring-chip"
+                                                    >
+                                                        {t('monthlyChip')}
+                                                    </span>
+                                                )}
                                                 {queuedExpense && (
                                                     <span className="block text-h10 uppercase tracking-wide text-grey-1">
                                                         {blockedWrite

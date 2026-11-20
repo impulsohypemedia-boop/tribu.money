@@ -439,6 +439,12 @@ export const api = {
             token,
         }),
 
+    startRecurring: (slug: string, expenseId: string) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/recurring`, { method: 'POST', body: { expenseId } }),
+
+    stopRecurring: (slug: string, recurringId: string) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/recurring/${encode(recurringId)}`, { method: 'DELETE' }),
+
     setMemberProfile: (slug: string, memberId: string, input: MemberProfileInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}/profile`, {
             method: 'PATCH',

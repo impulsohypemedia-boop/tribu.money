@@ -514,7 +514,8 @@
             },
             "emptyInvite": "Запросити інших",
             "emptyShare": "Поділитися кімнатою",
-            "emptyAdd": "Додати витрату"
+            "emptyAdd": "Додати витрату",
+            "monthlyChip": "Monthly"
         },
         "states": {
             "errorTitle": "Не вдалося завантажити цю кімнату",
@@ -690,7 +691,11 @@
             "equallyShort": "порівну",
             "exactShort": "точні суми",
             "percentageShort": "у відсотках",
-            "sharesShort": "за частками"
+            "sharesShort": "за частками",
+            "repeatMonthly": "Repeats every month",
+            "repeatMonthlyHint": "Rent, bills, subscriptions… Tribu adds it again on the same day every month.",
+            "repeatOffline": "Saved offline. Turn on \"Repeats every month\" once you are back online.",
+            "repeatFailed": "The expense was saved, but it could not be set to repeat."
         },
         "settle": {
             "formerName": "{name} · Неактивний учасник",
@@ -1079,6 +1084,14 @@
             "networkWarning": "Send only on {network}. Money sent on another network can be lost.",
             "honoredGuest": "Honored guest",
             "honoredGuestHint": "{name} is in the group but does not chip in. New expenses leave them out unless you add them."
+        },
+        "monthly": {
+            "title": "Monthly expenses",
+            "unnamed": "Unnamed",
+            "everyMonth": "day {day} of every month, paid by {name}",
+            "stop": "Stop",
+            "stopped": "It no longer repeats. Past months stay.",
+            "stopFailed": "Could not stop it. Try again."
         }
     },
     "slideToConfirm": {
@@ -1191,7 +1204,8 @@
         "LEMON_TX_ALREADY_RECORDED": "That payment is already recorded.",
         "LEMON_WALLET_MISSING": "Both people need to have opened the group from Lemon.",
         "NOT_THIS_MEMBER": "Only that person can connect their wallet.",
-        "PAYOUT_ADDRESS_INVALID": "That address does not fit the chosen network."
+        "PAYOUT_ADDRESS_INVALID": "That address does not fit the chosen network.",
+        "RECURRING_CURRENCY_UNSUPPORTED": "An expense in a custom currency cannot repeat on its own."
     },
     "derivation": {
         "title": "Звідки ця сума",

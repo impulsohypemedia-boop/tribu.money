@@ -116,6 +116,8 @@ export interface ApiExpense {
     shares: ApiShare[]
     /** Oldest first, id as tiebreaker. Empty for an expense nobody reacted to. */
     reactions: ApiReaction[]
+    /** The monthly template this expense belongs to, if it repeats. */
+    recurringId?: string | null
 }
 
 export interface ApiSettlement {
@@ -145,12 +147,25 @@ export interface ApiTransfer {
     amountMinor: string
 }
 
+export interface ApiRecurringExpense {
+    id: string
+    description: string
+    /** In `currency`, as typed on the expense it was copied from. */
+    amountMinor: string
+    currency: string
+    paidById: string | null
+    /** 1–31; a shorter month uses its last day. */
+    dayOfMonth: number
+}
+
 export interface RoomState {
     room: ApiRoom
     members: ApiMember[]
     /** Non-deleted only, newest expense date first. */
     expenses: ApiExpense[]
     settlements: ApiSettlement[]
+    /** Monthly expenses still repeating. Optional only for older cached responses. */
+    recurring?: ApiRecurringExpense[]
     /** memberId → net position in room-currency minor units. Sums to "0". */
     balances: Record<string, string>
     suggestedTransfers: ApiTransfer[]

@@ -10,6 +10,7 @@ vi.mock('next-intl', () => ({
 
 vi.mock('@/components/pwa/PushOptIn', () => ({ PushOptIn: () => null }))
 vi.mock('@/components/room/PeopleSection', () => ({ PeopleSection: () => null }))
+vi.mock('@/components/room/MonthlyExpenses', () => ({ MonthlyExpenses: () => null }))
 vi.mock('@/components/room/RoomEmblem', () => ({
     RoomEmblem: ({ value }: { value: string | null }) => createElement('span', { 'data-room-emblem': value ?? 'auto' }),
 }))

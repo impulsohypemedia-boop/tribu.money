@@ -512,6 +512,9 @@ export const memberProfileSchema = z
     })
 
 export type MemberProfileBody = z.infer<typeof memberProfileSchema>
+/** Repeat a saved expense every month. */
+export const recurringStartSchema = z.object({ expenseId: id })
+
 export type RoomSettingsBody = z.infer<typeof roomSettingsSchema>
 export type ReactionBody = z.infer<typeof reactionSchema>
 export type MemberAvatarBody = z.infer<typeof memberAvatarSchema>

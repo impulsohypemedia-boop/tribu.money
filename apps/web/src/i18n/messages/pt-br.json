@@ -514,7 +514,8 @@
             },
             "emptyInvite": "Convide o resto",
             "emptyShare": "Compartilhar sala",
-            "emptyAdd": "Adicionar despesa"
+            "emptyAdd": "Adicionar despesa",
+            "monthlyChip": "Monthly"
         },
         "states": {
             "errorTitle": "Não conseguimos carregar esta sala",
@@ -690,7 +691,11 @@
             "equallyShort": "igual",
             "exactShort": "exatos",
             "percentageShort": "por porcentagem",
-            "sharesShort": "por cotas"
+            "sharesShort": "por cotas",
+            "repeatMonthly": "Repeats every month",
+            "repeatMonthlyHint": "Rent, bills, subscriptions… Tribu adds it again on the same day every month.",
+            "repeatOffline": "Saved offline. Turn on \"Repeats every month\" once you are back online.",
+            "repeatFailed": "The expense was saved, but it could not be set to repeat."
         },
         "settle": {
             "formerName": "{name} · Inativa",
@@ -1079,6 +1084,14 @@
             "networkWarning": "Send only on {network}. Money sent on another network can be lost.",
             "honoredGuest": "Honored guest",
             "honoredGuestHint": "{name} is in the group but does not chip in. New expenses leave them out unless you add them."
+        },
+        "monthly": {
+            "title": "Monthly expenses",
+            "unnamed": "Unnamed",
+            "everyMonth": "day {day} of every month, paid by {name}",
+            "stop": "Stop",
+            "stopped": "It no longer repeats. Past months stay.",
+            "stopFailed": "Could not stop it. Try again."
         }
     },
     "slideToConfirm": {
@@ -1191,7 +1204,8 @@
         "LEMON_TX_ALREADY_RECORDED": "Esse pagamento já está registrado.",
         "LEMON_WALLET_MISSING": "As duas pessoas precisam ter aberto o grupo pelo Lemon.",
         "NOT_THIS_MEMBER": "Só essa pessoa pode conectar a própria carteira.",
-        "PAYOUT_ADDRESS_INVALID": "That address does not fit the chosen network."
+        "PAYOUT_ADDRESS_INVALID": "That address does not fit the chosen network.",
+        "RECURRING_CURRENCY_UNSUPPORTED": "An expense in a custom currency cannot repeat on its own."
     },
     "derivation": {
         "title": "De onde vem esse número",

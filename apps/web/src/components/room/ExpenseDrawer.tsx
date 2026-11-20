@@ -75,6 +75,9 @@ import { convertMinorForPreview, useRate } from '@/lib/use-rate'
 import { useMotionAllowed } from '@/lib/use-motion'
 import { useFeedback } from '@/lib/use-settings'
 import { activeMembers, activityRoleMembers, defaultSplitMembers, isFormerMember } from '@/lib/members'
+import { createClientKey } from '@/lib/offline-queue'
+import { useStartRecurring, useStopRecurring } from '@/lib/queries/recurring'
+import { SettingToggle } from '@/components/ui/SettingToggle'
 import { useShake } from '@/hooks/useShake'
 import { CurrencyTag } from './CurrencyTag'
 import { MemberAvatar } from './MemberAvatar'
@@ -161,6 +164,15 @@ export function ExpenseDrawer({
     const activeRoster = useMemo(() => activeMembers(state.members), [state.members])
     // Who an untouched EQUAL split covers: everyone active except honored guests.
     const defaultSplitIds = useMemo(() => defaultSplitMembers(state.members).map((m) => m.id), [state.members])
+    const startRecurring = useStartRecurring(slug)
+    const stopRecurring = useStopRecurring(slug)
+    /** The monthly template this expense belongs to, while it still repeats. */
+    const activeRecurringId =
+        expense?.recurringId && (state.recurring ?? []).some((item) => item.id === expense.recurringId)
+            ? expense.recurringId
+            : null
+    const [repeatMonthly, setRepeatMonthly] = useState(activeRecurringId !== null)
+    useEffect(() => setRepeatMonthly(activeRecurringId !== null), [activeRecurringId, open])
     const [values, setValues] = useState<ExpenseFormValues>(() =>
         emptyExpenseForm({
             currency: state.room.currency,
@@ -899,6 +911,8 @@ export function ExpenseDrawer({
                 const roomWasMature = state.room.hasReachedSharedBalance === true
                 const updated = await updateExpense.mutateAsync({ id: expense.id, input })
                 rememberExpenseCurrency(slug, meId, body.currency)
+                if (repeatMonthly && !activeRecurringId) await startRecurring.mutateAsync(expense.id)
+                if (!repeatMonthly && activeRecurringId) await stopRecurring.mutateAsync(activeRecurringId)
                 track(
                     'expense_edited',
                     roomProps(slug, { splitMode: body.splitMode, foreign: body.currency !== state.room.currency })
@@ -914,8 +928,21 @@ export function ExpenseDrawer({
                 // Capture before the mutation seeds its returned RoomState. The expense that creates
                 // the latch is aha itself, not a later mature-room contribution.
                 const roomWasMature = state.room.hasReachedSharedBalance === true
-                const { createdFirstSharedBalance, queuedLocally } = await addExpense.mutateAsync(body)
+                // A repeating expense needs its id to start the template, so it picks its own key.
+                const clientKey = repeatMonthly ? createClientKey() : undefined
+                const { createdFirstSharedBalance, queuedLocally } = await addExpense.mutateAsync(
+                    clientKey ? { ...body, clientKey } : body
+                )
                 if (!queuedLocally) rememberExpenseCurrency(slug, meId, body.currency)
+                if (clientKey) {
+                    if (queuedLocally) toast.error(t('repeatOffline'), { duration: TOAST_MS.actionable })
+                    else
+                        await startRecurring
+                            .mutateAsync(clientKey)
+                            .catch((error: unknown) =>
+                                toast.error(errorMessage(error, t('repeatFailed')), { duration: TOAST_MS.actionable })
+                            )
+                }
                 onMatureContribution?.({ roomWasMature, queuedLocally, createdFirstSharedBalance })
 
                 // Save succeeded and the room has reached its first actionable
@@ -2152,6 +2179,14 @@ export function ExpenseDrawer({
                             onClose={() => dispatchWorkflow({ type: 'editor-closed' })}
                         />
                     )}
+
+                    <SettingToggle
+                        label={t('repeatMonthly')}
+                        hint={t('repeatMonthlyHint')}
+                        checked={repeatMonthly}
+                        onChange={setRepeatMonthly}
+                        testId="expense-repeat-monthly"
+                    />
 
                     {submitted && validationCopy && !amountInvalid && (
                         <p

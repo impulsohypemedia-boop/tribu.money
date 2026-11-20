@@ -514,7 +514,8 @@
             },
             "emptyInvite": "Invita al resto",
             "emptyShare": "Compartir tribu",
-            "emptyAdd": "Agregar gasto"
+            "emptyAdd": "Agregar gasto",
+            "monthlyChip": "Fijo mensual"
         },
         "states": {
             "errorTitle": "No pudimos cargar esta tribu",
@@ -690,7 +691,11 @@
             "equallyShort": "por igual",
             "exactShort": "exactos",
             "percentageShort": "por porcentaje",
-            "sharesShort": "por partes"
+            "sharesShort": "por partes",
+            "repeatMonthly": "Se repite cada mes",
+            "repeatMonthlyHint": "Alquiler, expensas, Netflix… Tribu lo vuelve a cargar solo el mismo día de cada mes.",
+            "repeatOffline": "Se guardó sin conexión. Activá \"Se repite cada mes\" cuando vuelva la conexión.",
+            "repeatFailed": "El gasto se guardó, pero no se pudo hacer que se repita."
         },
         "settle": {
             "formerName": "{name} · Inactiva",
@@ -1079,6 +1084,14 @@
             "networkWarning": "Mandá solo por la red {network}. Si usás otra red, la plata se puede perder.",
             "honoredGuest": "Invitado de honor",
             "honoredGuestHint": "{name} está en la tribu pero no pone plata. Los gastos nuevos lo dejan afuera, salvo que lo sumes a mano."
+        },
+        "monthly": {
+            "title": "Gastos fijos",
+            "unnamed": "Sin nombre",
+            "everyMonth": "el día {day} de cada mes, paga {name}",
+            "stop": "Dejar de repetir",
+            "stopped": "Ya no se repite. Lo cargado hasta hoy queda.",
+            "stopFailed": "No se pudo frenar. Probá de nuevo."
         }
     },
     "slideToConfirm": {
@@ -1191,7 +1204,8 @@
         "LEMON_TX_ALREADY_RECORDED": "Ese pago ya está registrado.",
         "LEMON_WALLET_MISSING": "Las dos personas tienen que haber abierto el grupo desde Lemon.",
         "NOT_THIS_MEMBER": "Solo esa persona puede conectar su wallet.",
-        "PAYOUT_ADDRESS_INVALID": "Esa dirección no corresponde a la red elegida."
+        "PAYOUT_ADDRESS_INVALID": "Esa dirección no corresponde a la red elegida.",
+        "RECURRING_CURRENCY_UNSUPPORTED": "Un gasto en una moneda personalizada no se puede repetir solo."
     },
     "derivation": {
         "title": "Cómo sale este número",

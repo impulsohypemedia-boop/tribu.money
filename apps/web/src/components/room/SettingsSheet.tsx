@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import { useLocale, useTranslations } from 'next-intl'
 import { PushOptIn } from '@/components/pwa/PushOptIn'
 import { DoodlePicker } from '@/components/room/DoodlePicker'
+import { MonthlyExpenses } from '@/components/room/MonthlyExpenses'
 import { PeopleSection } from '@/components/room/PeopleSection'
 import { RoomEmblem } from '@/components/room/RoomEmblem'
 import { RoomExport } from '@/components/room/RoomExport'
@@ -309,6 +310,8 @@ export function SettingsSheet({
                                 token={identity?.token}
                                 onOpenCharacter={onOpenCharacter}
                             />
+
+                            <MonthlyExpenses state={state} />
 
                             <PushOptIn
                                 active={open}

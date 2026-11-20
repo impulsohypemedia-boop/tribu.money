@@ -3,6 +3,7 @@ import { publish } from '@/server/events'
 import { memberTokenOf, readJson, respond } from '@/server/http'
 import { actorFromToken, appendRoomAuditEvent, lockRoomWrite } from '@/server/history'
 import { WRITE_LIMIT, enforceRateLimit, meterRoomLookup } from '@/server/rateLimit'
+import { materializeRecurring } from '@/server/recurring'
 import { loadRoom, roomStateBySlug, toRoomState } from '@/server/roomState'
 import { roomSettingsSchema } from '@/server/validation'
 
@@ -13,7 +14,19 @@ type Ctx = { params: Promise<{ slug: string }> }
 export const GET = (request: Request, ctx: Ctx) =>
     respond(async () => {
         const { slug } = await ctx.params
-        return await meterRoomLookup(request, () => roomStateBySlug(slug))
+        return await meterRoomLookup(request, async () => {
+            // A monthly expense whose day has come is created on the first read after it.
+            const room = await prisma.room.findUnique({ where: { slug }, select: { id: true } })
+            const wrote = room
+                ? await materializeRecurring(slug).catch((error: unknown) => {
+                      // Never let a stuck template block reading the room itself.
+                      console.error('[split] recurring expenses failed', error)
+                      return false
+                  })
+                : false
+            if (room && wrote) publish(room.id)
+            return roomStateBySlug(slug)
+        })
     })
 
 /**

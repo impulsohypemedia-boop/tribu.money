@@ -37,6 +37,7 @@ const roomArgs = {
             orderBy: [{ date: 'desc' }, { createdAt: 'desc' }, { id: 'desc' }],
         },
         settlements: { where: { deletedAt: null }, orderBy: { createdAt: 'desc' } },
+        recurringExpenses: { where: { stoppedAt: null }, orderBy: { createdAt: 'asc' } },
     },
 } satisfies Prisma.RoomDefaultArgs
 
@@ -159,6 +160,7 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             date: e.date.toISOString(),
             category: e.category,
             createdAt: e.createdAt.toISOString(),
+            recurringId: e.recurringId,
             shares: e.shares.map((s) => ({
                 memberId: s.memberId,
                 amountMinor: s.amountMinor.toString(),
@@ -169,6 +171,17 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             // "did I react" flag are a rendering decision, not a wire fact.
             reactions: e.reactions.map((r) => ({ emoji: r.emoji, memberId: r.memberId })),
         })),
+        recurring: (room.recurringExpenses ?? []).map((r) => {
+            const body = r.body as { amountMinor?: string; currency?: string; paidById?: string }
+            return {
+                id: r.id,
+                description: r.description,
+                amountMinor: body.amountMinor ?? '0',
+                currency: body.currency ?? room.currency,
+                paidById: body.paidById ?? null,
+                dayOfMonth: r.dayOfMonth,
+            }
+        }),
         settlements: room.settlements.map((s) => ({
             id: s.id,
             fromId: s.fromId,

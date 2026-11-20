@@ -19,6 +19,8 @@ const parseAsFlag = createParser<boolean>({
 
 export const roomSearchParams = {
     add: parseAsFlag,
+    /** With `add`: open the new expense already set to repeat every month. */
+    fijo: parseAsFlag,
     expense: parseAsString.withDefault(''),
     settle: parseAsFlag,
     share: parseAsFlag,

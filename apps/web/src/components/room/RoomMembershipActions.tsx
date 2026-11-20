@@ -51,7 +51,7 @@ export function RoomMembershipActions({
             return false
         }
         // Leave the mounted room before its next refresh can save it again.
-        window.location.replace('/app?manage=1')
+        window.location.replace('/tribus')
         return true
     }
 
@@ -61,7 +61,7 @@ export function RoomMembershipActions({
         try {
             await removeMember.mutateAsync(me.id)
             forgetIdentity(state.room.slug, identity)
-            window.location.replace('/app?manage=1')
+            window.location.replace('/tribus')
             return true
         } catch (error) {
             const message = errorMessage(error, t('leaveFailed'))

@@ -83,7 +83,7 @@ export function RoomNotFound({ slug, addExpense = false }: { slug?: string; addE
             <p className="text-h5">{t('notFoundTitle')}</p>
             <p className="max-w-[22rem] text-sm text-grey-1">{t('notFoundBody')}</p>
             <Link
-                href={addExpense ? '/app?manage=1&add=1' : '/app?manage=1'}
+                href={addExpense ? '/tribus?add=1' : '/tribus'}
                 replace
                 onClick={forgetMissingRoom}
                 className={buttonClassName({ variant: 'stroke', className: 'max-w-xs justify-center' })}

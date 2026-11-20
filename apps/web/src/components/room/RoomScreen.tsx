@@ -458,7 +458,7 @@ export function RoomScreen({ slug }: { slug: string }) {
     if (isApiError(error, 'NOT_FOUND')) return <RoomNotFound slug={slug} addExpense={params.add} />
     if (error && !state) return <RoomErrorState onRetry={() => void refetch()} />
 
-    const closeDrawers = () => setParams({ add: null, expense: null, settle: null })
+    const closeDrawers = () => setParams({ add: null, fijo: null, expense: null, settle: null })
 
     const onJoined = (next: MemberIdentity) => {
         setDisplacedIdentity(null)
@@ -737,6 +737,7 @@ export function RoomScreen({ slug }: { slug: string }) {
                         token={identity?.token}
                         meId={meId}
                         expense={editing}
+                        startMonthly={params.fijo}
                         onFirstSharedBalance={() => openPostAhaShare(true)}
                         onMatureContribution={(result) => {
                             noteMatureContribution(slug, result)

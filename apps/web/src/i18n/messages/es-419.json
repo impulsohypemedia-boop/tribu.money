@@ -1569,6 +1569,94 @@
         "unavailable": "Escanear cuentas todavía no está activo.",
         "open": "Abrir Tribu"
     },
+    "appShell": {
+        "nav": {
+            "label": "Menú",
+            "home": "Inicio",
+            "tribus": "Tribus",
+            "vaquitas": "Vaquitas",
+            "me": "Yo",
+            "add": "Cargar algo"
+        },
+        "add": {
+            "title": "¿Qué querés cargar?",
+            "whichTribu": "¿En qué tribu?",
+            "close": "Cerrar",
+            "needTribu": "Primero armá una tribu.",
+            "expense": {
+                "title": "Un gasto",
+                "hint": "Algo que pagó alguien y se reparte."
+            },
+            "fixed": {
+                "title": "Un gasto fijo",
+                "hint": "Alquiler, expensas, Netflix: se carga solo cada mes."
+            },
+            "vaquita": {
+                "title": "Una vaquita",
+                "hint": "Juntar plata para algo, con meta."
+            },
+            "tribu": {
+                "title": "Una tribu nueva",
+                "hint": "Un grupo nuevo para compartir gastos."
+            }
+        },
+        "home": {
+            "loading": "Mirando tus tribus…",
+            "emptyTitle": "¡Bienvenido a Tribu!",
+            "emptyBody": "Armá una tribu para compartir gastos o una vaquita para juntar plata.",
+            "startTribu": "Armar una tribu",
+            "startVaquita": "Armar una vaquita",
+            "allSquare": "Estás a mano con todos",
+            "allSquareHint": "Nadie te tiene que pasar nada, y vos tampoco.",
+            "notJoined": "Todavía no estás en ninguna",
+            "notJoinedHint": "Entrá a una tribu y elegí tu nombre para ver tus cuentas acá.",
+            "owedToMe": "Tenés a favor",
+            "iOwe": "Te toca pasar",
+            "youPass": "pasás",
+            "youGet": "recibís",
+            "fixedTitle": "Lo que viene este mes",
+            "fixedDone": "ya se cargó",
+            "fixedComing": "se carga ese día",
+            "fixedToday": "se carga hoy",
+            "potsTitle": "Tus vaquitas",
+            "seeAll": "Ver todas",
+            "tribusTitle": "Tus tribus",
+            "potReached": "¡Llegaron a la meta!",
+            "potMissing": "{pct}% · faltan <amount></amount>",
+            "potNoGoal": "Sin meta"
+        },
+        "vaquitas": {
+            "new": "Armar una vaquita",
+            "hint": "Una vaquita junta plata para algo: un regalo, un viaje, un asado. Una persona la guarda.",
+            "emptyTitle": "Todavía no hay vaquitas",
+            "emptyBody": "Cuando armes una, acá vas a ver cuánto llevan y cuánto falta.",
+            "closedTitle": "Cerradas"
+        },
+        "me": {
+            "walletTitle": "Mi wallet",
+            "walletHint": "Donde querés que te paguen. La cargás una vez y queda en todas tus tribus.",
+            "token": "Moneda",
+            "network": "Red",
+            "address": "Dirección",
+            "addressInvalid": "Esa dirección no parece de {network}.",
+            "walletSave": "Guardar",
+            "walletSaveAll": "{count, plural, one {Guardar en mi tribu} other {Guardar en mis # tribus}}",
+            "walletSaved": "{count, plural, =0 {Wallet guardada} one {Wallet guardada en tu tribu} other {Wallet guardada en tus # tribus}}",
+            "walletPartial": "{count, plural, one {No se pudo guardar en una tribu. Probá de nuevo.} other {No se pudo guardar en # tribus. Probá de nuevo.}}",
+            "walletStatus": "Está en {done} de {total} tribus",
+            "milestonesTitle": "Logros",
+            "milestonesEmpty": "Todavía no hay logros. Aparecen solos a medida que usan la tribu.",
+            "milestonesTotal": "{count, plural, one {# logro entre todas tus tribus} other {# logros entre todas tus tribus}}",
+            "activityTitle": "Historial",
+            "activityEmpty": "Cuando cargues gastos o pagos, los vas a ver acá.",
+            "activity": {
+                "paid": "Pagaste: {label}",
+                "shared": "Compartiste: {label}",
+                "sent": "Le pasaste a {label}",
+                "received": "{label} te pasó"
+            }
+        }
+    },
     "card": {
         "invite": {
             "label": "Gastos compartidos",

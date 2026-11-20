@@ -1569,6 +1569,94 @@
         "unavailable": "Skanowanie rachunków nie jest jeszcze włączone.",
         "open": "Otwórz Split"
     },
+    "appShell": {
+        "nav": {
+            "label": "Menu",
+            "home": "Home",
+            "tribus": "Groups",
+            "vaquitas": "Pots",
+            "me": "Me",
+            "add": "Add something"
+        },
+        "add": {
+            "title": "What do you want to add?",
+            "whichTribu": "In which group?",
+            "close": "Close",
+            "needTribu": "Start a group first.",
+            "expense": {
+                "title": "An expense",
+                "hint": "Something someone paid, to split."
+            },
+            "fixed": {
+                "title": "A monthly expense",
+                "hint": "Rent, bills, Netflix: added every month."
+            },
+            "vaquita": {
+                "title": "A pot",
+                "hint": "Pool money for something, with a goal."
+            },
+            "tribu": {
+                "title": "A new group",
+                "hint": "A new group to share expenses."
+            }
+        },
+        "home": {
+            "loading": "Checking your groups…",
+            "emptyTitle": "Welcome to Tribu!",
+            "emptyBody": "Start a group to share expenses or a pot to pool money.",
+            "startTribu": "Start a group",
+            "startVaquita": "Start a pot",
+            "allSquare": "You're square with everyone",
+            "allSquareHint": "Nobody owes you and you owe nobody.",
+            "notJoined": "You're not in any group yet",
+            "notJoinedHint": "Open a group and pick your name to see your numbers here.",
+            "owedToMe": "You're owed",
+            "iOwe": "You owe",
+            "youPass": "you pay",
+            "youGet": "you get",
+            "fixedTitle": "Coming up this month",
+            "fixedDone": "already added",
+            "fixedComing": "added that day",
+            "fixedToday": "added today",
+            "potsTitle": "Your pots",
+            "seeAll": "See all",
+            "tribusTitle": "Your groups",
+            "potReached": "Goal reached!",
+            "potMissing": "{pct}% · <amount></amount> to go",
+            "potNoGoal": "No goal"
+        },
+        "vaquitas": {
+            "new": "Start a pot",
+            "hint": "A pot pools money for something: a gift, a trip, a barbecue. One person keeps it.",
+            "emptyTitle": "No pots yet",
+            "emptyBody": "When you start one, you'll see here how much is in and how much is left.",
+            "closedTitle": "Closed"
+        },
+        "me": {
+            "walletTitle": "My wallet",
+            "walletHint": "Where you want to be paid. Add it once and it goes on all your groups.",
+            "token": "Token",
+            "network": "Network",
+            "address": "Address",
+            "addressInvalid": "That doesn't look like a {network} address.",
+            "walletSave": "Save",
+            "walletSaveAll": "{count, plural, one {Save to my group} few {Save to my # groups} many {Save to my # groups} other {Save to my # groups}}",
+            "walletSaved": "{count, plural, =0 {Wallet saved} one {Wallet saved to your group} few {Wallet saved to your # groups} many {Wallet saved to your # groups} other {Wallet saved to your # groups}}",
+            "walletPartial": "{count, plural, one {Couldn't save to one group. Try again.} few {Couldn't save to # groups. Try again.} many {Couldn't save to # groups. Try again.} other {Couldn't save to # groups. Try again.}}",
+            "walletStatus": "On {done} of {total} groups",
+            "milestonesTitle": "Milestones",
+            "milestonesEmpty": "No milestones yet. They show up as you use your groups.",
+            "milestonesTotal": "{count, plural, one {# milestone across your groups} few {# milestones across your groups} many {# milestones across your groups} other {# milestones across your groups}}",
+            "activityTitle": "History",
+            "activityEmpty": "Expenses and payments you add will show up here.",
+            "activity": {
+                "paid": "You paid: {label}",
+                "shared": "You shared: {label}",
+                "sent": "You paid {label}",
+                "received": "{label} paid you"
+            }
+        }
+    },
     "card": {
         "invite": {
             "label": "Wspólne wydatki grupy",

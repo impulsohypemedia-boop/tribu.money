@@ -148,7 +148,7 @@ export function RoomSwitcher({ open, onClose, onOpenSettings, currentSettingsRef
                         ))}
 
                         <Link
-                            href="/app?manage=1"
+                            href="/tribus"
                             data-testid="room-switcher-manage"
                             className={cn(
                                 'flex min-h-16 w-full items-center gap-3 rounded-sm border border-n-1 p-2.5 text-left transition-transform duration-100',

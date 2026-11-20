@@ -93,6 +93,8 @@ import { ScanButton } from './scan/ScanButton'
 import { ScanFlow } from './scan/ScanFlow'
 
 interface ExpenseDrawerProps {
+    /** A new expense opens already set to repeat every month (the ＋ menu's "Gasto fijo"). */
+    startMonthly?: boolean
     open: boolean
     /** Keep the logical draft session mounted while another surface (currently
      * JoinGate after token rotation) temporarily owns the screen. */
@@ -136,6 +138,7 @@ export function ExpenseDrawer({
     token,
     meId,
     expense,
+    startMonthly = false,
     onFirstSharedBalance,
     onMatureContribution,
     defaultPaidById,
@@ -174,8 +177,9 @@ export function ExpenseDrawer({
         expense?.recurringId && (state.recurring ?? []).some((item) => item.id === expense.recurringId)
             ? expense.recurringId
             : null
-    const [repeatMonthly, setRepeatMonthly] = useState(activeRecurringId !== null)
-    useEffect(() => setRepeatMonthly(activeRecurringId !== null), [activeRecurringId, open])
+    const startsRepeating = activeRecurringId !== null || (!expense && !!startMonthly)
+    const [repeatMonthly, setRepeatMonthly] = useState(startsRepeating)
+    useEffect(() => setRepeatMonthly(startsRepeating), [startsRepeating, open])
     const linkPotExpense = useLinkPotExpense(slug, token)
     /** The vaquita this expense can be paid from: the one it already belongs to, else the newest open one. */
     const pot = useMemo(() => {
@@ -1335,7 +1339,7 @@ export function ExpenseDrawer({
                     <div className="shrink-0 px-4 pb-2">
                         {canSwitchRoom ? (
                             <Link
-                                href="/app?manage=1&add=1"
+                                href="/tribus?add=1"
                                 aria-label={`${state.room.name}: ${tHeader('openRoomSwitcher')}`}
                                 data-testid="expense-drawer-room-switcher"
                                 className="flex min-h-11 items-center justify-between gap-2 rounded-sm border border-n-1 bg-white px-3 text-sm font-bold"

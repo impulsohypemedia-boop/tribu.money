@@ -75,10 +75,13 @@ const relativeTime = (epochMs: number, locale: string): string => {
 export function YourRooms({
     surface = 'landing',
     entryActions,
+    only,
     addExpense = false,
 }: {
     surface?: 'landing' | 'app'
     entryActions?: ReactNode
+    /** Show only one kind of room (the app's Tribus tab lists tribus only). */
+    only?: 'tribus'
     addExpense?: boolean
 }) {
     const router = useRouter()
@@ -140,7 +143,7 @@ export function YourRooms({
     // behind a reveal.
     // A vaquita is its own section, not one more tribu: it lists apart, below.
     const tribus = recent.filter((room) => room.kind !== 'vaquita')
-    const vaquitas = recent.filter((room) => room.kind === 'vaquita')
+    const vaquitas = only === 'tribus' ? [] : recent.filter((room) => room.kind === 'vaquita')
     const compact = tribus.length === COLLAPSED_LIMIT + 1 && reveal === null
     const collapsedLimit = compact ? tribus.length : COLLAPSED_LIMIT
     const visible = expanded ? tribus : tribus.slice(0, collapsedLimit)

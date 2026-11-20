@@ -38,6 +38,10 @@ const roomArgs = {
         },
         settlements: { where: { deletedAt: null }, orderBy: { createdAt: 'desc' } },
         recurringExpenses: { where: { stoppedAt: null }, orderBy: { createdAt: 'asc' } },
+        pots: {
+            include: { contributions: { where: { deletedAt: null }, orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] } },
+            orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+        },
     },
 } satisfies Prisma.RoomDefaultArgs
 
@@ -161,6 +165,7 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             category: e.category,
             createdAt: e.createdAt.toISOString(),
             recurringId: e.recurringId,
+            potId: e.potId,
             shares: e.shares.map((s) => ({
                 memberId: s.memberId,
                 amountMinor: s.amountMinor.toString(),
@@ -182,6 +187,23 @@ export function toRoomState(room: RoomWithRelations): RoomState {
                 dayOfMonth: r.dayOfMonth,
             }
         }),
+        pots: (room.pots ?? []).map((pot) => ({
+            id: pot.id,
+            name: pot.name,
+            keeperId: pot.keeperId,
+            targetMinor: pot.targetMinor?.toString() ?? null,
+            quotaMinor: pot.quotaMinor?.toString() ?? null,
+            dueDate: pot.dueDate?.toISOString() ?? null,
+            createdAt: pot.createdAt.toISOString(),
+            closedAt: pot.closedAt?.toISOString() ?? null,
+            contributions: pot.contributions.map((c) => ({
+                id: c.id,
+                memberId: c.memberId,
+                amountMinor: c.amountMinor.toString(),
+                settlementId: c.settlementId,
+                createdAt: c.createdAt.toISOString(),
+            })),
+        })),
         settlements: room.settlements.map((s) => ({
             id: s.id,
             fromId: s.fromId,

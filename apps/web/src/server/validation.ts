@@ -693,3 +693,26 @@ export const importIntoRoomSchema = z
     })
 
 export type ImportIntoRoomBody = z.infer<typeof importIntoRoomSchema>
+
+const potName = z.string().trim().min(1).max(60)
+const optionalMinor = minorAmount.nullish()
+
+export const potCreateSchema = z.object({
+    name: potName,
+    keeperId: id,
+    targetMinor: optionalMinor,
+    quotaMinor: optionalMinor,
+    dueDate: z.string().datetime({ offset: true }).nullish(),
+})
+
+export const potUpdateSchema = z.object({
+    name: potName.optional(),
+    targetMinor: optionalMinor,
+    quotaMinor: optionalMinor,
+    dueDate: z.string().datetime({ offset: true }).nullish(),
+    closed: z.boolean().optional(),
+})
+
+export const potContributionSchema = z.object({ memberId: id, amountMinor: minorAmount })
+
+export const potSpendSchema = z.object({ expenseId: id })

@@ -694,6 +694,14 @@ export function ExpenseList({
                                                         {t('monthlyChip')}
                                                     </span>
                                                 )}
+                                                {expense.potId && (
+                                                    <span
+                                                        className="ml-1 mt-0.5 inline-block rounded-full bg-primary-3 px-2 py-0.5 text-h10 font-bold uppercase tracking-wide text-n-1"
+                                                        data-testid="expense-pot-chip"
+                                                    >
+                                                        {t('potChip')}
+                                                    </span>
+                                                )}
                                                 {queuedExpense && (
                                                     <span className="block text-h10 uppercase tracking-wide text-grey-1">
                                                         {blockedWrite

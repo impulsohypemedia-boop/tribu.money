@@ -24,6 +24,11 @@ export const DELETE = (request: Request, ctx: Ctx) =>
             if (!existing.deletedAt) {
                 const deletedAt = new Date()
                 await tx.settlement.update({ where: { id }, data: { deletedAt } })
+                // A payment into the vaquita leaves the pot with it.
+                await tx.potContribution.updateMany({
+                    where: { settlementId: id, deletedAt: null },
+                    data: { deletedAt },
+                })
                 await appendRoomAuditEvent({
                     tx,
                     request,

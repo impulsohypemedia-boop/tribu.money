@@ -441,6 +441,7 @@
                 "member_restored": "reactivated a person",
                 "member_avatar_updated": "edited a person’s character",
                 "member_profile_updated": "edited a person’s profile",
+                "pot_updated": "updated the pot",
                 "expense_added": "added an expense",
                 "expense_edited": "edited an expense",
                 "expense_deleted": "deleted an expense",
@@ -515,7 +516,8 @@
             "emptyInvite": "Invite the rest",
             "emptyShare": "Share room",
             "emptyAdd": "Add expense",
-            "monthlyChip": "Monthly"
+            "monthlyChip": "Monthly",
+            "potChip": "Pot"
         },
         "states": {
             "errorTitle": "We could not load this room",
@@ -695,7 +697,10 @@
             "repeatMonthly": "Repeats every month",
             "repeatMonthlyHint": "Rent, bills, subscriptions… Tribu adds it again on the same day every month.",
             "repeatOffline": "Saved offline. Turn on \"Repeats every month\" once you are back online.",
-            "repeatFailed": "The expense was saved, but it could not be set to repeat."
+            "repeatFailed": "The expense was saved, but it could not be set to repeat.",
+            "payFromPot": "Paid by the pot “{name}”",
+            "payFromPotHint": "Comes out of the money {keeper} keeps.",
+            "potLinkFailed": "The expense was saved, but we could not mark it as paid by the pot."
         },
         "settle": {
             "formerName": "{name} · Inactive",
@@ -738,7 +743,8 @@
             "markPaid": "Mark paid",
             "payAhead": "Pay ahead",
             "payAheadHint": "Anything extra stays as credit for {name} and comes off the next expenses.",
-            "creditNote": "<amount></amount> stays as credit for {name}."
+            "creditNote": "<amount></amount> stays as credit for {name}.",
+            "pot": "Pot contribution"
         },
         "share": {
             "title": "Share room",
@@ -1114,6 +1120,58 @@
             "unnamed": "an unnamed one",
             "someone": "Someone",
             "fullHistory": "See full history"
+        },
+        "pot": {
+            "someone": "Someone",
+            "unnamed": "Untitled",
+            "close": "Close",
+            "cancel": "Cancel",
+            "startTitle": "Start a pot",
+            "startHint": "Pool money for something and one person keeps it.",
+            "cardKeeper": "Kept by {name}",
+            "createTitle": "New pot",
+            "nameLabel": "What is it for?",
+            "namePlaceholder": "Beach trip",
+            "keeperLabel": "Who keeps the money?",
+            "keeperHint": "The money stays in that person's account. Tribu never touches it.",
+            "targetLabel": "Goal (optional)",
+            "quotaLabel": "Monthly amount per person (optional)",
+            "dueLabel": "By when? (optional)",
+            "createSubmit": "Start the pot",
+            "created": "Pot started",
+            "nameMissing": "Say what the pot is for.",
+            "amountInvalid": "Check the amount.",
+            "whoMissing": "Pick who is putting money in.",
+            "held": "In the pot",
+            "progress": "{pct}% of <amount></amount>",
+            "missing": "<amount></amount> to go",
+            "reached": "Goal reached!",
+            "fronted": "{name} paid <amount></amount> out of pocket; that stays in their favour.",
+            "keeperBadge": "Pot keeper",
+            "keeperLine": "The money is in {name}'s account.",
+            "keeperNote": "Each contribution is recorded as a payment to {name}, and what the pot pays comes out of their account.",
+            "projected": "At this pace you reach the goal in {month}.",
+            "suggested": "To get there by {month}, each person puts in <amount></amount> a month.",
+            "quotaTitle": "This month · <amount></amount>",
+            "quotaAllIn": "Everyone has put in this month.",
+            "quotaMissing": "<amount></amount> to go",
+            "put": "Put money in",
+            "putWho": "Who is putting in?",
+            "putAmount": "How much?",
+            "putSubmit": "Record contribution",
+            "putDone": "Contribution recorded",
+            "putNote": "Recorded as a payment from {name} to {keeper}.",
+            "byMemberTitle": "What each person put in",
+            "spentTitle": "What the pot paid",
+            "spentEmpty": "To pay with the pot, add the expense paid by {name} and turn on “Paid by the pot”.",
+            "historyTitle": "Contributions",
+            "remove": "Remove this contribution",
+            "removed": "Contribution removed",
+            "closePot": "Close the pot",
+            "closeHint": "What is left stays in favour of whoever put it in, in their balances. No money moves.",
+            "closeConfirm": "Close",
+            "closedToast": "Pot closed",
+            "startAnother": "Start another pot"
         }
     },
     "slideToConfirm": {
@@ -1227,7 +1285,10 @@
         "LEMON_WALLET_MISSING": "Both people need to have opened the group from Lemon.",
         "NOT_THIS_MEMBER": "Only that person can connect their wallet.",
         "PAYOUT_ADDRESS_INVALID": "That address does not fit the chosen network.",
-        "RECURRING_CURRENCY_UNSUPPORTED": "An expense in a custom currency cannot repeat on its own."
+        "RECURRING_CURRENCY_UNSUPPORTED": "An expense in a custom currency cannot repeat on its own.",
+        "POT_NOT_FOUND": "We could not find that pot.",
+        "POT_CLOSED": "This pot is already closed.",
+        "POT_PAYER_NOT_KEEPER": "For the pot to pay, the expense must be paid by the person who keeps it."
     },
     "derivation": {
         "title": "How this adds up",

@@ -118,6 +118,8 @@ export interface ApiExpense {
     reactions: ApiReaction[]
     /** The monthly template this expense belongs to, if it repeats. */
     recurringId?: string | null
+    /** The vaquita that paid this expense from its keeper's account. */
+    potId?: string | null
 }
 
 export interface ApiSettlement {
@@ -158,6 +160,38 @@ export interface ApiRecurringExpense {
     dayOfMonth: number
 }
 
+export interface ApiPotContribution {
+    id: string
+    memberId: string
+    /** Room currency. */
+    amountMinor: string
+    /** The payment to the keeper it was recorded as; null for the keeper's own money. */
+    settlementId: string | null
+    createdAt: string
+}
+
+/** La vaquita: a shared pot held in the keeper's own account. Amounts in room currency. */
+export interface ApiPot {
+    id: string
+    name: string
+    keeperId: string
+    targetMinor: string | null
+    /** Per person per month. */
+    quotaMinor: string | null
+    dueDate: string | null
+    createdAt: string
+    closedAt: string | null
+    contributions: ApiPotContribution[]
+}
+
+export interface PotInput {
+    name: string
+    keeperId: string
+    targetMinor?: string | null
+    quotaMinor?: string | null
+    dueDate?: string | null
+}
+
 export interface RoomState {
     room: ApiRoom
     members: ApiMember[]
@@ -166,6 +200,8 @@ export interface RoomState {
     settlements: ApiSettlement[]
     /** Monthly expenses still repeating. Optional only for older cached responses. */
     recurring?: ApiRecurringExpense[]
+    /** Every vaquita, open and closed, oldest first. Optional only for older cached responses. */
+    pots?: ApiPot[]
     /** memberId → net position in room-currency minor units. Sums to "0". */
     balances: Record<string, string>
     suggestedTransfers: ApiTransfer[]
@@ -183,6 +219,7 @@ export type RoomHistoryAction =
     | 'member_restored'
     | 'member_avatar_updated'
     | 'member_profile_updated'
+    | 'pot_updated'
     | 'expense_added'
     | 'expense_edited'
     | 'expense_deleted'

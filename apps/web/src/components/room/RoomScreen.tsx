@@ -51,6 +51,7 @@ import { LatecomerBanner } from './LatecomerBanner'
 import { RoomErrorState, RoomHeaderSkeleton, RoomNotFound, RoomSkeleton } from './RoomStates'
 import { RoomHeader } from './RoomHeader'
 import { MonthSummaryCard } from './MonthSummary'
+import { VaquitaCard } from './Vaquita'
 import { SettleDrawer } from './SettleDrawer'
 import { ShareDrawer } from './ShareDrawer'
 
@@ -642,7 +643,18 @@ export function RoomScreen({ slug }: { slug: string }) {
                                     }
                                 />
                             )}
-                            {!needsJoin && <MonthSummaryCard state={state} currencies={currencies} />}
+                            {!needsJoin && (
+                                <div className="px-4">
+                                    <VaquitaCard
+                                        slug={slug}
+                                        state={state}
+                                        currencies={currencies}
+                                        meId={meId}
+                                        token={identity?.token}
+                                    />
+                                    <MonthSummaryCard state={state} currencies={currencies} />
+                                </div>
+                            )}
                             <ExpenseList
                                 state={state}
                                 currencies={currencies}

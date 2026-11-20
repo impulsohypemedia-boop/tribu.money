@@ -93,6 +93,8 @@ export function SettlementRow({
                 return settlement.token ? `${tSettle('lemon')} · ${settlement.token}` : tSettle('lemon')
             case 'peanut':
                 return tSettle('peanut')
+            case 'pot':
+                return tSettle('pot')
             default:
                 return null
         }

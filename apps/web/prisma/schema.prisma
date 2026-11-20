@@ -50,6 +50,7 @@ model Room {
   members                     Member[]
   expenses                    Expense[]
   recurringExpenses           RecurringExpense[]
+  pots                        Pot[]
   settlements                 Settlement[]
   auditEvents                 RoomAuditEvent[]
   importBatches               ImportBatch[]
@@ -209,6 +210,8 @@ model Expense {
   deletedAt   DateTime? // soft delete → 6s Undo
   // Set on the expense a monthly template started from, and on every month it created.
   recurringId String?
+  // Set when the room's vaquita paid this expense; the payer is then the pot's keeper.
+  potId       String?
 
   // Null for ordinary expenses and rooms created before append-imports. Imported
   // rows retain both their immutable batch provenance and their position in the
@@ -437,5 +440,44 @@ model RecurringExpense {
   room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
 
   @@index([roomId])
+  @@schema("split")
+}
+
+/// La vaquita: a shared pot with a goal. The money sits in one member's own account (the
+/// keeper). Tribu never holds it: a contribution from anyone else is recorded as a payment to
+/// the keeper, and an expense the pot pays is an expense paid by the keeper, so balances stay
+/// the one fold over expenses and settlements.
+model Pot {
+  id          String    @id @default(uuid())
+  roomId      String
+  name        String
+  keeperId    String
+  targetMinor BigInt? // room currency
+  quotaMinor  BigInt? // per person per month, room currency
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+  closedAt    DateTime?
+
+  room          Room              @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  contributions PotContribution[]
+
+  @@index([roomId])
+  @@schema("split")
+}
+
+model PotContribution {
+  id           String    @id @default(uuid())
+  potId        String
+  memberId     String
+  amountMinor  BigInt // room currency
+  // The payment to the keeper; null when the keeper put money in their own pot.
+  settlementId String?   @unique
+  createdById  String?
+  createdAt    DateTime  @default(now())
+  deletedAt    DateTime?
+
+  pot Pot @relation(fields: [potId], references: [id], onDelete: Cascade)
+
+  @@index([potId])
   @@schema("split")
 }

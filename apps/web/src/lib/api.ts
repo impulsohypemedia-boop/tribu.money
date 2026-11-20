@@ -19,6 +19,7 @@ import type {
     ImportRoomInput,
     MemberAvatarInput,
     MemberProfileInput,
+    PotInput,
     ModelStatus,
     ParsedReceipt,
     PushSubscribeInput,
@@ -444,6 +445,43 @@ export const api = {
 
     stopRecurring: (slug: string, recurringId: string) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/recurring/${encode(recurringId)}`, { method: 'DELETE' }),
+
+    createPot: (slug: string, input: PotInput, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots`, { method: 'POST', body: input, token }),
+
+    updatePot: (slug: string, potId: string, input: Partial<PotInput> & { closed?: boolean }, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}`, { method: 'PATCH', body: input, token }),
+
+    addPotContribution: (
+        slug: string,
+        potId: string,
+        input: { memberId: string; amountMinor: string },
+        token?: string | null
+    ) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/contributions`, {
+            method: 'POST',
+            body: input,
+            token,
+        }),
+
+    removePotContribution: (slug: string, potId: string, contributionId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/contributions/${encode(contributionId)}`, {
+            method: 'DELETE',
+            token,
+        }),
+
+    linkPotExpense: (slug: string, potId: string, expenseId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/expenses`, {
+            method: 'POST',
+            body: { expenseId },
+            token,
+        }),
+
+    unlinkPotExpense: (slug: string, potId: string, expenseId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/expenses/${encode(expenseId)}`, {
+            method: 'DELETE',
+            token,
+        }),
 
     setMemberProfile: (slug: string, memberId: string, input: MemberProfileInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}/profile`, {

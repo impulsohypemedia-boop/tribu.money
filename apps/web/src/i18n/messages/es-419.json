@@ -441,6 +441,7 @@
                 "member_restored": "reactivó a una persona",
                 "member_avatar_updated": "editó el personaje de una persona",
                 "member_profile_updated": "editó el perfil de una persona",
+                "pot_updated": "actualizó la vaquita",
                 "expense_added": "agregó un gasto",
                 "expense_edited": "editó un gasto",
                 "expense_deleted": "eliminó un gasto",
@@ -515,7 +516,8 @@
             "emptyInvite": "Invita al resto",
             "emptyShare": "Compartir tribu",
             "emptyAdd": "Agregar gasto",
-            "monthlyChip": "Fijo mensual"
+            "monthlyChip": "Fijo mensual",
+            "potChip": "Vaquita"
         },
         "states": {
             "errorTitle": "No pudimos cargar esta tribu",
@@ -695,7 +697,10 @@
             "repeatMonthly": "Se repite cada mes",
             "repeatMonthlyHint": "Alquiler, expensas, Netflix… Tribu lo vuelve a cargar solo el mismo día de cada mes.",
             "repeatOffline": "Se guardó sin conexión. Activá \"Se repite cada mes\" cuando vuelva la conexión.",
-            "repeatFailed": "El gasto se guardó, pero no se pudo hacer que se repita."
+            "repeatFailed": "El gasto se guardó, pero no se pudo hacer que se repita.",
+            "payFromPot": "Lo pagó la vaquita «{name}»",
+            "payFromPotHint": "Sale de la plata que guarda {keeper}.",
+            "potLinkFailed": "El gasto se guardó, pero no pudimos marcarlo como de la vaquita."
         },
         "settle": {
             "formerName": "{name} · Inactiva",
@@ -738,7 +743,8 @@
             "markPaid": "Marcar pagado",
             "payAhead": "Pagar de más",
             "payAheadHint": "Lo que sobre queda a favor de {name} y se descuenta de los próximos gastos.",
-            "creditNote": "Quedan <amount></amount> a favor de {name}."
+            "creditNote": "Quedan <amount></amount> a favor de {name}.",
+            "pot": "Aporte a la vaquita"
         },
         "share": {
             "title": "Compartir tribu",
@@ -1114,6 +1120,58 @@
             "unnamed": "uno sin nombre",
             "someone": "Alguien",
             "fullHistory": "Ver historial completo"
+        },
+        "pot": {
+            "someone": "Alguien",
+            "unnamed": "Sin nombre",
+            "close": "Cerrar",
+            "cancel": "Cancelar",
+            "startTitle": "Armar una vaquita",
+            "startHint": "Juntan plata para algo y una persona la guarda.",
+            "cardKeeper": "La guarda {name}",
+            "createTitle": "Nueva vaquita",
+            "nameLabel": "¿Para qué es?",
+            "namePlaceholder": "Viaje a la costa",
+            "keeperLabel": "¿Quién guarda la plata?",
+            "keeperHint": "La plata queda en la cuenta de esa persona. Tribu no la toca.",
+            "targetLabel": "Meta (opcional)",
+            "quotaLabel": "Cuota por persona por mes (opcional)",
+            "dueLabel": "¿Para cuándo? (opcional)",
+            "createSubmit": "Armar la vaquita",
+            "created": "Vaquita armada",
+            "nameMissing": "Poné para qué es la vaquita.",
+            "amountInvalid": "Revisá el monto.",
+            "whoMissing": "Elegí quién pone.",
+            "held": "En la vaquita",
+            "progress": "{pct}% de <amount></amount>",
+            "missing": "Faltan <amount></amount>",
+            "reached": "¡Llegaron a la meta!",
+            "fronted": "{name} puso <amount></amount> de su bolsillo; eso queda a su favor.",
+            "keeperBadge": "Guardián del pozo",
+            "keeperLine": "La plata está en la cuenta de {name}.",
+            "keeperNote": "Cada aporte queda como un pago a {name}, y lo que paga la vaquita sale de su cuenta.",
+            "projected": "A este ritmo llegan a la meta en {month}.",
+            "suggested": "Para llegar en {month}, cada uno pone <amount></amount> por mes.",
+            "quotaTitle": "Cuota del mes · <amount></amount>",
+            "quotaAllIn": "Este mes ya pusieron todos.",
+            "quotaMissing": "falta <amount></amount>",
+            "put": "Poner plata",
+            "putWho": "¿Quién pone?",
+            "putAmount": "¿Cuánto?",
+            "putSubmit": "Anotar aporte",
+            "putDone": "Aporte anotado",
+            "putNote": "Queda anotado como un pago de {name} a {keeper}.",
+            "byMemberTitle": "Lo que puso cada uno",
+            "spentTitle": "Lo que pagó la vaquita",
+            "spentEmpty": "Para pagar algo con la vaquita, cargá el gasto pagado por {name} y prendé «Lo pagó la vaquita».",
+            "historyTitle": "Aportes",
+            "remove": "Sacar este aporte",
+            "removed": "Aporte sacado",
+            "closePot": "Cerrar la vaquita",
+            "closeHint": "Lo que sobra queda a favor de quienes pusieron, en sus saldos. No se mueve plata.",
+            "closeConfirm": "Cerrar",
+            "closedToast": "Vaquita cerrada",
+            "startAnother": "Armar otra vaquita"
         }
     },
     "slideToConfirm": {
@@ -1227,7 +1285,10 @@
         "LEMON_WALLET_MISSING": "Las dos personas tienen que haber abierto el grupo desde Lemon.",
         "NOT_THIS_MEMBER": "Solo esa persona puede conectar su wallet.",
         "PAYOUT_ADDRESS_INVALID": "Esa dirección no corresponde a la red elegida.",
-        "RECURRING_CURRENCY_UNSUPPORTED": "Un gasto en una moneda personalizada no se puede repetir solo."
+        "RECURRING_CURRENCY_UNSUPPORTED": "Un gasto en una moneda personalizada no se puede repetir solo.",
+        "POT_NOT_FOUND": "No encontramos esa vaquita.",
+        "POT_CLOSED": "Esta vaquita ya está cerrada.",
+        "POT_PAYER_NOT_KEEPER": "Para que lo pague la vaquita, lo tiene que pagar quien la guarda."
     },
     "derivation": {
         "title": "Cómo sale este número",

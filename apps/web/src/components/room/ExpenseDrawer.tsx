@@ -77,6 +77,8 @@ import { useFeedback } from '@/lib/use-settings'
 import { activeMembers, activityRoleMembers, defaultSplitMembers, isFormerMember } from '@/lib/members'
 import { createClientKey } from '@/lib/offline-queue'
 import { useStartRecurring, useStopRecurring } from '@/lib/queries/recurring'
+import { useLinkPotExpense } from '@/lib/queries/pots'
+import { openPots } from '@/lib/pots'
 import { SettingToggle } from '@/components/ui/SettingToggle'
 import { useShake } from '@/hooks/useShake'
 import { CurrencyTag } from './CurrencyTag'
@@ -173,6 +175,14 @@ export function ExpenseDrawer({
             : null
     const [repeatMonthly, setRepeatMonthly] = useState(activeRecurringId !== null)
     useEffect(() => setRepeatMonthly(activeRecurringId !== null), [activeRecurringId, open])
+    const linkPotExpense = useLinkPotExpense(slug, token)
+    /** The vaquita this expense can be paid from: the one it already belongs to, else the newest open one. */
+    const pot = useMemo(() => {
+        const open = openPots(state)
+        return open.find((candidate) => candidate.id === expense?.potId) ?? open.at(-1) ?? null
+    }, [state, expense?.potId])
+    const [fromPot, setFromPot] = useState(!!expense?.potId)
+    useEffect(() => setFromPot(!!expense?.potId), [expense?.potId, open])
     const [values, setValues] = useState<ExpenseFormValues>(() =>
         emptyExpenseForm({
             currency: state.room.currency,
@@ -897,6 +907,8 @@ export function ExpenseDrawer({
             ...buildExpenseBody(valuesToSave, currencies, locale),
             ...(manualFxRate ? { manualFxRate } : {}),
         }
+        // The pot's money is in its keeper's account, so only the keeper's expense can be the pot's.
+        const potIdToSave = fromPot && pot && body.paidById === pot.keeperId ? pot.id : null
         try {
             if (expense) {
                 const input: ExpenseUpdateInput = {
@@ -913,6 +925,14 @@ export function ExpenseDrawer({
                 rememberExpenseCurrency(slug, meId, body.currency)
                 if (repeatMonthly && !activeRecurringId) await startRecurring.mutateAsync(expense.id)
                 if (!repeatMonthly && activeRecurringId) await stopRecurring.mutateAsync(activeRecurringId)
+                const savedPotId = expense.potId ?? null
+                if (potIdToSave !== savedPotId) {
+                    await linkPotExpense.mutateAsync(
+                        potIdToSave
+                            ? { potId: potIdToSave, expenseId: expense.id, linked: true }
+                            : { potId: savedPotId!, expenseId: expense.id, linked: false }
+                    )
+                }
                 track(
                     'expense_edited',
                     roomProps(slug, { splitMode: body.splitMode, foreign: body.currency !== state.room.currency })
@@ -929,12 +949,20 @@ export function ExpenseDrawer({
                 // the latch is aha itself, not a later mature-room contribution.
                 const roomWasMature = state.room.hasReachedSharedBalance === true
                 // A repeating expense needs its id to start the template, so it picks its own key.
-                const clientKey = repeatMonthly ? createClientKey() : undefined
+                // So does one the vaquita paid.
+                const clientKey = repeatMonthly || potIdToSave ? createClientKey() : undefined
                 const { createdFirstSharedBalance, queuedLocally } = await addExpense.mutateAsync(
                     clientKey ? { ...body, clientKey } : body
                 )
                 if (!queuedLocally) rememberExpenseCurrency(slug, meId, body.currency)
-                if (clientKey) {
+                if (potIdToSave && clientKey && !queuedLocally) {
+                    await linkPotExpense
+                        .mutateAsync({ potId: potIdToSave, expenseId: clientKey, linked: true })
+                        .catch((error: unknown) =>
+                            toast.error(errorMessage(error, t('potLinkFailed')), { duration: TOAST_MS.actionable })
+                        )
+                }
+                if (clientKey && repeatMonthly) {
                     if (queuedLocally) toast.error(t('repeatOffline'), { duration: TOAST_MS.actionable })
                     else
                         await startRecurring
@@ -2187,6 +2215,21 @@ export function ExpenseDrawer({
                         onChange={setRepeatMonthly}
                         testId="expense-repeat-monthly"
                     />
+
+                    {pot && (
+                        <SettingToggle
+                            label={t('payFromPot', { name: pot.name })}
+                            hint={t('payFromPotHint', {
+                                keeper: state.members.find((member) => member.id === pot.keeperId)?.name ?? '',
+                            })}
+                            checked={fromPot && values.paidById === pot.keeperId}
+                            onChange={(next) => {
+                                setFromPot(next)
+                                if (next) patch({ paidById: pot.keeperId, newPaidByName: '' })
+                            }}
+                            testId="expense-pay-from-pot"
+                        />
+                    )}
 
                     {submitted && validationCopy && !amountInvalid && (
                         <p

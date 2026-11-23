@@ -451,7 +451,10 @@
                 "settlement_recorded": "registró un pago",
                 "settlement_deleted": "eliminó un pago registrado",
                 "push_subscribed": "activó las notificaciones de la tribu",
-                "push_unsubscribed": "desactivó las notificaciones de la tribu"
+                "push_unsubscribed": "desactivó las notificaciones de la tribu",
+                "draw_spun": "giró la ruleta",
+                "bet_updated": "actualizó una apuesta",
+                "fine_updated": "actualizó una multa"
             }
         },
         "join": {
@@ -517,7 +520,9 @@
             "emptyShare": "Compartir tribu",
             "emptyAdd": "Agregar gasto",
             "monthlyChip": "Fijo mensual",
-            "potChip": "Vaquita"
+            "potChip": "Vaquita",
+            "rouletteChip": "Ruleta",
+            "betChip": "Apuesta"
         },
         "states": {
             "errorTitle": "No pudimos cargar esta tribu",
@@ -748,7 +753,13 @@
             "crypto": "Cripto",
             "cryptoNote": "Mandalo desde tu wallet a la de arriba y después marcalo acá. Tribu no lo verifica.",
             "cryptoNoWallet": "{name} todavía no cargó su wallet. Pedile que la cargue en su perfil.",
-            "cryptoMismatch": "Ojo: {name} pidió {token} en {network}."
+            "cryptoMismatch": "Ojo: {name} pidió {token} en {network}.",
+            "roundUp": "Redondear al pozo",
+            "roundUpHint": "Lo que falta para un número redondo va a {pot}.",
+            "roundUpNote": "Además, <amount></amount> van a {pot}.",
+            "roundUpLemonTitle": "Redondeo para {pot}",
+            "roundUpDone": "Redondeo sumado a {pot}.",
+            "roundUpFailed": "El pago quedó registrado, pero el redondeo no. Podés sumarlo desde el pozo."
         },
         "share": {
             "title": "Compartir tribu",
@@ -1237,7 +1248,148 @@
             "closedLabel": "Esta vaquita está cerrada.",
             "yourVaquitas": "Tus vaquitas",
             "emptyTitle": "Vaquita lista",
-            "emptyShare": "Compartir vaquita"
+            "emptyShare": "Compartir vaquita",
+            "reasonRoundup": "Redondeo",
+            "reasonFine": "Multa",
+            "yield": {
+                "cardLine": "Ya rindió <amount></amount> (estimado)",
+                "rateInvalid": "Poné un número entre 0,01 y 20.",
+                "rateLabel": "¿Cuánto rinde por año la cuenta donde está la plata?",
+                "perYear": "% por año",
+                "rateHint": "Fijate cuánto paga la cuenta de {name} por tener la plata en USDC o en pesos. Tribu hace la cuenta con ese número.",
+                "turnOff": "Sacar",
+                "cancel": "Cancelar",
+                "save": "Guardar",
+                "startTitle": "Hacer que la vaquita rinda",
+                "startHint": "Si la plata está en una cuenta que da rendimiento, Tribu te muestra cuánto va ganando sola.",
+                "badge": "La vaquita rinde · {rate}% anual",
+                "edit": "Cambiar",
+                "earned": "Ya ganó <amount></amount> sola",
+                "nextYear": "A este ritmo, en un año suma <amount></amount> más.",
+                "estimateNote": "Es un estimado. Tribu no mueve la plata: rinde si {name} la tiene en una cuenta que pague ese rendimiento."
+            }
+        },
+        "games": {
+            "title": "Juegos de la tribu",
+            "pot": {
+                "defaultName": "Pozo de la tribu",
+                "created": "¡Listo, la tribu tiene pozo!",
+                "start": "Armar el pozo de la tribu",
+                "startHint": "Ahí van los redondeos y las multas. Lo guarda alguien de la tribu en su cuenta.",
+                "formTitle": "El pozo de la tribu",
+                "formHint": "Tribu no guarda plata: el pozo queda en la cuenta de quien elijan, como en una vaquita.",
+                "keeper": "¿Quién lo guarda?",
+                "cancel": "Cancelar",
+                "create": "Armar el pozo"
+            },
+            "roulette": {
+                "tile": "Ruleta",
+                "tileHint": "Uno paga todo",
+                "title": "¿Quién paga hoy?",
+                "close": "Cerrar",
+                "intro": "En vez de dividir, la ruleta elige a una persona que se hace cargo de toda la cuenta.",
+                "what": "¿Qué pagan?",
+                "whatPlaceholder": "Cena, ronda, birras…",
+                "amount": "Total",
+                "paidBy": "¿Quién pagó en el lugar?",
+                "who": "¿Quiénes entran?",
+                "sealed": "Sorteo sellado ({hash}…). Nadie puede cambiar el resultado.",
+                "sealing": "Sellando el sorteo…",
+                "spin": "Girar la ruleta",
+                "spinning": "Girando…",
+                "someone": "Alguien",
+                "amountInvalid": "Poné el total de la cuenta.",
+                "tooFew": "Tienen que entrar al menos dos personas.",
+                "payerMissing": "Elegí quién pagó.",
+                "notSealed": "Todavía se está sellando el sorteo. Probá de nuevo en un segundo.",
+                "defaultDescription": "Ruleta",
+                "resultLead": "Le tocó a",
+                "resultInvites": "{name} invita: <amount></amount> corren por su cuenta.",
+                "resultPays": "{name} le pasa <amount></amount> a {payer}. Ya quedó en los saldos.",
+                "done": "Listo",
+                "proofChecking": "Verificando el sorteo…",
+                "proofOk": "Sorteo verificado en este celu",
+                "proofBad": "Este sorteo no coincide con lo sellado",
+                "proofHow": "Antes de girar, Tribu selló un número secreto y mostró su huella. Al girar, tu celu sumó otro número. El ganador sale de mezclar los dos con la lista de quiénes entraron, así que nadie pudo elegirlo.",
+                "proofSealed": "Huella sellada antes de girar",
+                "proofSeed": "Número secreto de Tribu",
+                "proofPhone": "Número del celu"
+            },
+            "bets": {
+                "tile": "Apuestas",
+                "tileHint": "Entre amigos",
+                "title": "Apuestas entre amigos",
+                "close": "Cerrar",
+                "you": "vos",
+                "someone": "Alguien",
+                "pickYourself": "Elegí quién sos en la tribu para apostar.",
+                "between": "Entre {a} y {b}",
+                "statusProposed": "Esperando que {name} acepte.",
+                "statusProposedYou": "{name} te desafió. ¿Va?",
+                "statusAccepted": "En juego. Cuando se sepa, digan quién ganó.",
+                "statusClaimed": "Según {name}, ganó {winner}.",
+                "accept": "Acepto",
+                "iWon": "Gané yo",
+                "theyWon": "Ganó {name}",
+                "confirm": "Es así",
+                "dispute": "No fue así",
+                "cancelBet": "Cancelar",
+                "what": "¿Qué apuestan?",
+                "whatPlaceholder": "Si Boca pierde, Juli paga el asado",
+                "with": "¿Con quién?",
+                "amount": "¿Cuánto?",
+                "howItWorks": "Cuando los dos confirman quién ganó, lo apostado queda como saldo en la tribu y se paga como cualquier otro, también con Lemon.",
+                "propose": "Proponer la apuesta",
+                "new": "Nueva apuesta",
+                "titleMissing": "Contá qué apuestan.",
+                "rivalMissing": "Elegí con quién.",
+                "amountInvalid": "Poné cuánto apuestan.",
+                "created": "Le mandaste la apuesta a {name}.",
+                "resolvedToast": "Apuesta cerrada. Ya quedó en los saldos.",
+                "finishedTitle": "Terminadas",
+                "finishedLine": "· ganó {winner}"
+            },
+            "fines": {
+                "tile": "Multas",
+                "tileHint": "Votadas por todos",
+                "title": "Multas de la tribu",
+                "close": "Cerrar",
+                "you": "vos",
+                "someone": "Alguien",
+                "intro": "Si alguien llega tarde o falta, la tribu vota una multa. Si se aprueba, va a {pot}, que guarda {keeper}.",
+                "needsPot": "Las multas van al pozo de la tribu. Primero armen uno.",
+                "pickYourself": "Elegí quién sos en la tribu para votar.",
+                "cardTitle": "Multa para {name}",
+                "votes": "{yes} de {total} votaron que sí. Se aprueba con más de la mitad.",
+                "approved": "Aprobada. Falta pagarla a {pot}.",
+                "voteYes": "Sí, va",
+                "voteNo": "No",
+                "pay": "Pagar la multa",
+                "markPaid": "Ya la pagó",
+                "drop": "Sacar",
+                "who": "¿Para quién?",
+                "why": "¿Por qué?",
+                "reasons": {
+                    "late": "Llegó tarde",
+                    "noShow": "Faltó",
+                    "lastMinute": "Canceló a último momento"
+                },
+                "amount": "¿Cuánto?",
+                "howItWorks": "Votan todos menos la persona multada. Quien la propone ya cuenta como un sí.",
+                "cancel": "Cancelar",
+                "propose": "Proponer la multa",
+                "new": "Proponer una multa",
+                "whoMissing": "Elegí a quién.",
+                "reasonMissing": "Contá por qué.",
+                "amountInvalid": "Poné cuánto.",
+                "proposed": "Multa propuesta. Ahora vota la tribu.",
+                "lemonTitle": "Multa para el pozo de {name}",
+                "lemonFailed": "No se pudo pagar con Lemon. Probá de nuevo.",
+                "paidToast": "Multa pagada. Ya está en el pozo.",
+                "historyTitle": "Anteriores",
+                "statusPaid": "pagada",
+                "statusRejected": "no aprobada"
+            }
         }
     },
     "slideToConfirm": {
@@ -1354,7 +1506,26 @@
         "RECURRING_CURRENCY_UNSUPPORTED": "Un gasto en una moneda personalizada no se puede repetir solo.",
         "POT_NOT_FOUND": "No encontramos esa vaquita.",
         "POT_CLOSED": "Esta vaquita ya está cerrada.",
-        "POT_PAYER_NOT_KEEPER": "Para que lo pague la vaquita, lo tiene que pagar quien la guarda."
+        "POT_PAYER_NOT_KEEPER": "Para que lo pague la vaquita, lo tiene que pagar quien la guarda.",
+        "BADGES_NOT_ENABLED": "Guardar insignias en la wallet todavía no está activado.",
+        "BADGE_NOT_EARNED": "Todavía no conseguiste esta insignia en esa tribu.",
+        "BADGE_NO_WALLET": "Primero vinculá tu wallet de Lemon en esa tribu.",
+        "BET_ACTION_NOT_ALLOWED": "Eso no se puede hacer con esta apuesta ahora.",
+        "BET_NOT_FOUND": "Esa apuesta ya no está.",
+        "BET_SAME_PERSON": "Elegí a otra persona para apostar.",
+        "BET_WINNER_INVALID": "El ganador tiene que ser uno de los dos.",
+        "DRAW_ALREADY_SPUN": "Esta ruleta ya se giró.",
+        "DRAW_EXPIRED": "La ruleta tardó demasiado. Cerrala y abrila de nuevo.",
+        "DRAW_NOT_FOUND": "No encontramos esta ruleta. Cerrala y abrila de nuevo.",
+        "DRAW_TOO_FEW": "Tienen que entrar al menos dos personas.",
+        "FINE_CLOSED": "Esta multa ya está cerrada.",
+        "FINE_NOT_APPROVED": "La multa todavía no se aprobó.",
+        "FINE_NOT_A_VOTER": "No votás en esta multa.",
+        "FINE_NOT_FOUND": "Esa multa ya no está.",
+        "FINE_NOT_PAYER": "La registra la persona multada o quien guarda el pozo.",
+        "FINE_NOT_PROPOSER": "Solo quien la propuso puede sacarla.",
+        "FINE_VOTE_CLOSED": "La votación ya terminó.",
+        "MEMBER_TOKEN_REQUIRED": "Primero elegí quién sos en esta tribu."
     },
     "derivation": {
         "title": "Cómo sale este número",
@@ -1655,6 +1826,53 @@
                 "shared": "Compartiste: {label}",
                 "sent": "Le pasaste a {label}",
                 "received": "{label} te pasó"
+            },
+            "badges": {
+                "title": "Tus insignias",
+                "count": "{earned} de {total} conseguidas",
+                "mint": "Guardar en mi wallet",
+                "minting": "Guardando…",
+                "mintTitle": "Insignia: {name}",
+                "minted": "¡Listo! La insignia ya está en tu wallet.",
+                "mintFailed": "No se pudo guardar. Probá de nuevo.",
+                "inWallet": "En tu wallet",
+                "items": {
+                    "fast-payer": {
+                        "name": "Rayo",
+                        "earned": "Pasaste tu parte en menos de 24 horas.",
+                        "how": "Pasá tu parte en menos de 24 horas."
+                    },
+                    "crypto-payer": {
+                        "name": "Pago cripto",
+                        "earned": "Pagaste en USDC o USDT.",
+                        "how": "Pagá una vez en USDC o USDT."
+                    },
+                    "keeper": {
+                        "name": "Guardián",
+                        "earned": "Guardás el pozo de una tribu.",
+                        "how": "Guardá el pozo de una tribu o una vaquita."
+                    },
+                    "rounder": {
+                        "name": "Redondeador",
+                        "earned": "Redondeaste 3 pagos al pozo.",
+                        "how": "Redondeá 3 pagos al pozo."
+                    },
+                    "bet-winner": {
+                        "name": "Ganador",
+                        "earned": "Ganaste una apuesta.",
+                        "how": "Ganá una apuesta entre amigos."
+                    },
+                    "roulette-pick": {
+                        "name": "Invita la casa",
+                        "earned": "La ruleta te eligió para invitar.",
+                        "how": "Que la ruleta te elija para invitar."
+                    },
+                    "pot-goal": {
+                        "name": "Meta cumplida",
+                        "earned": "Pusiste plata en un pozo que llegó a la meta.",
+                        "how": "Poné plata en una vaquita que llegue a la meta."
+                    }
+                }
             }
         }
     },

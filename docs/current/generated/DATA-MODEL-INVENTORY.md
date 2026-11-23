@@ -3,10 +3,10 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `d68af14ebb0f17396b7ea27d711c05ac0191fc67f74c89d18819c6acb84a1c21`
+Input SHA-256: `7b7441fb96fcc746b60ecbd7b37d327ec7d553aa5b9a49c7248e7047f36dc182`
 
 PostgreSQL namespace: `split`  
-Models: 18  
+Models: 21  
 Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## Room
@@ -28,6 +28,9 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `expenses`                    | `Expense[]`          | —                                    |
 | `recurringExpenses`           | `RecurringExpense[]` | —                                    |
 | `pots`                        | `Pot[]`              | —                                    |
+| `draws`                       | `Draw[]`             | —                                    |
+| `bets`                        | `Bet[]`              | —                                    |
+| `fines`                       | `Fine[]`             | —                                    |
 | `settlements`                 | `Settlement[]`       | —                                    |
 | `auditEvents`                 | `RoomAuditEvent[]`   | —                                    |
 | `importBatches`               | `ImportBatch[]`      | —                                    |
@@ -289,19 +292,20 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## Pot
 
-| Field           | Prisma type         | Attributes                                                       |
-| --------------- | ------------------- | ---------------------------------------------------------------- |
-| `id`            | `String`            | @id @default(uuid())                                             |
-| `roomId`        | `String`            | —                                                                |
-| `name`          | `String`            | —                                                                |
-| `keeperId`      | `String`            | —                                                                |
-| `targetMinor`   | `BigInt?`           | // room currency                                                 |
-| `quotaMinor`    | `BigInt?`           | // per person per month, room currency                           |
-| `dueDate`       | `DateTime?`         | —                                                                |
-| `createdAt`     | `DateTime`          | @default(now())                                                  |
-| `closedAt`      | `DateTime?`         | —                                                                |
-| `room`          | `Room`              | @relation(fields: [roomId], references: [id], onDelete: Cascade) |
-| `contributions` | `PotContribution[]` | —                                                                |
+| Field           | Prisma type         | Attributes                                                                        |
+| --------------- | ------------------- | --------------------------------------------------------------------------------- |
+| `id`            | `String`            | @id @default(uuid())                                                              |
+| `roomId`        | `String`            | —                                                                                 |
+| `name`          | `String`            | —                                                                                 |
+| `keeperId`      | `String`            | —                                                                                 |
+| `targetMinor`   | `BigInt?`           | // room currency                                                                  |
+| `quotaMinor`    | `BigInt?`           | // per person per month, room currency                                            |
+| `dueDate`       | `DateTime?`         | —                                                                                 |
+| `yieldAprBps`   | `Int?`              | // estimated yearly rate the keeper's account pays, in basis points; display only |
+| `createdAt`     | `DateTime`          | @default(now())                                                                   |
+| `closedAt`      | `DateTime?`         | —                                                                                 |
+| `room`          | `Room`              | @relation(fields: [roomId], references: [id], onDelete: Cascade)                  |
+| `contributions` | `PotContribution[]` | —                                                                                 |
 
 ## PotContribution
 
@@ -312,7 +316,62 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `memberId`     | `String`    | —                                                               |
 | `amountMinor`  | `BigInt`    | // room currency                                                |
 | `settlementId` | `String?`   | @unique                                                         |
+| `reason`       | `String?`   | // null (a plain contribution) \| "roundup" \| "fine"           |
 | `createdById`  | `String?`   | —                                                               |
 | `createdAt`    | `DateTime`  | @default(now())                                                 |
 | `deletedAt`    | `DateTime?` | —                                                               |
 | `pot`          | `Pot`       | @relation(fields: [potId], references: [id], onDelete: Cascade) |
+
+## Draw
+
+| Field            | Prisma type | Attributes                                                               |
+| ---------------- | ----------- | ------------------------------------------------------------------------ |
+| `id`             | `String`    | @id @default(uuid())                                                     |
+| `roomId`         | `String`    | —                                                                        |
+| `seed`           | `String`    | // hex; revealed once spun                                               |
+| `seedHash`       | `String`    | // sha256(seed), shown before the spin                                   |
+| `clientSeed`     | `String?`   | —                                                                        |
+| `participantIds` | `String[]`  | —                                                                        |
+| `paidById`       | `String?`   | —                                                                        |
+| `amountMinor`    | `BigInt?`   | // room currency                                                         |
+| `winnerId`       | `String?`   | // the one who covers the whole bill; also the id of the expense it made |
+| `createdAt`      | `DateTime`  | @default(now())                                                          |
+| `spunAt`         | `DateTime?` | —                                                                        |
+| `room`           | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade)         |
+
+## Bet
+
+| Field             | Prisma type | Attributes                                                                       |
+| ----------------- | ----------- | -------------------------------------------------------------------------------- |
+| `id`              | `String`    | @id @default(uuid())                                                             |
+| `roomId`          | `String`    | —                                                                                |
+| `title`           | `String`    | —                                                                                |
+| `amountMinor`     | `BigInt`    | // room currency                                                                 |
+| `proposerId`      | `String`    | —                                                                                |
+| `rivalId`         | `String`    | —                                                                                |
+| `status`          | `String`    | @default("proposed") // proposed \| accepted \| claimed \| resolved \| cancelled |
+| `claimedWinnerId` | `String?`   | —                                                                                |
+| `claimedById`     | `String?`   | —                                                                                |
+| `winnerId`        | `String?`   | —                                                                                |
+| `expenseId`       | `String?`   | —                                                                                |
+| `createdAt`       | `DateTime`  | @default(now())                                                                  |
+| `acceptedAt`      | `DateTime?` | —                                                                                |
+| `resolvedAt`      | `DateTime?` | —                                                                                |
+| `room`            | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade)                 |
+
+## Fine
+
+| Field            | Prisma type | Attributes                                                                |
+| ---------------- | ----------- | ------------------------------------------------------------------------- |
+| `id`             | `String`    | @id @default(uuid())                                                      |
+| `roomId`         | `String`    | —                                                                         |
+| `memberId`       | `String`    | —                                                                         |
+| `reason`         | `String`    | —                                                                         |
+| `amountMinor`    | `BigInt`    | // room currency                                                          |
+| `proposedById`   | `String?`   | —                                                                         |
+| `votes`          | `Json`      | @default("{}") // memberId -> true (yes) \| false (no)                    |
+| `status`         | `String`    | @default("voting") // voting \| approved \| rejected \| paid \| cancelled |
+| `contributionId` | `String?`   | —                                                                         |
+| `createdAt`      | `DateTime`  | @default(now())                                                           |
+| `decidedAt`      | `DateTime?` | —                                                                         |
+| `room`           | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade)          |

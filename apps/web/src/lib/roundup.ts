@@ -24,3 +24,24 @@ export function roundUpDifference(amountMinor: string, stepMinor: bigint): strin
     const rest = amount % stepMinor
     return rest === 0n ? '0' : (stepMinor - rest).toString()
 }
+
+const storageKey = (slug: string) => `tribu:redondeo:${slug}`
+
+/** This phone's choice for a room: the step it rounds to, or null when it does not round. */
+export function rememberedRoundUp(slug: string): RoundUpUnit | null {
+    try {
+        const value = Number(window.localStorage.getItem(storageKey(slug)))
+        return (ROUND_UP_UNITS as readonly number[]).includes(value) ? (value as RoundUpUnit) : null
+    } catch {
+        return null
+    }
+}
+
+export function rememberRoundUp(slug: string, unit: RoundUpUnit | null): void {
+    try {
+        if (unit === null) window.localStorage.removeItem(storageKey(slug))
+        else window.localStorage.setItem(storageKey(slug), String(unit))
+    } catch {
+        // Private mode or blocked storage: the switch still works for this payment.
+    }
+}

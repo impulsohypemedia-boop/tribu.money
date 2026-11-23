@@ -215,6 +215,13 @@ export function ExpenseList({
     const t = useTranslations('room.expenses')
     const tPot = useTranslations('room.pot')
     const isVaquita = state.room.kind === 'vaquita'
+    const gameExpenseIds = useMemo(
+        () => ({
+            draws: new Set((state.draws ?? []).map((draw) => draw.id)),
+            bets: new Set((state.bets ?? []).flatMap((bet) => (bet.status === 'resolved' ? [bet.id] : []))),
+        }),
+        [state.draws, state.bets]
+    )
     const tDates = useTranslations('dates')
     const tOffline = useTranslations('offline')
     const locale = useLocale()
@@ -694,6 +701,22 @@ export function ExpenseList({
                                                         data-testid="expense-recurring-chip"
                                                     >
                                                         {t('monthlyChip')}
+                                                    </span>
+                                                )}
+                                                {gameExpenseIds.draws.has(expense.id) && (
+                                                    <span
+                                                        className="ml-1 mt-0.5 inline-block rounded-full bg-primary-3 px-2 py-0.5 text-h10 font-bold uppercase tracking-wide text-n-1"
+                                                        data-testid="expense-roulette-chip"
+                                                    >
+                                                        {t('rouletteChip')}
+                                                    </span>
+                                                )}
+                                                {gameExpenseIds.bets.has(expense.id) && (
+                                                    <span
+                                                        className="ml-1 mt-0.5 inline-block rounded-full bg-primary-3 px-2 py-0.5 text-h10 font-bold uppercase tracking-wide text-n-1"
+                                                        data-testid="expense-bet-chip"
+                                                    >
+                                                        {t('betChip')}
                                                     </span>
                                                 )}
                                                 {expense.potId && (

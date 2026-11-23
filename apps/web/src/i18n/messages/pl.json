@@ -451,7 +451,10 @@
                 "settlement_recorded": "zapisuje płatność",
                 "settlement_deleted": "usuwa zapis płatności",
                 "push_subscribed": "włącza powiadomienia z pokoju",
-                "push_unsubscribed": "wyłącza powiadomienia z pokoju"
+                "push_unsubscribed": "wyłącza powiadomienia z pokoju",
+                "draw_spun": "spun the roulette",
+                "bet_updated": "updated a bet",
+                "fine_updated": "updated a fine"
             }
         },
         "join": {
@@ -517,7 +520,9 @@
             "emptyShare": "Udostępnij pokój",
             "emptyAdd": "Dodaj wydatek",
             "monthlyChip": "Monthly",
-            "potChip": "Pot"
+            "potChip": "Pot",
+            "rouletteChip": "Roulette",
+            "betChip": "Bet"
         },
         "states": {
             "errorTitle": "Nie udało się wczytać tego pokoju",
@@ -748,7 +753,13 @@
             "crypto": "Crypto",
             "cryptoNote": "Send it from your wallet to the one above, then mark it here. Tribu does not check it.",
             "cryptoNoWallet": "{name} has not added a wallet yet. Ask them to add it in their profile.",
-            "cryptoMismatch": "Heads up: {name} asked for {token} on {network}."
+            "cryptoMismatch": "Heads up: {name} asked for {token} on {network}.",
+            "roundUp": "Round up into the pot",
+            "roundUpHint": "What is missing to a round number goes to {pot}.",
+            "roundUpNote": "Plus <amount></amount> goes to {pot}.",
+            "roundUpLemonTitle": "Round-up for {pot}",
+            "roundUpDone": "Round-up added to {pot}.",
+            "roundUpFailed": "The payment was recorded, but the round-up was not. You can add it from the pot."
         },
         "share": {
             "title": "Udostępnij pokój",
@@ -1237,7 +1248,148 @@
             "closedLabel": "This pot is closed.",
             "yourVaquitas": "Your pots",
             "emptyTitle": "Pot ready",
-            "emptyShare": "Share pot"
+            "emptyShare": "Share pot",
+            "reasonRoundup": "Round-up",
+            "reasonFine": "Fine",
+            "yield": {
+                "cardLine": "Earned <amount></amount> so far (estimate)",
+                "rateInvalid": "Enter a number between 0.01 and 20.",
+                "rateLabel": "How much does the account holding the money pay per year?",
+                "perYear": "% a year",
+                "rateHint": "Check what {name}'s account pays for holding the money in USDC or cash. Tribu does the maths with that number.",
+                "turnOff": "Remove",
+                "cancel": "Cancel",
+                "save": "Save",
+                "startTitle": "Make the pot earn",
+                "startHint": "If the money sits in an account that pays interest, Tribu shows how much it is earning on its own.",
+                "badge": "The pot earns · {rate}% a year",
+                "edit": "Change",
+                "earned": "Already earned <amount></amount> on its own",
+                "nextYear": "At this rate it adds <amount></amount> more in a year.",
+                "estimateNote": "An estimate. Tribu does not move the money: it earns only if {name} keeps it in an account that pays that rate."
+            }
+        },
+        "games": {
+            "title": "Tribe games",
+            "pot": {
+                "defaultName": "Tribe pot",
+                "created": "Done, the tribe has a pot!",
+                "start": "Start the tribe pot",
+                "startHint": "Round-ups and fines go here. Someone in the tribe keeps it in their account.",
+                "formTitle": "The tribe pot",
+                "formHint": "Tribu holds no money: the pot stays in the account of whoever you pick, as with a vaquita.",
+                "keeper": "Who keeps it?",
+                "cancel": "Cancel",
+                "create": "Start the pot"
+            },
+            "roulette": {
+                "tile": "Roulette",
+                "tileHint": "One pays it all",
+                "title": "Who pays today?",
+                "close": "Close",
+                "intro": "Instead of splitting, the roulette picks one person to cover the whole bill.",
+                "what": "What is it for?",
+                "whatPlaceholder": "Dinner, a round, beers…",
+                "amount": "Total",
+                "paidBy": "Who paid at the place?",
+                "who": "Who is in?",
+                "sealed": "Draw sealed ({hash}…). Nobody can change the result.",
+                "sealing": "Sealing the draw…",
+                "spin": "Spin the roulette",
+                "spinning": "Spinning…",
+                "someone": "Someone",
+                "amountInvalid": "Enter the bill's total.",
+                "tooFew": "At least two people have to be in.",
+                "payerMissing": "Pick who paid.",
+                "notSealed": "The draw is still being sealed. Try again in a second.",
+                "defaultDescription": "Roulette",
+                "resultLead": "It landed on",
+                "resultInvites": "{name} treats everyone: <amount></amount> is on them.",
+                "resultPays": "{name} pays <amount></amount> to {payer}. It is already in the balances.",
+                "done": "Done",
+                "proofChecking": "Checking the draw…",
+                "proofOk": "Draw verified on this phone",
+                "proofBad": "This draw does not match what was sealed",
+                "proofHow": "Before the spin, Tribu sealed a secret number and showed its fingerprint. At the spin your phone added another number. The winner comes from mixing both with the list of who was in, so nobody could pick it.",
+                "proofSealed": "Fingerprint sealed before the spin",
+                "proofSeed": "Tribu's secret number",
+                "proofPhone": "The phone's number"
+            },
+            "bets": {
+                "tile": "Bets",
+                "tileHint": "Between friends",
+                "title": "Bets between friends",
+                "close": "Close",
+                "you": "you",
+                "someone": "Someone",
+                "pickYourself": "Pick who you are in the tribe to bet.",
+                "between": "Between {a} and {b}",
+                "statusProposed": "Waiting for {name} to accept.",
+                "statusProposedYou": "{name} challenged you. Are you in?",
+                "statusAccepted": "On. When you know, say who won.",
+                "statusClaimed": "According to {name}, {winner} won.",
+                "accept": "I'm in",
+                "iWon": "I won",
+                "theyWon": "{name} won",
+                "confirm": "That's right",
+                "dispute": "Not true",
+                "cancelBet": "Cancel",
+                "what": "What is the bet?",
+                "whatPlaceholder": "If Boca loses, Juli pays for the barbecue",
+                "with": "With whom?",
+                "amount": "How much?",
+                "howItWorks": "When both confirm who won, the stake becomes a balance in the tribe and is paid like any other, including with Lemon.",
+                "propose": "Propose the bet",
+                "new": "New bet",
+                "titleMissing": "Say what the bet is.",
+                "rivalMissing": "Pick who with.",
+                "amountInvalid": "Enter how much.",
+                "created": "Bet sent to {name}.",
+                "resolvedToast": "Bet closed. It is already in the balances.",
+                "finishedTitle": "Finished",
+                "finishedLine": "· {winner} won"
+            },
+            "fines": {
+                "tile": "Fines",
+                "tileHint": "Voted by all",
+                "title": "Tribe fines",
+                "close": "Close",
+                "you": "you",
+                "someone": "Someone",
+                "intro": "When someone is late or skips, the tribe votes on a fine. If it passes, it goes to {pot}, kept by {keeper}.",
+                "needsPot": "Fines go to the tribe pot. Start one first.",
+                "pickYourself": "Pick who you are in the tribe to vote.",
+                "cardTitle": "Fine for {name}",
+                "votes": "{yes} of {total} voted yes. More than half passes it.",
+                "approved": "Approved. Still to be paid into {pot}.",
+                "voteYes": "Yes",
+                "voteNo": "No",
+                "pay": "Pay the fine",
+                "markPaid": "They paid",
+                "drop": "Drop",
+                "who": "For whom?",
+                "why": "Why?",
+                "reasons": {
+                    "late": "Was late",
+                    "noShow": "Didn't show",
+                    "lastMinute": "Cancelled last minute"
+                },
+                "amount": "How much?",
+                "howItWorks": "Everyone but the fined person votes. Whoever proposes it counts as a yes.",
+                "cancel": "Cancel",
+                "propose": "Propose the fine",
+                "new": "Propose a fine",
+                "whoMissing": "Pick who.",
+                "reasonMissing": "Say why.",
+                "amountInvalid": "Enter how much.",
+                "proposed": "Fine proposed. Now the tribe votes.",
+                "lemonTitle": "Fine for {name}'s pot",
+                "lemonFailed": "Could not pay with Lemon. Try again.",
+                "paidToast": "Fine paid. It is in the pot.",
+                "historyTitle": "Earlier",
+                "statusPaid": "paid",
+                "statusRejected": "not approved"
+            }
         }
     },
     "slideToConfirm": {
@@ -1354,7 +1506,26 @@
         "RECURRING_CURRENCY_UNSUPPORTED": "An expense in a custom currency cannot repeat on its own.",
         "POT_NOT_FOUND": "We could not find that pot.",
         "POT_CLOSED": "This pot is already closed.",
-        "POT_PAYER_NOT_KEEPER": "For the pot to pay, the expense must be paid by the person who keeps it."
+        "POT_PAYER_NOT_KEEPER": "For the pot to pay, the expense must be paid by the person who keeps it.",
+        "BADGES_NOT_ENABLED": "Keeping badges in the wallet is not switched on yet.",
+        "BADGE_NOT_EARNED": "You have not earned this badge in that tribe yet.",
+        "BADGE_NO_WALLET": "Link your Lemon wallet in that tribe first.",
+        "BET_ACTION_NOT_ALLOWED": "That is not possible on this bet right now.",
+        "BET_NOT_FOUND": "That bet is gone.",
+        "BET_SAME_PERSON": "Pick someone else to bet with.",
+        "BET_WINNER_INVALID": "The winner has to be one of the two.",
+        "DRAW_ALREADY_SPUN": "This roulette was already spun.",
+        "DRAW_EXPIRED": "The roulette took too long. Close it and open it again.",
+        "DRAW_NOT_FOUND": "This roulette was not found. Close it and open it again.",
+        "DRAW_TOO_FEW": "At least two people have to be in.",
+        "FINE_CLOSED": "This fine is already closed.",
+        "FINE_NOT_APPROVED": "The fine has not been approved yet.",
+        "FINE_NOT_A_VOTER": "You do not vote on this fine.",
+        "FINE_NOT_FOUND": "That fine is gone.",
+        "FINE_NOT_PAYER": "The fined person or the pot keeper records it.",
+        "FINE_NOT_PROPOSER": "Only whoever proposed it can drop it.",
+        "FINE_VOTE_CLOSED": "The vote is over.",
+        "MEMBER_TOKEN_REQUIRED": "Pick who you are in this tribe first."
     },
     "derivation": {
         "title": "Skąd ta suma",
@@ -1655,6 +1826,53 @@
                 "shared": "You shared: {label}",
                 "sent": "You paid {label}",
                 "received": "{label} paid you"
+            },
+            "badges": {
+                "title": "Your badges",
+                "count": "{earned} of {total} earned",
+                "mint": "Keep in my wallet",
+                "minting": "Saving…",
+                "mintTitle": "Badge: {name}",
+                "minted": "Done! The badge is in your wallet.",
+                "mintFailed": "Could not save it. Try again.",
+                "inWallet": "In your wallet",
+                "items": {
+                    "fast-payer": {
+                        "name": "Lightning",
+                        "earned": "You paid your part within 24 hours.",
+                        "how": "Pay your part within 24 hours."
+                    },
+                    "crypto-payer": {
+                        "name": "Crypto payer",
+                        "earned": "You paid in USDC or USDT.",
+                        "how": "Pay once in USDC or USDT."
+                    },
+                    "keeper": {
+                        "name": "Keeper",
+                        "earned": "You keep a tribe's pot.",
+                        "how": "Keep a tribe's pot or a vaquita."
+                    },
+                    "rounder": {
+                        "name": "Rounder",
+                        "earned": "You rounded up 3 payments into the pot.",
+                        "how": "Round up 3 payments into the pot."
+                    },
+                    "bet-winner": {
+                        "name": "Winner",
+                        "earned": "You won a bet.",
+                        "how": "Win a bet between friends."
+                    },
+                    "roulette-pick": {
+                        "name": "On the house",
+                        "earned": "The roulette picked you to treat everyone.",
+                        "how": "Get picked by the roulette to treat everyone."
+                    },
+                    "pot-goal": {
+                        "name": "Goal reached",
+                        "earned": "You put money into a pot that hit its goal.",
+                        "how": "Put money into a vaquita that hits its goal."
+                    }
+                }
             }
         }
     },

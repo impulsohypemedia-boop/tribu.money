@@ -21,5 +21,5 @@ export function fineOutcome(votes: FineVotes, voterIds: readonly string[]): 'vot
 }
 
 /** Who votes on a fine for `finedId`: active members other than the fined one. */
-export const fineVoterIds = (members: readonly { id: string; removedAt: string | Date | null }[], finedId: string) =>
+export const fineVoterIds = (members: readonly { id: string; removedAt?: string | Date | null }[], finedId: string) =>
     members.filter((member) => member.removedAt == null && member.id !== finedId).map((member) => member.id)

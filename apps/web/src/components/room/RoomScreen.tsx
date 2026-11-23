@@ -51,6 +51,7 @@ import { LatecomerBanner } from './LatecomerBanner'
 import { RoomErrorState, RoomHeaderSkeleton, RoomNotFound, RoomSkeleton } from './RoomStates'
 import { RoomHeader } from './RoomHeader'
 import { MonthSummaryCard } from './MonthSummary'
+import { TribeGames } from './TribeGames'
 import { TribeMilestones } from './TribeMilestones'
 import { VaquitaCard, VaquitaRoomPanel } from './Vaquita'
 import { SettleDrawer } from './SettleDrawer'
@@ -665,6 +666,13 @@ export function RoomScreen({ slug }: { slug: string }) {
                                                 token={identity?.token}
                                             />
                                             <MonthSummaryCard state={state} currencies={currencies} />
+                                            <TribeGames
+                                                slug={slug}
+                                                state={state}
+                                                currencies={currencies}
+                                                meId={meId}
+                                                token={identity?.token}
+                                            />
                                         </>
                                     )}
                                     <TribeMilestones slug={slug} state={state} />

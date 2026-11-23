@@ -519,6 +519,12 @@ export const api = {
             token,
         }),
 
+    badgeVoucher: (slug: string, badge: string, token?: string | null) =>
+        request<{ contract: string; tokenId: number; signature: string; wallet: string }>(
+            `/api/rooms/${encode(slug)}/badges`,
+            { method: 'POST', body: { badge }, token }
+        ),
+
     setMemberProfile: (slug: string, memberId: string, input: MemberProfileInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}/profile`, {
             method: 'PATCH',

@@ -94,3 +94,29 @@ export async function payStablecoin(input: {
     if (response.result === TransactionResult.CANCELLED) return { status: 'cancelled' }
     return { status: 'failed', message: 'error' in response ? response.error.message : 'unknown' }
 }
+
+/** Mint one badge to the user's Lemon wallet with the server's voucher. */
+export async function mintBadge(input: {
+    contract: string
+    tokenId: number
+    signature: string
+    title: string
+}): Promise<StablecoinPaymentResult> {
+    const response = await callSmartContract({
+        contracts: [
+            {
+                contractAddress: input.contract as `0x${string}`,
+                functionName: 'mint',
+                functionParams: [String(input.tokenId), input.signature],
+                value: '0',
+                chainId: lemonNetwork().chainId,
+            },
+        ],
+        titleValues: { title: input.title },
+    })
+    if (response.result === TransactionResult.SUCCESS || response.result === TransactionResult.PENDING) {
+        return { status: 'sent', txHash: response.data.txHash }
+    }
+    if (response.result === TransactionResult.CANCELLED) return { status: 'cancelled' }
+    return { status: 'failed', message: 'error' in response ? response.error.message : 'unknown' }
+}

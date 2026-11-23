@@ -9,7 +9,7 @@ import { ApiError, notFound } from '@/server/http'
 import { expenseRevision } from '@/server/history'
 import { formatStoredFxRate } from '@/server/money'
 import { suggestedTransfers } from '@/server/settlement'
-import type { RoomState } from '@/lib/api-types'
+import type { ApiBet, ApiFine, RoomState } from '@/lib/api-types'
 import { safePersonNameForDisplay } from '@/lib/person-name'
 import { activeMember, activeMembers, isActiveMember } from '@/lib/members'
 
@@ -42,6 +42,9 @@ const roomArgs = {
             include: { contributions: { where: { deletedAt: null }, orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] } },
             orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
         },
+        draws: { where: { spunAt: { not: null } }, orderBy: { spunAt: 'desc' }, take: 50 },
+        bets: { orderBy: [{ createdAt: 'desc' }, { id: 'asc' }], take: 50 },
+        fines: { orderBy: [{ createdAt: 'desc' }, { id: 'asc' }], take: 50 },
     },
 } satisfies Prisma.RoomDefaultArgs
 
@@ -197,13 +200,50 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             dueDate: pot.dueDate?.toISOString() ?? null,
             createdAt: pot.createdAt.toISOString(),
             closedAt: pot.closedAt?.toISOString() ?? null,
+            yieldAprBps: pot.yieldAprBps,
             contributions: pot.contributions.map((c) => ({
                 id: c.id,
                 memberId: c.memberId,
                 amountMinor: c.amountMinor.toString(),
                 settlementId: c.settlementId,
+                reason: c.reason === 'roundup' || c.reason === 'fine' ? c.reason : null,
                 createdAt: c.createdAt.toISOString(),
             })),
+        })),
+        draws: (room.draws ?? []).map((draw) => ({
+            id: draw.id,
+            seed: draw.seed,
+            seedHash: draw.seedHash,
+            clientSeed: draw.clientSeed ?? '',
+            participantIds: draw.participantIds,
+            paidById: draw.paidById ?? '',
+            amountMinor: draw.amountMinor?.toString() ?? '0',
+            winnerId: draw.winnerId ?? '',
+            spunAt: (draw.spunAt ?? draw.createdAt).toISOString(),
+        })),
+        bets: (room.bets ?? []).map((bet) => ({
+            id: bet.id,
+            title: bet.title,
+            amountMinor: bet.amountMinor.toString(),
+            proposerId: bet.proposerId,
+            rivalId: bet.rivalId,
+            status: bet.status as ApiBet['status'],
+            claimedWinnerId: bet.claimedWinnerId,
+            claimedById: bet.claimedById,
+            winnerId: bet.winnerId,
+            createdAt: bet.createdAt.toISOString(),
+            resolvedAt: bet.resolvedAt?.toISOString() ?? null,
+        })),
+        fines: (room.fines ?? []).map((fine) => ({
+            id: fine.id,
+            memberId: fine.memberId,
+            reason: fine.reason,
+            amountMinor: fine.amountMinor.toString(),
+            proposedById: fine.proposedById,
+            votes: (fine.votes ?? {}) as Record<string, boolean>,
+            status: fine.status as ApiFine['status'],
+            createdAt: fine.createdAt.toISOString(),
+            decidedAt: fine.decidedAt?.toISOString() ?? null,
         })),
         settlements: room.settlements.map((s) => ({
             id: s.id,

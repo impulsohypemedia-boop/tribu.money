@@ -1,5 +1,6 @@
 /** Request-shape validation. Cross-field rules that need the room (membership,
  *  exact shares adding up) live in the domain modules, not here. */
+import { MAX_YIELD_APR_BPS } from '@/lib/pot-yield'
 import { z } from 'zod'
 import { isValidCode, MAX_SIGNED_MINOR, normaliseCode, parseManualFxRate } from '@/server/money'
 import { isAvatarKey } from '@/lib/avatars'
@@ -713,12 +714,15 @@ export type ImportIntoRoomBody = z.infer<typeof importIntoRoomSchema>
 const potName = z.string().trim().min(1).max(60)
 const optionalMinor = minorAmount.nullish()
 
+const yieldAprBps = z.number().int().min(1).max(MAX_YIELD_APR_BPS).nullish()
+
 export const potCreateSchema = z.object({
     name: potName,
     keeperId: id,
     targetMinor: optionalMinor,
     quotaMinor: optionalMinor,
     dueDate: z.string().datetime({ offset: true }).nullish(),
+    yieldAprBps,
 })
 
 export const potUpdateSchema = z.object({
@@ -726,9 +730,46 @@ export const potUpdateSchema = z.object({
     targetMinor: optionalMinor,
     quotaMinor: optionalMinor,
     dueDate: z.string().datetime({ offset: true }).nullish(),
+    yieldAprBps,
     closed: z.boolean().optional(),
 })
 
-export const potContributionSchema = z.object({ memberId: id, amountMinor: minorAmount })
+export const potContributionSchema = z.object({
+    memberId: id,
+    amountMinor: minorAmount,
+    /** Only a round-up is set by the client; a fine's contribution is made by the fine itself. */
+    reason: z.literal('roundup').nullish(),
+})
+
+export const drawSpinSchema = z.object({
+    clientSeed: z.string().regex(/^[0-9a-f]{16,128}$/),
+    participantIds: z.array(id).min(2).max(50),
+    paidById: id,
+    amountMinor: minorAmount,
+    description: expenseName,
+})
+
+export const betCreateSchema = z.object({
+    title: z.string().trim().min(1).max(MAX_DESCRIPTION_CHARS),
+    amountMinor: minorAmount,
+    rivalId: id,
+})
+
+export const betActionSchema = z.object({
+    action: z.enum(['accept', 'claim', 'confirm', 'dispute', 'cancel']),
+    winnerId: id.optional(),
+})
+
+export const fineCreateSchema = z.object({
+    memberId: id,
+    reason: z.string().trim().min(1).max(80),
+    amountMinor: minorAmount,
+})
+
+export const fineActionSchema = z.object({
+    action: z.enum(['vote', 'pay', 'cancel']),
+    vote: z.boolean().optional(),
+    potId: id.optional(),
+})
 
 export const potSpendSchema = z.object({ expenseId: id })

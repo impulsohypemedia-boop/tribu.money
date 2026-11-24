@@ -67,6 +67,10 @@ export interface ApiMember {
     payoutToken?: string | null
     payoutNetwork?: string | null
     payoutAddress?: string | null
+    /** Bank alias or 22-digit CBU/CVU. Typed by the member. */
+    payoutBank?: string | null
+    /** Lemon tag without the @. Typed by the member. */
+    payoutLemonTag?: string | null
     /** In the room but not chipping in: left out of new expenses unless picked by hand. */
     honoredGuest?: boolean
 }
@@ -75,6 +79,10 @@ export interface MemberProfileInput {
     honoredGuest?: boolean
     /** null clears the payout details. Only the member themself may change them. */
     payout?: { token: string; network: string; address: string } | null
+    /** Bank alias or CBU/CVU; null clears it. Only the member themself may change it. */
+    bank?: string | null
+    /** Lemon tag; null clears it. Only the member themself may change it. */
+    lemonTag?: string | null
 }
 
 export interface ApiShare {
@@ -162,6 +170,14 @@ export interface ApiReminder {
     seenAt: string | null
 }
 
+/** Presupuesto del grupo: the most the tribu means to spend in a calendar month. */
+export interface ApiBudget {
+    /** "total" for the whole month, otherwise an expense category id. */
+    category: string
+    /** Room currency. */
+    amountMinor: string
+}
+
 export interface ApiRecurringExpense {
     id: string
     description: string
@@ -222,6 +238,8 @@ export interface RoomState {
     pots?: ApiPot[]
     /** The latest reminders, newest first. Optional only for older cached responses. */
     reminders?: ApiReminder[]
+    /** Monthly limits, overall and per category. Optional only for older cached responses. */
+    budgets?: ApiBudget[]
     /** memberId → net position in room-currency minor units. Sums to "0". */
     balances: Record<string, string>
     suggestedTransfers: ApiTransfer[]
@@ -268,6 +286,27 @@ export interface ApiRoomHistoryEvent {
 
 export interface RoomHistoryPage {
     events: ApiRoomHistoryEvent[]
+    nextCursor: string | null
+}
+
+/** One entry of the tribu's book of account. Amounts are room-currency minor units. */
+export interface ApiLedgerEntry {
+    id: string
+    sourceType: 'expense' | 'settlement' | 'pot_contribution'
+    sourceId: string
+    kind: 'record' | 'reversal'
+    reversesId: string | null
+    currency: string
+    description: string | null
+    /** Snapshot taken when the entry was written; string values only. */
+    detail: Record<string, string | null>
+    occurredAt: string
+    createdAt: string
+    postings: { accountType: 'member' | 'pot' | 'keeper'; accountId: string; amountMinor: string }[]
+}
+
+export interface LedgerPage {
+    entries: ApiLedgerEntry[]
     nextCursor: string | null
 }
 

@@ -15,6 +15,7 @@ export {
     useCurrencies,
     useModelStatus,
     useRoomHistory,
+    useRoomLedger,
     useRoomSnapshot,
     useRoomState,
 } from './queries/reads'

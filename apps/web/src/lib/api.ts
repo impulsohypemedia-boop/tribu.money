@@ -26,8 +26,10 @@ import type {
     PushUnsubscribeInput,
     ReceiptParseInput,
     ReactionInput,
+    LedgerPage,
     RoomHistoryPage,
     RoomState,
+    ApiBudget,
     RoomStateWithAddedMember,
     RoomStateWithMember,
     SettlementInput,
@@ -276,6 +278,12 @@ export const api = {
             }),
     },
 
+    roomLedger: (slug: string, cursor?: string | null, signal?: AbortSignal) =>
+        request<LedgerPage>(`/api/rooms/${encode(slug)}/ledger${cursor ? `?cursor=${encode(cursor)}` : ''}`, {
+            signal,
+            cache: 'no-store',
+        }),
+
     roomHistory: (slug: string, cursor?: string | null, signal?: AbortSignal) =>
         request<RoomHistoryPage>(`/api/rooms/${encode(slug)}/history${cursor ? `?cursor=${encode(cursor)}` : ''}`, {
             signal,
@@ -445,6 +453,9 @@ export const api = {
 
     stopRecurring: (slug: string, recurringId: string) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/recurring/${encode(recurringId)}`, { method: 'DELETE' }),
+
+    saveBudgets: (slug: string, budgets: ApiBudget[]) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/budgets`, { method: 'POST', body: { budgets } }),
 
     sendReminder: (slug: string, toId: string, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/reminders`, { method: 'POST', body: { toId }, token }),

@@ -13,6 +13,7 @@ import { prisma } from '@/server/db'
 import { publish } from '@/server/events'
 import { actorFromToken, appendRoomAuditEvent, lockRoomWrite, type AuditActor } from '@/server/history'
 import { badRequest, memberTokenOf, notFound } from '@/server/http'
+import { syncRoomLedger } from '@/server/ledger'
 import { WRITE_LIMIT, enforceRateLimit } from '@/server/rateLimit'
 import { loadRoom, toRoomState, type RoomWithRelations } from '@/server/roomState'
 
@@ -170,6 +171,8 @@ export async function addContribution(
             createdById: actor.memberId,
         },
     })
+    // The payment's audit event ran before this row existed; bring the pot's side into the book too.
+    if (settlementId) await syncRoomLedger(tx, room.id)
     if (!settlementId) {
         await appendRoomAuditEvent({
             tx,

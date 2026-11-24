@@ -399,3 +399,12 @@ export const matchExpenseCategory = (description: string, savedCategory?: string
     }
     return matchExpenseDescription(description)
 }
+
+/**
+ * The category an expense counts in: the one picked by hand, or the one read from the
+ * description ("Supermercado", "Nafta"), the same as the drawing on the expense row.
+ */
+export const expenseCategoryOf = (expense: {
+    description?: string | null
+    category?: string | null
+}): ExpenseCategoryId => matchExpenseCategory(expense.description ?? '', expense.category).category.id

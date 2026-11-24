@@ -38,6 +38,7 @@ import { discardSharedReceipt } from '@/lib/shared-receipt'
 import { daySpan } from '@/lib/story'
 import { themeVars } from '@/lib/themes'
 import { useRoomIdentity } from '@/lib/use-identity'
+import { usePaymentProfileSync } from '@/lib/use-payment-profile-sync'
 import { useLemonWalletLink } from '@/components/lemon/useLemonWalletLink'
 import { useMotionAllowed } from '@/lib/use-motion'
 import { AchievementMoment } from './AchievementMoment'
@@ -52,6 +53,7 @@ import { ReminderNotice, RemindersCard } from './Reminders'
 import { RoomErrorState, RoomHeaderSkeleton, RoomNotFound, RoomSkeleton } from './RoomStates'
 import { RoomHeader } from './RoomHeader'
 import { MonthSummaryCard } from './MonthSummary'
+import { BudgetCard } from './Budget'
 import { TribePotSetup } from './TribePot'
 import { TribeMilestones } from './TribeMilestones'
 import { VaquitaCard, VaquitaRoomPanel } from './Vaquita'
@@ -457,6 +459,13 @@ export function RoomScreen({ slug }: { slug: string }) {
             null,
         identity?.token
     )
+    usePaymentProfileSync(
+        slug,
+        (identity && state?.members.find((member) => member.id === identity.memberId && isActiveMember(member))) ||
+            null,
+        identity?.token
+    )
+
     if (isApiError(error, 'NOT_FOUND')) return <RoomNotFound slug={slug} addExpense={params.add} />
     if (error && !state) return <RoomErrorState onRetry={() => void refetch()} />
 
@@ -690,6 +699,7 @@ export function RoomScreen({ slug }: { slug: string }) {
                                                 token={identity?.token}
                                             />
                                             <MonthSummaryCard state={state} currencies={currencies} />
+                                            <BudgetCard state={state} currencies={currencies} />
                                         </>
                                     )}
                                     <TribeMilestones slug={slug} state={state} />

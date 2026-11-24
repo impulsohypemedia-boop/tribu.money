@@ -35,6 +35,7 @@ import { useFeedback } from '@/lib/use-settings'
 import { DeviceSheet } from './DeviceSheet'
 import { FeedbackReportDrawer } from './FeedbackReportDrawer'
 import { HistorySheet } from './HistorySheet'
+import { LedgerSheet } from './LedgerSheet'
 
 interface SettingsSheetProps {
     open: boolean
@@ -93,6 +94,7 @@ export function SettingsSheet({
     const [draft, setDraft] = useState(room.name)
     const [deviceOpen, setDeviceOpen] = useState(false)
     const [historyOpen, setHistoryOpen] = useState(false)
+    const [ledgerOpen, setLedgerOpen] = useState(false)
     const [feedbackOpen, setFeedbackOpen] = useState(false)
     const [switchOpen, setSwitchOpen] = useState(false)
     const [pickerOpen, setPickerOpen] = useState(false)
@@ -354,6 +356,13 @@ export function SettingsSheet({
                             <RoomExport state={state} />
 
                             <SettingRow
+                                label={t('ledger')}
+                                value={t('ledgerHint')}
+                                onClick={() => setLedgerOpen(true)}
+                                testId="ledger-row"
+                            />
+
+                            <SettingRow
                                 label={t('history')}
                                 value={t('historyHint')}
                                 onClick={() => setHistoryOpen(true)}
@@ -390,6 +399,7 @@ export function SettingsSheet({
                 slug={room.slug}
                 token={identity?.token}
             />
+            <LedgerSheet open={ledgerOpen} onClose={() => setLedgerOpen(false)} slug={room.slug} state={state} />
             <HistorySheet open={historyOpen} onClose={() => setHistoryOpen(false)} slug={room.slug} state={state} />
             <FeedbackReportDrawer open={feedbackOpen} onClose={() => setFeedbackOpen(false)} state={state} />
 

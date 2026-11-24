@@ -3,9 +3,9 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/src/app/**/route.ts`  
-Input SHA-256: `c42fe34a8ddd7903ae0773128f3b3eaa41abda1572c1f79c2e5247dd6d322100`
+Input SHA-256: `cf14ac965e025102999d54fcaa7c8880bca71b2910098b8f2d618b7377656b30`
 
-Exported operations: 58
+Exported operations: 60
 
 | Method   | Path                                                         | Handler                                                                                  |
 | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
@@ -23,6 +23,7 @@ Exported operations: 58
 | `GET`    | `/api/rooms/:slug`                                           | `apps/web/src/app/api/rooms/[slug]/route.ts`                                             |
 | `PATCH`  | `/api/rooms/:slug`                                           | `apps/web/src/app/api/rooms/[slug]/route.ts`                                             |
 | `POST`   | `/api/rooms/:slug/badges`                                    | `apps/web/src/app/api/rooms/[slug]/badges/route.ts`                                      |
+| `POST`   | `/api/rooms/:slug/budgets`                                   | `apps/web/src/app/api/rooms/[slug]/budgets/route.ts`                                     |
 | `GET`    | `/api/rooms/:slug/events`                                    | `apps/web/src/app/api/rooms/[slug]/events/route.ts`                                      |
 | `POST`   | `/api/rooms/:slug/expenses`                                  | `apps/web/src/app/api/rooms/[slug]/expenses/route.ts`                                    |
 | `DELETE` | `/api/rooms/:slug/expenses/:id`                              | `apps/web/src/app/api/rooms/[slug]/expenses/[id]/route.ts`                               |
@@ -33,6 +34,7 @@ Exported operations: 58
 | `GET`    | `/api/rooms/:slug/history/export`                            | `apps/web/src/app/api/rooms/[slug]/history/export/route.ts`                              |
 | `POST`   | `/api/rooms/:slug/import`                                    | `apps/web/src/app/api/rooms/[slug]/import/route.ts`                                      |
 | `POST`   | `/api/rooms/:slug/install-handoff`                           | `apps/web/src/app/api/rooms/[slug]/install-handoff/route.ts`                             |
+| `GET`    | `/api/rooms/:slug/ledger`                                    | `apps/web/src/app/api/rooms/[slug]/ledger/route.ts`                                      |
 | `GET`    | `/api/rooms/:slug/lemon-quote`                               | `apps/web/src/app/api/rooms/[slug]/lemon-quote/route.ts`                                 |
 | `POST`   | `/api/rooms/:slug/members`                                   | `apps/web/src/app/api/rooms/[slug]/members/route.ts`                                     |
 | `DELETE` | `/api/rooms/:slug/members/:memberId`                         | `apps/web/src/app/api/rooms/[slug]/members/[memberId]/route.ts`                          |

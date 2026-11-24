@@ -1,11 +1,11 @@
 {
     "marketing": {
         "hero": {
-            "title": "Las cuentas claras, la tribu unida.",
+            "title": "La cuenta compartida de tu tribu, en dólares.",
             "controlTitleAccessible": "PÁSALO",
             "titleAccessible": "Las <highlight>cuentas claras</highlight> mantienen las <highlight>buenas amistades</highlight>",
-            "subtitle": "Armá tu tribu, cargá los gastos y Tribu calcula cómo quedar a mano.",
-            "cta": "Crear la tribu",
+            "subtitle": "Anotan lo que pone cada uno, quedan a mano en un toque y juntan plata para lo que viene. Todo en un solo lugar.",
+            "cta": "Armar mi tribu",
             "linkExplainerTrigger": "Cómo funciona el link",
             "chat": {
                 "defaultRoom": "Fin de semana en Lisboa",
@@ -21,7 +21,9 @@
             "validation": {
                 "roomRequired": "Poné un nombre a la tribu.",
                 "creatorRequired": "Decinos quién sos."
-            }
+            },
+            "eyebrow": "La cuenta de tu grupo",
+            "ctaNote": "Gratis. Sin registrarte."
         },
         "rooms": {
             "title": "Tus tribus",
@@ -137,7 +139,7 @@
         "install": {
             "title": "Instalá Tribu",
             "body": "Volvé más rápido a esta tribu. Sin tienda de apps. Sin cuenta.",
-            "bodySettled": "Tené este viaje y el próximo a un toque.",
+            "bodySettled": "Tené tu tribu a un toque.",
             "announcement": "Podés instalar Tribu.",
             "cta": "Instalar Tribu",
             "ctaSteps": "Ver pasos de instalación",
@@ -222,20 +224,51 @@
             },
             "done": "Listo"
         },
-        "howItWorks": {
-            "title": "Así de fácil",
-            "create": {
-                "title": "Armá tu tribu",
-                "body": "Ponele nombre y sumá a tu gente. No hace falta cuenta."
-            },
-            "share": {
-                "title": "Pasá el link",
-                "body": "Cada uno entra desde el chat del grupo y carga lo que pagó."
+        "landingPreview": {
+            "label": "Así se ve una tribu",
+            "name": "Depto Palermo",
+            "people": "Bea, Mo y vos",
+            "monthLabel": "Este mes",
+            "monthValue": "US$ 1.240",
+            "owedLabel": "Bea te pasa",
+            "owedValue": "US$ 35",
+            "potLabel": "Vaquita · vacaciones",
+            "potValue": "62%",
+            "fixedLabel": "Alquiler",
+            "fixedValue": "se carga el 1"
+        },
+        "landingFeatures": {
+            "title": "Toda la plata del grupo, en un lugar",
+            "record": {
+                "title": "Anotar",
+                "body": "Quién pagó qué, en cualquier moneda. Los gastos fijos, como el alquiler, se cargan solos cada mes."
             },
             "settle": {
-                "title": "Saldá en un toque",
-                "body": "Tribu calcula quién le paga a quién. Cuando alguien paga, lo marca y la cuenta se actualiza."
+                "title": "Quedar a mano",
+                "body": "Tribu calcula quién le pasa a quién, con la menor cantidad de pagos. Cuando alguien paga, lo marca y listo."
+            },
+            "pool": {
+                "title": "Juntar",
+                "body": "Una vaquita para lo que viene: un regalo, las vacaciones, la cancha. Con meta y cuánto falta."
+            },
+            "remind": {
+                "title": "Recordar",
+                "body": "Un aviso amable al que todavía no pasó su parte, sin que nadie tenga que ponerse incómodo."
             }
+        },
+        "landingGroups": {
+            "title": "Armá la cuenta de tu tribu",
+            "body": "Para la pareja, la casa, los amigos, la familia o el equipo. Elegí uno o ponele el nombre que quieras.",
+            "couple": "Pareja",
+            "home": "Casa",
+            "friends": "Amigos",
+            "family": "Familia",
+            "team": "Equipo"
+        },
+        "landingNext": {
+            "badge": "Lo que viene",
+            "title": "La wallet de la tribu",
+            "body": "Estamos armando una cuenta en dólares que el grupo maneja junto: con reglas que eligen entre todos y sin que la plata quede a nombre de uno solo."
         }
     },
     "locale": {
@@ -806,7 +839,7 @@
             "back": "Volver",
             "title": "Nueva tribu",
             "name": "¿Cómo se llama la tribu?",
-            "namePlaceholder": "Viaje a Bariloche…",
+            "namePlaceholder": "Casa, pareja, los del fútbol…",
             "emoji": "O elegí otro dibujo",
             "emojiGroup": "Dibujo de la tribu",
             "emojiOption": "Dibujo: {emoji}",
@@ -848,7 +881,7 @@
                 "duplicate": "{name} ya está en esta tribu.",
                 "failed": "no se pudo agregar a esa persona — probá de nuevo"
             },
-            "namePlaceholderSlug": "tu-viaje",
+            "namePlaceholderSlug": "tu-tribu",
             "currencyCustomHint": "«{code}» es tu propia moneda. Todos los gastos de esta tribu van en ella — no se convierte nada."
         },
         "currency": {
@@ -1092,17 +1125,17 @@
                 "body": "Una cuenta limpia, pagáramos en lo que pagáramos."
             },
             "alterego": {
-                "title": "Tu papel en este viaje",
+                "title": "Tu papel en esta tribu",
                 "body": "Salió de lo que realmente hiciste."
             },
             "wrapped": {
-                "title": "El viaje, resumido",
+                "title": "La tribu, resumida",
                 "body": "{count, plural, other {# tarjetas. Compartí las que quieras.}}"
             },
             "share": "Compartir imagen",
             "sharing": "Preparándola…",
             "dismiss": "Ahora no",
-            "shelfTitle": "Tarjetas de este viaje",
+            "shelfTitle": "Tarjetas de esta tribu",
             "copied": "Tarjeta copiada — pégala donde quieras.",
             "downloaded": "Tarjeta guardada en tus descargas.",
             "shareFailed": "No pudimos armar esa tarjeta. Probá otra vez.",
@@ -1117,15 +1150,15 @@
             "shareText": {
                 "crew": "Las personas de nuestra cuenta compartida.",
                 "passport": "Monedas distintas, una cuenta limpia.",
-                "alterego": "Este fui yo en este viaje.",
-                "stats": "El viaje, en números.",
+                "alterego": "Este fui yo en esta tribu.",
+                "stats": "La tribu, en números.",
                 "landing": "Todo a mano, y nadie tuvo que perseguir a nadie."
             },
             "shareLabel": {
                 "crew": "Compartir la tarjeta del grupo",
                 "passport": "Compartir la tarjeta de monedas",
                 "alterego": "Compartir la tarjeta de tu papel",
-                "stats": "Compartir la tarjeta del viaje",
+                "stats": "Compartir la tarjeta de la tribu",
                 "landing": "Compartir la tarjeta de todo a mano"
             }
         },
@@ -1215,7 +1248,7 @@
             "cardKeeper": "La guarda {name}",
             "createTitle": "Nueva vaquita",
             "nameLabel": "¿Para qué es?",
-            "namePlaceholder": "Viaje a la costa",
+            "namePlaceholder": "Regalo de cumpleaños",
             "keeperLabel": "¿Quién guarda la plata?",
             "keeperHint": "La plata queda en la cuenta de esa persona. Tribu no la toca.",
             "targetLabel": "Meta (opcional)",
@@ -1317,6 +1350,29 @@
             "create": "Armar el pozo",
             "startHint": "Ahí van los redondeos de cuando se pasan plata. Lo guarda alguien de la tribu en su cuenta.",
             "formHint": "Tribu no guarda plata: el pozo queda en la cuenta de quien elijan, como en una vaquita."
+        },
+        "budget": {
+            "start": "Poné un presupuesto para el mes",
+            "startHint": "Un tope para el súper, salidas o el total. Tribu les avisa cuando se acercan.",
+            "cardTitle": "Presupuesto de {month}",
+            "title": "Presupuesto del mes",
+            "editTitle": "Presupuesto por mes",
+            "intro": "Lo que la tribu lleva gastado en {month} contra el tope de cada cosa.",
+            "editHint": "Poné cuánto quieren gastar como máximo por mes. Dejá vacío lo que no quieran limitar.",
+            "total": "Total del mes",
+            "ofLimit": "de <amount></amount>",
+            "left": "Usaron el {pct}% · quedan <amount></amount>",
+            "overBy": "Se pasaron por <amount></amount>",
+            "alertNear": "{category}: ya usaron el {pct}% del presupuesto",
+            "alertOver": "{category}: se pasaron del presupuesto",
+            "noLimit": "Sin tope",
+            "amountInvalid": "Revisá el monto de {category}.",
+            "save": "Guardar presupuesto",
+            "saved": "Presupuesto guardado",
+            "cleared": "Presupuesto borrado",
+            "edit": "Cambiar presupuesto",
+            "close": "Cerrar",
+            "limit": "tope"
         }
     },
     "slideToConfirm": {
@@ -1440,6 +1496,7 @@
         "BADGE_NOT_EARNED": "Todavía no conseguiste esta insignia en esa tribu.",
         "BADGE_NO_WALLET": "Primero vinculá tu wallet de Lemon en esa tribu.",
         "MEMBER_TOKEN_REQUIRED": "Primero elegí quién sos en esta tribu.",
+        "BUDGET_NOT_FOR_VAQUITA": "Una vaquita no tiene presupuesto mensual; eso es para las tribus.",
         "PAYOUT_BANK_INVALID": "Eso no parece un alias ni un CBU/CVU.",
         "PAYOUT_LEMON_TAG_INVALID": "Ese Lemon tag no parece válido."
     },
@@ -1573,7 +1630,7 @@
             "found": "{expenses, plural, one {# gasto} other {# gastos}} · {members, plural, one {# persona} other {# personas}}",
             "total": "Suma {total}",
             "roomName": "Ponle nombre a la tribu",
-            "roomNamePlaceholder": "Viaje a la nieve",
+            "roomNamePlaceholder": "Casa, pareja, los del fútbol…",
             "fallbackName": "Grupo importado",
             "currency": "Moneda",
             "currencyLabel": "Moneda de la tribu",
@@ -1685,13 +1742,13 @@
             },
             "tribu": {
                 "title": "Una tribu nueva",
-                "hint": "Un grupo nuevo para compartir gastos."
+                "hint": "La cuenta compartida de un grupo nuevo."
             }
         },
         "home": {
             "loading": "Mirando tus tribus…",
-            "emptyTitle": "¡Bienvenido a Tribu!",
-            "emptyBody": "Armá una tribu para compartir gastos o una vaquita para juntar plata.",
+            "emptyTitle": "La cuenta de tu tribu",
+            "emptyBody": "Anotan gastos, quedan a mano y juntan plata con una vaquita. Para la pareja, la casa, los amigos o el equipo.",
             "startTribu": "Armar una tribu",
             "startVaquita": "Armar una vaquita",
             "allSquare": "Estás a mano con todos",
@@ -1813,10 +1870,10 @@
         },
         "alterego": {
             "title": "ALTER EGO",
-            "line": "Un viaje, un sello propio."
+            "line": "Una tribu, un sello propio."
         },
         "stats": {
-            "title": "EL VIAJE"
+            "title": "LA TRIBU"
         },
         "landing": {
             "title": "A MANO"

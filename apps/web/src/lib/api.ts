@@ -29,6 +29,7 @@ import type {
     LedgerPage,
     RoomHistoryPage,
     RoomState,
+    ApiBudget,
     RoomStateWithAddedMember,
     RoomStateWithMember,
     SettlementInput,
@@ -452,6 +453,9 @@ export const api = {
 
     stopRecurring: (slug: string, recurringId: string) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/recurring/${encode(recurringId)}`, { method: 'DELETE' }),
+
+    saveBudgets: (slug: string, budgets: ApiBudget[]) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/budgets`, { method: 'POST', body: { budgets } }),
 
     sendReminder: (slug: string, toId: string, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/reminders`, { method: 'POST', body: { toId }, token }),

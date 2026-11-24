@@ -24,7 +24,7 @@ const STEWARD_URL = 'https://tribu.money/'
  * the served meta description is the kind of mismatch that gets structured data ignored.
  */
 export const SITE_DESCRIPTION =
-    'Gastos compartidos con amigos, pareja o familia. Compartí el link de la tribu, cargá lo que pagó cada uno y mirá quién le debe a quién.'
+    'La cuenta compartida de tu grupo, en dólares. Anotan lo que pone cada uno, quedan a mano y juntan plata para lo que viene.'
 
 /**
  * OG spells locales `language_TERRITORY`; everything else here uses BCP 47.

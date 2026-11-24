@@ -14,6 +14,7 @@ const expense = (
 ): ApiExpense =>
     ({
         id,
+        description: id === 'netflix' ? 'Netflix' : '',
         date,
         baseAmountMinor: amount,
         amountMinor: amount,

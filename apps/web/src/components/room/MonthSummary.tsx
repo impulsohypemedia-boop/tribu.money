@@ -9,6 +9,7 @@ import { Icon } from '@/components/ui/Icon'
 import type { CurrencyInfo, RoomState } from '@/lib/api-types'
 import { EXPENSE_CATEGORY_IDS, type ExpenseCategoryId } from '@/lib/expense-category'
 import { localMonthKey, monthSummary, monthsWithExpenses, shiftLocalMonth } from '@/lib/month-summary'
+import { budgetLines } from '@/lib/budget'
 import { categoryKey } from './HistoryStats'
 import { Money } from './Money'
 
@@ -49,6 +50,11 @@ export function MonthSummaryCard({
     const months = useMemo(() => monthsWithExpenses(state), [state])
     const summary = useMemo(() => monthSummary(state, month), [state, month])
     const current = useMemo(() => monthSummary(state, currentMonth), [state, currentMonth])
+    const limits = useMemo(
+        () => new Map(budgetLines(state, month).map((line) => [line.category as string, line])),
+        [state, month]
+    )
+    const tBudget = useTranslations('room.budget')
 
     if (state.expenses.length === 0) return null
 
@@ -157,6 +163,7 @@ export function MonthSummaryCard({
                                     <ul className="grid gap-2">
                                         {summary.categories.map((line) => {
                                             const pct = percentOf(line.amountMinor, summary.totalMinor)
+                                            const limit = limits.get(line.category)
                                             return (
                                                 <li key={line.category} className="grid gap-1">
                                                     <span className="flex justify-between gap-2 text-sm">
@@ -167,13 +174,28 @@ export function MonthSummaryCard({
                                                                 currency={state.room.currency}
                                                                 catalog={currencies}
                                                             />{' '}
-                                                            <span className="font-normal text-grey-1">{pct}%</span>
+                                                            <span className="font-normal text-grey-1">
+                                                                {limit ? (
+                                                                    <>
+                                                                        {tBudget('limit')}{' '}
+                                                                        <Money
+                                                                            minor={limit.limitMinor}
+                                                                            currency={state.room.currency}
+                                                                            catalog={currencies}
+                                                                        />
+                                                                    </>
+                                                                ) : (
+                                                                    `${pct}%`
+                                                                )}
+                                                            </span>
                                                         </span>
                                                     </span>
                                                     <span className="h-2 overflow-hidden rounded-full bg-n-1/10">
                                                         <span
-                                                            className="block h-full rounded-full bg-primary-1"
-                                                            style={{ width: `${Math.max(pct, 2)}%` }}
+                                                            className={`block h-full rounded-full ${limit?.level === 'over' ? 'bg-error-3' : 'bg-primary-1'}`}
+                                                            style={{
+                                                                width: `${Math.min(Math.max(limit ? limit.usedPct : pct, 2), 100)}%`,
+                                                            }}
                                                         />
                                                     </span>
                                                 </li>

@@ -182,6 +182,10 @@ model Member {
   payoutToken    String? // USDT | USDC
   payoutNetwork  String? // key from lib/payout.ts
   payoutAddress  String?
+  // Two more ways to be paid, also typed by the member: an Argentine bank alias or a 22-digit
+  // CBU/CVU, and a Lemon tag (without the @). Same audience as the wallet: the room's members.
+  payoutBank     String?
+  payoutLemonTag String?
   // Shares the room but does not chip in: new expenses leave them out unless picked by hand.
   honoredGuest   Boolean   @default(false)
   // Creation provenance only: true for a name staged while adding an expense.

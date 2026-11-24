@@ -525,10 +525,19 @@ export const memberProfileSchema = z
             })
             .nullable()
             .optional(),
+        /** Bank alias or CBU/CVU; null clears it. */
+        bank: z.string().max(60).nullable().optional(),
+        /** Lemon tag, with or without the @; null clears it. */
+        lemonTag: z.string().max(40).nullable().optional(),
     })
-    .refine((body) => body.honoredGuest !== undefined || body.payout !== undefined, {
-        message: 'nothing to change',
-    })
+    .refine(
+        (body) =>
+            body.honoredGuest !== undefined ||
+            body.payout !== undefined ||
+            body.bank !== undefined ||
+            body.lemonTag !== undefined,
+        { message: 'nothing to change' }
+    )
 
 export type MemberProfileBody = z.infer<typeof memberProfileSchema>
 /** Presupuesto del grupo: the whole list of monthly limits, replacing what was there. */

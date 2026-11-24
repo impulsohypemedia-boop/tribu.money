@@ -152,6 +152,8 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             payoutToken: m.payoutToken,
             payoutNetwork: m.payoutNetwork,
             payoutAddress: m.payoutAddress,
+            payoutBank: m.payoutBank,
+            payoutLemonTag: m.payoutLemonTag,
             honoredGuest: m.honoredGuest,
         })),
         expenses: room.expenses.map((e) => ({

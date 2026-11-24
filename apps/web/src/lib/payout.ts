@@ -59,3 +59,58 @@ export function payoutOf(member: {
     if (!isPayoutToken(token) || !isPayoutNetwork(network) || !address) return null
     return { token, network, address }
 }
+
+const BANK_ALIAS = /^[A-Za-z0-9.-]{6,20}$/
+const LEMON_TAG = /^[a-z0-9._]{2,30}$/
+
+/**
+ * A bank alias or a CBU/CVU as it should be stored, or null when it is neither. A CBU/CVU is 22
+ * digits; people paste it with spaces or dashes, so those are dropped. An alias is 6 to 20 letters,
+ * digits, dots or dashes (not only digits), and banks match it without caring about case, so it is kept as typed.
+ */
+export function normalizeBankAccount(raw: string): string | null {
+    const trimmed = raw.trim()
+    const digits = trimmed.replace(/[\s-]/g, '')
+    if (/^\d{22}$/.test(digits)) return digits
+    // Only digits but not 22 of them is a CBU/CVU with a digit missing, not an alias.
+    if (/^\d+$/.test(digits)) return null
+    return BANK_ALIAS.test(trimmed) ? trimmed : null
+}
+
+export const isCbu = (account: string): boolean => /^\d{22}$/.test(account)
+
+/** A Lemon tag without the @, lowercase, or null when it cannot be one. */
+export function normalizeLemonTag(raw: string): string | null {
+    const tag = raw.trim().replace(/^@/, '').toLowerCase()
+    return LEMON_TAG.test(tag) ? tag : null
+}
+
+export interface PaymentMethods {
+    /** Bank alias or 22-digit CBU/CVU. */
+    bank: string | null
+    /** Lemon tag without the @. */
+    lemonTag: string | null
+    crypto: MemberPayout | null
+}
+
+/**
+ * Every way a member asked to be paid. The typed Lemon tag wins; the one from a signed Lemon
+ * sign-in fills in when the member never typed one.
+ */
+export function paymentMethodsOf(member: {
+    payoutToken?: string | null
+    payoutNetwork?: string | null
+    payoutAddress?: string | null
+    payoutBank?: string | null
+    payoutLemonTag?: string | null
+    lemonTag?: string | null
+}): PaymentMethods {
+    return {
+        bank: member.payoutBank || null,
+        lemonTag: member.payoutLemonTag || member.lemonTag?.replace(/^@/, '') || null,
+        crypto: payoutOf(member),
+    }
+}
+
+export const hasPaymentMethod = (methods: PaymentMethods): boolean =>
+    !!(methods.bank || methods.lemonTag || methods.crypto)

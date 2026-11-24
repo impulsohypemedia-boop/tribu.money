@@ -67,6 +67,10 @@ export interface ApiMember {
     payoutToken?: string | null
     payoutNetwork?: string | null
     payoutAddress?: string | null
+    /** Bank alias or 22-digit CBU/CVU. Typed by the member. */
+    payoutBank?: string | null
+    /** Lemon tag without the @. Typed by the member. */
+    payoutLemonTag?: string | null
     /** In the room but not chipping in: left out of new expenses unless picked by hand. */
     honoredGuest?: boolean
 }
@@ -75,6 +79,10 @@ export interface MemberProfileInput {
     honoredGuest?: boolean
     /** null clears the payout details. Only the member themself may change them. */
     payout?: { token: string; network: string; address: string } | null
+    /** Bank alias or CBU/CVU; null clears it. Only the member themself may change it. */
+    bank?: string | null
+    /** Lemon tag; null clears it. Only the member themself may change it. */
+    lemonTag?: string | null
 }
 
 export interface ApiShare {

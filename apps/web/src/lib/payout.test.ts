@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { normalizePayoutAddress, payoutOf, shortAddress } from './payout'
+import {
+    hasPaymentMethod,
+    normalizeBankAccount,
+    normalizeLemonTag,
+    normalizePayoutAddress,
+    paymentMethodsOf,
+    payoutOf,
+    shortAddress,
+} from './payout'
 
 describe('normalizePayoutAddress', () => {
     const evm = '0xAbCdEf0123456789abcdef0123456789ABCDEF01'
@@ -34,5 +42,46 @@ describe('payoutOf', () => {
 describe('shortAddress', () => {
     it('keeps the start and the end', () => {
         expect(shortAddress('0x1234567890abcdef1234567890abcdef12345678')).toBe('0x1234…5678')
+    })
+})
+
+describe('normalizeBankAccount', () => {
+    it('accepts a 22-digit CBU/CVU and drops spaces and dashes', () => {
+        expect(normalizeBankAccount('0000003100 0123456789-01')).toBe('0000003100012345678901')
+    })
+
+    it('accepts an alias as typed', () => {
+        expect(normalizeBankAccount(' Marcos.Tribu.Mp ')).toBe('Marcos.Tribu.Mp')
+    })
+
+    it('refuses something that is neither', () => {
+        expect(normalizeBankAccount('abc')).toBeNull()
+        expect(normalizeBankAccount('alias con espacios')).toBeNull()
+        expect(normalizeBankAccount('123456789012345678901')).toBeNull()
+        expect(normalizeBankAccount('12345678')).toBeNull()
+    })
+})
+
+describe('normalizeLemonTag', () => {
+    it('drops the @ and lowercases', () => {
+        expect(normalizeLemonTag(' @Marcos.D ')).toBe('marcos.d')
+    })
+
+    it('refuses spaces and empty tags', () => {
+        expect(normalizeLemonTag('@')).toBeNull()
+        expect(normalizeLemonTag('mar cos')).toBeNull()
+    })
+})
+
+describe('paymentMethodsOf', () => {
+    it('prefers the typed Lemon tag over the signed one', () => {
+        expect(paymentMethodsOf({ payoutLemonTag: 'typed', lemonTag: 'signed' }).lemonTag).toBe('typed')
+        expect(paymentMethodsOf({ lemonTag: '@signed' }).lemonTag).toBe('signed')
+    })
+
+    it('reports nothing when the member saved nothing', () => {
+        const methods = paymentMethodsOf({})
+        expect(methods).toEqual({ bank: null, lemonTag: null, crypto: null })
+        expect(hasPaymentMethod(methods)).toBe(false)
     })
 })

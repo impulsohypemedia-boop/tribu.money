@@ -26,12 +26,13 @@ import { useMotionAllowed } from '@/lib/use-motion'
 import { useFeedback } from '@/lib/use-settings'
 import { isFormerMember } from '@/lib/members'
 import { AllSettled } from './AllSettled'
-import { PayoutCard } from '@/components/room/MemberProfile'
+import { PaymentMethodsCard } from '@/components/room/MemberProfile'
 import { SettingToggle } from '@/components/ui/SettingToggle'
 import {
     DEFAULT_PAYOUT_NETWORK,
     PAYOUT_NETWORK_KEYS,
     PAYOUT_NETWORKS,
+    paymentMethodsOf,
     payoutOf,
     type PayoutNetwork,
 } from '@/lib/payout'
@@ -775,12 +776,14 @@ export function SettleDrawer({
                                 </span>
                             </div>
                             {(() => {
-                                // Where the payee asked to be paid outside Lemon, so the payer
-                                // can send it from their own wallet before marking it paid.
+                                // Where the payee asked to be paid (alias, Lemon tag, wallet), so the
+                                // payer can send it from their own bank or app before marking it paid.
                                 const payee = state.members.find((member) => member.id === selected.toId)
-                                const payout = payee ? payoutOf(payee) : null
-                                return payout && method !== 'lemon' ? (
-                                    <PayoutCard payout={payout} name={displayName(selected.toId)} />
+                                return payee && method !== 'lemon' ? (
+                                    <PaymentMethodsCard
+                                        methods={paymentMethodsOf(payee)}
+                                        name={displayName(selected.toId)}
+                                    />
                                 ) : null
                             })()}
                             {/* The suggestion, editable. It arrives filled in, so

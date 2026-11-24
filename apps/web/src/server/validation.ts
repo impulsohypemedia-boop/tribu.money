@@ -742,3 +742,12 @@ export const potContributionSchema = z.object({
 })
 
 export const potSpendSchema = z.object({ expenseId: id })
+
+const evmAddress = z.string().regex(/^0x[0-9a-fA-F]{40}$/)
+const bytes32 = z.string().regex(/^0x[0-9a-fA-F]{64}$/)
+
+/** Point a vaquita at the wallet a member just created for it. */
+export const potWalletLinkSchema = z.object({ creator: evmAddress })
+
+/** What a payment from the vaquita's wallet is for. */
+export const potWalletNoteSchema = z.object({ memo: bytes32, text: z.string().trim().min(1).max(80) })

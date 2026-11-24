@@ -32,6 +32,7 @@ import type {
     RoomStateWithMember,
     SettlementInput,
     LemonQuote,
+    ApiPotWallet,
     WalletLinkInput,
 } from './api-types'
 import type { FeedbackReportInput, FeedbackReportResult } from './feedback-contract'
@@ -448,6 +449,23 @@ export const api = {
 
     createPot: (slug: string, input: PotInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/pots`, { method: 'POST', body: input, token }),
+
+    potWallet: (slug: string, potId: string) =>
+        request<ApiPotWallet>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/wallet`, { cache: 'no-store' }),
+
+    linkPotWallet: (slug: string, potId: string, creator: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/wallet`, {
+            method: 'POST',
+            body: { creator },
+            token,
+        }),
+
+    addPotWalletNote: (slug: string, potId: string, note: { memo: string; text: string }, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/wallet/notes`, {
+            method: 'POST',
+            body: note,
+            token,
+        }),
 
     updatePot: (slug: string, potId: string, input: Partial<PotInput> & { closed?: boolean }, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}`, { method: 'PATCH', body: input, token }),

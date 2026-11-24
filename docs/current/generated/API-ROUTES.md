@@ -3,9 +3,9 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/src/app/**/route.ts`  
-Input SHA-256: `9c9f286f8161cb5da5f0c0bc7586095422488c3fe13fccedf309fe7f4d33d265`
+Input SHA-256: `00efdfb05e12fe83c0a01a90ce22a16d2c727051d79f94d148eaf2c971f1e891`
 
-Exported operations: 56
+Exported operations: 59
 
 | Method   | Path                                                         | Handler                                                                                  |
 | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
@@ -48,6 +48,9 @@ Exported operations: 56
 | `DELETE` | `/api/rooms/:slug/pots/:potId/contributions/:contributionId` | `apps/web/src/app/api/rooms/[slug]/pots/[potId]/contributions/[contributionId]/route.ts` |
 | `POST`   | `/api/rooms/:slug/pots/:potId/expenses`                      | `apps/web/src/app/api/rooms/[slug]/pots/[potId]/expenses/route.ts`                       |
 | `DELETE` | `/api/rooms/:slug/pots/:potId/expenses/:expenseId`           | `apps/web/src/app/api/rooms/[slug]/pots/[potId]/expenses/[expenseId]/route.ts`           |
+| `GET`    | `/api/rooms/:slug/pots/:potId/wallet`                        | `apps/web/src/app/api/rooms/[slug]/pots/[potId]/wallet/route.ts`                         |
+| `POST`   | `/api/rooms/:slug/pots/:potId/wallet`                        | `apps/web/src/app/api/rooms/[slug]/pots/[potId]/wallet/route.ts`                         |
+| `POST`   | `/api/rooms/:slug/pots/:potId/wallet/notes`                  | `apps/web/src/app/api/rooms/[slug]/pots/[potId]/wallet/notes/route.ts`                   |
 | `DELETE` | `/api/rooms/:slug/push-subscriptions`                        | `apps/web/src/app/api/rooms/[slug]/push-subscriptions/route.ts`                          |
 | `POST`   | `/api/rooms/:slug/push-subscriptions`                        | `apps/web/src/app/api/rooms/[slug]/push-subscriptions/route.ts`                          |
 | `POST`   | `/api/rooms/:slug/push-subscriptions/status`                 | `apps/web/src/app/api/rooms/[slug]/push-subscriptions/status/route.ts`                   |

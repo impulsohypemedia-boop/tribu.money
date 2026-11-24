@@ -31,6 +31,9 @@ export const IMPORT_LIMIT: Limit = { capacity: 5, windowMs: HOUR_MS }
 /** Expenses and settlements are the normal traffic of a busy trip, so the ceiling
  *  only has to stop a runaway loop. */
 export const WRITE_LIMIT: Limit = { capacity: 120, windowMs: HOUR_MS }
+/** A read of a vaquita's wallet is a few RPC batches, and the screen rereads it after every
+ * transaction, so this only stops a loop from spending the RPC quota. */
+export const VAQUITA_READ_LIMIT: Limit = { capacity: 600, windowMs: HOUR_MS }
 /** One catch-up command rewrites shares but creates no ledger row. Imported
  * rooms can legitimately contain 500 expenses. The allowance covers one full
  * review, a full conflict-safe Undo, and retry headroom without making ordinary

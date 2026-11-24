@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: AGPL-3.0-only
+pragma solidity 0.8.24;
+
+import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+// Test-only stand-in for USDC/USDT: six decimals and an open mint.
+contract TestStablecoin is ERC20 {
+    constructor() ERC20("Test Dollar", "TUSD") {}
+
+    function decimals() public pure override returns (uint8) {
+        return 6;
+    }
+
+    function mint(address to, uint256 amount) external {
+        _mint(to, amount);
+    }
+}

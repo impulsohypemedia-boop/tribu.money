@@ -5,13 +5,13 @@
   "license": "AGPL-3.0-or-later",
   "packageManager": "pnpm@10.17.1",
   "scripts": {
-    "bootstrap": "pnpm install && cd apps/web && pnpm install --ignore-workspace && pnpm exec prisma generate",
+    "bootstrap": "pnpm install && cd apps/web && pnpm install --ignore-workspace && pnpm exec prisma generate && cd ../../contracts && pnpm install --ignore-workspace",
     "dev": "pnpm --filter @peanut-split/api dev & pnpm --dir apps/web dev",
     "dev:api": "pnpm --filter @peanut-split/api dev",
     "dev:web": "pnpm --dir apps/web dev",
     "build": "pnpm --filter @peanut-split/api build && pnpm --dir apps/web build",
     "typecheck": "pnpm --filter @peanut-split/api typecheck && pnpm --dir apps/web typecheck",
-    "test": "pnpm docs:check && pnpm licenses:check && pnpm --filter @peanut-split/api test && pnpm --dir apps/web test",
+    "test": "pnpm docs:check && pnpm licenses:check && pnpm --filter @peanut-split/api test && pnpm --dir apps/web test && pnpm --dir contracts test",
     "docs:generate": "node scripts/generate-reference-docs.mjs",
     "docs:check": "node scripts/generate-reference-docs.mjs --check",
     "licenses:generate": "node scripts/generate-third-party-licenses.mjs",
@@ -22,7 +22,8 @@
     "classes:audit": "pnpm --dir apps/web run classes:audit",
     "format": "prettier --write . && pnpm --dir apps/web format",
     "format:check": "prettier --check . && pnpm --dir apps/web lint",
-    "verify": "pnpm typecheck && pnpm i18n:audit && pnpm marketing-copy:audit && pnpm ui-icons:audit && pnpm test && pnpm --filter @peanut-split/api test:integration && pnpm --filter @peanut-split/api verify:settle"
+    "verify": "pnpm typecheck && pnpm i18n:audit && pnpm marketing-copy:audit && pnpm ui-icons:audit && pnpm test && pnpm --filter @peanut-split/api test:integration && pnpm --filter @peanut-split/api verify:settle",
+    "contracts:test": "pnpm --dir contracts test"
   },
   "devDependencies": {
     "prettier": "^3.9.9",

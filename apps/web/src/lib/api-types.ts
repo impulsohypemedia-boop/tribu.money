@@ -189,7 +189,34 @@ export interface ApiPot {
     closedAt: string | null
     /** Estimated yearly rate of the keeper's account, basis points; display only. */
     yieldAprBps?: number | null
+    /** The pot's wallet in the TribuVaquita contract, once created. Absent in older cached responses. */
+    walletPotId?: string | null
+    walletToken?: 'USDC' | 'USDT' | null
     contributions: ApiPotContribution[]
+}
+
+/** A vaquita's wallet as the chain has it right now. Amounts in token base units. */
+export interface ApiPotWallet {
+    walletPotId: string
+    token: 'USDC' | 'USDT'
+    decimals: number
+    approvalsNeeded: number
+    totalUnits: string
+    /** Wallets in the pot, with the tribu member each belongs to when someone linked it. */
+    members: { wallet: string; memberId: string | null; partUnits: string }[]
+    /** Newest first. */
+    proposals: {
+        id: number
+        action: 'Pay' | 'AddMember' | 'RemoveMember' | 'SetApprovals'
+        target: string
+        targetMemberId: string | null
+        amountUnits: string
+        note: string | null
+        memo: string
+        proposer: string
+        status: 'open' | 'executed' | 'cancelled'
+        approvedBy: string[]
+    }[]
 }
 
 export interface PotInput {

@@ -1,5 +1,6 @@
 import { availableStablecoins, lemonNetwork, sameAddress, type LemonNetwork } from '@/lib/lemon/chain'
-import { VAQUITA_ABI, VaquitaAction, type VaquitaActionName } from '@/lib/lemon/vaquita'
+import type { Abi } from 'viem'
+import { AAVE_POOL_ABI, aprBpsFromRay, VAQUITA_ABI, VaquitaAction, type VaquitaActionName } from '@/lib/lemon/vaquita'
 import { chainClient } from './rpc'
 
 /**
@@ -15,13 +16,16 @@ type Call = { functionName: string; args: readonly unknown[] }
 /** The subset of viem's client used here, so tests can stand in for the chain. */
 export interface VaquitaChain {
     multicall(input: {
-        contracts: readonly (Call & { address: `0x${string}`; abi: typeof VAQUITA_ABI })[]
+        contracts: readonly (Call & { address: `0x${string}`; abi: Abi })[]
         allowFailure: false
     }): Promise<unknown[]>
 }
 
 export interface VaquitaWalletState {
     token: { symbol: 'USDC' | 'USDT'; address: string; decimals: number }
+    /** Whether the money is in Aave, and Aave's current yearly rate when it could be read. */
+    earns: boolean
+    aprBps: number | null
     approvalsNeeded: number
     totalUnits: bigint
     members: { wallet: string; partUnits: bigint }[]
@@ -56,8 +60,8 @@ export async function readVaquitaWallet(
     const [pot, count] = (await read([
         { functionName: 'getPot', args: [walletPotId] },
         { functionName: 'proposalCount', args: [walletPotId] },
-    ])) as [readonly [string, bigint, bigint, readonly string[]], bigint]
-    const [tokenAddress, approvalsNeeded, total, wallets] = pot
+    ])) as [readonly [string, boolean, bigint, bigint, readonly string[]], bigint]
+    const [tokenAddress, earns, approvalsNeeded, total, wallets] = pot
     const token = availableStablecoins(network).find((candidate) => sameAddress(candidate.address, tokenAddress))
     if (!token) return null
 
@@ -89,6 +93,8 @@ export async function readVaquitaWallet(
 
     return {
         token: { symbol: token.symbol, address: token.address, decimals: token.decimals },
+        earns,
+        aprBps: earns ? await readAaveRate(chain, contract, token.address) : null,
         approvalsNeeded: Number(approvalsNeeded),
         totalUnits: total,
         members: wallets.map((wallet, i) => ({ wallet: wallet.toLowerCase(), partUnits: parts[i] })),
@@ -110,5 +116,22 @@ export async function readVaquitaWallet(
                     .map((wallet) => wallet.toLowerCase()),
             }))
             .reverse(),
+    }
+}
+
+/** The rate is only shown, so a failed read leaves it out rather than failing the whole screen. */
+async function readAaveRate(chain: VaquitaChain, contract: `0x${string}`, token: string): Promise<number | null> {
+    try {
+        const [pool] = (await chain.multicall({
+            contracts: [{ address: contract, abi: VAQUITA_ABI, functionName: 'aavePool', args: [] }],
+            allowFailure: false,
+        })) as [`0x${string}`]
+        const [reserve] = (await chain.multicall({
+            contracts: [{ address: pool, abi: AAVE_POOL_ABI, functionName: 'getReserveData', args: [token] }],
+            allowFailure: false,
+        })) as [{ currentLiquidityRate: bigint }]
+        return aprBpsFromRay(reserve.currentLiquidityRate)
+    } catch {
+        return null
     }
 }

@@ -13,6 +13,10 @@ pragma solidity 0.8.24;
 // - Nobody is locked in. A member can take out their own part, or leave with it, at any time,
 //   without asking.
 //
+// A pot can earn: chosen when it is created, its money is supplied to Aave and every part grows by
+// Aave's interest, in proportion to its size. That adds Aave's own risks (a bug or a bad debt
+// there, or a moment when Aave has lent out everything and a withdrawal must wait).
+//
 // One deployment holds every tribu's pot. A pot's id is keccak256(abi.encode(creator, salt)), so
 // the app knows it before the creating transaction is mined and nobody can squat another
 // creator's id.
@@ -21,11 +25,20 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
+/// The part of Aave v3's Pool this contract uses.
+interface IAavePool {
+    function supply(address asset, uint256 amount, address onBehalfOf, uint16 referralCode) external;
+    function withdraw(address asset, uint256 amount, address to) external returns (uint256);
+    /// Grows from 1e27 as interest accrues: an amount supplied at index i is worth amount * now / i.
+    function getReserveNormalizedIncome(address asset) external view returns (uint256);
+}
+
 contract TribuVaquita is ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     /// Payments split across members in a loop, so the roster is capped.
     uint256 public constant MAX_MEMBERS = 20;
+    uint256 private constant RAY = 1e27;
 
     enum Action {
         Pay, // send `amount` to `target`
@@ -44,19 +57,25 @@ contract TribuVaquita is ReentrancyGuard {
         bool cancelled;
     }
 
+    // Parts are kept "scaled", as Aave keeps balances: a part's value is scaled * index / RAY, where
+    // the index is Aave's for an earning pot and RAY (so value == scaled) for one that does not.
+    // Interest then grows every part of a pot in proportion without touching each one.
     struct Pot {
         address token;
+        bool earns;
         uint256 approvalsNeeded;
-        uint256 total;
+        uint256 scaledTotal;
         address[] members;
     }
 
     /// The stablecoins a pot may hold, fixed at deployment.
     mapping(address => bool) public allowedToken;
+    /// Aave's Pool, or zero on a network where pots cannot earn. Fixed at deployment.
+    IAavePool public immutable aavePool;
 
     mapping(bytes32 => Pot) private pots;
     mapping(bytes32 => mapping(address => bool)) public isMember;
-    mapping(bytes32 => mapping(address => uint256)) public partOf;
+    mapping(bytes32 => mapping(address => uint256)) private scaledPartOf;
     mapping(bytes32 => Proposal[]) private proposals;
 
     // How many times an address has joined a pot. An approval records the stint it was given in,
@@ -64,10 +83,20 @@ contract TribuVaquita is ReentrancyGuard {
     mapping(bytes32 => mapping(address => uint256)) private stint;
     mapping(bytes32 => mapping(uint256 => mapping(address => uint256))) private approvalStint;
 
-    event PotCreated(bytes32 indexed potId, address indexed creator, address token, address[] members, uint256 approvalsNeeded);
+    event PotCreated(
+        bytes32 indexed potId, address indexed creator, address token, bool earns, address[] members, uint256 approvalsNeeded
+    );
     event Deposited(bytes32 indexed potId, address indexed member, uint256 amount);
     event Withdrawn(bytes32 indexed potId, address indexed member, uint256 amount);
-    event Proposed(bytes32 indexed potId, uint256 indexed proposalId, address indexed proposer, Action action, address target, uint256 amount, bytes32 memo);
+    event Proposed(
+        bytes32 indexed potId,
+        uint256 indexed proposalId,
+        address indexed proposer,
+        Action action,
+        address target,
+        uint256 amount,
+        bytes32 memo
+    );
     event Approved(bytes32 indexed potId, uint256 indexed proposalId, address indexed member);
     event Executed(bytes32 indexed potId, uint256 indexed proposalId);
     event Cancelled(bytes32 indexed potId, uint256 indexed proposalId);
@@ -77,6 +106,7 @@ contract TribuVaquita is ReentrancyGuard {
     event ApprovalsNeededChanged(bytes32 indexed potId, uint256 approvalsNeeded);
 
     error TokenNotAllowed();
+    error EarningNotAvailable();
     error PotExists();
     error PotNotFound();
     error BadMembers();
@@ -90,11 +120,12 @@ contract TribuVaquita is ReentrancyGuard {
     error NotProposer();
     error LastMember();
 
-    constructor(address[] memory tokens) {
+    constructor(address[] memory tokens, address aavePool_) {
         for (uint256 i = 0; i < tokens.length; i++) {
             if (tokens[i] == address(0)) revert TokenNotAllowed();
             allowedToken[tokens[i]] = true;
         }
+        aavePool = IAavePool(aavePool_);
     }
 
     modifier onlyMember(bytes32 potId) {
@@ -109,11 +140,15 @@ contract TribuVaquita is ReentrancyGuard {
         return keccak256(abi.encode(creator, salt));
     }
 
-    function createPot(bytes32 salt, address token, address[] calldata members, uint256 approvalsNeeded)
+    function createPot(bytes32 salt, address token, bool earns, address[] calldata members, uint256 approvalsNeeded)
         external
         returns (bytes32 potId)
     {
         if (!allowedToken[token]) revert TokenNotAllowed();
+        // Aave answers zero for an asset it does not list, so this also checks the token is there.
+        if (earns && (address(aavePool) == address(0) || aavePool.getReserveNormalizedIncome(token) == 0)) {
+            revert EarningNotAvailable();
+        }
         potId = potIdFor(msg.sender, salt);
         Pot storage pot = pots[potId];
         if (pot.token != address(0)) revert PotExists();
@@ -121,6 +156,7 @@ contract TribuVaquita is ReentrancyGuard {
         if (approvalsNeeded == 0 || approvalsNeeded > members.length) revert BadApprovals();
 
         pot.token = token;
+        pot.earns = earns;
         pot.approvalsNeeded = approvalsNeeded;
         bool creatorListed = false;
         for (uint256 i = 0; i < members.length; i++) {
@@ -130,7 +166,7 @@ contract TribuVaquita is ReentrancyGuard {
             _addMember(potId, member);
         }
         if (!creatorListed) revert BadMembers();
-        emit PotCreated(potId, msg.sender, token, members, approvalsNeeded);
+        emit PotCreated(potId, msg.sender, token, earns, members, approvalsNeeded);
     }
 
     // ---- Money in and out of your own part ----
@@ -143,15 +179,23 @@ contract TribuVaquita is ReentrancyGuard {
         uint256 before = token.balanceOf(address(this));
         token.safeTransferFrom(msg.sender, address(this), amount);
         uint256 received = token.balanceOf(address(this)) - before;
-        partOf[potId][msg.sender] += received;
-        pot.total += received;
+        uint256 index = _index(pot);
+        if (pot.earns) {
+            token.forceApprove(address(aavePool), received);
+            aavePool.supply(pot.token, received, address(this), 0);
+        }
+        // Rounded down: a part never claims more than what was actually put in.
+        uint256 scaled = (received * RAY) / index;
+        scaledPartOf[potId][msg.sender] += scaled;
+        pot.scaledTotal += scaled;
         emit Deposited(potId, msg.sender, received);
     }
 
     /// Takes `amount` out of the caller's own part. No approvals needed.
     function withdraw(bytes32 potId, uint256 amount) external nonReentrant onlyMember(potId) {
-        if (amount == 0 || amount > partOf[potId][msg.sender]) revert BadAmount();
-        _payOutPart(potId, msg.sender, amount);
+        if (amount == 0 || amount > partOf(potId, msg.sender)) revert BadAmount();
+        _takeFromPart(potId, msg.sender, amount);
+        _send(potId, msg.sender, amount);
         emit Withdrawn(potId, msg.sender, amount);
     }
 
@@ -202,10 +246,18 @@ contract TribuVaquita is ReentrancyGuard {
     function getPot(bytes32 potId)
         external
         view
-        returns (address token, uint256 approvalsNeeded, uint256 total, address[] memory members)
+        returns (address token, bool earns, uint256 approvalsNeeded, uint256 total, address[] memory members)
     {
         Pot storage pot = pots[potId];
-        return (pot.token, pot.approvalsNeeded, pot.total, pot.members);
+        uint256 value = pot.token == address(0) ? 0 : _value(pot.scaledTotal, _index(pot));
+        return (pot.token, pot.earns, pot.approvalsNeeded, value, pot.members);
+    }
+
+    /// What `member` could take out right now, interest included.
+    function partOf(bytes32 potId, address member) public view returns (uint256) {
+        Pot storage pot = pots[potId];
+        if (pot.token == address(0)) return 0;
+        return _value(scaledPartOf[potId][member], _index(pot));
     }
 
     function proposalCount(bytes32 potId) external view returns (uint256) {
@@ -235,17 +287,35 @@ contract TribuVaquita is ReentrancyGuard {
 
     // ---- Internals ----
 
+    function _index(Pot storage pot) private view returns (uint256) {
+        return pot.earns ? aavePool.getReserveNormalizedIncome(pot.token) : RAY;
+    }
+
+    function _value(uint256 scaled, uint256 index) private pure returns (uint256) {
+        return (scaled * index) / RAY;
+    }
+
+    /// Scaled units that cover `amount`, rounded up so the pot never pays out more than it books.
+    function _scaledUp(uint256 amount, uint256 index) private pure returns (uint256) {
+        return (amount * RAY + index - 1) / index;
+    }
+
     function _open(bytes32 potId, uint256 proposalId) private view returns (Proposal storage proposal) {
         if (proposalId >= proposals[potId].length) revert ProposalClosed();
         proposal = proposals[potId][proposalId];
         if (proposal.executed || proposal.cancelled) revert ProposalClosed();
     }
 
+    function _total(bytes32 potId) private view returns (uint256) {
+        Pot storage pot = pots[potId];
+        return _value(pot.scaledTotal, _index(pot));
+    }
+
     function _validate(bytes32 potId, Action action, address target, uint256 amount) private view {
         Pot storage pot = pots[potId];
         if (action == Action.Pay) {
             if (target == address(0) || target == address(this)) revert BadTarget();
-            if (amount == 0 || amount > pot.total) revert BadAmount();
+            if (amount == 0 || amount > _total(potId)) revert BadAmount();
         } else if (action == Action.AddMember) {
             if (target == address(0) || target == address(this) || isMember[potId][target]) revert BadTarget();
             if (pot.members.length >= MAX_MEMBERS) revert BadMembers();
@@ -268,7 +338,7 @@ contract TribuVaquita is ReentrancyGuard {
     function _canExecute(bytes32 potId, uint256 proposalId) private view returns (bool) {
         Proposal storage proposal = proposals[potId][proposalId];
         Pot storage pot = pots[potId];
-        if (proposal.action == Action.Pay) return proposal.amount <= pot.total;
+        if (proposal.action == Action.Pay) return proposal.amount <= _total(potId);
         if (proposal.action == Action.AddMember) {
             return !isMember[potId][proposal.target] && pot.members.length < MAX_MEMBERS;
         }
@@ -290,7 +360,7 @@ contract TribuVaquita is ReentrancyGuard {
 
         if (action == Action.Pay) {
             _chargeEveryPart(potId, amount);
-            IERC20(pots[potId].token).safeTransfer(target, amount);
+            _send(potId, target, amount);
             emit Paid(potId, target, amount);
         } else if (action == Action.AddMember) {
             _addMember(potId, target);
@@ -303,33 +373,49 @@ contract TribuVaquita is ReentrancyGuard {
     }
 
     /// Takes `amount` out of the parts in proportion to their size. Rounding leftovers (fewer
-    /// units than there are members) come one unit each from members who still have money.
+    /// scaled units than there are members) come one unit each from members who still have some.
     function _chargeEveryPart(bytes32 potId, uint256 amount) private {
         Pot storage pot = pots[potId];
-        uint256 total = pot.total;
+        uint256 scaledTotal = pot.scaledTotal;
+        uint256 charge = _scaledUp(amount, _index(pot));
+        // Paying out everything can round one unit past the booked total.
+        if (charge > scaledTotal) charge = scaledTotal;
         address[] storage members = pot.members;
-        uint256 left = amount;
+        uint256 left = charge;
         for (uint256 i = 0; i < members.length; i++) {
-            uint256 part = partOf[potId][members[i]];
-            uint256 charge = (part * amount) / total;
-            partOf[potId][members[i]] = part - charge;
-            left -= charge;
+            uint256 part = scaledPartOf[potId][members[i]];
+            uint256 share = (part * charge) / scaledTotal;
+            scaledPartOf[potId][members[i]] = part - share;
+            left -= share;
         }
         for (uint256 i = 0; i < members.length && left > 0; i++) {
-            if (partOf[potId][members[i]] > 0) {
-                partOf[potId][members[i]] -= 1;
+            if (scaledPartOf[potId][members[i]] > 0) {
+                scaledPartOf[potId][members[i]] -= 1;
                 left -= 1;
             }
         }
         // Holds because every part is owned by a current member and the parts sum to the total.
         assert(left == 0);
-        pot.total = total - amount;
+        pot.scaledTotal = scaledTotal - charge;
     }
 
-    function _payOutPart(bytes32 potId, address member, uint256 amount) private {
-        partOf[potId][member] -= amount;
-        pots[potId].total -= amount;
-        IERC20(pots[potId].token).safeTransfer(member, amount);
+    function _takeFromPart(bytes32 potId, address member, uint256 amount) private {
+        Pot storage pot = pots[potId];
+        uint256 scaled = _scaledUp(amount, _index(pot));
+        uint256 part = scaledPartOf[potId][member];
+        // Taking a whole part can round one unit past it.
+        if (scaled > part) scaled = part;
+        scaledPartOf[potId][member] = part - scaled;
+        pot.scaledTotal -= scaled;
+    }
+
+    function _send(bytes32 potId, address to, uint256 amount) private {
+        Pot storage pot = pots[potId];
+        if (pot.earns) {
+            aavePool.withdraw(pot.token, amount, to);
+        } else {
+            IERC20(pot.token).safeTransfer(to, amount);
+        }
     }
 
     function _addMember(bytes32 potId, address member) private {
@@ -355,8 +441,10 @@ contract TribuVaquita is ReentrancyGuard {
             pot.approvalsNeeded = members.length;
             emit ApprovalsNeededChanged(potId, members.length);
         }
-        uint256 part = partOf[potId][member];
-        if (part > 0) _payOutPart(potId, member, part);
+        uint256 part = partOf(potId, member);
+        pot.scaledTotal -= scaledPartOf[potId][member];
+        scaledPartOf[potId][member] = 0;
+        if (part > 0) _send(potId, member, part);
         emit MemberRemoved(potId, member, part);
     }
 }

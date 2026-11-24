@@ -13,7 +13,11 @@ contract instead of in one member's account.
   approvals the pot asks for is reached (proposing counts as one). The same rule adds or removes
   members and changes the number.
 - **Nobody is locked in.** Any member can take out their own part, or leave with it, at any time.
-- Only the stablecoins listed at deployment are accepted.
+- **A pot can earn.** Chosen when the pot is created: its money goes to Aave v3 and every part grows
+  with Aave's interest, in proportion to its size. Parts are kept in Aave's scaled units, so interest
+  needs no bookkeeping, and rounding always favours the pot over any one member.
+- Only the stablecoins listed at deployment are accepted, and only the Aave Pool set at deployment
+  is used.
 
 ## Test
 
@@ -37,8 +41,14 @@ DEPLOYER_PRIVATE_KEY=0x… pnpm deploy:polygon   # real money
 Then set `NEXT_PUBLIC_TRIBU_VAQUITA_ADDRESS` in the web app's environment and redeploy it. Until
 it is set, the app shows no wallet option.
 
+On Polygon the script passes Aave's Pool (`0x794a…14aD`). On Amoy there is no Aave market for
+Circle's test USDC, so pots there cannot earn; the earning code is covered by the tests, against a
+stand-in Pool with Aave's rounding.
+
 ## Before real money
 
 This contract has tests but no external audit. Get one before a pot holds amounts people would
 miss. USDC and USDT can freeze any address, this contract included; that is a property of those
-tokens, not something this contract can prevent.
+tokens, not something this contract can prevent. A pot that earns also carries Aave's risk: a bug
+or bad debt there can lose money, and when Aave has lent out nearly everything a withdrawal fails
+until liquidity returns (the money stays booked; nothing is lost by the failed attempt).

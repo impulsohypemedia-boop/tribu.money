@@ -1329,7 +1329,12 @@
                 "historyTitle": "Lo último",
                 "status_executed": "Hecho",
                 "status_cancelled": "Cancelado",
-                "status_open": "Pendiente"
+                "status_open": "Pendiente",
+                "earnLabel": "Que la plata rinda",
+                "earnHint": "La plata se deposita en Aave y crece con su interés. Cada parte crece según cuánto puso cada uno. La tasa cambia todos los días.",
+                "earnRisk": "Rendir suma el riesgo de Aave: si Aave tiene un problema, se puede perder plata, y a veces sacar puede demorar hasta que haya liquidez.",
+                "earningRate": "Rinde {rate}% por año ahora (Aave, la tasa cambia)",
+                "earningNoRate": "Rinde con Aave"
             }
         },
         "tribePot": {

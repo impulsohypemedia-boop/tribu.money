@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatUsd, majorityOf, parseTokenAmount, vaquitaContract, vaquitaWalletId } from './vaquita'
+import { aprBpsFromRay, formatUsd, majorityOf, parseTokenAmount, vaquitaContract, vaquitaWalletId } from './vaquita'
 
 describe('vaquitaWalletId', () => {
     it('matches the id TribuVaquita.potIdFor computes on chain', () => {
@@ -54,5 +54,13 @@ describe('vaquitaContract', () => {
         expect(vaquitaContract('0x1234567890123456789012345678901234567890')).toBe(
             '0x1234567890123456789012345678901234567890'
         )
+    })
+})
+
+describe('aprBpsFromRay', () => {
+    it("turns Aave's ray rate into basis points", () => {
+        expect(aprBpsFromRay(425n * 10n ** 23n)).toBe(425)
+        expect(aprBpsFromRay(10n ** 27n)).toBe(10_000)
+        expect(aprBpsFromRay(0n)).toBe(0)
     })
 })

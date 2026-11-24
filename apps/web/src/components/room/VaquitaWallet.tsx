@@ -26,6 +26,7 @@ import {
     parseTokenAmount,
     randomMemo,
     VAQUITA_MAX_MEMBERS,
+    vaquitaCanEarn,
     vaquitaContract,
 } from '@/lib/lemon/vaquita'
 import {
@@ -68,6 +69,8 @@ export function VaquitaWalletOffer({ pot, slug, state, meId, token }: Props) {
     const [open, setOpen] = useState(false)
     const [coin, setCoin] = useState<StablecoinSymbol>(coins[0]?.symbol ?? 'USDC')
     const [approvals, setApprovals] = useState(() => majorityOf(Math.max(1, withWallet.length)))
+    const canEarn = vaquitaCanEarn()
+    const [earns, setEarns] = useState(canEarn)
     const [busy, setBusy] = useState(false)
 
     if (!contract || !inLemon || pot.closedAt || pot.walletPotId) return null
@@ -85,6 +88,7 @@ export function VaquitaWalletOffer({ pot, slug, state, meId, token }: Props) {
                 contract,
                 potId: pot.id,
                 token: config,
+                earns: canEarn && earns,
                 members: wallets,
                 approvalsNeeded: Math.min(approvals, count),
                 title: t('lemonTitleCreate'),
@@ -179,7 +183,23 @@ export function VaquitaWalletOffer({ pot, slug, state, meId, token }: Props) {
                             </div>
                         </div>
                     )}
+                    {canEarn && (
+                        <label className="flex items-start gap-2">
+                            <input
+                                type="checkbox"
+                                className="mt-1 size-4 shrink-0"
+                                checked={earns}
+                                onChange={(event) => setEarns(event.target.checked)}
+                                data-testid="vaquita-wallet-earns"
+                            />
+                            <span className="grid gap-0.5">
+                                <span className="font-bold">{t('earnLabel')}</span>
+                                <span className="text-grey-1">{t('earnHint')}</span>
+                            </span>
+                        </label>
+                    )}
                     <p className="text-grey-1">{t('riskNote')}</p>
+                    {canEarn && earns && <p className="text-grey-1">{t('earnRisk')}</p>}
                     <Button
                         shadowSize="4"
                         loading={busy}
@@ -344,6 +364,17 @@ export function VaquitaWallet({ pot, slug, state, meId, token }: Props) {
                 <p className="text-sm text-grey-1">{t('heldTitle', { coin: wallet.token })}</p>
                 <p className="text-h3 font-bold">{usd(wallet.totalUnits)}</p>
                 {mine && <p className="text-sm">{t('yourPart', { amount: usd(mine.partUnits) })}</p>}
+                {wallet.earns && (
+                    <p className="mt-1 text-sm font-bold" data-testid="vaquita-wallet-rate">
+                        {wallet.aprBps === null
+                            ? t('earningNoRate')
+                            : t('earningRate', {
+                                  rate: new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(
+                                      wallet.aprBps / 100
+                                  ),
+                              })}
+                    </p>
+                )}
             </div>
 
             <div className="flex items-start gap-3 rounded-sm border-2 border-n-1 bg-white p-3 text-sm">

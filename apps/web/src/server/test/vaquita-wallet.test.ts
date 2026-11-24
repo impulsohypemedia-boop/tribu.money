@@ -14,10 +14,12 @@ import { mintNonce } from '@/server/lemon/identity'
 import type { ApiError, ApiPotWallet, RoomState, RoomStateWithMember } from '@/lib/api-types'
 
 const CONTRACT = '0x9999999999999999999999999999999999999999'
+const AAVE_POOL = '0x7777777777777777777777777777777777777777'
 const USDC = lemonNetwork().tokens.USDC!
 
 type FakePot = {
     token: string
+    earns?: boolean
     approvalsNeeded: bigint
     members: string[]
     parts: Record<string, bigint>
@@ -39,9 +41,9 @@ function answer(functionName: string, args: readonly unknown[]): unknown {
     const pot = chain.get(String(args[0]).toLowerCase())
     switch (functionName) {
         case 'getPot': {
-            if (!pot) return [ZERO, 0n, 0n, []]
+            if (!pot) return [ZERO, false, 0n, 0n, []]
             const total = Object.values(pot.parts).reduce((a, b) => a + b, 0n)
-            return [pot.token, pot.approvalsNeeded, total, pot.members]
+            return [pot.token, pot.earns ?? false, pot.approvalsNeeded, total, pot.members]
         }
         case 'proposalCount':
             return BigInt(pot?.proposals.length ?? 0)
@@ -53,6 +55,11 @@ function answer(functionName: string, args: readonly unknown[]): unknown {
         }
         case 'hasApproved':
             return pot!.proposals[Number(args[1])].approvedBy.includes(String(args[2]).toLowerCase())
+        case 'aavePool':
+            return AAVE_POOL
+        case 'getReserveData':
+            // 4.25% a year, as a ray.
+            return { currentLiquidityRate: 425n * 10n ** 23n }
         default:
             throw new Error(`unexpected read ${functionName}`)
     }
@@ -280,6 +287,24 @@ describe('reading a vaquita wallet', () => {
             [0, 'executed', null, r.bea.id],
         ])
         expect(wallet.proposals[0].approvedBy).toEqual([lower(bea.address)])
+    })
+
+    it("shows Aave's current rate for a pot that earns", async () => {
+        const r = await setup()
+        putOnChain(ana.address, r.potId, { earns: true })
+        await link(r.slug, r.potId, ana.address, r.ana.token)
+        const wallet = (await read(r.slug, r.potId)).body as ApiPotWallet
+        expect(wallet.earns).toBe(true)
+        expect(wallet.aprBps).toBe(425)
+    })
+
+    it('shows no rate for a pot that does not earn', async () => {
+        const r = await setup()
+        putOnChain(ana.address, r.potId)
+        await link(r.slug, r.potId, ana.address, r.ana.token)
+        const wallet = (await read(r.slug, r.potId)).body as ApiPotWallet
+        expect(wallet.earns).toBe(false)
+        expect(wallet.aprBps).toBeNull()
     })
 
     it('says so when the pot has no wallet', async () => {

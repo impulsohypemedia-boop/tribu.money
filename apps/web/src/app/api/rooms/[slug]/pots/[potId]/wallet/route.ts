@@ -43,6 +43,8 @@ export const GET = (request: Request, ctx: Ctx) =>
             walletPotId: pot.walletPotId,
             token: wallet.token.symbol,
             decimals: wallet.token.decimals,
+            earns: wallet.earns,
+            aprBps: wallet.aprBps,
             approvalsNeeded: wallet.approvalsNeeded,
             totalUnits: wallet.totalUnits.toString(),
             members: wallet.members.map((member) => ({

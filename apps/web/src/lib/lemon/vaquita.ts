@@ -1,5 +1,5 @@
 import { encodeAbiParameters, keccak256, parseAbi, stringToHex } from 'viem'
-import { isAddress } from './chain'
+import { isAddress, lemonNetwork, type LemonNetwork } from './chain'
 
 /**
  * La vaquita as a real wallet: the pot's money held by the TribuVaquita contract
@@ -11,7 +11,7 @@ import { isAddress } from './chain'
 
 export const VAQUITA_ABI = parseAbi([
     'function potIdFor(address creator, bytes32 salt) pure returns (bytes32)',
-    'function createPot(bytes32 salt, address token, address[] members, uint256 approvalsNeeded) returns (bytes32)',
+    'function createPot(bytes32 salt, address token, bool earns, address[] members, uint256 approvalsNeeded) returns (bytes32)',
     'function deposit(bytes32 potId, uint256 amount)',
     'function withdraw(bytes32 potId, uint256 amount)',
     'function leave(bytes32 potId)',
@@ -19,12 +19,27 @@ export const VAQUITA_ABI = parseAbi([
     'function approve(bytes32 potId, uint256 proposalId)',
     'function execute(bytes32 potId, uint256 proposalId)',
     'function cancel(bytes32 potId, uint256 proposalId)',
-    'function getPot(bytes32 potId) view returns (address token, uint256 approvalsNeeded, uint256 total, address[] members)',
+    'function getPot(bytes32 potId) view returns (address token, bool earns, uint256 approvalsNeeded, uint256 total, address[] members)',
+    'function aavePool() view returns (address)',
     'function partOf(bytes32 potId, address member) view returns (uint256)',
     'function proposalCount(bytes32 potId) view returns (uint256)',
     'function getProposal(bytes32 potId, uint256 proposalId) view returns ((uint8 action, address target, uint256 amount, bytes32 memo, address proposer, bool executed, bool cancelled) proposal, uint256 approvals)',
     'function hasApproved(bytes32 potId, uint256 proposalId, address member) view returns (bool)',
 ])
+
+/** Aave v3 Pool's reserve data; only the supply rate is used. The layout is the same in v3.0-v3.4. */
+export const AAVE_POOL_ABI = parseAbi([
+    'function getReserveData(address asset) view returns ((uint256 configuration, uint128 liquidityIndex, uint128 currentLiquidityRate, uint128 variableBorrowIndex, uint128 currentVariableBorrowRate, uint128 currentStableBorrowRate, uint40 lastUpdateTimestamp, uint16 id, address aTokenAddress, address stableDebtTokenAddress, address variableDebtTokenAddress, address interestRateStrategyAddress, uint128 accruedToTreasury, uint128 unbacked, uint128 isolationModeTotalDebt))',
+])
+
+/**
+ * Whether a new vaquita may earn. The deploy script gives the Polygon contract Aave's Pool; Amoy
+ * has no Aave market for Circle's test USDC, so there the option is not offered.
+ */
+export const vaquitaCanEarn = (network: LemonNetwork = lemonNetwork()): boolean => network.key === 'polygon'
+
+/** Aave's yearly supply rate (a ray, 1e27 = 100%) in basis points, rounded down. */
+export const aprBpsFromRay = (rate: bigint): number => Number(rate / 10n ** 23n)
 
 /** Mirrors `TribuVaquita.Action`. */
 export const VaquitaAction = { Pay: 0, AddMember: 1, RemoveMember: 2, SetApprovals: 3 } as const

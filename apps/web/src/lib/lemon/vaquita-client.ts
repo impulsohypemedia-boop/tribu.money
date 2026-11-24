@@ -34,6 +34,7 @@ export const createVaquitaWallet = (input: {
     contract: `0x${string}`
     potId: string
     token: StablecoinConfig
+    earns: boolean
     members: string[]
     approvalsNeeded: number
     title: string
@@ -46,6 +47,7 @@ export const createVaquitaWallet = (input: {
                 functionParams: [
                     vaquitaSalt(input.potId),
                     input.token.address,
+                    input.earns,
                     input.members,
                     String(input.approvalsNeeded),
                 ],

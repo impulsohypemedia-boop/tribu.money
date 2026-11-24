@@ -200,6 +200,10 @@ export interface ApiPotWallet {
     walletPotId: string
     token: 'USDC' | 'USDT'
     decimals: number
+    /** The money is in Aave and grows with its interest. */
+    earns: boolean
+    /** Aave's current yearly rate in basis points; null when not earning or not readable. */
+    aprBps: number | null
     approvalsNeeded: number
     totalUnits: string
     /** Wallets in the pot, with the tribu member each belongs to when someone linked it. */

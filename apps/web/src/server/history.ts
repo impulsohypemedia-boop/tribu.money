@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import type { RoomHistoryPage } from '@/lib/api-types'
 import { prisma } from '@/server/db'
 import { ApiError, badRequest, notFound } from '@/server/http'
+import { syncRoomLedger } from '@/server/ledger'
 
 export const ROOM_ACTIONS = [
     'history_started',
@@ -51,7 +52,7 @@ export interface AuditActor {
     memberName: string | null
 }
 
-type AuditDb = Pick<Prisma.TransactionClient, 'roomAuditEvent' | '$queryRaw'>
+type AuditDb = Prisma.TransactionClient
 
 interface ExpenseAuditInput {
     id: string
@@ -382,6 +383,9 @@ export async function appendRoomAuditEvent(input: {
             ...(event.detail === undefined ? {} : { detail: jsonValue(event.detail) }),
         },
     })
+    // Every successful state change passes through here, so this is the one place that keeps the
+    // book of account in line with the rows that just changed, in the same transaction.
+    await syncRoomLedger(input.tx, input.roomId)
 }
 
 export const labelForOrdinal = (ordinal: number | null): string | null => {

@@ -26,6 +26,7 @@ import type {
     PushUnsubscribeInput,
     ReceiptParseInput,
     ReactionInput,
+    LedgerPage,
     RoomHistoryPage,
     RoomState,
     ApiBudget,
@@ -276,6 +277,12 @@ export const api = {
                 cache: 'no-store',
             }),
     },
+
+    roomLedger: (slug: string, cursor?: string | null, signal?: AbortSignal) =>
+        request<LedgerPage>(`/api/rooms/${encode(slug)}/ledger${cursor ? `?cursor=${encode(cursor)}` : ''}`, {
+            signal,
+            cache: 'no-store',
+        }),
 
     roomHistory: (slug: string, cursor?: string | null, signal?: AbortSignal) =>
         request<RoomHistoryPage>(`/api/rooms/${encode(slug)}/history${cursor ? `?cursor=${encode(cursor)}` : ''}`, {

@@ -5,7 +5,7 @@
             "controlTitleAccessible": "PODAJ DALEJ",
             "titleAccessible": "<highlight>Jasne rozliczenia</highlight> sprzyjają <highlight>dobrej przyjaźni</highlight>",
             "subtitle": "Dziel wydatki ze znajomymi i sprawdzaj, kto ile jest winien.",
-            "cta": "Stwórz link",
+            "cta": "Start my group",
             "linkExplainerTrigger": "Jak działa link",
             "chat": {
                 "defaultRoom": "Weekend w Lizbonie",
@@ -21,7 +21,9 @@
             "validation": {
                 "roomRequired": "Najpierw nazwij pokój.",
                 "creatorRequired": "Powiedz nam, kim jesteś."
-            }
+            },
+            "eyebrow": "Your group's account",
+            "ctaNote": "Free. No sign-up."
         },
         "rooms": {
             "title": "Twoje pokoje",
@@ -222,20 +224,51 @@
             },
             "done": "Rozumiem"
         },
-        "howItWorks": {
-            "title": "That easy",
-            "create": {
-                "title": "Start your tribe",
-                "body": "Name it and add your people. No account needed."
-            },
-            "share": {
-                "title": "Share the link",
-                "body": "Everyone joins from the group chat and adds what they paid."
+        "landingPreview": {
+            "label": "What a group looks like",
+            "name": "Palermo flat",
+            "people": "Bea, Mo and you",
+            "monthLabel": "This month",
+            "monthValue": "US$ 1,240",
+            "owedLabel": "Bea pays you",
+            "owedValue": "US$ 35",
+            "potLabel": "Pot · holidays",
+            "potValue": "62%",
+            "fixedLabel": "Rent",
+            "fixedValue": "added on the 1st"
+        },
+        "landingFeatures": {
+            "title": "All the group's money, in one place",
+            "record": {
+                "title": "Record",
+                "body": "Who paid what, in any currency. Fixed expenses like rent are added every month on their own."
             },
             "settle": {
-                "title": "Settle in a tap",
-                "body": "Tribu works out who pays whom. Inside Lemon you pay in USDC or USDT."
+                "title": "Settle up",
+                "body": "Tribu works out who pays whom in the fewest payments. When someone pays, they mark it and that's it."
+            },
+            "pool": {
+                "title": "Save together",
+                "body": "A pot for what's next: a gift, the holidays, the pitch. With a goal and how much is left."
+            },
+            "remind": {
+                "title": "Remind",
+                "body": "A friendly nudge to whoever hasn't paid their part yet, so nobody has to feel awkward."
             }
+        },
+        "landingGroups": {
+            "title": "Start your group's account",
+            "body": "For couples, housemates, friends, family or teams. Pick one or give it any name.",
+            "couple": "Couple",
+            "home": "Home",
+            "friends": "Friends",
+            "family": "Family",
+            "team": "Team"
+        },
+        "landingNext": {
+            "badge": "Coming next",
+            "title": "The group wallet",
+            "body": "We're building a dollar account the group runs together: with rules everyone agrees on, and the money never in just one person's name."
         }
     },
     "locale": {

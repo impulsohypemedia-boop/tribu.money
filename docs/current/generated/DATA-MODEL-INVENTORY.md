@@ -3,7 +3,7 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `7921b11143ce3caf20e8b7de6c0849c22b0d3b23ddb3ad7c117fed2878d1101e`
+Input SHA-256: `58396185a55b587d5a239abf8fbcca40a40dfe7341d13dcbbd5251b0e53febc9`
 
 PostgreSQL namespace: `split`  
 Models: 19  
@@ -102,6 +102,8 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `payoutToken`        | `String?`            | // USDT \| USDC                                                                    |
 | `payoutNetwork`      | `String?`            | // key from lib/payout.ts                                                          |
 | `payoutAddress`      | `String?`            | —                                                                                  |
+| `payoutBank`         | `String?`            | —                                                                                  |
+| `payoutLemonTag`     | `String?`            | —                                                                                  |
 | `honoredGuest`       | `Boolean`            | @default(false)                                                                    |
 | `provisional`        | `Boolean`            | @default(false)                                                                    |
 | `createdAt`          | `DateTime`           | @default(now())                                                                    |

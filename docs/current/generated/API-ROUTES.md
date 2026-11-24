@@ -3,9 +3,9 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/src/app/**/route.ts`  
-Input SHA-256: `cf14ac965e025102999d54fcaa7c8880bca71b2910098b8f2d618b7377656b30`
+Input SHA-256: `58994f2e0c439d7a66861eb1367fe62e9e8befb50e7a37aeca5e64fed13bc186`
 
-Exported operations: 60
+Exported operations: 61
 
 | Method   | Path                                                         | Handler                                                                                  |
 | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
@@ -62,6 +62,7 @@ Exported operations: 60
 | `POST`   | `/api/rooms/:slug/settlements`                               | `apps/web/src/app/api/rooms/[slug]/settlements/route.ts`                                 |
 | `DELETE` | `/api/rooms/:slug/settlements/:id`                           | `apps/web/src/app/api/rooms/[slug]/settlements/[id]/route.ts`                            |
 | `POST`   | `/api/share-target`                                          | `apps/web/src/app/api/share-target/route.ts`                                             |
+| `GET`    | `/api/usd-rates`                                             | `apps/web/src/app/api/usd-rates/route.ts`                                                |
 | `GET`    | `/healthcheck`                                               | `apps/web/src/app/healthcheck/route.ts`                                                  |
 | `GET`    | `/manifest.webmanifest`                                      | `apps/web/src/app/manifest.webmanifest/route.ts`                                         |
 | `GET`    | `/r/:slug/card/:kind`                                        | `apps/web/src/app/(product-shell)/r/[slug]/card/[kind]/route.ts`                         |

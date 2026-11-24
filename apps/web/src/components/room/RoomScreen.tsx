@@ -48,6 +48,7 @@ import { ExpenseDrawer } from './ExpenseDrawer'
 import { ExpenseList } from './ExpenseList'
 import { JoinGate } from './JoinGate'
 import { LatecomerBanner } from './LatecomerBanner'
+import { ReminderNotice, RemindersCard } from './Reminders'
 import { RoomErrorState, RoomHeaderSkeleton, RoomNotFound, RoomSkeleton } from './RoomStates'
 import { RoomHeader } from './RoomHeader'
 import { MonthSummaryCard } from './MonthSummary'
@@ -557,6 +558,16 @@ export function RoomScreen({ slug }: { slug: string }) {
                             data-motion-surface
                             className="flex flex-col gap-6"
                         >
+                            {!needsJoin && !staleState && (
+                                <ReminderNotice
+                                    slug={slug}
+                                    state={state}
+                                    currencies={currencies}
+                                    meId={meId}
+                                    token={identity?.token}
+                                    onSettle={() => setParams({ settle: true })}
+                                />
+                            )}
                             <BalanceStrip
                                 state={state}
                                 currencies={currencies}
@@ -658,6 +669,13 @@ export function RoomScreen({ slug }: { slug: string }) {
                                         />
                                     ) : (
                                         <>
+                                            <RemindersCard
+                                                slug={slug}
+                                                state={state}
+                                                currencies={currencies}
+                                                meId={meId}
+                                                token={identity?.token}
+                                            />
                                             <VaquitaCard
                                                 slug={slug}
                                                 state={state}

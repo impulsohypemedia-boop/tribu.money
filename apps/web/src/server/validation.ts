@@ -716,6 +716,8 @@ const optionalMinor = minorAmount.nullish()
 
 const yieldAprBps = z.number().int().min(1).max(MAX_YIELD_APR_BPS).nullish()
 
+export const reminderSchema = z.object({ toId: id })
+
 export const potCreateSchema = z.object({
     name: potName,
     keeperId: id,

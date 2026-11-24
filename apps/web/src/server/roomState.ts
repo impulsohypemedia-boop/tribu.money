@@ -42,6 +42,8 @@ const roomArgs = {
             include: { contributions: { where: { deletedAt: null }, orderBy: [{ createdAt: 'asc' }, { id: 'asc' }] } },
             orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
         },
+        // Enough to know each person's latest reminder; the cooldown only needs that one.
+        reminders: { orderBy: [{ createdAt: 'desc' }, { id: 'desc' }], take: 30 },
     },
 } satisfies Prisma.RoomDefaultArgs
 
@@ -206,6 +208,13 @@ export function toRoomState(room: RoomWithRelations): RoomState {
                 reason: c.reason === 'roundup' ? c.reason : null,
                 createdAt: c.createdAt.toISOString(),
             })),
+        })),
+        reminders: (room.reminders ?? []).map((reminder) => ({
+            id: reminder.id,
+            fromId: reminder.fromId,
+            toId: reminder.toId,
+            createdAt: reminder.createdAt.toISOString(),
+            seenAt: reminder.seenAt?.toISOString() ?? null,
         })),
         settlements: room.settlements.map((s) => ({
             id: s.id,

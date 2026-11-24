@@ -3,10 +3,10 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `aefe3d586b01592bd33f809d125205b54f4dd71f5f53b28b710eb166430b348e`
+Input SHA-256: `7921b11143ce3caf20e8b7de6c0849c22b0d3b23ddb3ad7c117fed2878d1101e`
 
 PostgreSQL namespace: `split`  
-Models: 18  
+Models: 19  
 Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## Room
@@ -28,6 +28,7 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `expenses`                    | `Expense[]`          | —                                    |
 | `recurringExpenses`           | `RecurringExpense[]` | —                                    |
 | `pots`                        | `Pot[]`              | —                                    |
+| `reminders`                   | `Reminder[]`         | —                                    |
 | `settlements`                 | `Settlement[]`       | —                                    |
 | `auditEvents`                 | `RoomAuditEvent[]`   | —                                    |
 | `importBatches`               | `ImportBatch[]`      | —                                    |
@@ -35,6 +36,18 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `installHandoffs`             | `InstallHandoff[]`   | —                                    |
 | `pushSubscriptions`           | `PushSubscription[]` | —                                    |
 | `notificationSends`           | `NotificationSend[]` | —                                    |
+
+## Reminder
+
+| Field       | Prisma type | Attributes                                                       |
+| ----------- | ----------- | ---------------------------------------------------------------- |
+| `id`        | `String`    | @id @default(uuid())                                             |
+| `roomId`    | `String`    | —                                                                |
+| `fromId`    | `String`    | —                                                                |
+| `toId`      | `String`    | —                                                                |
+| `createdAt` | `DateTime`  | @default(now())                                                  |
+| `seenAt`    | `DateTime?` | —                                                                |
+| `room`      | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade) |
 
 ## FeedbackReport
 

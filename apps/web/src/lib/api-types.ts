@@ -153,6 +153,15 @@ export interface ApiTransfer {
     amountMinor: string
 }
 
+/** A friendly nudge: `fromId` is owed money by `toId`. */
+export interface ApiReminder {
+    id: string
+    fromId: string
+    toId: string
+    createdAt: string
+    seenAt: string | null
+}
+
 export interface ApiRecurringExpense {
     id: string
     description: string
@@ -211,6 +220,8 @@ export interface RoomState {
     recurring?: ApiRecurringExpense[]
     /** Every vaquita, open and closed, oldest first. Optional only for older cached responses. */
     pots?: ApiPot[]
+    /** The latest reminders, newest first. Optional only for older cached responses. */
+    reminders?: ApiReminder[]
     /** memberId → net position in room-currency minor units. Sums to "0". */
     balances: Record<string, string>
     suggestedTransfers: ApiTransfer[]

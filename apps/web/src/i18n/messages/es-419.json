@@ -1263,6 +1263,24 @@
                 "estimateNote": "Es un estimado. Tribu no mueve la plata: rinde si {name} la tiene en una cuenta que pague ese rendimiento."
             }
         },
+        "reminders": {
+            "title": "Te tienen que pasar",
+            "passesYou": "{name} te pasa",
+            "remind": "Recordale",
+            "waitUntil": "Ya le avisaron. Podés recordarle de nuevo el {date}.",
+            "message": "¡Hola {name}! 👋 Un recordatorio amable de la tribu {tribu}: quedaron {amount} para pasarle a {me}. Cuando puedas, lo ves y quedamos a mano acá: {url}\n¡Gracias!",
+            "limitHint": "Le llega un aviso en Tribu. Para no cansar a nadie, se puede recordar una vez cada 3 días.",
+            "sendWhatsapp": "Mandar por WhatsApp",
+            "sendApp": "Avisar solo en Tribu",
+            "sentApp": "Listo, le va a aparecer el aviso cuando abra la tribu.",
+            "sentWhatsapp": "Listo, también le aparece el aviso en Tribu.",
+            "tooSoonToast": "Ya le avisaron hace poco. Probá de nuevo en unos días.",
+            "noticeLead": "{name} te manda un recordatorio amable: le pasás",
+            "noticeTail": " cuando puedas.",
+            "someone": "Alguien de la tribu",
+            "settleNow": "Quedar a mano",
+            "later": "Después"
+        },
         "tribePot": {
             "defaultName": "Pozo de la tribu",
             "created": "¡Listo, la tribu tiene pozo!",
@@ -1387,6 +1405,8 @@
         "NOT_THIS_MEMBER": "Solo esa persona puede conectar su wallet.",
         "PAYOUT_ADDRESS_INVALID": "Esa dirección no corresponde a la red elegida.",
         "RECURRING_CURRENCY_UNSUPPORTED": "Un gasto en una moneda personalizada no se puede repetir solo.",
+        "REMINDER_TOO_SOON": "Ya le avisaron hace poco. Probá de nuevo en unos días.",
+        "REMINDER_NOTHING_PENDING": "Ya no hay nada pendiente para recordarle.",
         "POT_NOT_FOUND": "No encontramos esa vaquita.",
         "POT_CLOSED": "Esta vaquita ya está cerrada.",
         "POT_PAYER_NOT_KEEPER": "Para que lo pague la vaquita, lo tiene que pagar quien la guarda.",

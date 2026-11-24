@@ -7,6 +7,7 @@ import type { Prisma } from '@prisma/client'
 import { prisma } from '@/server/db'
 import { ApiError, notFound } from '@/server/http'
 import { expenseRevision } from '@/server/history'
+import { ledgerMemberBalances } from '@/server/ledger'
 import { formatStoredFxRate } from '@/server/money'
 import { suggestedTransfers } from '@/server/settlement'
 import type { RoomState } from '@/lib/api-types'
@@ -121,9 +122,23 @@ export function balancesOf(room: BalanceInput): Map<string, bigint> {
 const analyticsKeyFor = (roomId: string): string =>
     createHash('sha256').update(`split-room-analytics\0${roomId}`).digest('hex').slice(0, 32)
 
+/**
+ * Balances as the book of account has them, cross-checked against the fold over the rows. They
+ * agree whenever the book is in sync; if they ever differ, the fold wins and the gap is logged,
+ * so a bug in the book can never show anyone a wrong number.
+ */
+export function checkedBalances(room: BalanceInput & { id?: string }, ledger?: Map<string, bigint>) {
+    const folded = balancesOf(room)
+    if (!ledger) return folded
+    const differs = [...folded].some(([id, net]) => (ledger.get(id) ?? 0n) !== net)
+    if (!differs) return ledger
+    console.error('[ledger] balances differ from the expense and payment rows', { roomId: room.id })
+    return folded
+}
+
 /** DB rows → wire shape. BigInt becomes a decimal string here, not later. */
-export function toRoomState(room: RoomWithRelations): RoomState {
-    const balances = balancesOf(room)
+export function toRoomState(room: RoomWithRelations, ledgerBalances?: Map<string, bigint>): RoomState {
+    const balances = checkedBalances(room, ledgerBalances)
     return {
         room: {
             id: room.id,
@@ -268,7 +283,15 @@ export async function loadRoomById(id: string): Promise<RoomWithRelations> {
     return withRemovalState(room)
 }
 
-export const roomStateBySlug = async (slug: string): Promise<RoomState> => toRoomState(await loadRoom(slug))
+export const roomStateBySlug = async (slug: string): Promise<RoomState> => {
+    const room = await loadRoom(slug)
+    const ledger = await ledgerMemberBalances(
+        prisma,
+        room.id,
+        room.members.map((member) => member.id)
+    )
+    return toRoomState(room, ledger)
+}
 
 /** The member a request is acting as, per `X-Member-Token`. Attribution only. */
 export function memberIdForToken(room: RoomWithRelations, token: string | null): string | null {

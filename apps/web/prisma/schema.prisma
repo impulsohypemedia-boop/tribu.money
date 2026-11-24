@@ -56,6 +56,7 @@ model Room {
   reminders                   Reminder[]
   settlements                 Settlement[]
   auditEvents                 RoomAuditEvent[]
+  ledgerEntries               LedgerEntry[]
   importBatches               ImportBatch[]
   feedbackReports             FeedbackReport[]
   installHandoffs             InstallHandoff[]
@@ -508,5 +509,54 @@ model PotContribution {
   pot Pot @relation(fields: [potId], references: [id], onDelete: Cascade)
 
   @@index([potId])
+  @@schema("split")
+}
+
+/// The tribu's book of account: every money movement as a double-entry record that is never
+/// changed or deleted. An edited expense gets a reversal of its last record and a new record; a
+/// deleted one gets only the reversal. Amounts are room-currency minor units, and the postings of
+/// each entry sum to zero (checked by a database trigger at commit).
+///
+/// Expenses, settlements and pot contributions stay the rows people edit. `src/server/ledger.ts`
+/// brings this book in line with them inside the same transaction as every audited write.
+model LedgerEntry {
+  id          BigInt   @id @default(autoincrement())
+  roomId      String
+  sourceType  String // expense | settlement | pot_contribution
+  sourceId    String
+  kind        String // record | reversal
+  reversesId  BigInt?  @unique // the record a reversal cancels
+  currency    String // room currency; every posting amount is in it
+  description String? // snapshot at write time
+  detail      Json? // snapshot at write time: original amount and currency, method, pot
+  occurredAt  DateTime // when the money moved: the expense date or when the payment was recorded
+  createdAt   DateTime @default(now())
+
+  room       Room            @relation(fields: [roomId], references: [id], onDelete: Restrict)
+  reverses   LedgerEntry?    @relation("LedgerReversal", fields: [reversesId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  reversedBy LedgerEntry?    @relation("LedgerReversal")
+  postings   LedgerPosting[]
+
+  @@index([roomId, id])
+  @@index([roomId, sourceType, sourceId])
+  @@schema("split")
+}
+
+/// One side of a ledger entry. Accounts:
+/// - member:<memberId>  the person's balance inside the tribu (positive = the tribu owes them)
+/// - pot:<potId>        money in that vaquita
+/// - keeper:<memberId>  vaquita money this person is holding (the pot's mirror, so negative)
+model LedgerPosting {
+  id          BigInt @id @default(autoincrement())
+  entryId     BigInt
+  roomId      String
+  accountType String // member | pot | keeper
+  accountId   String
+  amountMinor BigInt
+
+  entry LedgerEntry @relation(fields: [entryId], references: [id], onDelete: Restrict)
+
+  @@index([entryId])
+  @@index([roomId, accountType, accountId])
   @@schema("split")
 }

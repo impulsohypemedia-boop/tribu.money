@@ -3,9 +3,9 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/src/app/**/route.ts`  
-Input SHA-256: `c42fe34a8ddd7903ae0773128f3b3eaa41abda1572c1f79c2e5247dd6d322100`
+Input SHA-256: `a6829844fed5915c4c7469d89ddabf26eeef785e1bff1f8c4fbc6233bc0fdd06`
 
-Exported operations: 58
+Exported operations: 59
 
 | Method   | Path                                                         | Handler                                                                                  |
 | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
@@ -33,6 +33,7 @@ Exported operations: 58
 | `GET`    | `/api/rooms/:slug/history/export`                            | `apps/web/src/app/api/rooms/[slug]/history/export/route.ts`                              |
 | `POST`   | `/api/rooms/:slug/import`                                    | `apps/web/src/app/api/rooms/[slug]/import/route.ts`                                      |
 | `POST`   | `/api/rooms/:slug/install-handoff`                           | `apps/web/src/app/api/rooms/[slug]/install-handoff/route.ts`                             |
+| `GET`    | `/api/rooms/:slug/ledger`                                    | `apps/web/src/app/api/rooms/[slug]/ledger/route.ts`                                      |
 | `GET`    | `/api/rooms/:slug/lemon-quote`                               | `apps/web/src/app/api/rooms/[slug]/lemon-quote/route.ts`                                 |
 | `POST`   | `/api/rooms/:slug/members`                                   | `apps/web/src/app/api/rooms/[slug]/members/route.ts`                                     |
 | `DELETE` | `/api/rooms/:slug/members/:memberId`                         | `apps/web/src/app/api/rooms/[slug]/members/[memberId]/route.ts`                          |

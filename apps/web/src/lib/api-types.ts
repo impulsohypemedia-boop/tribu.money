@@ -279,6 +279,27 @@ export interface RoomHistoryPage {
     nextCursor: string | null
 }
 
+/** One entry of the tribu's book of account. Amounts are room-currency minor units. */
+export interface ApiLedgerEntry {
+    id: string
+    sourceType: 'expense' | 'settlement' | 'pot_contribution'
+    sourceId: string
+    kind: 'record' | 'reversal'
+    reversesId: string | null
+    currency: string
+    description: string | null
+    /** Snapshot taken when the entry was written; string values only. */
+    detail: Record<string, string | null>
+    occurredAt: string
+    createdAt: string
+    postings: { accountType: 'member' | 'pot' | 'keeper'; accountId: string; amountMinor: string }[]
+}
+
+export interface LedgerPage {
+    entries: ApiLedgerEntry[]
+    nextCursor: string | null
+}
+
 /** Expense-create-only metadata. The boolean describes this mutation, not the
  * room snapshot, so callers must not persist it in the shared room cache. */
 export interface ExpenseCreateResult extends RoomState {

@@ -3,10 +3,10 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `7921b11143ce3caf20e8b7de6c0849c22b0d3b23ddb3ad7c117fed2878d1101e`
+Input SHA-256: `be2ac150b0d4c3df54f835e13ed4ab5c196c6b464eb5fe1bdc8381cec10de537`
 
 PostgreSQL namespace: `split`  
-Models: 19  
+Models: 21  
 Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## Room
@@ -31,6 +31,7 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `reminders`                   | `Reminder[]`         | —                                    |
 | `settlements`                 | `Settlement[]`       | —                                    |
 | `auditEvents`                 | `RoomAuditEvent[]`   | —                                    |
+| `ledgerEntries`               | `LedgerEntry[]`      | —                                    |
 | `importBatches`               | `ImportBatch[]`      | —                                    |
 | `feedbackReports`             | `FeedbackReport[]`   | —                                    |
 | `installHandoffs`             | `InstallHandoff[]`   | —                                    |
@@ -102,6 +103,8 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `payoutToken`        | `String?`            | // USDT \| USDC                                                                    |
 | `payoutNetwork`      | `String?`            | // key from lib/payout.ts                                                          |
 | `payoutAddress`      | `String?`            | —                                                                                  |
+| `payoutBank`         | `String?`            | —                                                                                  |
+| `payoutLemonTag`     | `String?`            | —                                                                                  |
 | `honoredGuest`       | `Boolean`            | @default(false)                                                                    |
 | `provisional`        | `Boolean`            | @default(false)                                                                    |
 | `createdAt`          | `DateTime`           | @default(now())                                                                    |
@@ -331,3 +334,35 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `createdAt`    | `DateTime`  | @default(now())                                                 |
 | `deletedAt`    | `DateTime?` | —                                                               |
 | `pot`          | `Pot`       | @relation(fields: [potId], references: [id], onDelete: Cascade) |
+
+## LedgerEntry
+
+| Field         | Prisma type       | Attributes                                                                                                  |
+| ------------- | ----------------- | ----------------------------------------------------------------------------------------------------------- |
+| `id`          | `BigInt`          | @id @default(autoincrement())                                                                               |
+| `roomId`      | `String`          | —                                                                                                           |
+| `sourceType`  | `String`          | // expense \| settlement \| pot_contribution                                                                |
+| `sourceId`    | `String`          | —                                                                                                           |
+| `kind`        | `String`          | // record \| reversal                                                                                       |
+| `reversesId`  | `BigInt?`         | @unique // the record a reversal cancels                                                                    |
+| `currency`    | `String`          | // room currency; every posting amount is in it                                                             |
+| `description` | `String?`         | // snapshot at write time                                                                                   |
+| `detail`      | `Json?`           | // snapshot at write time: original amount and currency, method, pot                                        |
+| `occurredAt`  | `DateTime`        | // when the money moved: the expense date or when the payment was recorded                                  |
+| `createdAt`   | `DateTime`        | @default(now())                                                                                             |
+| `room`        | `Room`            | @relation(fields: [roomId], references: [id], onDelete: Restrict)                                           |
+| `reverses`    | `LedgerEntry?`    | @relation("LedgerReversal", fields: [reversesId], references: [id], onDelete: Restrict, onUpdate: Restrict) |
+| `reversedBy`  | `LedgerEntry?`    | @relation("LedgerReversal")                                                                                 |
+| `postings`    | `LedgerPosting[]` | —                                                                                                           |
+
+## LedgerPosting
+
+| Field         | Prisma type   | Attributes                                                         |
+| ------------- | ------------- | ------------------------------------------------------------------ |
+| `id`          | `BigInt`      | @id @default(autoincrement())                                      |
+| `entryId`     | `BigInt`      | —                                                                  |
+| `roomId`      | `String`      | —                                                                  |
+| `accountType` | `String`      | // member \| pot \| keeper                                         |
+| `accountId`   | `String`      | —                                                                  |
+| `amountMinor` | `BigInt`      | —                                                                  |
+| `entry`       | `LedgerEntry` | @relation(fields: [entryId], references: [id], onDelete: Restrict) |

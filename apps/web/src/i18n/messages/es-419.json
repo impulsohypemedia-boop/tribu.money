@@ -1291,6 +1291,29 @@
             "create": "Armar el pozo",
             "startHint": "Ahí van los redondeos de cuando se pasan plata. Lo guarda alguien de la tribu en su cuenta.",
             "formHint": "Tribu no guarda plata: el pozo queda en la cuenta de quien elijan, como en una vaquita."
+        },
+        "budget": {
+            "start": "Poné un presupuesto para el mes",
+            "startHint": "Un tope para el súper, salidas o el total. Tribu les avisa cuando se acercan.",
+            "cardTitle": "Presupuesto de {month}",
+            "title": "Presupuesto del mes",
+            "editTitle": "Presupuesto por mes",
+            "intro": "Lo que la tribu lleva gastado en {month} contra el tope de cada cosa.",
+            "editHint": "Poné cuánto quieren gastar como máximo por mes. Dejá vacío lo que no quieran limitar.",
+            "total": "Total del mes",
+            "ofLimit": "de <amount></amount>",
+            "left": "Usaron el {pct}% · quedan <amount></amount>",
+            "overBy": "Se pasaron por <amount></amount>",
+            "alertNear": "{category}: ya usaron el {pct}% del presupuesto",
+            "alertOver": "{category}: se pasaron del presupuesto",
+            "noLimit": "Sin tope",
+            "amountInvalid": "Revisá el monto de {category}.",
+            "save": "Guardar presupuesto",
+            "saved": "Presupuesto guardado",
+            "cleared": "Presupuesto borrado",
+            "edit": "Cambiar presupuesto",
+            "close": "Cerrar",
+            "limit": "tope"
         }
     },
     "slideToConfirm": {
@@ -1413,7 +1436,8 @@
         "BADGES_NOT_ENABLED": "Guardar insignias en la wallet todavía no está activado.",
         "BADGE_NOT_EARNED": "Todavía no conseguiste esta insignia en esa tribu.",
         "BADGE_NO_WALLET": "Primero vinculá tu wallet de Lemon en esa tribu.",
-        "MEMBER_TOKEN_REQUIRED": "Primero elegí quién sos en esta tribu."
+        "MEMBER_TOKEN_REQUIRED": "Primero elegí quién sos en esta tribu.",
+        "BUDGET_NOT_FOR_VAQUITA": "Una vaquita no tiene presupuesto mensual; eso es para las tribus."
     },
     "derivation": {
         "title": "Cómo sale este número",

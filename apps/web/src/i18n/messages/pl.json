@@ -1291,6 +1291,29 @@
             "create": "Start the pot",
             "startHint": "Round-ups from payments go here. Someone in the tribe keeps it in their account.",
             "formHint": "Tribu holds no money: the pot stays in the account of whoever you pick, as with a vaquita."
+        },
+        "budget": {
+            "start": "Set a budget for the month",
+            "startHint": "A limit for groceries, going out or the total. Tribu tells you when you get close.",
+            "cardTitle": "{month} budget",
+            "title": "This month's budget",
+            "editTitle": "Monthly budget",
+            "intro": "What the group has spent in {month} against each limit.",
+            "editHint": "Enter the most you want to spend each month. Leave blank what you don't want to limit.",
+            "total": "Month total",
+            "ofLimit": "of <amount></amount>",
+            "left": "{pct}% used · <amount></amount> left",
+            "overBy": "Over by <amount></amount>",
+            "alertNear": "{category}: {pct}% of the budget used",
+            "alertOver": "{category}: over budget",
+            "noLimit": "No limit",
+            "amountInvalid": "Check the amount for {category}.",
+            "save": "Save budget",
+            "saved": "Budget saved",
+            "cleared": "Budget cleared",
+            "edit": "Change budget",
+            "close": "Close",
+            "limit": "limit"
         }
     },
     "slideToConfirm": {
@@ -1413,7 +1436,8 @@
         "BADGES_NOT_ENABLED": "Keeping badges in the wallet is not switched on yet.",
         "BADGE_NOT_EARNED": "You have not earned this badge in that tribe yet.",
         "BADGE_NO_WALLET": "Link your Lemon wallet in that tribe first.",
-        "MEMBER_TOKEN_REQUIRED": "Pick who you are in this tribe first."
+        "MEMBER_TOKEN_REQUIRED": "Pick who you are in this tribe first.",
+        "BUDGET_NOT_FOR_VAQUITA": "A shared pot has no monthly budget; budgets are for groups."
     },
     "derivation": {
         "title": "Skąd ta suma",

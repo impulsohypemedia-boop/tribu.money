@@ -54,6 +54,7 @@ model Room {
   recurringExpenses           RecurringExpense[]
   pots                        Pot[]
   reminders                   Reminder[]
+  budgets                     Budget[]
   settlements                 Settlement[]
   auditEvents                 RoomAuditEvent[]
   importBatches               ImportBatch[]
@@ -63,6 +64,24 @@ model Room {
   pushSubscriptions PushSubscription[]
   notificationSends NotificationSend[]
 
+  @@schema("split")
+}
+
+/// Presupuesto del grupo: the most the tribu means to spend in a month, overall
+/// or on one category. A plan, not money: nothing here touches balances. What
+/// was spent is read from the month's expenses whenever the screen is drawn.
+model Budget {
+  id          String   @id @default(uuid())
+  roomId      String
+  // "total" for the whole month, otherwise an expense category id.
+  category    String
+  amountMinor BigInt // per calendar month, room currency
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, category])
   @@schema("split")
 }
 

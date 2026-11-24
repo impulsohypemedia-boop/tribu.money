@@ -52,6 +52,7 @@ import { ReminderNotice, RemindersCard } from './Reminders'
 import { RoomErrorState, RoomHeaderSkeleton, RoomNotFound, RoomSkeleton } from './RoomStates'
 import { RoomHeader } from './RoomHeader'
 import { MonthSummaryCard } from './MonthSummary'
+import { BudgetCard } from './Budget'
 import { TribePotSetup } from './TribePot'
 import { TribeMilestones } from './TribeMilestones'
 import { VaquitaCard, VaquitaRoomPanel } from './Vaquita'
@@ -690,6 +691,7 @@ export function RoomScreen({ slug }: { slug: string }) {
                                                 token={identity?.token}
                                             />
                                             <MonthSummaryCard state={state} currencies={currencies} />
+                                            <BudgetCard state={state} currencies={currencies} />
                                         </>
                                     )}
                                     <TribeMilestones slug={slug} state={state} />

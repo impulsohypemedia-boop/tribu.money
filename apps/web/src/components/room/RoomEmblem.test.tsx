@@ -15,7 +15,7 @@ describe('RoomEmblem', () => {
         const html = renderToStaticMarkup(<RoomEmblem value={value} name="Ski trip" size={30} />)
 
         expect(html).toContain('viewBox="0 0 32 32"')
-        expect(html).toContain('stroke="#211c17"')
+        expect(html).toContain('stroke="#0D1B2A"')
         expect(html).toContain('M3.191 6.413 L28.809 25.587')
         expect(html).not.toContain(value)
     })

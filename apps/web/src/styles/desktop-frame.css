@@ -1,15 +1,15 @@
 @media screen and (min-width: 768px) {
     body:has(.split-app-frame) {
-        background-color: #ffe9df;
-        background-image: radial-gradient(rgb(33 28 23 / 12%) 1px, transparent 1px);
+        background-color: #edeae3;
+        background-image: radial-gradient(rgb(13 27 42 / 10%) 1px, transparent 1px);
         background-size: 24px 24px;
     }
 
     .split-app-frame {
         /* Paint outside the existing column so content and fixed controls stay aligned. */
-        background-color: #faf4f0;
-        outline: 1.5px solid var(--split-ink);
-        box-shadow: 8px 8px 0 var(--split-ink);
+        background-color: #f6f4f0;
+        outline: 1px solid rgb(13 27 42 / 8%);
+        box-shadow: 0 30px 60px -30px rgb(13 27 42 / 35%);
     }
 
     /* A self-contained screen with no fixed controls reads as a card resting on the canvas:

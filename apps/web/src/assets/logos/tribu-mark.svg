@@ -1,11 +1,16 @@
 <svg width="1705" height="1705" viewBox="0 0 1705 1705" fill="none" xmlns="http://www.w3.org/2000/svg">
-<!-- Tribu's provisional mark: three people, side by side, on an orange disc.
+<!-- Tribu's mark: the ronda. Five hooded people around one orange dot, the money they share.
      `scripts/generate-icons.mjs` reads this file and pulls out the `mark` group on its own for
      the icons a platform masks into a square. Keep the two ids. -->
-<path id="ground" d="M852.5 43.5C1299.3 43.5 1661.5 405.702 1661.5 852.5C1661.5 1299.3 1299.3 1661.5 852.5 1661.5C405.702 1661.5 43.5 1299.3 43.5 852.5C43.5 405.702 405.702 43.5 852.5 43.5Z" fill="#FF7A45" stroke="black" stroke-width="55"/>
+<circle id="ground" cx="852.5" cy="852.5" r="852.5" fill="#0D1B2A"/>
 <g id="mark">
-<circle cx="852.5" cy="640" r="250" fill="white" stroke="black" stroke-width="54"/>
-<circle cx="610" cy="1060" r="250" fill="#7DD3C0" stroke="black" stroke-width="54"/>
-<circle cx="1095" cy="1060" r="250" fill="#FFE9DF" stroke="black" stroke-width="54"/>
+<g transform="translate(852.5 852.5) scale(17.05)">
+<g transform="rotate(0) translate(0 -30)"><path d="M0 -15 C4.5 -15 12 4 12 9.5 C12 14.5 -12 14.5 -12 9.5 C-12 4 -4.5 -15 0 -15Z" fill="#F6F4F0"/><ellipse cx="0" cy="6.5" rx="6.4" ry="5" fill="#FFE3D7"/><circle cx="-2.7" cy="6" r="1.35" fill="#0D1B2A"/><circle cx="2.7" cy="6" r="1.35" fill="#0D1B2A"/></g>
+<g transform="rotate(72) translate(0 -30)"><path d="M0 -15 C4.5 -15 12 4 12 9.5 C12 14.5 -12 14.5 -12 9.5 C-12 4 -4.5 -15 0 -15Z" fill="#F6F4F0"/><ellipse cx="0" cy="6.5" rx="6.4" ry="5" fill="#FFE3D7"/><circle cx="-2.7" cy="6" r="1.35" fill="#0D1B2A"/><circle cx="2.7" cy="6" r="1.35" fill="#0D1B2A"/></g>
+<g transform="rotate(144) translate(0 -30)"><path d="M0 -15 C4.5 -15 12 4 12 9.5 C12 14.5 -12 14.5 -12 9.5 C-12 4 -4.5 -15 0 -15Z" fill="#F6F4F0"/><ellipse cx="0" cy="6.5" rx="6.4" ry="5" fill="#FFE3D7"/><circle cx="-2.7" cy="6" r="1.35" fill="#0D1B2A"/><circle cx="2.7" cy="6" r="1.35" fill="#0D1B2A"/></g>
+<g transform="rotate(216) translate(0 -30)"><path d="M0 -15 C4.5 -15 12 4 12 9.5 C12 14.5 -12 14.5 -12 9.5 C-12 4 -4.5 -15 0 -15Z" fill="#F6F4F0"/><ellipse cx="0" cy="6.5" rx="6.4" ry="5" fill="#FFE3D7"/><circle cx="-2.7" cy="6" r="1.35" fill="#0D1B2A"/><circle cx="2.7" cy="6" r="1.35" fill="#0D1B2A"/></g>
+<g transform="rotate(288) translate(0 -30)"><path d="M0 -15 C4.5 -15 12 4 12 9.5 C12 14.5 -12 14.5 -12 9.5 C-12 4 -4.5 -15 0 -15Z" fill="#F6F4F0"/><ellipse cx="0" cy="6.5" rx="6.4" ry="5" fill="#FFE3D7"/><circle cx="-2.7" cy="6" r="1.35" fill="#0D1B2A"/><circle cx="2.7" cy="6" r="1.35" fill="#0D1B2A"/></g>
+<circle r="8.5" fill="#FF6B35"/>
+</g>
 </g>
 </svg>

@@ -42,12 +42,12 @@ export const OG_CACHE_CONTROL = 'public, max-age=300, s-maxage=300, stale-while-
 
 /** Warm dark ink. Every field in the theme catalog is chosen to carry it, which
  *  is why a theme tints the field and never restyles the card. */
-export const INK = '#211C17'
+export const INK = '#0D1B2A'
 export const MUTED = '#5F646D'
 /** primary-1. The Peanut mark's pink: stamps and confetti, never body ink. */
-export const PINK = '#7DD3C0'
+export const PINK = '#C9C2FF'
 /** secondary-1, the default field — and the confetti's third colour. */
-export const YELLOW = '#FF7A45'
+export const YELLOW = '#FF6B35'
 
 /** The domain the card prints, resolved rather than typed. A literal would say
  *  `tribu.money` on a preview deploy, where it is the one thing on the card

@@ -70,7 +70,7 @@ export function RoomHeader({
         // The room's field colour, with the classic yellow as the literal
         // fallback — a room with no theme renders the exact bytes it did before
         // this variable existed.
-        <header className="sticky top-0 z-10 border-b border-n-1 bg-[var(--split-theme-field,#FF7A45)]">
+        <header className="sticky top-0 z-10 border-b border-n-1 bg-[var(--split-theme-field,#FF6B35)]">
             <div className="flex items-center gap-2 py-3 pl-2 pr-4">
                 <Link
                     href="/app"

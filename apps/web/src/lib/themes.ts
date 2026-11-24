@@ -59,13 +59,13 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
     {
         key: 'classic',
         nameKey: 'classic',
-        field: '#FF7A45',
+        field: '#FF6B35',
         fieldTint: '#FF9A70',
-        fieldInk: '#5C1F05',
+        fieldInk: '#4A1803',
         // White, not a yellow wash: the settled balance card is white today and
         // the default theme is not allowed to move a single pixel.
         tint: '#FFFFFF',
-        accent: '#7DD3C0',
+        accent: '#C9C2FF',
         motif: 'tribu',
     },
     {
@@ -75,7 +75,7 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
         fieldTint: '#FFB3EF',
         fieldInk: '#8A2E77',
         tint: '#FFEAFA',
-        accent: '#FF7A45',
+        accent: '#FF6B35',
         motif: 'candy',
     },
     {
@@ -105,7 +105,7 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
         fieldTint: '#B0C1F3',
         fieldInk: '#26356B',
         tint: '#E9EEFB',
-        accent: '#FF7A45',
+        accent: '#FF6B35',
         motif: 'wave',
     },
     {
@@ -115,17 +115,17 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
         fieldTint: '#F2B9B9',
         fieldInk: '#7A2E2E',
         tint: '#FBEAEA',
-        accent: '#FF7A45',
+        accent: '#FF6B35',
         motif: 'sun',
     },
     {
         key: 'sand',
         nameKey: 'sand',
-        field: '#FFE9DF',
-        fieldTint: '#FFB899',
+        field: '#FFE6DB',
+        fieldTint: '#FFB496',
         fieldInk: '#7A5E00',
         tint: '#FFFBEE',
-        accent: '#FF7A45',
+        accent: '#FF6B35',
         motif: 'island',
     },
     {
@@ -135,7 +135,7 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
         fieldTint: '#D3D5D8',
         fieldInk: '#3A3E45',
         tint: '#F4F5F6',
-        accent: '#211C17',
+        accent: '#0D1B2A',
         motif: 'iconpencil',
     },
 ]

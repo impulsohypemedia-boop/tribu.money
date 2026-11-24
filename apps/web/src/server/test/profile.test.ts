@@ -137,6 +137,37 @@ describe('payout details', () => {
         const cleared = await patch(room.slug, room.ana.id, { payout: null }, room.ana.token)
         expect(cleared.body.members.find((member) => member.id === room.ana.id)?.payoutAddress).toBeNull()
     })
+    it('saves a bank alias or CBU and a Lemon tag, and clears them', async () => {
+        const room = await makeRoom()
+        const saved = await patch(
+            room.slug,
+            room.ana.id,
+            { bank: '0000003100 0123456789 01', lemonTag: '@Ana.Tribu' },
+            room.ana.token
+        )
+        expect(saved.status).toBe(200)
+        const ana = saved.body.members.find((member) => member.id === room.ana.id)
+        expect(ana).toMatchObject({ payoutBank: '0000003100012345678901', payoutLemonTag: 'ana.tribu' })
+
+        const alias = await patch(room.slug, room.ana.id, { bank: 'ana.tribu.mp' }, room.ana.token)
+        const afterAlias = alias.body.members.find((member) => member.id === room.ana.id)
+        expect(afterAlias).toMatchObject({ payoutBank: 'ana.tribu.mp', payoutLemonTag: 'ana.tribu' })
+
+        const cleared = await patch(room.slug, room.ana.id, { bank: null, lemonTag: '' }, room.ana.token)
+        const afterClear = cleared.body.members.find((member) => member.id === room.ana.id)
+        expect(afterClear).toMatchObject({ payoutBank: null, payoutLemonTag: null })
+    })
+
+    it('refuses a bad alias or tag, and somebody else’s bank details', async () => {
+        const room = await makeRoom()
+        const badBank = await patch(room.slug, room.ana.id, { bank: '12345' }, room.ana.token)
+        expect(badBank.status).toBe(400)
+        expect(badBank.body.error.code).toBe('PAYOUT_BANK_INVALID')
+        const badTag = await patch(room.slug, room.ana.id, { lemonTag: 'ana tribu' }, room.ana.token)
+        expect(badTag.body.error.code).toBe('PAYOUT_LEMON_TAG_INVALID')
+        const asBruno = await patch(room.slug, room.ana.id, { bank: 'ana.tribu.mp' }, room.bruno.token)
+        expect(asBruno.status).toBe(403)
+    })
 })
 
 describe('honored guests', () => {

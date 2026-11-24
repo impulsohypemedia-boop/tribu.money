@@ -14,9 +14,17 @@ import { api } from '@/lib/api'
 import { cn } from '@/lib/cn'
 import { readIdentity } from '@/lib/identity'
 import { myActivity, type MyRoom } from '@/lib/my-overview'
-import { readMyWallet, writeMyWallet, type MyWallet } from '@/lib/my-wallet'
+import {
+    memberHasProfile,
+    profileInput,
+    readMyPaymentProfile,
+    writeMyPaymentProfile,
+    type MyPaymentProfile,
+} from '@/lib/my-payment-profile'
 import {
     DEFAULT_PAYOUT_NETWORK,
+    normalizeBankAccount,
+    normalizeLemonTag,
     normalizePayoutAddress,
     PAYOUT_NETWORK_KEYS,
     PAYOUT_NETWORKS,
@@ -37,56 +45,69 @@ const pill = (active: boolean) =>
         active ? 'border-n-1 bg-primary-1 text-n-1' : 'border-[#DCC5B4] bg-white text-grey-1'
     )
 
-const hasWallet = (room: MyRoom, wallet: MyWallet) => {
-    const me = room.state.members.find((member) => member.id === room.meId)
-    return (
-        me?.payoutAddress === normalizePayoutAddress(wallet.network, wallet.address) &&
-        me?.payoutNetwork === wallet.network &&
-        me?.payoutToken === wallet.token
-    )
-}
-
-/** "Mi wallet": typed once here, written onto every tribu this device joined. */
-function WalletSection({ rooms }: { rooms: MyRoom[] }) {
+/**
+ * "Cómo te pagan": alias or CBU/CVU, Lemon tag and wallet, typed once here and written onto every
+ * tribu this device joined. Every part is optional; a tribu only uses what is filled in.
+ */
+function PaymentProfileSection({ rooms }: { rooms: MyRoom[] }) {
     const t = useTranslations('appShell.me')
     const queryClient = useQueryClient()
-    const [saved, setSaved] = useState<MyWallet | null>(null)
+    const [saved, setSaved] = useState<MyPaymentProfile | null>(null)
+    const [bank, setBank] = useState('')
+    const [lemonTag, setLemonTag] = useState('')
+    const [withCrypto, setWithCrypto] = useState(false)
     const [token, setToken] = useState<PayoutToken>('USDT')
     const [network, setNetwork] = useState<PayoutNetwork>(DEFAULT_PAYOUT_NETWORK)
     const [address, setAddress] = useState('')
-    const [invalid, setInvalid] = useState(false)
+    const [invalid, setInvalid] = useState<'bank' | 'lemonTag' | 'address' | null>(null)
     const [saving, setSaving] = useState(false)
 
     useEffect(() => {
-        const wallet = readMyWallet()
-        setSaved(wallet)
-        if (wallet) {
-            setToken(wallet.token)
-            setNetwork(wallet.network)
-            setAddress(wallet.address)
+        const profile = readMyPaymentProfile()
+        setSaved(profile)
+        if (!profile) return
+        setBank(profile.bank ?? '')
+        setLemonTag(profile.lemonTag ? `@${profile.lemonTag}` : '')
+        if (profile.crypto) {
+            setWithCrypto(true)
+            setToken(profile.crypto.token)
+            setNetwork(profile.crypto.network)
+            setAddress(profile.crypto.address)
         }
     }, [])
 
     const joined = rooms.filter((room) => room.meId && readIdentity(room.slug)?.token)
-    const withWallet = saved ? joined.filter((room) => hasWallet(room, saved)).length : 0
+    const upToDate = saved
+        ? joined.filter((room) =>
+              memberHasProfile(
+                  room.state.members.find((member) => member.id === room.meId),
+                  saved
+              )
+          ).length
+        : 0
 
     const save = async () => {
-        const normalized = normalizePayoutAddress(network, address)
-        if (!normalized) {
-            setInvalid(true)
-            return
-        }
-        setInvalid(false)
+        const normalizedBank = bank.trim() ? normalizeBankAccount(bank) : null
+        if (bank.trim() && !normalizedBank) return setInvalid('bank')
+        const normalizedTag = lemonTag.trim() ? normalizeLemonTag(lemonTag) : null
+        if (lemonTag.trim() && !normalizedTag) return setInvalid('lemonTag')
+        const normalizedAddress = withCrypto && address.trim() ? normalizePayoutAddress(network, address) : null
+        if (withCrypto && address.trim() && !normalizedAddress) return setInvalid('address')
+        setInvalid(null)
         setSaving(true)
-        const wallet: MyWallet = { token, network, address: normalized }
-        writeMyWallet(wallet)
-        setSaved(wallet)
+        const profile: MyPaymentProfile = {
+            bank: normalizedBank,
+            lemonTag: normalizedTag,
+            crypto: normalizedAddress ? { token, network, address: normalizedAddress } : null,
+        }
+        writeMyPaymentProfile(profile)
+        setSaved(profile)
         const results = await Promise.allSettled(
             joined.map(async (room) => {
                 const next = await api.setMemberProfile(
                     room.slug,
                     room.meId!,
-                    { payout: wallet },
+                    profileInput(profile),
                     readIdentity(room.slug)?.token
                 )
                 queryClient.setQueryData(roomKey(room.slug), next)
@@ -94,78 +115,152 @@ function WalletSection({ rooms }: { rooms: MyRoom[] }) {
         )
         setSaving(false)
         const failed = results.filter((result) => result.status === 'rejected').length
-        if (failed > 0) toast.error(t('walletPartial', { count: failed }), { duration: TOAST_MS.actionable })
-        else toast.success(t('walletSaved', { count: joined.length }), { duration: TOAST_MS.default })
+        if (failed > 0) toast.error(t('profilePartial', { count: failed }), { duration: TOAST_MS.actionable })
+        else toast.success(t('profileSaved', { count: joined.length }), { duration: TOAST_MS.default })
     }
 
     return (
-        <section className="shadow-4 rounded-sm border border-n-1 bg-white p-4" data-testid="me-wallet">
-            <h2 className="flex items-center gap-2 text-h6">
-                <Doodle name="iconwallet" size={22} weight={1.9} />
-                {t('walletTitle')}
-            </h2>
-            <p className="mt-1 text-sm text-grey-1">{t('walletHint')}</p>
-            <div className="mt-3 flex gap-2" role="radiogroup" aria-label={t('token')}>
-                {PAYOUT_TOKENS.map((option) => (
-                    <button
-                        key={option}
-                        type="button"
-                        role="radio"
-                        aria-checked={token === option}
-                        className={pill(token === option)}
-                        onClick={() => setToken(option)}
-                    >
-                        {option}
-                    </button>
-                ))}
+        <section className="shadow-4 grid gap-3 rounded-sm border border-n-1 bg-white p-4" data-testid="me-profile">
+            <div>
+                <h2 className="flex items-center gap-2 text-h6">
+                    <Doodle name="iconwallet" size={22} weight={1.9} />
+                    {t('profileTitle')}
+                </h2>
+                <p className="mt-1 text-sm text-grey-1">{t('profileHint')}</p>
             </div>
-            <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label={t('network')}>
-                {PAYOUT_NETWORK_KEYS.map((option) => (
-                    <button
-                        key={option}
-                        type="button"
-                        role="radio"
-                        aria-checked={network === option}
-                        className={pill(network === option)}
-                        onClick={() => setNetwork(option)}
-                    >
-                        {PAYOUT_NETWORKS[option].label}
-                    </button>
-                ))}
-            </div>
-            <label className="mt-3 grid gap-1">
-                <span className="text-h8 uppercase tracking-wide text-grey-1">{t('address')}</span>
+
+            <label className="grid gap-1">
+                <span className="text-h8 uppercase tracking-wide text-grey-1">{t('bank')}</span>
                 <BaseInput
-                    value={address}
+                    value={bank}
                     onChange={(event) => {
-                        setAddress(event.target.value)
-                        setInvalid(false)
+                        setBank(event.target.value)
+                        setInvalid(null)
                     }}
-                    placeholder={PAYOUT_NETWORKS[network].format === 'tron' ? 'T…' : '0x…'}
+                    placeholder={t('bankPlaceholder')}
                     autoCapitalize="off"
                     autoCorrect="off"
                     spellCheck={false}
                     className="font-mono text-sm"
-                    data-testid="me-wallet-address"
+                    data-testid="me-bank"
                 />
-                {invalid && (
+                {invalid === 'bank' && (
                     <span role="alert" className="text-sm font-bold text-error">
-                        {t('addressInvalid', { network: PAYOUT_NETWORKS[network].label })}
+                        {t('bankInvalid')}
                     </span>
                 )}
             </label>
+
+            <label className="grid gap-1">
+                <span className="text-h8 uppercase tracking-wide text-grey-1">{t('lemonTag')}</span>
+                <BaseInput
+                    value={lemonTag}
+                    onChange={(event) => {
+                        setLemonTag(event.target.value)
+                        setInvalid(null)
+                    }}
+                    placeholder="@tulemontag"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    className="font-mono text-sm"
+                    data-testid="me-lemontag"
+                />
+                {invalid === 'lemonTag' && (
+                    <span role="alert" className="text-sm font-bold text-error">
+                        {t('lemonTagInvalid')}
+                    </span>
+                )}
+            </label>
+
+            <div className="grid gap-2">
+                <span className="text-h8 uppercase tracking-wide text-grey-1">{t('crypto')}</span>
+                {!withCrypto ? (
+                    <button
+                        type="button"
+                        className="justify-self-start text-sm font-bold underline"
+                        onClick={() => setWithCrypto(true)}
+                        data-testid="me-crypto-add"
+                    >
+                        {t('cryptoAdd')}
+                    </button>
+                ) : (
+                    <>
+                        <div className="flex gap-2" role="radiogroup" aria-label={t('token')}>
+                            {PAYOUT_TOKENS.map((option) => (
+                                <button
+                                    key={option}
+                                    type="button"
+                                    role="radio"
+                                    aria-checked={token === option}
+                                    className={pill(token === option)}
+                                    onClick={() => setToken(option)}
+                                >
+                                    {option}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label={t('network')}>
+                            {PAYOUT_NETWORK_KEYS.map((option) => (
+                                <button
+                                    key={option}
+                                    type="button"
+                                    role="radio"
+                                    aria-checked={network === option}
+                                    className={pill(network === option)}
+                                    onClick={() => setNetwork(option)}
+                                >
+                                    {PAYOUT_NETWORKS[option].label}
+                                </button>
+                            ))}
+                        </div>
+                        <BaseInput
+                            value={address}
+                            onChange={(event) => {
+                                setAddress(event.target.value)
+                                setInvalid(null)
+                            }}
+                            aria-label={t('address')}
+                            placeholder={PAYOUT_NETWORKS[network].format === 'tron' ? 'T…' : '0x…'}
+                            autoCapitalize="off"
+                            autoCorrect="off"
+                            spellCheck={false}
+                            className="font-mono text-sm"
+                            data-testid="me-wallet-address"
+                        />
+                        {invalid === 'address' && (
+                            <span role="alert" className="text-sm font-bold text-error">
+                                {t('addressInvalid', { network: PAYOUT_NETWORKS[network].label })}
+                            </span>
+                        )}
+                        <button
+                            type="button"
+                            className="justify-self-start text-sm text-grey-1 underline"
+                            onClick={() => {
+                                setWithCrypto(false)
+                                setAddress('')
+                                setInvalid(null)
+                            }}
+                        >
+                            {t('cryptoRemove')}
+                        </button>
+                    </>
+                )}
+            </div>
+
+            <p className="text-xs text-grey-1">{t('profilePrivacy')}</p>
             <Button
                 variant="primary"
-                className="mt-3 justify-center"
+                className="justify-center"
                 onClick={() => void save()}
                 loading={saving}
-                data-testid="me-wallet-save"
+                data-testid="me-profile-save"
             >
-                {joined.length > 0 ? t('walletSaveAll', { count: joined.length }) : t('walletSave')}
+                {joined.length > 0 ? t('profileSaveAll', { count: joined.length }) : t('profileSave')}
             </Button>
             {saved && joined.length > 0 && (
-                <p className="mt-2 text-center text-xs text-grey-1">
-                    {t('walletStatus', { done: withWallet, total: joined.length })}
+                <p className="text-center text-xs text-grey-1">
+                    {t('profileStatus', { done: upToDate, total: joined.length })}
                 </p>
             )}
         </section>
@@ -201,7 +296,7 @@ export function MeScreen() {
 
     return (
         <div className="grid gap-7 px-5 pt-5" data-testid="me">
-            <WalletSection rooms={rooms} />
+            <PaymentProfileSection rooms={rooms} />
 
             <BadgesSection rooms={rooms} />
 

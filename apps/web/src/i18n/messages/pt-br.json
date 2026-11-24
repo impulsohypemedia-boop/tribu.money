@@ -1133,28 +1133,25 @@
             "cancel": "Cancelar"
         },
         "profile": {
-            "myWallet": "My wallet",
-            "theirWallet": "{name}'s wallet",
-            "walletHint": "Pick the coin and network and paste your address, so people know where to send your money.",
-            "token": "Coin",
-            "network": "Network",
-            "address": "Address",
-            "addressInvalid": "That is not a {network} address. Check you copied all of it.",
-            "save": "Save wallet",
-            "saved": "Wallet saved",
-            "edit": "Change",
-            "remove": "Remove",
-            "cancel": "Cancel",
             "failed": "Could not save. Try again.",
-            "noWallet": "{name} has not added a wallet yet.",
-            "payTo": "Send to {name}",
+            "payTo": "Send it to {name} here:",
             "copy": "Copy address",
-            "copied": "Address copied",
             "showQr": "Show QR",
             "hideQr": "Hide QR",
             "networkWarning": "Send only on {network}. Money sent on another network can be lost.",
             "honoredGuest": "Honored guest",
-            "honoredGuestHint": "{name} is in the group but does not chip in. New expenses leave them out unless you add them."
+            "honoredGuestHint": "{name} is in the group but does not chip in. New expenses leave them out unless you add them.",
+            "myMethods": "How you get paid",
+            "theirMethods": "How to pay {name}",
+            "noMethods": "{name} has not added an alias or wallet yet.",
+            "noMethodsMine": "You have not added how you get paid yet.",
+            "editInProfile": "Change it in Me",
+            "addInProfile": "Add it in Me",
+            "aliasLabel": "Alias",
+            "cbuLabel": "CBU/CVU",
+            "lemonLabel": "Lemon tag",
+            "cryptoLabel": "{token} on {network}",
+            "copiedLabel": "{label} copied"
         },
         "monthly": {
             "title": "Monthly expenses",
@@ -1268,7 +1265,7 @@
             "passesYou": "{name} pays you",
             "remind": "Remind",
             "waitUntil": "Already reminded. You can remind them again on {date}.",
-            "message": "Hi {name}! 👋 A friendly reminder from the {tribu} tribe: {amount} is still pending for {me}. Whenever you can, check it and settle up here: {url}\nThanks!",
+            "message": "Hi {name}! 👋 A friendly reminder from the {tribu} tribe: {amount} is still pending for {me}. Whenever you can, check it and settle up here: {url}{methods}\nThanks!",
             "limitHint": "They get a notice in Tribu. To keep it friendly, a person can be reminded once every 3 days.",
             "sendWhatsapp": "Send on WhatsApp",
             "sendApp": "Only notify in Tribu",
@@ -1279,7 +1276,14 @@
             "noticeTail": " whenever you can.",
             "someone": "Someone in the tribe",
             "settleNow": "Settle up",
-            "later": "Later"
+            "later": "Later",
+            "methodsIntro": "You can send it to:",
+            "methodAlias": "Alias: {value}",
+            "methodCbu": "CBU/CVU: {value}",
+            "methodLemon": "Lemon: @{value}",
+            "methodCrypto": "{token} on {network}: {value}",
+            "noMethodsHint": "Add your alias or wallet in Me and it goes in the message.",
+            "noMethodsLink": "Go to Me"
         },
         "tribePot": {
             "defaultName": "Tribe pot",
@@ -1413,7 +1417,9 @@
         "BADGES_NOT_ENABLED": "Keeping badges in the wallet is not switched on yet.",
         "BADGE_NOT_EARNED": "You have not earned this badge in that tribe yet.",
         "BADGE_NO_WALLET": "Link your Lemon wallet in that tribe first.",
-        "MEMBER_TOKEN_REQUIRED": "Pick who you are in this tribe first."
+        "MEMBER_TOKEN_REQUIRED": "Pick who you are in this tribe first.",
+        "PAYOUT_BANK_INVALID": "That does not look like an alias or a CBU/CVU.",
+        "PAYOUT_LEMON_TAG_INVALID": "That Lemon tag does not look right."
     },
     "derivation": {
         "title": "De onde vem esse número",
@@ -1693,17 +1699,10 @@
             "closedTitle": "Closed"
         },
         "me": {
-            "walletTitle": "My wallet",
-            "walletHint": "Where you want to be paid. Add it once and it goes on all your groups.",
             "token": "Token",
             "network": "Network",
             "address": "Address",
             "addressInvalid": "That doesn't look like a {network} address.",
-            "walletSave": "Save",
-            "walletSaveAll": "{count, plural, one {Save to my group} other {Save to my # groups}}",
-            "walletSaved": "{count, plural, =0 {Wallet saved} one {Wallet saved to your group} other {Wallet saved to your # groups}}",
-            "walletPartial": "{count, plural, one {Couldn't save to one group. Try again.} other {Couldn't save to # groups. Try again.}}",
-            "walletStatus": "On {done} of {total} groups",
             "milestonesTitle": "Milestones",
             "milestonesEmpty": "No milestones yet. They show up as you use your groups.",
             "milestonesTotal": "{count, plural, one {# milestone across your groups} other {# milestones across your groups}}",
@@ -1751,7 +1750,23 @@
                         "how": "Put money into a vaquita that hits its goal."
                     }
                 }
-            }
+            },
+            "profileTitle": "How you get paid",
+            "profileHint": "Add your bank alias, Lemon tag or wallet, whatever you use. People who owe you can copy it in one tap.",
+            "bank": "Alias or CBU/CVU",
+            "bankPlaceholder": "your.alias or the 22 digits",
+            "bankInvalid": "That does not look like an alias (6 to 20 letters, digits or dots) or a CBU/CVU (22 digits).",
+            "lemonTag": "Lemon tag",
+            "lemonTagInvalid": "That Lemon tag does not look right. Use letters, digits, dots or underscores.",
+            "crypto": "Crypto wallet (optional)",
+            "cryptoAdd": "+ Add a wallet (USDT or USDC)",
+            "cryptoRemove": "Remove the wallet",
+            "profilePrivacy": "Only people in your tribes can see it.",
+            "profileSave": "Save",
+            "profileSaveAll": "{count, plural, one {Save to my tribe} other {Save to my # tribes}}",
+            "profileSaved": "{count, plural, =0 {All saved} one {Saved to your tribe} other {Saved to your # tribes}}",
+            "profilePartial": "{count, plural, one {Could not save to one tribe. Try again.} other {Could not save to # tribes. Try again.}}",
+            "profileStatus": "Up to date in {done} of {total} tribes"
         }
     },
     "card": {

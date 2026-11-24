@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/Button'
@@ -9,6 +10,7 @@ import type { CurrencyInfo, RoomState } from '@/lib/api-types'
 import { isApiError } from '@/lib/api'
 import { useErrorMessage } from '@/lib/error-messages'
 import { formatMoney } from '@/lib/money'
+import { isCbu, PAYOUT_NETWORKS, paymentMethodsOf } from '@/lib/payout'
 import { useDismissReminder, useSendReminder } from '@/lib/queries/reminders'
 import { checkReminder, reminderNoticeFor } from '@/lib/reminders'
 import { TOAST_MS } from '@/lib/toasts'
@@ -26,7 +28,8 @@ interface ReminderProps {
 /**
  * Recordatorio amable, for the person who is owed money: everyone who still has to pass them
  * something, each with a "Recordale" button. The reminder shows up in the app for the other
- * person, and can also go out over WhatsApp with a kind message ready to send.
+ * person, and can also go out over WhatsApp with a kind message ready to send, which carries the
+ * creditor's alias, Lemon tag or wallet when they saved one.
  */
 export function RemindersCard({ slug, state, currencies, meId, token }: ReminderProps) {
     const t = useTranslations('room.reminders')
@@ -42,6 +45,22 @@ export function RemindersCard({ slug, state, currencies, meId, token }: Reminder
     const memberOf = (id: string) => state.members.find((member) => member.id === id)
     const me = memberOf(meId)
     const roomUrl = typeof window === 'undefined' ? '' : `${window.location.origin}/r/${slug}`
+    // Where to pay me, written into the message so the friend can copy it straight from WhatsApp.
+    const myMethods = paymentMethodsOf(me ?? {})
+    const methodLines = [
+        myMethods.bank &&
+            (isCbu(myMethods.bank)
+                ? t('methodCbu', { value: myMethods.bank })
+                : t('methodAlias', { value: myMethods.bank })),
+        myMethods.lemonTag && t('methodLemon', { value: myMethods.lemonTag }),
+        myMethods.crypto &&
+            t('methodCrypto', {
+                token: myMethods.crypto.token,
+                network: PAYOUT_NETWORKS[myMethods.crypto.network].label,
+                value: myMethods.crypto.address,
+            }),
+    ].filter(Boolean)
+    const methodsText = methodLines.length > 0 ? `\n\n${t('methodsIntro')}\n${methodLines.join('\n')}\n` : ''
 
     const remind = async (toId: string, channel: 'whatsapp' | 'app') => {
         try {
@@ -73,6 +92,7 @@ export function RemindersCard({ slug, state, currencies, meId, token }: Reminder
                         amount,
                         me: me?.name ?? '',
                         url: roomUrl,
+                        methods: methodsText,
                     })
                     const isOpen = openId === debtor.id
                     return (
@@ -121,9 +141,17 @@ export function RemindersCard({ slug, state, currencies, meId, token }: Reminder
                             )}
                             {isOpen && check.ok && (
                                 <div className="grid gap-2" data-testid="reminder-compose">
-                                    <p className="whitespace-pre-line rounded-sm bg-primary-1/40 p-2 text-sm">
+                                    <p className="whitespace-pre-line break-words rounded-sm bg-primary-1/40 p-2 text-sm [overflow-wrap:anywhere]">
                                         {message}
                                     </p>
+                                    {methodLines.length === 0 && (
+                                        <p className="text-xs text-grey-1" data-testid="reminder-no-methods">
+                                            {t('noMethodsHint')}{' '}
+                                            <Link href="/yo" className="font-bold underline">
+                                                {t('noMethodsLink')}
+                                            </Link>
+                                        </p>
+                                    )}
                                     <p className="text-xs text-grey-1">{t('limitHint')}</p>
                                     <div className="flex flex-wrap gap-2">
                                         {/* A real link, so the phone opens WhatsApp from the tap itself;

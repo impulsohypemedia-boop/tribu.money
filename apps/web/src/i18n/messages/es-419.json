@@ -1133,28 +1133,25 @@
             "cancel": "Cancelar"
         },
         "profile": {
-            "myWallet": "Mi wallet",
-            "theirWallet": "Wallet de {name}",
-            "walletHint": "Elegí la moneda, la red y pegá tu dirección. Así los que te tienen que pasar plata saben a dónde mandarla.",
-            "token": "Moneda",
-            "network": "Red",
-            "address": "Dirección",
-            "addressInvalid": "Esa dirección no es de {network}. Revisá que la copiaste completa.",
-            "save": "Guardar wallet",
-            "saved": "Wallet guardada",
-            "edit": "Cambiar",
-            "remove": "Sacar",
-            "cancel": "Cancelar",
             "failed": "No se pudo guardar. Probá de nuevo.",
-            "noWallet": "{name} todavía no cargó su wallet.",
-            "payTo": "Mandale a {name}",
+            "payTo": "Pasale a {name} por acá:",
             "copy": "Copiar",
-            "copied": "Dirección copiada",
             "showQr": "Ver QR",
             "hideQr": "Ocultar QR",
             "networkWarning": "Mandá solo por la red {network}. Si usás otra red, la plata se puede perder.",
             "honoredGuest": "Invitado de honor",
-            "honoredGuestHint": "{name} está en la tribu pero no pone plata. Los gastos nuevos lo dejan afuera, salvo que lo sumes a mano."
+            "honoredGuestHint": "{name} está en la tribu pero no pone plata. Los gastos nuevos lo dejan afuera, salvo que lo sumes a mano.",
+            "myMethods": "Cómo te pagan",
+            "theirMethods": "Cómo pagarle a {name}",
+            "noMethods": "{name} todavía no cargó su alias ni su wallet.",
+            "noMethodsMine": "Todavía no cargaste cómo te pagan.",
+            "editInProfile": "Cambiarlo en Yo",
+            "addInProfile": "Cargarlo en Yo",
+            "aliasLabel": "Alias",
+            "cbuLabel": "CBU/CVU",
+            "lemonLabel": "Lemon tag",
+            "cryptoLabel": "{token} en {network}",
+            "copiedLabel": "{label} copiado"
         },
         "monthly": {
             "title": "Gastos fijos",
@@ -1268,7 +1265,7 @@
             "passesYou": "{name} te pasa",
             "remind": "Recordale",
             "waitUntil": "Ya le avisaron. Podés recordarle de nuevo el {date}.",
-            "message": "¡Hola {name}! 👋 Un recordatorio amable de la tribu {tribu}: quedaron {amount} para pasarle a {me}. Cuando puedas, lo ves y quedamos a mano acá: {url}\n¡Gracias!",
+            "message": "¡Hola {name}! 👋 Un recordatorio amable de la tribu {tribu}: quedaron {amount} para pasarle a {me}. Cuando puedas, lo ves y quedamos a mano acá: {url}{methods}\n¡Gracias!",
             "limitHint": "Le llega un aviso en Tribu. Para no cansar a nadie, se puede recordar una vez cada 3 días.",
             "sendWhatsapp": "Mandar por WhatsApp",
             "sendApp": "Avisar solo en Tribu",
@@ -1279,7 +1276,14 @@
             "noticeTail": " cuando puedas.",
             "someone": "Alguien de la tribu",
             "settleNow": "Quedar a mano",
-            "later": "Después"
+            "later": "Después",
+            "methodsIntro": "Me podés pasar a:",
+            "methodAlias": "Alias: {value}",
+            "methodCbu": "CBU/CVU: {value}",
+            "methodLemon": "Lemon: @{value}",
+            "methodCrypto": "{token} en {network}: {value}",
+            "noMethodsHint": "Cargá tu alias o tu wallet en Yo y va solo en el mensaje.",
+            "noMethodsLink": "Ir a Yo"
         },
         "tribePot": {
             "defaultName": "Pozo de la tribu",
@@ -1413,7 +1417,9 @@
         "BADGES_NOT_ENABLED": "Guardar insignias en la wallet todavía no está activado.",
         "BADGE_NOT_EARNED": "Todavía no conseguiste esta insignia en esa tribu.",
         "BADGE_NO_WALLET": "Primero vinculá tu wallet de Lemon en esa tribu.",
-        "MEMBER_TOKEN_REQUIRED": "Primero elegí quién sos en esta tribu."
+        "MEMBER_TOKEN_REQUIRED": "Primero elegí quién sos en esta tribu.",
+        "PAYOUT_BANK_INVALID": "Eso no parece un alias ni un CBU/CVU.",
+        "PAYOUT_LEMON_TAG_INVALID": "Ese Lemon tag no parece válido."
     },
     "derivation": {
         "title": "Cómo sale este número",
@@ -1693,17 +1699,10 @@
             "closedTitle": "Cerradas"
         },
         "me": {
-            "walletTitle": "Mi wallet",
-            "walletHint": "Donde querés que te paguen. La cargás una vez y queda en todas tus tribus.",
             "token": "Moneda",
             "network": "Red",
             "address": "Dirección",
             "addressInvalid": "Esa dirección no parece de {network}.",
-            "walletSave": "Guardar",
-            "walletSaveAll": "{count, plural, one {Guardar en mi tribu} other {Guardar en mis # tribus}}",
-            "walletSaved": "{count, plural, =0 {Wallet guardada} one {Wallet guardada en tu tribu} other {Wallet guardada en tus # tribus}}",
-            "walletPartial": "{count, plural, one {No se pudo guardar en una tribu. Probá de nuevo.} other {No se pudo guardar en # tribus. Probá de nuevo.}}",
-            "walletStatus": "Está en {done} de {total} tribus",
             "milestonesTitle": "Logros",
             "milestonesEmpty": "Todavía no hay logros. Aparecen solos a medida que usan la tribu.",
             "milestonesTotal": "{count, plural, one {# logro entre todas tus tribus} other {# logros entre todas tus tribus}}",
@@ -1751,7 +1750,23 @@
                         "how": "Poné plata en una vaquita que llegue a la meta."
                     }
                 }
-            }
+            },
+            "profileTitle": "Cómo te pagan",
+            "profileHint": "Cargá tu alias, tu Lemon tag o tu wallet, lo que uses. Así los que te tienen que pasar plata lo copian con un toque.",
+            "bank": "Alias o CBU/CVU",
+            "bankPlaceholder": "tu.alias o los 22 números",
+            "bankInvalid": "Eso no parece un alias (6 a 20 letras, números o puntos) ni un CBU/CVU (22 números).",
+            "lemonTag": "Lemon tag",
+            "lemonTagInvalid": "Ese Lemon tag no parece válido. Usá letras, números, puntos o guiones bajos.",
+            "crypto": "Wallet cripto (opcional)",
+            "cryptoAdd": "+ Sumar una wallet (USDT o USDC)",
+            "cryptoRemove": "Sacar la wallet",
+            "profilePrivacy": "Solo lo ven las personas de tus tribus.",
+            "profileSave": "Guardar",
+            "profileSaveAll": "{count, plural, one {Guardar en mi tribu} other {Guardar en mis # tribus}}",
+            "profileSaved": "{count, plural, =0 {Quedó guardado} one {Guardado en tu tribu} other {Guardado en tus # tribus}}",
+            "profilePartial": "{count, plural, one {No se pudo guardar en una tribu. Probá de nuevo.} other {No se pudo guardar en # tribus. Probá de nuevo.}}",
+            "profileStatus": "Al día en {done} de {total} tribus"
         }
     },
     "card": {

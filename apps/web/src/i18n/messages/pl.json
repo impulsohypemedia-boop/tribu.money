@@ -130,8 +130,7 @@
             "colGuides": "Poradniki",
             "allGuides": "Wszystkie poradniki",
             "termsLink": "Regulamin",
-            "privacyLink": "Prywatność",
-            "operatedBy": "Tribu is free software under the AGPL-3.0 license."
+            "privacyLink": "Prywatność"
         },
         "appHome": {
             "landingLink": "Czym jest Tribu?"

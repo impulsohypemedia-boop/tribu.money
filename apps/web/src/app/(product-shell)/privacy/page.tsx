@@ -56,13 +56,17 @@ export default function PrivacyPage() {
                     Los reportes de problemas que nos mandes se borran a los {FEEDBACK_RETENTION_DAYS} días. No vendemos
                     datos ni usamos tags de publicidad.
                 </p>
-                <p className="text-sm leading-6 text-n-1/70">
-                    Tribu es software libre bajo la licencia AGPL-3.0. El código está en{' '}
-                    <a href={SOURCE_URL} target="_blank" rel="noopener noreferrer" className="underline">
-                        GitHub
-                    </a>
-                    .
-                </p>
+                <section className="mt-6 border-t border-n-1/20 pt-4 text-xs leading-5 text-n-1/60">
+                    <h2 className="font-bold">Aviso legal</h2>
+                    <p className="mt-1">
+                        Parte del código de Tribu se publica bajo la licencia AGPL-3.0. Si lo necesitás, lo podés
+                        descargar{' '}
+                        <a href={SOURCE_URL} target="_blank" rel="noopener noreferrer" className="underline">
+                            acá
+                        </a>
+                        .
+                    </p>
+                </section>
             </div>
 
             <SiteFooter />

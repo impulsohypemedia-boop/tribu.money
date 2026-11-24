@@ -3,10 +3,10 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `58396185a55b587d5a239abf8fbcca40a40dfe7341d13dcbbd5251b0e53febc9`
+Input SHA-256: `5aaffd0b620f9b71428c31879c2f734e6f202eb2128835d3fca3039d02f069cf`
 
 PostgreSQL namespace: `split`  
-Models: 19  
+Models: 20  
 Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## Room
@@ -29,6 +29,7 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `recurringExpenses`           | `RecurringExpense[]` | —                                    |
 | `pots`                        | `Pot[]`              | —                                    |
 | `reminders`                   | `Reminder[]`         | —                                    |
+| `budgets`                     | `Budget[]`           | —                                    |
 | `settlements`                 | `Settlement[]`       | —                                    |
 | `auditEvents`                 | `RoomAuditEvent[]`   | —                                    |
 | `importBatches`               | `ImportBatch[]`      | —                                    |
@@ -36,6 +37,18 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `installHandoffs`             | `InstallHandoff[]`   | —                                    |
 | `pushSubscriptions`           | `PushSubscription[]` | —                                    |
 | `notificationSends`           | `NotificationSend[]` | —                                    |
+
+## Budget
+
+| Field         | Prisma type | Attributes                                                       |
+| ------------- | ----------- | ---------------------------------------------------------------- |
+| `id`          | `String`    | @id @default(uuid())                                             |
+| `roomId`      | `String`    | —                                                                |
+| `category`    | `String`    | —                                                                |
+| `amountMinor` | `BigInt`    | // per calendar month, room currency                             |
+| `createdAt`   | `DateTime`  | @default(now())                                                  |
+| `updatedAt`   | `DateTime`  | @updatedAt                                                       |
+| `room`        | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade) |
 
 ## Reminder
 

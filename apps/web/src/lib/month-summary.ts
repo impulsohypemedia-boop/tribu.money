@@ -7,6 +7,7 @@
  * expense list.
  */
 import type { RoomState } from './api-types'
+import { expenseCategoryOf } from './expense-category'
 
 export const localMonthKey = (date: Date): string =>
     `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
@@ -28,7 +29,7 @@ export interface MonthSummary {
     month: string
     totalMinor: string
     expenseCount: number
-    /** Biggest first. A blank category is grouped as `other`. */
+    /** Biggest first. An expense with no category picked counts in the one its description suggests. */
     categories: { category: string; amountMinor: string }[]
     /** People who paid or had a share, most paid first. */
     members: MonthMemberLine[]
@@ -52,7 +53,7 @@ export function monthSummary(state: Pick<RoomState, 'expenses'>, month: string):
     for (const expense of expenses) {
         const amount = BigInt(expense.baseAmountMinor)
         total += amount
-        sumBy(categories, expense.category?.trim() || 'other', amount)
+        sumBy(categories, expenseCategoryOf(expense), amount)
         sumBy(paid, expense.paidById, amount)
         for (const share of expense.shares) sumBy(shares, share.memberId, BigInt(share.amountMinor))
         if (!biggest || amount > biggest.amount) biggest = { id: expense.id, amount }

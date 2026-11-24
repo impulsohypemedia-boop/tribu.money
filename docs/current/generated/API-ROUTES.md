@@ -3,9 +3,9 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/src/app/**/route.ts`  
-Input SHA-256: `5b931eafb78bd10efac5bd3a7b1c4c8fcb9563a9db2543a1ba52867c941d8498`
+Input SHA-256: `9eb7289c1bdeb8d74ced1dc6bafc4eac22af5564b0cb98428b6f7818f91c9d6b`
 
-Exported operations: 58
+Exported operations: 59
 
 | Method   | Path                                                         | Handler                                                                                  |
 | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
@@ -23,6 +23,7 @@ Exported operations: 58
 | `GET`    | `/api/rooms/:slug`                                           | `apps/web/src/app/api/rooms/[slug]/route.ts`                                             |
 | `PATCH`  | `/api/rooms/:slug`                                           | `apps/web/src/app/api/rooms/[slug]/route.ts`                                             |
 | `POST`   | `/api/rooms/:slug/badges`                                    | `apps/web/src/app/api/rooms/[slug]/badges/route.ts`                                      |
+| `POST`   | `/api/rooms/:slug/budgets`                                   | `apps/web/src/app/api/rooms/[slug]/budgets/route.ts`                                     |
 | `GET`    | `/api/rooms/:slug/events`                                    | `apps/web/src/app/api/rooms/[slug]/events/route.ts`                                      |
 | `POST`   | `/api/rooms/:slug/expenses`                                  | `apps/web/src/app/api/rooms/[slug]/expenses/route.ts`                                    |
 | `DELETE` | `/api/rooms/:slug/expenses/:id`                              | `apps/web/src/app/api/rooms/[slug]/expenses/[id]/route.ts`                               |

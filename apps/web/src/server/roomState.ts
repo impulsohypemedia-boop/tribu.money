@@ -44,6 +44,7 @@ const roomArgs = {
         },
         // Enough to know each person's latest reminder; the cooldown only needs that one.
         reminders: { orderBy: [{ createdAt: 'desc' }, { id: 'desc' }], take: 30 },
+        budgets: { orderBy: [{ category: 'asc' }] },
     },
 } satisfies Prisma.RoomDefaultArgs
 
@@ -217,6 +218,10 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             toId: reminder.toId,
             createdAt: reminder.createdAt.toISOString(),
             seenAt: reminder.seenAt?.toISOString() ?? null,
+        })),
+        budgets: (room.budgets ?? []).map((budget) => ({
+            category: budget.category,
+            amountMinor: budget.amountMinor.toString(),
         })),
         settlements: room.settlements.map((s) => ({
             id: s.id,

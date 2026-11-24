@@ -1,6 +1,8 @@
 /** Request-shape validation. Cross-field rules that need the room (membership,
  *  exact shares adding up) live in the domain modules, not here. */
 import { MAX_YIELD_APR_BPS } from '@/lib/pot-yield'
+import { isBudgetCategory } from '@/lib/budget'
+import { EXPENSE_CATEGORY_IDS } from '@/lib/expense-category'
 import { z } from 'zod'
 import { isValidCode, MAX_SIGNED_MINOR, normaliseCode, parseManualFxRate } from '@/server/money'
 import { isAvatarKey } from '@/lib/avatars'
@@ -538,6 +540,21 @@ export const memberProfileSchema = z
     )
 
 export type MemberProfileBody = z.infer<typeof memberProfileSchema>
+/** Presupuesto del grupo: the whole list of monthly limits, replacing what was there. */
+export const budgetsSchema = z.object({
+    budgets: z
+        .array(
+            z.object({
+                category: z.string().refine(isBudgetCategory, { message: 'unknown budget category' }),
+                amountMinor: minorAmount.refine((s) => BigInt(s) > 0n, { message: 'a limit needs an amount' }),
+            })
+        )
+        .max(EXPENSE_CATEGORY_IDS.length + 1)
+        .refine((list) => new Set(list.map((budget) => budget.category)).size === list.length, {
+            message: 'each category can have one limit',
+        }),
+})
+
 /** Repeat a saved expense every month. */
 export const recurringStartSchema = z.object({ expenseId: id })
 

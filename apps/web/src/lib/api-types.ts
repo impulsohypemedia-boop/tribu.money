@@ -170,6 +170,14 @@ export interface ApiReminder {
     seenAt: string | null
 }
 
+/** Presupuesto del grupo: the most the tribu means to spend in a calendar month. */
+export interface ApiBudget {
+    /** "total" for the whole month, otherwise an expense category id. */
+    category: string
+    /** Room currency. */
+    amountMinor: string
+}
+
 export interface ApiRecurringExpense {
     id: string
     description: string
@@ -230,6 +238,8 @@ export interface RoomState {
     pots?: ApiPot[]
     /** The latest reminders, newest first. Optional only for older cached responses. */
     reminders?: ApiReminder[]
+    /** Monthly limits, overall and per category. Optional only for older cached responses. */
+    budgets?: ApiBudget[]
     /** memberId → net position in room-currency minor units. Sums to "0". */
     balances: Record<string, string>
     suggestedTransfers: ApiTransfer[]

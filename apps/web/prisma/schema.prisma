@@ -53,9 +53,6 @@ model Room {
   expenses                    Expense[]
   recurringExpenses           RecurringExpense[]
   pots                        Pot[]
-  draws                       Draw[]
-  bets                        Bet[]
-  fines                       Fine[]
   settlements                 Settlement[]
   auditEvents                 RoomAuditEvent[]
   importBatches               ImportBatch[]
@@ -480,7 +477,7 @@ model PotContribution {
   amountMinor  BigInt // room currency
   // The payment to the keeper; null when the keeper put money in their own pot.
   settlementId String?   @unique
-  reason       String? // null (a plain contribution) | "roundup" | "fine"
+  reason       String? // null (a plain contribution) | "roundup"
   createdById  String?
   createdAt    DateTime  @default(now())
   deletedAt    DateTime?
@@ -488,70 +485,5 @@ model PotContribution {
   pot Pot @relation(fields: [potId], references: [id], onDelete: Cascade)
 
   @@index([potId])
-  @@schema("split")
-}
-
-/// La ruleta de la cuenta. The seed is drawn and its hash shown before anyone picks who is in,
-/// and the phone adds its own seed at the spin, so neither side can steer the result.
-model Draw {
-  id             String    @id @default(uuid())
-  roomId         String
-  seed           String // hex; revealed once spun
-  seedHash       String // sha256(seed), shown before the spin
-  clientSeed     String?
-  participantIds String[]
-  paidById       String?
-  amountMinor    BigInt? // room currency
-  winnerId       String? // the one who covers the whole bill; also the id of the expense it made
-  createdAt      DateTime  @default(now())
-  spunAt         DateTime?
-
-  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
-
-  @@index([roomId])
-  @@schema("split")
-}
-
-/// A friendly bet between two members. Tribu holds no money: the loser's stake becomes an
-/// expense the winner paid, so it lands in the room's balances like any other.
-model Bet {
-  id              String    @id @default(uuid())
-  roomId          String
-  title           String
-  amountMinor     BigInt // room currency
-  proposerId      String
-  rivalId         String
-  status          String    @default("proposed") // proposed | accepted | claimed | resolved | cancelled
-  claimedWinnerId String?
-  claimedById     String?
-  winnerId        String?
-  expenseId       String?
-  createdAt       DateTime  @default(now())
-  acceptedAt      DateTime?
-  resolvedAt      DateTime?
-
-  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
-
-  @@index([roomId])
-  @@schema("split")
-}
-
-/// A fine the tribu votes on. Once approved, the fined member pays it into the tribu's pot.
-model Fine {
-  id             String    @id @default(uuid())
-  roomId         String
-  memberId       String
-  reason         String
-  amountMinor    BigInt // room currency
-  proposedById   String?
-  votes          Json      @default("{}") // memberId -> true (yes) | false (no)
-  status         String    @default("voting") // voting | approved | rejected | paid | cancelled
-  contributionId String?
-  createdAt      DateTime  @default(now())
-  decidedAt      DateTime?
-
-  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
-
-  @@index([roomId])
   @@schema("split")
 }

@@ -25,8 +25,6 @@ const base = (overrides: Partial<RoomState> = {}) =>
         ],
         settlements: [],
         pots: [],
-        bets: [],
-        draws: [],
         ...overrides,
     }) as unknown as RoomState
 
@@ -51,7 +49,7 @@ describe('badgesInRoom', () => {
             'crypto-payer'
         )
     })
-    it('reads pots, round-ups, bets and draws', () => {
+    it('reads pots and round-ups', () => {
         const contributions = [1, 2, 3].map((i) => ({
             id: `c${i}`,
             memberId: 'bea',
@@ -74,10 +72,8 @@ describe('badgesInRoom', () => {
                     contributions,
                 },
             ],
-            bets: [{ id: 'b', status: 'resolved', winnerId: 'bea' }],
-            draws: [{ id: 'd', winnerId: 'bea' }],
         } as never)
-        expect([...badgesInRoom(state, 'bea')].sort()).toEqual(['bet-winner', 'pot-goal', 'roulette-pick', 'rounder'])
+        expect([...badgesInRoom(state, 'bea')].sort()).toEqual(['pot-goal', 'rounder'])
         expect([...badgesInRoom(state, 'ana')]).toEqual(['keeper'])
     })
 })

@@ -11,9 +11,7 @@ export const BADGES = [
     { id: 'crypto-payer', tokenId: 2 },
     { id: 'keeper', tokenId: 3 },
     { id: 'rounder', tokenId: 4 },
-    { id: 'bet-winner', tokenId: 5 },
-    { id: 'roulette-pick', tokenId: 6 },
-    { id: 'pot-goal', tokenId: 7 },
+    { id: 'pot-goal', tokenId: 5 },
 ] as const
 export type BadgeId = (typeof BADGES)[number]['id']
 
@@ -58,9 +56,6 @@ export function badgesInRoom(state: RoomState, memberId: string): Set<BadgeId> {
     )
         earned.add('pot-goal')
 
-    if ((state.bets ?? []).some((bet) => bet.status === 'resolved' && bet.winnerId === memberId))
-        earned.add('bet-winner')
-    if ((state.draws ?? []).some((draw) => draw.winnerId === memberId)) earned.add('roulette-pick')
     return earned
 }
 

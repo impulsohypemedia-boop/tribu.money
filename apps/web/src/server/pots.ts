@@ -124,7 +124,7 @@ export async function addContribution(
     room: RoomWithRelations,
     actor: AuditActor,
     potId: string,
-    body: { memberId: string; amountMinor: string; reason?: 'roundup' | 'fine' | null }
+    body: { memberId: string; amountMinor: string; reason?: 'roundup' | null }
 ) {
     const pot = await openPot(tx, room, potId)
     activeMember(room, body.memberId)

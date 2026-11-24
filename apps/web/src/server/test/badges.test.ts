@@ -65,7 +65,7 @@ describe('badge voucher', () => {
             signature: res.body.signature,
         })
         expect(valid).toBe(true)
-        expect((await ask('bet-winner')).body.error.code).toBe('BADGE_NOT_EARNED')
+        expect((await ask('rounder')).body.error.code).toBe('BADGE_NOT_EARNED')
     })
 
     it('is off until the contract and key are set', async () => {

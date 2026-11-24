@@ -450,7 +450,7 @@ export function PotDetails({
                                     <span className="font-bold">{nameOf(contribution.memberId)}</span>{' '}
                                     {contribution.reason && (
                                         <span className="mr-1 inline-block rounded-full bg-primary-3 px-2 py-0.5 text-h10 font-bold uppercase tracking-wide">
-                                            {contribution.reason === 'roundup' ? t('reasonRoundup') : t('reasonFine')}
+                                            {t('reasonRoundup')}
                                         </span>
                                     )}
                                     <span className="text-grey-1">

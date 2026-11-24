@@ -3,9 +3,9 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/src/app/**/route.ts`  
-Input SHA-256: `cd63d9158dc0af816d4eacace44628945957ce08978419ab8ad1c59f7fc24e83`
+Input SHA-256: `9c9f286f8161cb5da5f0c0bc7586095422488c3fe13fccedf309fe7f4d33d265`
 
-Exported operations: 62
+Exported operations: 56
 
 | Method   | Path                                                         | Handler                                                                                  |
 | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
@@ -23,18 +23,12 @@ Exported operations: 62
 | `GET`    | `/api/rooms/:slug`                                           | `apps/web/src/app/api/rooms/[slug]/route.ts`                                             |
 | `PATCH`  | `/api/rooms/:slug`                                           | `apps/web/src/app/api/rooms/[slug]/route.ts`                                             |
 | `POST`   | `/api/rooms/:slug/badges`                                    | `apps/web/src/app/api/rooms/[slug]/badges/route.ts`                                      |
-| `POST`   | `/api/rooms/:slug/bets`                                      | `apps/web/src/app/api/rooms/[slug]/bets/route.ts`                                        |
-| `POST`   | `/api/rooms/:slug/bets/:betId`                               | `apps/web/src/app/api/rooms/[slug]/bets/[betId]/route.ts`                                |
-| `POST`   | `/api/rooms/:slug/draws`                                     | `apps/web/src/app/api/rooms/[slug]/draws/route.ts`                                       |
-| `POST`   | `/api/rooms/:slug/draws/:drawId/spin`                        | `apps/web/src/app/api/rooms/[slug]/draws/[drawId]/spin/route.ts`                         |
 | `GET`    | `/api/rooms/:slug/events`                                    | `apps/web/src/app/api/rooms/[slug]/events/route.ts`                                      |
 | `POST`   | `/api/rooms/:slug/expenses`                                  | `apps/web/src/app/api/rooms/[slug]/expenses/route.ts`                                    |
 | `DELETE` | `/api/rooms/:slug/expenses/:id`                              | `apps/web/src/app/api/rooms/[slug]/expenses/[id]/route.ts`                               |
 | `PATCH`  | `/api/rooms/:slug/expenses/:id`                              | `apps/web/src/app/api/rooms/[slug]/expenses/[id]/route.ts`                               |
 | `POST`   | `/api/rooms/:slug/expenses/:id/restore`                      | `apps/web/src/app/api/rooms/[slug]/expenses/[id]/restore/route.ts`                       |
 | `POST`   | `/api/rooms/:slug/feedback`                                  | `apps/web/src/app/api/rooms/[slug]/feedback/route.ts`                                    |
-| `POST`   | `/api/rooms/:slug/fines`                                     | `apps/web/src/app/api/rooms/[slug]/fines/route.ts`                                       |
-| `POST`   | `/api/rooms/:slug/fines/:fineId`                             | `apps/web/src/app/api/rooms/[slug]/fines/[fineId]/route.ts`                              |
 | `GET`    | `/api/rooms/:slug/history`                                   | `apps/web/src/app/api/rooms/[slug]/history/route.ts`                                     |
 | `GET`    | `/api/rooms/:slug/history/export`                            | `apps/web/src/app/api/rooms/[slug]/history/export/route.ts`                              |
 | `POST`   | `/api/rooms/:slug/import`                                    | `apps/web/src/app/api/rooms/[slug]/import/route.ts`                                      |

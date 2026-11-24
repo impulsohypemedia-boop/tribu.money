@@ -172,7 +172,7 @@ export interface ApiPotContribution {
     /** The payment to the keeper it was recorded as; null for the keeper's own money. */
     settlementId: string | null
     /** Why it went in, when it was not a plain contribution. Absent in older cached responses. */
-    reason?: 'roundup' | 'fine' | null
+    reason?: 'roundup' | null
     createdAt: string
 }
 
@@ -190,53 +190,6 @@ export interface ApiPot {
     /** Estimated yearly rate of the keeper's account, basis points; display only. */
     yieldAprBps?: number | null
     contributions: ApiPotContribution[]
-}
-
-/** A spun ruleta. Its id is also the id of the expense it made. */
-export interface ApiDraw {
-    id: string
-    seed: string
-    seedHash: string
-    clientSeed: string
-    participantIds: string[]
-    paidById: string
-    amountMinor: string
-    winnerId: string
-    spunAt: string
-}
-
-export interface DrawSpinInput {
-    clientSeed: string
-    participantIds: string[]
-    paidById: string
-    amountMinor: string
-    description: string
-}
-
-export interface ApiBet {
-    id: string
-    title: string
-    amountMinor: string
-    proposerId: string
-    rivalId: string
-    status: 'proposed' | 'accepted' | 'claimed' | 'resolved' | 'cancelled'
-    claimedWinnerId: string | null
-    claimedById: string | null
-    winnerId: string | null
-    createdAt: string
-    resolvedAt: string | null
-}
-
-export interface ApiFine {
-    id: string
-    memberId: string
-    reason: string
-    amountMinor: string
-    proposedById: string | null
-    votes: Record<string, boolean>
-    status: 'voting' | 'approved' | 'rejected' | 'paid' | 'cancelled'
-    createdAt: string
-    decidedAt: string | null
 }
 
 export interface PotInput {
@@ -258,10 +211,6 @@ export interface RoomState {
     recurring?: ApiRecurringExpense[]
     /** Every vaquita, open and closed, oldest first. Optional only for older cached responses. */
     pots?: ApiPot[]
-    /** Optional only for older cached responses. */
-    draws?: ApiDraw[]
-    bets?: ApiBet[]
-    fines?: ApiFine[]
     /** memberId → net position in room-currency minor units. Sums to "0". */
     balances: Record<string, string>
     suggestedTransfers: ApiTransfer[]
@@ -280,9 +229,6 @@ export type RoomHistoryAction =
     | 'member_avatar_updated'
     | 'member_profile_updated'
     | 'pot_updated'
-    | 'draw_spun'
-    | 'bet_updated'
-    | 'fine_updated'
     | 'expense_added'
     | 'expense_edited'
     | 'expense_deleted'

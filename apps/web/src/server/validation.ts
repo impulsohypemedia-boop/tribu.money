@@ -737,39 +737,8 @@ export const potUpdateSchema = z.object({
 export const potContributionSchema = z.object({
     memberId: id,
     amountMinor: minorAmount,
-    /** Only a round-up is set by the client; a fine's contribution is made by the fine itself. */
+    /** Marks a round-up from Quedar a mano; null for a plain contribution. */
     reason: z.literal('roundup').nullish(),
-})
-
-export const drawSpinSchema = z.object({
-    clientSeed: z.string().regex(/^[0-9a-f]{16,128}$/),
-    participantIds: z.array(id).min(2).max(50),
-    paidById: id,
-    amountMinor: minorAmount,
-    description: expenseName,
-})
-
-export const betCreateSchema = z.object({
-    title: z.string().trim().min(1).max(MAX_DESCRIPTION_CHARS),
-    amountMinor: minorAmount,
-    rivalId: id,
-})
-
-export const betActionSchema = z.object({
-    action: z.enum(['accept', 'claim', 'confirm', 'dispute', 'cancel']),
-    winnerId: id.optional(),
-})
-
-export const fineCreateSchema = z.object({
-    memberId: id,
-    reason: z.string().trim().min(1).max(80),
-    amountMinor: minorAmount,
-})
-
-export const fineActionSchema = z.object({
-    action: z.enum(['vote', 'pay', 'cancel']),
-    vote: z.boolean().optional(),
-    potId: id.optional(),
 })
 
 export const potSpendSchema = z.object({ expenseId: id })

@@ -20,8 +20,6 @@ const DOODLES: Record<BadgeId, DoodleName> = {
     'crypto-payer': 'expense_bitcoin',
     keeper: 'expense_key_round',
     rounder: 'expense_coins',
-    'bet-winner': 'expense_handshake',
-    'roulette-pick': 'expense_dices',
     'pot-goal': 'expense_goal',
 }
 

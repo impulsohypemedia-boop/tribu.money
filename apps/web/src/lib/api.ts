@@ -4,7 +4,6 @@
  * that money is a string on the wire (nothing here ever touches BigInt or Number).
  */
 
-import type { BetAction } from './bets'
 import { rememberRoomKey } from '@/lib/analytics'
 import type {
     CatchUpExpenseInput,
@@ -21,7 +20,6 @@ import type {
     MemberAvatarInput,
     MemberProfileInput,
     PotInput,
-    DrawSpinInput,
     ModelStatus,
     ParsedReceipt,
     PushSubscribeInput,
@@ -482,40 +480,6 @@ export const api = {
     unlinkPotExpense: (slug: string, potId: string, expenseId: string, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/expenses/${encode(expenseId)}`, {
             method: 'DELETE',
-            token,
-        }),
-
-    startDraw: (slug: string, token?: string | null) =>
-        request<{ id: string; seedHash: string }>(`/api/rooms/${encode(slug)}/draws`, { method: 'POST', token }),
-
-    spinDraw: (slug: string, drawId: string, input: DrawSpinInput, token?: string | null) =>
-        request<RoomState>(`/api/rooms/${encode(slug)}/draws/${encode(drawId)}/spin`, {
-            method: 'POST',
-            body: input,
-            token,
-        }),
-
-    createBet: (slug: string, input: { title: string; amountMinor: string; rivalId: string }, token?: string | null) =>
-        request<RoomState>(`/api/rooms/${encode(slug)}/bets`, { method: 'POST', body: input, token }),
-
-    actOnBet: (slug: string, betId: string, input: { action: BetAction; winnerId?: string }, token?: string | null) =>
-        request<RoomState>(`/api/rooms/${encode(slug)}/bets/${encode(betId)}`, { method: 'POST', body: input, token }),
-
-    proposeFine: (
-        slug: string,
-        input: { memberId: string; reason: string; amountMinor: string },
-        token?: string | null
-    ) => request<RoomState>(`/api/rooms/${encode(slug)}/fines`, { method: 'POST', body: input, token }),
-
-    actOnFine: (
-        slug: string,
-        fineId: string,
-        input: { action: 'vote' | 'pay' | 'cancel'; vote?: boolean },
-        token?: string | null
-    ) =>
-        request<RoomState>(`/api/rooms/${encode(slug)}/fines/${encode(fineId)}`, {
-            method: 'POST',
-            body: input,
             token,
         }),
 

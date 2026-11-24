@@ -8,6 +8,7 @@ import { tribuFestejo, tribuHola } from '@/assets/mascot'
 import { Money } from '@/components/room/Money'
 import { RoomEmblem } from '@/components/room/RoomEmblem'
 import { Doodle } from '@/components/ui/Doodle'
+import type { DoodleName } from '@/components/ui/doodles'
 import { Icon } from '@/components/ui/Icon'
 import { buttonClassName } from '@/components/ui/button-style'
 import type { CurrencyInfo } from '@/lib/api-types'
@@ -17,6 +18,13 @@ import { useCurrencies } from '@/lib/queries/reads'
 import { themeFor } from '@/lib/themes'
 
 const roomHref = (slug: string) => `/r/${encodeURIComponent(slug)}`
+
+/** What a tribu's account does, named on the empty Inicio with the landing's own words. */
+const EMPTY_FEATURES: { key: 'record' | 'settle' | 'pool'; doodle: DoodleName }[] = [
+    { key: 'record', doodle: 'tally' },
+    { key: 'settle', doodle: 'swap' },
+    { key: 'pool', doodle: 'gift' },
+]
 
 function SectionTitle({ title, href, more }: { title: string; href?: string; more?: string }) {
     return (
@@ -83,6 +91,7 @@ export function PotProgressCard({ pot, catalog }: { pot: MyPot; catalog?: readon
 
 export function HomeScreen() {
     const t = useTranslations('appShell.home')
+    const tFeatures = useTranslations('marketing.landingFeatures')
     const { recent, rooms, loading, ready } = useMyRooms()
     const { data: catalog } = useCurrencies()
     const positions = useMemo(() => myPositions(rooms), [rooms])
@@ -93,10 +102,23 @@ export function HomeScreen() {
 
     if (ready && recent.length === 0) {
         return (
-            <section data-testid="home-empty" className="flex flex-col items-center px-5 pt-10 text-center">
-                <Image src={tribuHola} alt="" unoptimized className="size-32 object-contain" />
+            <section data-testid="home-empty" className="flex flex-col items-center px-5 pb-8 pt-6 text-center">
+                <Image src={tribuHola} alt="" unoptimized className="h-24 w-24 object-contain" />
                 <h2 className="mt-4 text-h4">{t('emptyTitle')}</h2>
                 <p className="mt-2 max-w-xs text-grey-1">{t('emptyBody')}</p>
+                <ul className="mt-5 grid w-full max-w-xs grid-cols-3 gap-2">
+                    {EMPTY_FEATURES.map(({ key, doodle }) => (
+                        <li
+                            key={key}
+                            className="flex flex-col items-center gap-2 rounded-sm border border-n-1/15 bg-white px-2 py-3"
+                        >
+                            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-3">
+                                <Doodle name={doodle} size={20} weight={1.8} />
+                            </span>
+                            <span className="text-xs font-bold leading-4">{tFeatures(`${key}.title`)}</span>
+                        </li>
+                    ))}
+                </ul>
                 <div className="mt-6 grid w-full max-w-xs gap-3">
                     <Link
                         href="/new"

@@ -35,7 +35,7 @@ export default function manifest(): MetadataRoute.Manifest {
     return {
         name: 'Tribu',
         short_name: 'Tribu',
-        description: 'Gastos compartidos y pagos cripto.',
+        description: 'La cuenta compartida de tu grupo.',
         // Pin the identity the old implicit manifest had while moving only its launch surface.
         // Without `id`, some browsers derive it from start_url and can treat this as a second app.
         id: '/',

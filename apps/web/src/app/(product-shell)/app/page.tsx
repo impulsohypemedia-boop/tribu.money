@@ -46,7 +46,7 @@ export default async function AppHomePage({
                     className="split-app-frame mx-auto min-h-dvh w-full max-w-xl bg-background"
                 >
                     <header className="border-b border-n-1 bg-primary-1 px-5 pb-5 pt-[max(1.5rem,env(safe-area-inset-top))]">
-                        <h1 className="text-h4">Split</h1>
+                        <h1 className="text-h4">Tribu</h1>
                     </header>
                     <InstallAppSurface source={installSurfaceSource(source)} repair={repairing} />
                 </main>

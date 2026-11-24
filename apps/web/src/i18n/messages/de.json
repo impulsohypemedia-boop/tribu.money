@@ -1752,6 +1752,24 @@
                     }
                 }
             }
+        },
+        "patrimony": {
+            "title": "Net worth",
+            "loading": "Adding it up…",
+            "totalLabel": "What your groups hold together",
+            "totalHint": "Everything in pots, in dollars.",
+            "chartHint": "Month by month, at today's rate. Tap a month to see its value.",
+            "whereTitle": "Where the money is",
+            "currenciesTitle": "By currency",
+            "pesoRate": "Pesos at today's crypto dollar: US$ 1 = $ {rate}.",
+            "ratesNote": "Reference rates, refreshed every hour.",
+            "ratesStatic": "Today's rate is unavailable: these dollars use a reference rate and may be off.",
+            "unpriced": "{codes} is left out because we have no rate for it.",
+            "emptyTitle": "No money saved yet",
+            "emptyBody": "Once a group puts money in a pot, you'll see the total here and how it grows.",
+            "startVaquita": "Start a pot",
+            "homeCard": "Net worth",
+            "homeCardHint": "In dollars"
         }
     },
     "card": {

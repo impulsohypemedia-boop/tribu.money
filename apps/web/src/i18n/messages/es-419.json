@@ -1752,6 +1752,24 @@
                     }
                 }
             }
+        },
+        "patrimony": {
+            "title": "Patrimonio",
+            "loading": "Sumando lo que tienen…",
+            "totalLabel": "Lo que tienen juntas tus tribus",
+            "totalHint": "Todo lo que hay en vaquitas y pozos, pasado a dólares.",
+            "chartHint": "Cómo cambió mes a mes, a la cotización de hoy. Tocá un mes para ver cuánto había.",
+            "whereTitle": "Dónde está la plata",
+            "currenciesTitle": "En qué monedas",
+            "pesoRate": "Pesos al dólar cripto de hoy: US$ 1 = $ {rate}.",
+            "ratesNote": "Cotizaciones de referencia, se actualizan cada hora.",
+            "ratesStatic": "No pudimos traer la cotización de hoy: estos dólares usan una de referencia y pueden no ser exactos.",
+            "unpriced": "No sumamos {codes} porque no tenemos su cotización.",
+            "emptyTitle": "Todavía no juntaron plata",
+            "emptyBody": "Cuando una tribu ponga plata en una vaquita o un pozo, acá vas a ver cuánto tienen en total y cómo va creciendo.",
+            "startVaquita": "Armar una vaquita",
+            "homeCard": "Patrimonio",
+            "homeCardHint": "En dólares"
         }
     },
     "card": {

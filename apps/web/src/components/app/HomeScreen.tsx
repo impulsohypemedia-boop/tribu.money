@@ -15,6 +15,8 @@ import { myPositions, myPots, upcomingFixed, type MyPot } from '@/lib/my-overvie
 import { useMyRooms } from '@/lib/queries/my-rooms'
 import { useCurrencies } from '@/lib/queries/reads'
 import { themeFor } from '@/lib/themes'
+import { usePatrimony } from './PatrimonyScreen'
+import { UsdMoney } from './UsdMoney'
 
 const roomHref = (slug: string) => `/r/${encodeURIComponent(slug)}`
 
@@ -28,6 +30,30 @@ function SectionTitle({ title, href, more }: { title: string; href?: string; mor
                 </Link>
             )}
         </div>
+    )
+}
+
+/** The tribus' money in dollars, one tap from the full patrimonio screen. */
+function PatrimonyCard() {
+    const t = useTranslations('appShell.patrimony')
+    const { value, loading } = usePatrimony()
+    if (loading || value.byRoom.length === 0) return null
+    return (
+        <Link
+            href="/patrimonio"
+            data-testid="home-patrimony"
+            className="mt-4 flex items-center gap-3 rounded-sm border border-n-1 bg-white p-3 no-underline"
+        >
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-sm border border-n-1 bg-primary-3">
+                <Doodle name="iconwallet" size={22} weight={1.8} />
+            </span>
+            <span className="min-w-0 flex-1">
+                <span className="block truncate text-h8">{t('homeCard')}</span>
+                <span className="block truncate text-xs text-grey-1">{t('homeCardHint')}</span>
+            </span>
+            <UsdMoney cents={value.totalUsdCents} className="text-h7" />
+            <Icon name="chevron-right" size={16} className="shrink-0 text-grey-1" />
+        </Link>
     )
 }
 
@@ -191,6 +217,8 @@ export function HomeScreen() {
                     </div>
                 )}
             </section>
+
+            <PatrimonyCard />
 
             {fixed.length > 0 && (
                 <>

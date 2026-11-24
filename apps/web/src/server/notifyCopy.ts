@@ -13,7 +13,7 @@
  */
 import { formatMoney } from '@/lib/money'
 
-export type NotificationTemplate = 'expense_added' | 'settlement_recorded' | 'all_settled'
+export type NotificationTemplate = 'expense_added' | 'settlement_recorded' | 'all_settled' | 'reminder'
 
 export interface PushPayload {
     title: string
@@ -105,6 +105,24 @@ export function allSettledPayload(input: { room: RoomRef; roomId: string; sendId
         body: 'Everyone is square — nothing left to settle.',
         url: roomUrl(input.room),
         template: 'all_settled',
+        tag: roomTag(input.roomId),
+        sendId: input.sendId,
+    }
+}
+
+/** Recordatorio amable. Spanish, because Tribu is Spanish only; the other templates predate that. */
+export function reminderPayload(input: {
+    room: RoomRef
+    roomId: string
+    sendId: string
+    fromName: string | null
+    amountMinor: string
+}): PushPayload {
+    return {
+        title: titleOf(input.room),
+        body: `${input.fromName ?? 'Alguien de la tribu'} te manda un recordatorio amable: le pasás ${formatMoney(input.amountMinor, input.room.currency)} cuando puedas.`,
+        url: roomUrl(input.room),
+        template: 'reminder',
         tag: roomTag(input.roomId),
         sendId: input.sendId,
     }

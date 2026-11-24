@@ -53,6 +53,7 @@ model Room {
   expenses                    Expense[]
   recurringExpenses           RecurringExpense[]
   pots                        Pot[]
+  reminders                   Reminder[]
   settlements                 Settlement[]
   auditEvents                 RoomAuditEvent[]
   importBatches               ImportBatch[]
@@ -62,6 +63,24 @@ model Room {
   pushSubscriptions PushSubscription[]
   notificationSends NotificationSend[]
 
+  @@schema("split")
+}
+
+/// A friendly nudge from someone who is owed money to someone who owes them.
+/// The amount is not stored: the reminder points at the people, and the screen
+/// shows whatever is still pending between them when it is read. `seenAt` is
+/// set when the person reminded dismisses the notice in the app.
+model Reminder {
+  id        String    @id @default(uuid())
+  roomId    String
+  fromId    String
+  toId      String
+  createdAt DateTime  @default(now())
+  seenAt    DateTime?
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, toId, createdAt])
   @@schema("split")
 }
 

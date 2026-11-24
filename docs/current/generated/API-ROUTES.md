@@ -3,9 +3,9 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/src/app/**/route.ts`  
-Input SHA-256: `9c9f286f8161cb5da5f0c0bc7586095422488c3fe13fccedf309fe7f4d33d265`
+Input SHA-256: `c42fe34a8ddd7903ae0773128f3b3eaa41abda1572c1f79c2e5247dd6d322100`
 
-Exported operations: 56
+Exported operations: 58
 
 | Method   | Path                                                         | Handler                                                                                  |
 | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
@@ -55,6 +55,8 @@ Exported operations: 56
 | `POST`   | `/api/rooms/:slug/receipt-parse`                             | `apps/web/src/app/api/rooms/[slug]/receipt-parse/route.ts`                               |
 | `POST`   | `/api/rooms/:slug/recurring`                                 | `apps/web/src/app/api/rooms/[slug]/recurring/route.ts`                                   |
 | `DELETE` | `/api/rooms/:slug/recurring/:recurringId`                    | `apps/web/src/app/api/rooms/[slug]/recurring/[recurringId]/route.ts`                     |
+| `POST`   | `/api/rooms/:slug/reminders`                                 | `apps/web/src/app/api/rooms/[slug]/reminders/route.ts`                                   |
+| `POST`   | `/api/rooms/:slug/reminders/:id/seen`                        | `apps/web/src/app/api/rooms/[slug]/reminders/[id]/seen/route.ts`                         |
 | `POST`   | `/api/rooms/:slug/settlements`                               | `apps/web/src/app/api/rooms/[slug]/settlements/route.ts`                                 |
 | `DELETE` | `/api/rooms/:slug/settlements/:id`                           | `apps/web/src/app/api/rooms/[slug]/settlements/[id]/route.ts`                            |
 | `POST`   | `/api/share-target`                                          | `apps/web/src/app/api/share-target/route.ts`                                             |

@@ -446,6 +446,15 @@ export const api = {
     stopRecurring: (slug: string, recurringId: string) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/recurring/${encode(recurringId)}`, { method: 'DELETE' }),
 
+    sendReminder: (slug: string, toId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/reminders`, { method: 'POST', body: { toId }, token }),
+
+    dismissReminder: (slug: string, reminderId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/reminders/${encode(reminderId)}/seen`, {
+            method: 'POST',
+            token,
+        }),
+
     createPot: (slug: string, input: PotInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/pots`, { method: 'POST', body: input, token }),
 

@@ -3,11 +3,22 @@
 import { useCallback } from 'react'
 import { queryOptions, useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api'
-import type { CurrencyInfo, RoomHistoryPage, RoomState } from '../api-types'
+import type { CurrencyInfo, LedgerPage, RoomHistoryPage, RoomState } from '../api-types'
 import { FALLBACK_CURRENCIES } from '../money'
 import { mergeQueuedExpenses, useQueuedWrites } from '../offline-queue'
 import { useRoomEvents } from '../realtime'
-import { currenciesKey, historyKey, roomKey } from './core'
+import { currenciesKey, historyKey, ledgerKey, roomKey } from './core'
+
+export function useRoomLedger(slug: string, enabled = true) {
+    return useInfiniteQuery<LedgerPage>({
+        queryKey: ledgerKey(slug),
+        queryFn: ({ pageParam, signal }) =>
+            api.roomLedger(slug, typeof pageParam === 'string' ? pageParam : null, signal),
+        initialPageParam: null,
+        getNextPageParam: (page) => page.nextCursor ?? undefined,
+        enabled,
+    })
+}
 
 export function useRoomHistory(slug: string, enabled = true) {
     return useInfiniteQuery<RoomHistoryPage>({
@@ -104,6 +115,7 @@ export function useRoomState(slug: string) {
         void queryClient.refetchQueries({ queryKey: roomKey(slug) })
         // History is lazy, so this only refetches while its drawer is open.
         void queryClient.refetchQueries({ queryKey: historyKey(slug), type: 'active' })
+        void queryClient.refetchQueries({ queryKey: ledgerKey(slug), type: 'active' })
     }, [queryClient, slug])
 
     const { connected } = useRoomEvents(slug, onPoke)

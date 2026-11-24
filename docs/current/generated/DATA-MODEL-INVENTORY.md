@@ -3,10 +3,10 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `5aaffd0b620f9b71428c31879c2f734e6f202eb2128835d3fca3039d02f069cf`
+Input SHA-256: `23ecc0cb171e304a06ca8bbc8f5d4a4ed05be4a46a20128251fd5435a5f9ff2d`
 
 PostgreSQL namespace: `split`  
-Models: 20  
+Models: 22  
 Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## Room
@@ -32,6 +32,7 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `budgets`                     | `Budget[]`           | —                                    |
 | `settlements`                 | `Settlement[]`       | —                                    |
 | `auditEvents`                 | `RoomAuditEvent[]`   | —                                    |
+| `ledgerEntries`               | `LedgerEntry[]`      | —                                    |
 | `importBatches`               | `ImportBatch[]`      | —                                    |
 | `feedbackReports`             | `FeedbackReport[]`   | —                                    |
 | `installHandoffs`             | `InstallHandoff[]`   | —                                    |
@@ -346,3 +347,35 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `createdAt`    | `DateTime`  | @default(now())                                                 |
 | `deletedAt`    | `DateTime?` | —                                                               |
 | `pot`          | `Pot`       | @relation(fields: [potId], references: [id], onDelete: Cascade) |
+
+## LedgerEntry
+
+| Field         | Prisma type       | Attributes                                                                                                  |
+| ------------- | ----------------- | ----------------------------------------------------------------------------------------------------------- |
+| `id`          | `BigInt`          | @id @default(autoincrement())                                                                               |
+| `roomId`      | `String`          | —                                                                                                           |
+| `sourceType`  | `String`          | // expense \| settlement \| pot_contribution                                                                |
+| `sourceId`    | `String`          | —                                                                                                           |
+| `kind`        | `String`          | // record \| reversal                                                                                       |
+| `reversesId`  | `BigInt?`         | @unique // the record a reversal cancels                                                                    |
+| `currency`    | `String`          | // room currency; every posting amount is in it                                                             |
+| `description` | `String?`         | // snapshot at write time                                                                                   |
+| `detail`      | `Json?`           | // snapshot at write time: original amount and currency, method, pot                                        |
+| `occurredAt`  | `DateTime`        | // when the money moved: the expense date or when the payment was recorded                                  |
+| `createdAt`   | `DateTime`        | @default(now())                                                                                             |
+| `room`        | `Room`            | @relation(fields: [roomId], references: [id], onDelete: Restrict)                                           |
+| `reverses`    | `LedgerEntry?`    | @relation("LedgerReversal", fields: [reversesId], references: [id], onDelete: Restrict, onUpdate: Restrict) |
+| `reversedBy`  | `LedgerEntry?`    | @relation("LedgerReversal")                                                                                 |
+| `postings`    | `LedgerPosting[]` | —                                                                                                           |
+
+## LedgerPosting
+
+| Field         | Prisma type   | Attributes                                                         |
+| ------------- | ------------- | ------------------------------------------------------------------ |
+| `id`          | `BigInt`      | @id @default(autoincrement())                                      |
+| `entryId`     | `BigInt`      | —                                                                  |
+| `roomId`      | `String`      | —                                                                  |
+| `accountType` | `String`      | // member \| pot \| keeper                                         |
+| `accountId`   | `String`      | —                                                                  |
+| `amountMinor` | `BigInt`      | —                                                                  |
+| `entry`       | `LedgerEntry` | @relation(fields: [entryId], references: [id], onDelete: Restrict) |

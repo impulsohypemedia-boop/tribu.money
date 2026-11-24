@@ -20,6 +20,7 @@ import { useAddPotContribution, useRemovePotContribution, useUpdatePot } from '@
 import { TOAST_MS } from '@/lib/toasts'
 import { PotYieldCard, PotYieldLine } from './PotYield'
 import { StoryShareButton } from './StoryShareButton'
+import { VaquitaWallet, VaquitaWalletOffer } from './VaquitaWallet'
 import { Money } from './Money'
 
 type Props = {
@@ -245,6 +246,12 @@ export function PotDetails({
         }
     }
 
+    // Once the pot has a real wallet, the chain is the record of its money and the keeper's
+    // ledger below no longer applies.
+    if (pot.walletPotId) {
+        return <VaquitaWallet pot={pot} slug={slug} state={state} meId={meId} token={token} />
+    }
+
     return (
         <div className="grid gap-5">
             <div className="rounded-sm border border-n-1 bg-primary-3/40 p-4 text-center">
@@ -290,6 +297,8 @@ export function PotDetails({
                     <span className="text-grey-1">{t('keeperNote', { name: keeper })}</span>
                 </span>
             </div>
+
+            <VaquitaWalletOffer pot={pot} slug={slug} state={state} meId={meId} token={token} />
 
             <PotYieldCard pot={pot} state={state} currencies={currencies} slug={slug} token={token} keeper={keeper} />
 

@@ -198,6 +198,8 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             createdAt: pot.createdAt.toISOString(),
             closedAt: pot.closedAt?.toISOString() ?? null,
             yieldAprBps: pot.yieldAprBps,
+            walletPotId: pot.walletPotId,
+            walletToken: pot.walletToken === 'USDC' || pot.walletToken === 'USDT' ? pot.walletToken : null,
             contributions: pot.contributions.map((c) => ({
                 id: c.id,
                 memberId: c.memberId,

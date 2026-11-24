@@ -9,6 +9,7 @@
  */
 import type { Prisma } from '@prisma/client'
 import { isActiveMember } from '@/lib/members'
+import { vaquitaWalletId } from '@/lib/lemon/vaquita'
 import { prisma } from '@/server/db'
 import { publish } from '@/server/events'
 import { actorFromToken, appendRoomAuditEvent, lockRoomWrite, type AuditActor } from '@/server/history'
@@ -296,4 +297,58 @@ export async function potWrite(
     })
     if (result.changed) publish(initial.id)
     return result.state
+}
+
+/**
+ * Point the pot at its wallet in the TribuVaquita contract. The route checks the chain first,
+ * outside the room lock; this re-checks what the database knows and records it once.
+ */
+export async function linkPotWallet(
+    tx: Tx,
+    request: Request,
+    room: RoomWithRelations,
+    actor: AuditActor,
+    potId: string,
+    wallet: { creator: string; token: 'USDC' | 'USDT' }
+) {
+    const pot = await openPot(tx, room, potId)
+    const creator = wallet.creator.toLowerCase()
+    if (!room.members.some((member) => isActiveMember(member) && member.walletAddress === creator)) {
+        throw badRequest('the creator is not a member of this tribu with a linked wallet', 'VAQUITA_NOT_MEMBER')
+    }
+    const walletPotId = vaquitaWalletId(creator as `0x${string}`, pot.id)
+    if (pot.walletPotId === walletPotId) return false
+    if (pot.walletPotId) throw badRequest('this pot already has a wallet', 'VAQUITA_WALLET_EXISTS')
+    const after = await tx.pot.update({ where: { id: pot.id }, data: { walletPotId, walletToken: wallet.token } })
+    await appendRoomAuditEvent({
+        tx,
+        request,
+        roomId: room.id,
+        actor,
+        event: {
+            kind: 'pot_updated',
+            subjectType: 'room',
+            subjectId: pot.id,
+            before: pot,
+            after,
+            detail: { change: 'wallet_created' },
+        },
+    })
+    return true
+}
+
+/** Keep what a wallet payment is for, off-chain, under the proposal's random memo. */
+export async function addPotWalletNote(
+    tx: Tx,
+    room: RoomWithRelations,
+    potId: string,
+    note: { memo: string; text: string }
+) {
+    const pot = await openPot(tx, room, potId)
+    if (!pot.walletPotId) throw badRequest('this pot has no wallet', 'VAQUITA_NO_WALLET')
+    await tx.potWalletNote.upsert({
+        where: { memo: note.memo.toLowerCase() },
+        create: { potId: pot.id, memo: note.memo.toLowerCase(), text: note.text },
+        update: {},
+    })
 }

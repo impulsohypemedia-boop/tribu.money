@@ -3,10 +3,10 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `aefe3d586b01592bd33f809d125205b54f4dd71f5f53b28b710eb166430b348e`
+Input SHA-256: `6fb631f5a9c246b9a00fef8a73749647c4a96371bddbf69fc52661d5b4a8e084`
 
 PostgreSQL namespace: `split`  
-Models: 18  
+Models: 19  
 Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## Room
@@ -301,8 +301,22 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `yieldAprBps`   | `Int?`              | // estimated yearly rate the keeper's account pays, in basis points; display only |
 | `createdAt`     | `DateTime`          | @default(now())                                                                   |
 | `closedAt`      | `DateTime?`         | —                                                                                 |
+| `walletPotId`   | `String?`           | @unique                                                                           |
+| `walletToken`   | `String?`           | —                                                                                 |
 | `room`          | `Room`              | @relation(fields: [roomId], references: [id], onDelete: Cascade)                  |
 | `contributions` | `PotContribution[]` | —                                                                                 |
+| `walletNotes`   | `PotWalletNote[]`   | —                                                                                 |
+
+## PotWalletNote
+
+| Field       | Prisma type | Attributes                                                      |
+| ----------- | ----------- | --------------------------------------------------------------- |
+| `id`        | `String`    | @id @default(uuid())                                            |
+| `potId`     | `String`    | —                                                               |
+| `memo`      | `String`    | @unique // bytes32, lowercase hex                               |
+| `text`      | `String`    | —                                                               |
+| `createdAt` | `DateTime`  | @default(now())                                                 |
+| `pot`       | `Pot`       | @relation(fields: [potId], references: [id], onDelete: Cascade) |
 
 ## PotContribution
 

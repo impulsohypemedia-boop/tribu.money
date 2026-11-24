@@ -462,11 +462,32 @@ model Pot {
   yieldAprBps Int? // estimated yearly rate the keeper's account pays, in basis points; display only
   createdAt   DateTime  @default(now())
   closedAt    DateTime?
+  // The pot's on-chain wallet in the TribuVaquita contract, once a member created it (bytes32 id,
+  // lowercase hex) and which stablecoin it holds. The chain is the record of that money; these
+  // two fields only say where to look.
+  walletPotId String?   @unique
+  walletToken String?
 
   room          Room              @relation(fields: [roomId], references: [id], onDelete: Cascade)
   contributions PotContribution[]
+  walletNotes   PotWalletNote[]
 
   @@index([roomId])
+  @@schema("split")
+}
+
+/// What a payment from the pot's wallet is for. The proposal on chain carries only `memo`, a
+/// random id, so the description stays private to the tribu.
+model PotWalletNote {
+  id        String   @id @default(uuid())
+  potId     String
+  memo      String   @unique // bytes32, lowercase hex
+  text      String
+  createdAt DateTime @default(now())
+
+  pot Pot @relation(fields: [potId], references: [id], onDelete: Cascade)
+
+  @@index([potId])
   @@schema("split")
 }
 

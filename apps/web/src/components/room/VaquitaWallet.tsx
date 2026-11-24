@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'sonner'
@@ -38,12 +38,49 @@ import {
 } from '@/lib/lemon/vaquita-client'
 import { activeMembers } from '@/lib/members'
 import { seedRoomState } from '@/lib/queries/core'
+import { testWalletEnabled, testWalletProof } from '@/lib/lemon/test-wallet'
 import { TOAST_MS } from '@/lib/toasts'
 import { MemberChips } from './Vaquita'
 
 type Props = { pot: ApiPot; slug: string; state: RoomState; meId?: string | null; token?: string | null }
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+/**
+ * Whether this screen can send the wallet's transactions: inside Lemon, or in test mode (a browser
+ * wallet on the Amoy testnet). Read after mount, because `window` decides it.
+ */
+function useCanSign(): { canSign: boolean; testMode: boolean } {
+    const inLemon = useInLemon()
+    const [testMode, setTestMode] = useState(false)
+    useEffect(() => setTestMode(testWalletEnabled()), [])
+    return { canSign: inLemon || testMode, testMode }
+}
+
+/** Test mode: link the browser wallet to this member with a signed sign-in, as Lemon does. */
+function LinkTestWallet({ slug, meId, token }: { slug: string; meId?: string | null; token?: string | null }) {
+    const t = useTranslations('room.pot.wallet')
+    const errorMessage = useErrorMessage()
+    const queryClient = useQueryClient()
+    const [busy, setBusy] = useState(false)
+    if (!meId || !token) return null
+    const link = async () => {
+        setBusy(true)
+        try {
+            const proof = await testWalletProof()
+            seedRoomState(queryClient, slug, await api.linkWallet(slug, meId, { ...proof, lemonTag: null }, token))
+        } catch (error) {
+            toast.error(errorMessage(error), { duration: TOAST_MS.actionable })
+        } finally {
+            setBusy(false)
+        }
+    }
+    return (
+        <Button variant="stroke" loading={busy} onClick={() => void link()} data-testid="vaquita-test-link">
+            {t('testLink')}
+        </Button>
+    )
+}
 
 /** The wallet address this phone signs with: Lemon's session first, else the member's linked one. */
 function useMyWallet(state: RoomState, meId?: string | null): string | null {
@@ -61,7 +98,7 @@ export function VaquitaWalletOffer({ pot, slug, state, meId, token }: Props) {
     const t = useTranslations('room.pot.wallet')
     const errorMessage = useErrorMessage()
     const queryClient = useQueryClient()
-    const inLemon = useInLemon()
+    const { canSign, testMode } = useCanSign()
     const myWallet = useMyWallet(state, meId)
     const contract = vaquitaContract()
     const coins = availableStablecoins()
@@ -73,7 +110,7 @@ export function VaquitaWalletOffer({ pot, slug, state, meId, token }: Props) {
     const [earns, setEarns] = useState(canEarn)
     const [busy, setBusy] = useState(false)
 
-    if (!contract || !inLemon || pot.closedAt || pot.walletPotId) return null
+    if (!contract || !canSign || pot.closedAt || pot.walletPotId) return null
 
     const iAmIn = !!myWallet && withWallet.some((member) => sameAddress(member.walletAddress, myWallet))
     const wallets = withWallet.slice(0, VAQUITA_MAX_MEMBERS).map((member) => member.walletAddress!)
@@ -211,6 +248,8 @@ export function VaquitaWalletOffer({ pot, slug, state, meId, token }: Props) {
                 </div>
             )}
             {!iAmIn && <p className="text-sm text-grey-1">{t('linkFirst')}</p>}
+            {!iAmIn && testMode && <LinkTestWallet slug={slug} meId={meId} token={token} />}
+            {testMode && <p className="text-sm font-bold">{t('testModeNote')}</p>}
         </section>
     )
 }
@@ -222,7 +261,7 @@ export function VaquitaWallet({ pot, slug, state, meId, token }: Props) {
     const t = useTranslations('room.pot.wallet')
     const locale = useLocale()
     const errorMessage = useErrorMessage()
-    const inLemon = useInLemon()
+    const { canSign, testMode } = useCanSign()
     const myWallet = useMyWallet(state, meId)
     const contract = vaquitaContract()
     const query = useQuery({
@@ -255,7 +294,7 @@ export function VaquitaWallet({ pot, slug, state, meId, token }: Props) {
     const nameOf = (memberId: string | null, address: string) =>
         state.members.find((member) => member.id === memberId)?.name ?? `${address.slice(0, 6)}…${address.slice(-4)}`
     const mine = wallet.members.find((member) => sameAddress(member.wallet, myWallet))
-    const canAct = inLemon && !!mine
+    const canAct = canSign && !!mine
     const coin = lemonNetwork().tokens[wallet.token]
     const walletPotId = wallet.walletPotId
     // Anyone in the tribu with a linked wallet can be paid: the pot's members and everyone else.
@@ -405,8 +444,10 @@ export function VaquitaWallet({ pot, slug, state, meId, token }: Props) {
                     ))}
                 </div>
             )}
-            {!inLemon && <p className="text-sm text-grey-1">{t('openInLemon')}</p>}
-            {inLemon && !mine && <p className="text-sm text-grey-1">{t('notInWallet')}</p>}
+            {!canSign && <p className="text-sm text-grey-1">{t('openInLemon')}</p>}
+            {canSign && !mine && <p className="text-sm text-grey-1">{t('notInWallet')}</p>}
+            {testMode && !myWallet && <LinkTestWallet slug={slug} meId={meId} token={token} />}
+            {testMode && <p className="text-sm font-bold">{t('testModeNote')}</p>}
 
             {form && (
                 <div className="grid gap-3 rounded-sm border border-n-1 bg-white p-3 text-sm">

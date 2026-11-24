@@ -1334,7 +1334,9 @@
                 "earnHint": "The money goes into Aave and grows with its interest. Each part grows in proportion to what each person put in. The rate changes every day.",
                 "earnRisk": "Earning adds Aave's risk: if Aave has a problem, money can be lost, and taking money out can wait until there is liquidity.",
                 "earningRate": "Earning {rate}% a year right now (Aave, the rate changes)",
-                "earningNoRate": "Earning with Aave"
+                "earningNoRate": "Earning with Aave",
+                "testLink": "Link MetaMask (test)",
+                "testModeNote": "Test mode: Amoy network with test dollars. None of this is real money."
             }
         },
         "tribePot": {

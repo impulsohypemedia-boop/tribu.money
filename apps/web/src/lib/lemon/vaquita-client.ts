@@ -3,11 +3,14 @@
 import { callSmartContract, ContractStandard, TransactionResult } from '@lemoncash/mini-app-sdk'
 import { lemonNetwork, type StablecoinConfig } from './chain'
 import type { StablecoinPaymentResult } from './client'
-import { VaquitaAction, vaquitaSalt, type VaquitaActionName } from './vaquita'
+import { erc20Abi, type Abi, type AbiFunction } from 'viem'
+import { sendWithTestWallet, testWalletEnabled } from './test-wallet'
+import { VAQUITA_ABI, VaquitaAction, vaquitaSalt, type VaquitaActionName } from './vaquita'
 
 /**
  * The vaquita wallet's transactions, sent from the member's Lemon wallet. Lemon shows its own
- * confirmation screen for each one; nothing moves until the member confirms there.
+ * confirmation screen for each one; nothing moves until the member confirms there. On the Amoy
+ * testnet outside Lemon, a browser wallet stands in (`test-wallet.ts`).
  */
 
 type ContractCall = {
@@ -17,7 +20,38 @@ type ContractCall = {
     contractStandard?: ContractStandard
 }
 
+/** Lemon takes every parameter as a string; a browser wallet needs them typed by the ABI. */
+export function typedArgs(abi: Abi, functionName: string, params: unknown[]): unknown[] {
+    const item = abi.find((entry): entry is AbiFunction => entry.type === 'function' && entry.name === functionName)
+    if (!item) throw new Error(`unknown function ${functionName}`)
+    return params.map((param, i) => (item.inputs[i]?.type.startsWith('uint') ? BigInt(param as string) : param))
+}
+
+async function sendInTestMode(calls: ContractCall[]): Promise<StablecoinPaymentResult> {
+    try {
+        const txHash = await sendWithTestWallet(
+            calls.map((call) => {
+                const abi = (call.contractStandard === ContractStandard.ERC20 ? erc20Abi : VAQUITA_ABI) as Abi
+                return {
+                    contractAddress: call.contractAddress,
+                    abi,
+                    functionName: call.functionName,
+                    args: typedArgs(abi, call.functionName, call.functionParams),
+                }
+            })
+        )
+        return { status: 'sent', txHash }
+    } catch (error) {
+        // Wallets report a rejected request with code 4001.
+        if ((error as { code?: number }).code === 4001 || /reject|denied/i.test(String(error))) {
+            return { status: 'cancelled' }
+        }
+        return { status: 'failed', message: error instanceof Error ? error.message : 'unknown' }
+    }
+}
+
 async function send(calls: ContractCall[], title: string): Promise<StablecoinPaymentResult> {
+    if (testWalletEnabled()) return sendInTestMode(calls)
     const chainId = lemonNetwork().chainId
     const response = await callSmartContract({
         contracts: calls.map((call) => ({ ...call, value: '0', chainId })),

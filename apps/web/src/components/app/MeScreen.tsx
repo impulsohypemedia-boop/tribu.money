@@ -29,6 +29,7 @@ import { useMyRooms } from '@/lib/queries/my-rooms'
 import { useCurrencies } from '@/lib/queries/reads'
 import { TOAST_MS } from '@/lib/toasts'
 import { tribeMilestones } from '@/lib/tribe-milestones'
+import { BadgesSection } from './BadgesSection'
 
 const pill = (active: boolean) =>
     cn(
@@ -201,6 +202,8 @@ export function MeScreen() {
     return (
         <div className="grid gap-7 px-5 pt-5" data-testid="me">
             <WalletSection rooms={rooms} />
+
+            <BadgesSection rooms={rooms} />
 
             <section data-testid="me-milestones">
                 <h2 className="text-h6">{t('milestonesTitle')}</h2>

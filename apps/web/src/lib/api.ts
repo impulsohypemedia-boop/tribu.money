@@ -455,7 +455,7 @@ export const api = {
     addPotContribution: (
         slug: string,
         potId: string,
-        input: { memberId: string; amountMinor: string },
+        input: { memberId: string; amountMinor: string; reason?: 'roundup' | null },
         token?: string | null
     ) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/contributions`, {
@@ -482,6 +482,12 @@ export const api = {
             method: 'DELETE',
             token,
         }),
+
+    badgeVoucher: (slug: string, badge: string, token?: string | null) =>
+        request<{ contract: string; tokenId: number; signature: string; wallet: string }>(
+            `/api/rooms/${encode(slug)}/badges`,
+            { method: 'POST', body: { badge }, token }
+        ),
 
     setMemberProfile: (slug: string, memberId: string, input: MemberProfileInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}/profile`, {

@@ -3,7 +3,7 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `d68af14ebb0f17396b7ea27d711c05ac0191fc67f74c89d18819c6acb84a1c21`
+Input SHA-256: `aefe3d586b01592bd33f809d125205b54f4dd71f5f53b28b710eb166430b348e`
 
 PostgreSQL namespace: `split`  
 Models: 18  
@@ -289,19 +289,20 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## Pot
 
-| Field           | Prisma type         | Attributes                                                       |
-| --------------- | ------------------- | ---------------------------------------------------------------- |
-| `id`            | `String`            | @id @default(uuid())                                             |
-| `roomId`        | `String`            | —                                                                |
-| `name`          | `String`            | —                                                                |
-| `keeperId`      | `String`            | —                                                                |
-| `targetMinor`   | `BigInt?`           | // room currency                                                 |
-| `quotaMinor`    | `BigInt?`           | // per person per month, room currency                           |
-| `dueDate`       | `DateTime?`         | —                                                                |
-| `createdAt`     | `DateTime`          | @default(now())                                                  |
-| `closedAt`      | `DateTime?`         | —                                                                |
-| `room`          | `Room`              | @relation(fields: [roomId], references: [id], onDelete: Cascade) |
-| `contributions` | `PotContribution[]` | —                                                                |
+| Field           | Prisma type         | Attributes                                                                        |
+| --------------- | ------------------- | --------------------------------------------------------------------------------- |
+| `id`            | `String`            | @id @default(uuid())                                                              |
+| `roomId`        | `String`            | —                                                                                 |
+| `name`          | `String`            | —                                                                                 |
+| `keeperId`      | `String`            | —                                                                                 |
+| `targetMinor`   | `BigInt?`           | // room currency                                                                  |
+| `quotaMinor`    | `BigInt?`           | // per person per month, room currency                                            |
+| `dueDate`       | `DateTime?`         | —                                                                                 |
+| `yieldAprBps`   | `Int?`              | // estimated yearly rate the keeper's account pays, in basis points; display only |
+| `createdAt`     | `DateTime`          | @default(now())                                                                   |
+| `closedAt`      | `DateTime?`         | —                                                                                 |
+| `room`          | `Room`              | @relation(fields: [roomId], references: [id], onDelete: Cascade)                  |
+| `contributions` | `PotContribution[]` | —                                                                                 |
 
 ## PotContribution
 
@@ -312,6 +313,7 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `memberId`     | `String`    | —                                                               |
 | `amountMinor`  | `BigInt`    | // room currency                                                |
 | `settlementId` | `String?`   | @unique                                                         |
+| `reason`       | `String?`   | // null (a plain contribution) \| "roundup"                     |
 | `createdById`  | `String?`   | —                                                               |
 | `createdAt`    | `DateTime`  | @default(now())                                                 |
 | `deletedAt`    | `DateTime?` | —                                                               |

@@ -35,6 +35,18 @@ import {
     payoutOf,
     type PayoutNetwork,
 } from '@/lib/payout'
+import { payKeeperWithLemon } from '@/lib/lemon/pay-keeper'
+import { openPots } from '@/lib/pots'
+import { useAddPotContribution } from '@/lib/queries/pots'
+import {
+    defaultRoundUpUnit,
+    rememberedRoundUp,
+    rememberRoundUp,
+    ROUND_UP_UNITS,
+    roundUpDifference,
+    unitToMinor,
+    type RoundUpUnit,
+} from '@/lib/roundup'
 import { MemberAvatar } from './MemberAvatar'
 import { AnimatedMoney, Money } from './Money'
 
@@ -106,6 +118,9 @@ export function SettleDrawer({
     const [selected, setSelected] = useState<ApiTransfer | null>(null)
     const [method, setMethod] = useState<SettlementMethod>('cash')
     const [payAhead, setPayAhead] = useState(false)
+    const [roundUp, setRoundUp] = useState(false)
+    const [roundUpUnit, setRoundUpUnit] = useState<RoundUpUnit>(() => defaultRoundUpUnit(state.room.currency))
+    const addContribution = useAddPotContribution(slug, token)
     const [note, setNote] = useState('')
     const inLemon = useInLemon()
     const { session: lemonSession } = useLemon()
@@ -165,6 +180,9 @@ export function SettleDrawer({
         if (!open) return
         setSelected(null)
         setMethod('cash')
+        const remembered = rememberedRoundUp(slug)
+        setRoundUp(remembered !== null)
+        if (remembered !== null) setRoundUpUnit(remembered)
         setNote('')
         setLemonStage('idle')
         setAmount('')
@@ -254,6 +272,41 @@ export function SettleDrawer({
         staleTime: 30_000,
     })
     const quotedToken = lemonQuote.data?.quotes.find((quote) => quote.token === stablecoin)
+
+    // Redondeo al pozo: only for the person paying, only when the room has a pot to round into.
+    const roundUpPot = openPots(state)[0] ?? null
+    const roundUpMinor = (() => {
+        if (!roundUp || !roundUpPot || !selected || selected.fromId !== me?.id) return '0'
+        const parsed = parseAmountToMinor(amount, decimals, locale)
+        return parsed === null ? '0' : roundUpDifference(parsed, unitToMinor(roundUpUnit, decimals))
+    })()
+
+    /** After the payment is recorded: the round-up goes to the pot. Never undoes the payment. */
+    const recordRoundUp = async (paidWithLemon: boolean) => {
+        if (!roundUpPot || roundUpMinor === '0' || !me) return
+        const keeper = state.members.find((member) => member.id === roundUpPot.keeperId)
+        try {
+            if (paidWithLemon && keeper?.walletAddress && keeper.id !== me.id) {
+                const sent = await payKeeperWithLemon({
+                    slug,
+                    amountMinor: roundUpMinor,
+                    keeperWallet: keeper.walletAddress,
+                    stablecoin,
+                    title: t('roundUpLemonTitle', { pot: roundUpPot.name }),
+                })
+                if (sent.status !== 'sent') return
+            }
+            await addContribution.mutateAsync({
+                potId: roundUpPot.id,
+                memberId: me.id,
+                amountMinor: roundUpMinor,
+                reason: 'roundup',
+            })
+            toast(t('roundUpDone', { pot: roundUpPot.name }), { duration: TOAST_MS.actionable })
+        } catch {
+            toast.error(t('roundUpFailed'), { duration: TOAST_MS.actionable })
+        }
+    }
 
     const record = async () => {
         if (!selected || recordingRef.current) return
@@ -358,6 +411,7 @@ export function SettleDrawer({
             // `partial` is a boolean about a payment, not an amount — the same
             // line the rest of this file holds: what happened, never how much.
             track('settlement_recorded', roomProps(slug, { method, partial }))
+            void recordRoundUp(method === 'lemon')
 
             // Wood on wood, the moment the money moves.
             feedback('thunk')
@@ -803,6 +857,60 @@ export function SettleDrawer({
                                             </p>
                                         )
                                     })()}
+                                </div>
+                            )}
+
+                            {roundUpPot && selected.fromId === me?.id && (
+                                <div className="grid gap-2" data-testid="settle-roundup">
+                                    <SettingToggle
+                                        label={t('roundUp')}
+                                        hint={t('roundUpHint', { pot: roundUpPot.name })}
+                                        checked={roundUp}
+                                        onChange={(next) => {
+                                            setRoundUp(next)
+                                            rememberRoundUp(slug, next ? roundUpUnit : null)
+                                        }}
+                                        testId="settle-roundup-toggle"
+                                    />
+                                    {roundUp && (
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            {ROUND_UP_UNITS.map((unit) => (
+                                                <button
+                                                    key={unit}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setRoundUpUnit(unit)
+                                                        rememberRoundUp(slug, unit)
+                                                    }}
+                                                    className={cn(
+                                                        'rounded-full border border-n-1 px-3 py-1 text-sm font-bold',
+                                                        roundUpUnit === unit ? 'bg-n-1 text-white' : 'bg-white'
+                                                    )}
+                                                >
+                                                    <Money
+                                                        minor={unitToMinor(unit, decimals).toString()}
+                                                        currency={state.room.currency}
+                                                        catalog={currencies}
+                                                    />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {roundUp && roundUpMinor !== '0' && (
+                                        <p className="text-sm text-grey-1" data-testid="settle-roundup-note">
+                                            {t.rich('roundUpNote', {
+                                                pot: roundUpPot.name,
+                                                amount: () => (
+                                                    <Money
+                                                        minor={roundUpMinor}
+                                                        currency={state.room.currency}
+                                                        catalog={currencies}
+                                                        className="font-bold text-n-1"
+                                                    />
+                                                ),
+                                            })}
+                                        </p>
+                                    )}
                                 </div>
                             )}
 

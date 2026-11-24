@@ -197,11 +197,13 @@ export function toRoomState(room: RoomWithRelations): RoomState {
             dueDate: pot.dueDate?.toISOString() ?? null,
             createdAt: pot.createdAt.toISOString(),
             closedAt: pot.closedAt?.toISOString() ?? null,
+            yieldAprBps: pot.yieldAprBps,
             contributions: pot.contributions.map((c) => ({
                 id: c.id,
                 memberId: c.memberId,
                 amountMinor: c.amountMinor.toString(),
                 settlementId: c.settlementId,
+                reason: c.reason === 'roundup' ? c.reason : null,
                 createdAt: c.createdAt.toISOString(),
             })),
         })),

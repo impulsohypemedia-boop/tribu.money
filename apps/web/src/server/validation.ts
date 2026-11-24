@@ -1,5 +1,6 @@
 /** Request-shape validation. Cross-field rules that need the room (membership,
  *  exact shares adding up) live in the domain modules, not here. */
+import { MAX_YIELD_APR_BPS } from '@/lib/pot-yield'
 import { z } from 'zod'
 import { isValidCode, MAX_SIGNED_MINOR, normaliseCode, parseManualFxRate } from '@/server/money'
 import { isAvatarKey } from '@/lib/avatars'
@@ -713,12 +714,15 @@ export type ImportIntoRoomBody = z.infer<typeof importIntoRoomSchema>
 const potName = z.string().trim().min(1).max(60)
 const optionalMinor = minorAmount.nullish()
 
+const yieldAprBps = z.number().int().min(1).max(MAX_YIELD_APR_BPS).nullish()
+
 export const potCreateSchema = z.object({
     name: potName,
     keeperId: id,
     targetMinor: optionalMinor,
     quotaMinor: optionalMinor,
     dueDate: z.string().datetime({ offset: true }).nullish(),
+    yieldAprBps,
 })
 
 export const potUpdateSchema = z.object({
@@ -726,9 +730,15 @@ export const potUpdateSchema = z.object({
     targetMinor: optionalMinor,
     quotaMinor: optionalMinor,
     dueDate: z.string().datetime({ offset: true }).nullish(),
+    yieldAprBps,
     closed: z.boolean().optional(),
 })
 
-export const potContributionSchema = z.object({ memberId: id, amountMinor: minorAmount })
+export const potContributionSchema = z.object({
+    memberId: id,
+    amountMinor: minorAmount,
+    /** Marks a round-up from Quedar a mano; null for a plain contribution. */
+    reason: z.literal('roundup').nullish(),
+})
 
 export const potSpendSchema = z.object({ expenseId: id })

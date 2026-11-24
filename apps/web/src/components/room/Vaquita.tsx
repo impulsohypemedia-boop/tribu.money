@@ -18,6 +18,7 @@ import { decimalsOf, formatAmountInput, parseAmountToMinor } from '@/lib/money'
 import { potSummary } from '@/lib/pots'
 import { useAddPotContribution, useRemovePotContribution, useUpdatePot } from '@/lib/queries/pots'
 import { TOAST_MS } from '@/lib/toasts'
+import { PotYieldCard, PotYieldLine } from './PotYield'
 import { StoryShareButton } from './StoryShareButton'
 import { Money } from './Money'
 
@@ -34,7 +35,7 @@ const monthDate = (key: string) => {
     return new Date(year, month - 1, 1)
 }
 
-function ProgressBar({ pct }: { pct: number }) {
+export function ProgressBar({ pct }: { pct: number }) {
     return (
         <span className="block h-3 overflow-hidden rounded-full border border-n-1 bg-white">
             <span
@@ -46,7 +47,7 @@ function ProgressBar({ pct }: { pct: number }) {
 }
 
 /** Chips to pick one person; the roster is short enough that a select would only hide it. */
-function MemberChips({
+export function MemberChips({
     members,
     value,
     onChange,
@@ -121,6 +122,7 @@ export function VaquitaCard({ slug, state, currencies, meId, token }: Props) {
                             <span className="block truncate text-sm text-grey-1">
                                 {t('cardKeeper', { name: nameOf(pot.keeperId) })}
                             </span>
+                            <PotYieldLine pot={pot} state={state} currencies={currencies} />
                         </span>
                         <Icon name="chevron-right" size={18} className="shrink-0 text-grey-1" />
                     </button>
@@ -289,6 +291,8 @@ export function PotDetails({
                 </span>
             </div>
 
+            <PotYieldCard pot={pot} state={state} currencies={currencies} slug={slug} token={token} keeper={keeper} />
+
             {!closed && (summary.projectedMonth || summary.suggestedQuotaMinor) && (
                 <div className="flex items-start gap-2 text-sm" data-testid="pot-forecast">
                     <Icon name="sparkles" size={16} className="mt-0.5 shrink-0" />
@@ -444,6 +448,11 @@ export function PotDetails({
                             >
                                 <span className="min-w-0 truncate">
                                     <span className="font-bold">{nameOf(contribution.memberId)}</span>{' '}
+                                    {contribution.reason && (
+                                        <span className="mr-1 inline-block rounded-full bg-primary-3 px-2 py-0.5 text-h10 font-bold uppercase tracking-wide">
+                                            {t('reasonRoundup')}
+                                        </span>
+                                    )}
                                     <span className="text-grey-1">
                                         {new Intl.DateTimeFormat(locale, {
                                             day: 'numeric',

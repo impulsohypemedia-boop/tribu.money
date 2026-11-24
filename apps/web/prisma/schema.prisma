@@ -459,6 +459,7 @@ model Pot {
   targetMinor BigInt? // room currency
   quotaMinor  BigInt? // per person per month, room currency
   dueDate     DateTime?
+  yieldAprBps Int? // estimated yearly rate the keeper's account pays, in basis points; display only
   createdAt   DateTime  @default(now())
   closedAt    DateTime?
 
@@ -476,6 +477,7 @@ model PotContribution {
   amountMinor  BigInt // room currency
   // The payment to the keeper; null when the keeper put money in their own pot.
   settlementId String?   @unique
+  reason       String? // null (a plain contribution) | "roundup"
   createdById  String?
   createdAt    DateTime  @default(now())
   deletedAt    DateTime?

@@ -48,6 +48,7 @@ export async function createPot(
         targetMinor?: string | null
         quotaMinor?: string | null
         dueDate?: string | null
+        yieldAprBps?: number | null
     }
 ) {
     activeMember(room, body.keeperId)
@@ -59,6 +60,7 @@ export async function createPot(
             targetMinor: positiveOrNull(body.targetMinor),
             quotaMinor: positiveOrNull(body.quotaMinor),
             dueDate: body.dueDate ? new Date(body.dueDate) : null,
+            yieldAprBps: body.yieldAprBps ?? null,
         },
     })
     await appendRoomAuditEvent({
@@ -88,6 +90,7 @@ export async function updatePot(
         targetMinor?: string | null
         quotaMinor?: string | null
         dueDate?: string | null
+        yieldAprBps?: number | null
         closed?: boolean
     }
 ) {
@@ -100,6 +103,7 @@ export async function updatePot(
             ...(body.targetMinor !== undefined ? { targetMinor: positiveOrNull(body.targetMinor) } : {}),
             ...(body.quotaMinor !== undefined ? { quotaMinor: positiveOrNull(body.quotaMinor) } : {}),
             ...(body.dueDate !== undefined ? { dueDate: body.dueDate ? new Date(body.dueDate) : null } : {}),
+            ...(body.yieldAprBps !== undefined ? { yieldAprBps: body.yieldAprBps } : {}),
             ...(body.closed !== undefined ? { closedAt: body.closed ? (before.closedAt ?? new Date()) : null } : {}),
         },
     })
@@ -120,7 +124,7 @@ export async function addContribution(
     room: RoomWithRelations,
     actor: AuditActor,
     potId: string,
-    body: { memberId: string; amountMinor: string }
+    body: { memberId: string; amountMinor: string; reason?: 'roundup' | null }
 ) {
     const pot = await openPot(tx, room, potId)
     activeMember(room, body.memberId)
@@ -157,7 +161,14 @@ export async function addContribution(
         })
     }
     const contribution = await tx.potContribution.create({
-        data: { potId, memberId: body.memberId, amountMinor, settlementId, createdById: actor.memberId },
+        data: {
+            potId,
+            memberId: body.memberId,
+            amountMinor,
+            settlementId,
+            reason: body.reason ?? null,
+            createdById: actor.memberId,
+        },
     })
     if (!settlementId) {
         await appendRoomAuditEvent({

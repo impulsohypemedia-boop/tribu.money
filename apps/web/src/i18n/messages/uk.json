@@ -748,7 +748,13 @@
             "crypto": "Crypto",
             "cryptoNote": "Send it from your wallet to the one above, then mark it here. Tribu does not check it.",
             "cryptoNoWallet": "{name} has not added a wallet yet. Ask them to add it in their profile.",
-            "cryptoMismatch": "Heads up: {name} asked for {token} on {network}."
+            "cryptoMismatch": "Heads up: {name} asked for {token} on {network}.",
+            "roundUp": "Round up into the pot",
+            "roundUpHint": "What is missing to a round number goes to {pot}.",
+            "roundUpNote": "Plus <amount></amount> goes to {pot}.",
+            "roundUpLemonTitle": "Round-up for {pot}",
+            "roundUpDone": "Round-up added to {pot}.",
+            "roundUpFailed": "The payment was recorded, but the round-up was not. You can add it from the pot."
         },
         "share": {
             "title": "Поділитися кімнатою",
@@ -1237,7 +1243,36 @@
             "closedLabel": "This pot is closed.",
             "yourVaquitas": "Your pots",
             "emptyTitle": "Pot ready",
-            "emptyShare": "Share pot"
+            "emptyShare": "Share pot",
+            "reasonRoundup": "Round-up",
+            "yield": {
+                "cardLine": "Earned <amount></amount> so far (estimate)",
+                "rateInvalid": "Enter a number between 0.01 and 20.",
+                "rateLabel": "How much does the account holding the money pay per year?",
+                "perYear": "% a year",
+                "rateHint": "Check what {name}'s account pays for holding the money in USDC or cash. Tribu does the maths with that number.",
+                "turnOff": "Remove",
+                "cancel": "Cancel",
+                "save": "Save",
+                "startTitle": "Make the pot earn",
+                "startHint": "If the money sits in an account that pays interest, Tribu shows how much it is earning on its own.",
+                "badge": "The pot earns · {rate}% a year",
+                "edit": "Change",
+                "earned": "Already earned <amount></amount> on its own",
+                "nextYear": "At this rate it adds <amount></amount> more in a year.",
+                "estimateNote": "An estimate. Tribu does not move the money: it earns only if {name} keeps it in an account that pays that rate."
+            }
+        },
+        "tribePot": {
+            "defaultName": "Tribe pot",
+            "created": "Done, the tribe has a pot!",
+            "start": "Start the tribe pot",
+            "formTitle": "The tribe pot",
+            "keeper": "Who keeps it?",
+            "cancel": "Cancel",
+            "create": "Start the pot",
+            "startHint": "Round-ups from payments go here. Someone in the tribe keeps it in their account.",
+            "formHint": "Tribu holds no money: the pot stays in the account of whoever you pick, as with a vaquita."
         }
     },
     "slideToConfirm": {
@@ -1354,7 +1389,11 @@
         "RECURRING_CURRENCY_UNSUPPORTED": "An expense in a custom currency cannot repeat on its own.",
         "POT_NOT_FOUND": "We could not find that pot.",
         "POT_CLOSED": "This pot is already closed.",
-        "POT_PAYER_NOT_KEEPER": "For the pot to pay, the expense must be paid by the person who keeps it."
+        "POT_PAYER_NOT_KEEPER": "For the pot to pay, the expense must be paid by the person who keeps it.",
+        "BADGES_NOT_ENABLED": "Keeping badges in the wallet is not switched on yet.",
+        "BADGE_NOT_EARNED": "You have not earned this badge in that tribe yet.",
+        "BADGE_NO_WALLET": "Link your Lemon wallet in that tribe first.",
+        "MEMBER_TOKEN_REQUIRED": "Pick who you are in this tribe first."
     },
     "derivation": {
         "title": "Звідки ця сума",
@@ -1655,6 +1694,43 @@
                 "shared": "You shared: {label}",
                 "sent": "You paid {label}",
                 "received": "{label} paid you"
+            },
+            "badges": {
+                "title": "Your badges",
+                "count": "{earned} of {total} earned",
+                "mint": "Keep in my wallet",
+                "minting": "Saving…",
+                "mintTitle": "Badge: {name}",
+                "minted": "Done! The badge is in your wallet.",
+                "mintFailed": "Could not save it. Try again.",
+                "inWallet": "In your wallet",
+                "items": {
+                    "fast-payer": {
+                        "name": "Lightning",
+                        "earned": "You paid your part within 24 hours.",
+                        "how": "Pay your part within 24 hours."
+                    },
+                    "crypto-payer": {
+                        "name": "Crypto payer",
+                        "earned": "You paid in USDC or USDT.",
+                        "how": "Pay once in USDC or USDT."
+                    },
+                    "keeper": {
+                        "name": "Keeper",
+                        "earned": "You keep a tribe's pot.",
+                        "how": "Keep a tribe's pot or a vaquita."
+                    },
+                    "rounder": {
+                        "name": "Rounder",
+                        "earned": "You rounded up 3 payments into the pot.",
+                        "how": "Round up 3 payments into the pot."
+                    },
+                    "pot-goal": {
+                        "name": "Goal reached",
+                        "earned": "You put money into a pot that hit its goal.",
+                        "how": "Put money into a vaquita that hits its goal."
+                    }
+                }
             }
         }
     },

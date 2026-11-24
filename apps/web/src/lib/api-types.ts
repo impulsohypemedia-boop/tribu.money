@@ -171,6 +171,8 @@ export interface ApiPotContribution {
     amountMinor: string
     /** The payment to the keeper it was recorded as; null for the keeper's own money. */
     settlementId: string | null
+    /** Why it went in, when it was not a plain contribution. Absent in older cached responses. */
+    reason?: 'roundup' | null
     createdAt: string
 }
 
@@ -185,6 +187,8 @@ export interface ApiPot {
     dueDate: string | null
     createdAt: string
     closedAt: string | null
+    /** Estimated yearly rate of the keeper's account, basis points; display only. */
+    yieldAprBps?: number | null
     contributions: ApiPotContribution[]
 }
 
@@ -194,6 +198,7 @@ export interface PotInput {
     targetMinor?: string | null
     quotaMinor?: string | null
     dueDate?: string | null
+    yieldAprBps?: number | null
 }
 
 export interface RoomState {

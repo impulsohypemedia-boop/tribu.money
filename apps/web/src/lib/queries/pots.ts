@@ -24,8 +24,10 @@ export const useUpdatePot = (slug: string, token?: string | null) =>
     )
 
 export const useAddPotContribution = (slug: string, token?: string | null) =>
-    usePotMutation(slug, ({ potId, ...input }: { potId: string; memberId: string; amountMinor: string }) =>
-        api.addPotContribution(slug, potId, input, token)
+    usePotMutation(
+        slug,
+        ({ potId, ...input }: { potId: string; memberId: string; amountMinor: string; reason?: 'roundup' | null }) =>
+            api.addPotContribution(slug, potId, input, token)
     )
 
 export const useRemovePotContribution = (slug: string, token?: string | null) =>

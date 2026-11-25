@@ -60,7 +60,7 @@ export function PatrimonyCard() {
         <Link
             href="/patrimonio"
             data-testid="home-patrimony"
-            className="mt-4 flex items-center gap-3 rounded-sm border border-n-1 bg-white p-3 no-underline"
+            className="mt-4 flex items-center gap-3 rounded-xl border border-n-1 bg-white p-3 no-underline"
         >
             <span className="flex size-10 shrink-0 items-center justify-center rounded-sm border border-n-1 bg-primary-3">
                 <Doodle name="iconwallet" size={22} weight={1.8} />
@@ -127,7 +127,7 @@ export function PatrimonyScreen() {
                             <li key={room.slug}>
                                 <Link
                                     href={roomHref(room.slug)}
-                                    className="flex items-center gap-3 rounded-sm border border-n-1 bg-white p-3 no-underline"
+                                    className="flex items-center gap-3 rounded-xl border border-n-1 bg-white p-3 no-underline"
                                 >
                                     <Doodle
                                         name={room.kind === 'vaquita' ? 'gift' : 'iconusers'}

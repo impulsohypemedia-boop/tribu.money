@@ -39,7 +39,7 @@ describe('the theme catalog', () => {
     it('keeps every field light enough to carry black ink', () => {
         // Ordinary room text uses the shared ink, never `fieldInk`.
         for (const theme of ROOM_THEMES) {
-            expect(contrast(theme.field, '#211C17'), `${theme.key} field vs black ink`).toBeGreaterThanOrEqual(4.5)
+            expect(contrast(theme.field, '#0D1B2A'), `${theme.key} field vs black ink`).toBeGreaterThanOrEqual(4.5)
         }
     })
 
@@ -61,9 +61,9 @@ describe('the theme catalog', () => {
         // These four literals were the constants in `og/card.tsx` and the
         // `bg-primary-1` / `bg-white` classes before themes existed. A change
         // here is a change to every unthemed room in production.
-        expect(DEFAULT_THEME.field).toBe('#FF7A45')
+        expect(DEFAULT_THEME.field).toBe('#FF6B35')
         expect(DEFAULT_THEME.fieldTint).toBe('#FF9A70')
-        expect(DEFAULT_THEME.fieldInk).toBe('#5C1F05')
+        expect(DEFAULT_THEME.fieldInk).toBe('#4A1803')
         expect(DEFAULT_THEME.tint).toBe('#FFFFFF')
     })
 
@@ -92,7 +92,7 @@ describe('the theme catalog', () => {
             '--split-theme-accent',
         ])
         for (const theme of ROOM_THEMES) expect(Object.keys(themeVars(theme.key))).toEqual(keys)
-        expect(themeVars(null)['--split-theme-field']).toBe('#FF7A45')
+        expect(themeVars(null)['--split-theme-field']).toBe('#FF6B35')
         expect(themeVars('sky')['--split-theme-field']).toBe('#90A8ED')
     })
 })

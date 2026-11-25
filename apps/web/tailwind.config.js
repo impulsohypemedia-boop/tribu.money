@@ -2,7 +2,7 @@ const { fontFamily } = require('tailwindcss/defaultTheme')
 const plugin = require('tailwindcss/plugin')
 
 // Tribu's design tokens. Started from an older upstream system and re-keyed to the
-// Tribu identity: primary = #FF7A45 (orange), secondary = #7DD3C0 (teal). Legacy colour aliases and every
+// Tribu identity: primary = #FF6B35 (orange), secondary = #C9C2FF (teal). Legacy colour aliases and every
 // dark: variant were stripped on the way in. Diverge freely — there is no
 // dependency on peanut-ui.
 /** @type {import('tailwindcss').Config} */
@@ -27,27 +27,27 @@ module.exports = {
         extend: {
             // Soft warm hairlines instead of black outlines: text keeps n-1, borders do not.
             borderColor: {
-                'n-1': '#EAD8CB',
+                'n-1': '#E4E1DA',
             },
             colors: {
                 primary: {
-                    1: '#FF7A45',
-                    2: '#E5612C',
-                    3: '#FFE9DF',
-                    4: '#FFB899',
+                    1: '#FF6B35',
+                    2: '#E5531F',
+                    3: '#FFE6DB',
+                    4: '#FFB496',
                 },
                 secondary: {
-                    1: '#7DD3C0',
+                    1: '#C9C2FF',
                     2: '#E99898',
                     3: '#90A8ED',
-                    4: '#FFE9DF',
+                    4: '#FFE6DB',
                     5: '#FBEAEA',
                     6: '#E9EEFB',
                 },
                 grey: {
                     1: '#5F646D',
                     2: '#E7E8E9',
-                    3: '#FAF4F0',
+                    3: '#F6F4F0',
                     4: '#EFEFF0',
                 },
                 outline: {
@@ -56,8 +56,8 @@ module.exports = {
                     3: '#E99898',
                 },
                 n: {
-                    1: '#211C17',
-                    2: '#2B251F',
+                    1: '#0D1B2A',
+                    2: '#1C2C3F',
                     3: '#5F646D',
                     4: '#E7E8E9',
                 },
@@ -80,7 +80,7 @@ module.exports = {
                 'primary-base': 'var(--primary-color)',
                 'secondary-base': 'var(--secondary-color)',
                 accent: 'var(--accent-color)',
-                background: '#FFF8F2',
+                background: '#F6F4F0',
                 error: {
                     DEFAULT: '#B3261E',
                     1: '#FFD8D8',
@@ -138,10 +138,10 @@ module.exports = {
                 '2xl': '1.5rem',
             },
             fontFamily: {
-                sans: ['var(--font-nunito)', ...fontFamily.sans],
-                display: ['var(--font-fredoka)', ...fontFamily.sans],
-                'display-hero': ['var(--font-fredoka)', ...fontFamily.sans],
-                roboto: ['var(--font-nunito)', ...fontFamily.sans],
+                sans: ['var(--font-manrope)', ...fontFamily.sans],
+                display: ['var(--font-bricolage)', ...fontFamily.sans],
+                'display-hero': ['var(--font-bricolage)', ...fontFamily.sans],
+                roboto: ['var(--font-manrope)', ...fontFamily.sans],
             },
             fontSize: {
                 0: ['0px', '0px'],
@@ -206,7 +206,7 @@ module.exports = {
                     '@apply btn border-transparent text-n-1 fill-n-1 hover:text-primary-1 hover:fill-primary-1': {},
                 },
                 '.btn-primary': {
-                    '@apply btn bg-primary-1 text-n-1 fill-n-1 hover:bg-primary-1/90': {},
+                    '@apply btn border-transparent bg-primary-1 text-n-1 fill-n-1 hover:bg-primary-1/90': {},
                 },
                 '.btn-dark': {
                     '@apply btn bg-n-1 text-white fill-white hover:bg-n-1/80': {},
@@ -292,55 +292,55 @@ module.exports = {
                     '@apply !w-7 !h-7': {},
                 },
                 '.shadow-2': {
-                    '@apply shadow-[0_1px_4px_rgba(74,29,10,0.10)]': {},
+                    '@apply shadow-[0_1px_4px_rgba(13,27,42,0.10)]': {},
                 },
                 '.shadow-4': {
-                    '@apply shadow-[0_6px_18px_-6px_rgba(74,29,10,0.18)]': {},
+                    '@apply shadow-[0_6px_18px_-6px_rgba(13,27,42,0.18)]': {},
                 },
                 '.shadow-primary-6': {
-                    '@apply shadow-[0_10px_24px_-8px_rgba(74,29,10,0.22)]': {},
+                    '@apply shadow-[0_10px_24px_-8px_rgba(13,27,42,0.22)]': {},
                 },
                 '.shadow-primary-8': {
-                    '@apply shadow-[0_14px_32px_-10px_rgba(74,29,10,0.24)]': {},
+                    '@apply shadow-[0_14px_32px_-10px_rgba(13,27,42,0.24)]': {},
                 },
                 '.shadow-secondary-4': {
-                    '@apply shadow-[0_6px_18px_-6px_rgba(74,29,10,0.18)]': {},
+                    '@apply shadow-[0_6px_18px_-6px_rgba(13,27,42,0.18)]': {},
                 },
                 '.shadow-secondary-6': {
-                    '@apply shadow-[0_10px_24px_-8px_rgba(74,29,10,0.22)]': {},
+                    '@apply shadow-[0_10px_24px_-8px_rgba(13,27,42,0.22)]': {},
                 },
                 '.shadow-secondary-8': {
-                    '@apply shadow-[0_14px_32px_-10px_rgba(74,29,10,0.24)]': {},
+                    '@apply shadow-[0_14px_32px_-10px_rgba(13,27,42,0.24)]': {},
                 },
                 '.btn-shadow-primary-3': {
-                    '@apply shadow-[0_4px_12px_-4px_rgba(229,97,44,0.45)]': {},
+                    '@apply shadow-[0_4px_12px_-4px_rgba(229,83,31,0.45)]': {},
                 },
                 '.btn-shadow-primary-4': {
-                    '@apply shadow-[0_6px_16px_-6px_rgba(229,97,44,0.5)]': {},
+                    '@apply shadow-[0_6px_16px_-6px_rgba(229,83,31,0.5)]': {},
                 },
                 '.btn-shadow-primary-6': {
-                    '@apply shadow-[0_8px_20px_-6px_rgba(229,97,44,0.5)]': {},
+                    '@apply shadow-[0_8px_20px_-6px_rgba(229,83,31,0.5)]': {},
                 },
                 '.btn-shadow-primary-8': {
-                    '@apply shadow-[0_10px_24px_-8px_rgba(229,97,44,0.5)]': {},
+                    '@apply shadow-[0_10px_24px_-8px_rgba(229,83,31,0.5)]': {},
                 },
                 '.btn-shadow-secondary-3': {
-                    '@apply shadow-[0_6px_16px_-6px_rgba(229,97,44,0.5)]': {},
+                    '@apply shadow-[0_6px_16px_-6px_rgba(229,83,31,0.5)]': {},
                 },
                 '.btn-shadow-secondary-4': {
-                    '@apply shadow-[0_6px_16px_-6px_rgba(229,97,44,0.5)]': {},
+                    '@apply shadow-[0_6px_16px_-6px_rgba(229,83,31,0.5)]': {},
                 },
                 '.btn-shadow-secondary-6': {
-                    '@apply shadow-[0_6px_16px_-6px_rgba(229,97,44,0.5)]': {},
+                    '@apply shadow-[0_6px_16px_-6px_rgba(229,83,31,0.5)]': {},
                 },
                 '.btn-shadow-secondary-8': {
-                    '@apply shadow-[0_6px_16px_-6px_rgba(229,97,44,0.5)]': {},
+                    '@apply shadow-[0_6px_16px_-6px_rgba(229,83,31,0.5)]': {},
                 },
                 '.brutal-border': {
                     '@apply border-2 border-n-1': {},
                 },
                 '.input': {
-                    '@apply h-16 w-full rounded-sm border-2 border-[#DCC5B4] bg-white focus:border-[#FF7A45] px-5 text-base md:text-sm font-bold text-n-1 outline-none transition-colors placeholder:text-n-3':
+                    '@apply h-16 w-full rounded-sm border-2 border-[#D6D3CC] bg-white focus:border-[#FF6B35] px-5 text-base md:text-sm font-bold text-n-1 outline-none transition-colors placeholder:text-n-3':
                         {},
                 },
             })

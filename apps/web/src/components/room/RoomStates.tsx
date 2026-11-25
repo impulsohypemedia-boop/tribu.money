@@ -17,7 +17,7 @@ export function RoomHeaderSkeleton() {
         <div
             aria-hidden="true"
             data-testid="room-header-skeleton"
-            className="h-[69px] shrink-0 border-b border-n-1 bg-[var(--split-theme-field,#FF7A45)]"
+            className="h-[69px] shrink-0 border-b border-n-1 bg-[var(--split-theme-field,#FF6B35)]"
         />
     )
 }

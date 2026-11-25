@@ -10,6 +10,7 @@ import { RoomEmblem } from '@/components/room/RoomEmblem'
 import { Doodle } from '@/components/ui/Doodle'
 import type { DoodleName } from '@/components/ui/doodles'
 import { Icon } from '@/components/ui/Icon'
+import { TribuSymbol } from '@/components/ui/TribuLogo'
 import { buttonClassName } from '@/components/ui/button-style'
 import type { CurrencyInfo } from '@/lib/api-types'
 import { myPositions, myPots, upcomingFixed, type MyPot } from '@/lib/my-overview'
@@ -30,7 +31,7 @@ const EMPTY_FEATURES: { key: 'record' | 'settle' | 'pool'; doodle: DoodleName }[
 function SectionTitle({ title, href, more }: { title: string; href?: string; more?: string }) {
     return (
         <div className="mb-3 mt-7 flex items-baseline justify-between gap-3">
-            <h2 className="text-h6">{title}</h2>
+            <h2 className="font-display text-h6 tracking-[-0.02em]">{title}</h2>
             {href && more && (
                 <Link href={href} className="text-sm font-bold text-n-1 underline">
                     {more}
@@ -48,7 +49,7 @@ export function PotProgressCard({ pot, catalog }: { pot: MyPot; catalog?: readon
         <Link
             href={roomHref(pot.slug)}
             data-testid="pot-progress"
-            className="shadow-4 block rounded-sm border border-n-1 bg-white p-3 no-underline transition-transform active:translate-y-[2px]"
+            className="block rounded-xl border border-n-1 bg-white p-3 no-underline transition-transform active:translate-y-[2px]"
         >
             <span className="flex items-center gap-2">
                 <Doodle name="gift" size={20} weight={1.8} />
@@ -143,17 +144,26 @@ export function HomeScreen() {
         <div className="px-5 pt-5" data-testid="home">
             <section
                 data-testid="home-balance"
-                className="shadow-4 rounded-sm border border-n-1 bg-white p-4"
+                className="shadow-primary-6 relative overflow-hidden rounded-2xl bg-n-1 p-5 text-white"
                 aria-busy={loading}
             >
+                <TribuSymbol
+                    size={150}
+                    tone="light"
+                    className="pointer-events-none absolute -right-10 -top-10 opacity-[0.08]"
+                />
                 {!ready || (loading && rooms.length === 0) ? (
-                    <p className="py-4 text-center text-sm text-grey-1">{t('loading')}</p>
+                    <p className="py-4 text-center text-sm text-white/60">{t('loading')}</p>
                 ) : square ? (
                     <div className="flex items-center gap-3">
                         <Image src={tribuFestejo} alt="" unoptimized className="size-16 shrink-0 object-contain" />
                         <div>
-                            <p className="text-h5">{joinedAny ? t('allSquare') : t('notJoined')}</p>
-                            <p className="text-sm text-grey-1">{joinedAny ? t('allSquareHint') : t('notJoinedHint')}</p>
+                            <p className="font-display text-h5 tracking-[-0.02em]">
+                                {joinedAny ? t('allSquare') : t('notJoined')}
+                            </p>
+                            <p className="text-sm text-white/60">
+                                {joinedAny ? t('allSquareHint') : t('notJoinedHint')}
+                            </p>
                         </div>
                     </div>
                 ) : (
@@ -162,29 +172,29 @@ export function HomeScreen() {
                             <div key={total.currency} className="grid gap-1">
                                 {total.owedToMeMinor !== '0' && (
                                     <p className="flex items-baseline justify-between gap-3">
-                                        <span className="text-grey-1">{t('owedToMe')}</span>
+                                        <span className="text-sm text-white/60">{t('owedToMe')}</span>
                                         <Money
                                             minor={total.owedToMeMinor}
                                             currency={total.currency}
                                             catalog={catalog}
-                                            className="text-h4 text-balance-incoming-accent"
+                                            className="font-display text-[2rem] font-bold leading-tight tracking-[-0.03em] text-[#5ED39A]"
                                         />
                                     </p>
                                 )}
                                 {total.iOweMinor !== '0' && (
                                     <p className="flex items-baseline justify-between gap-3">
-                                        <span className="text-grey-1">{t('iOwe')}</span>
+                                        <span className="text-sm text-white/60">{t('iOwe')}</span>
                                         <Money
                                             minor={total.iOweMinor}
                                             currency={total.currency}
                                             catalog={catalog}
-                                            className="text-h4"
+                                            className="font-display text-[2rem] font-bold leading-tight tracking-[-0.03em]"
                                         />
                                     </p>
                                 )}
                             </div>
                         ))}
-                        <ul className="grid gap-1 border-t border-dashed border-grey-2 pt-3">
+                        <ul className="grid gap-1 border-t border-white/10 pt-3">
                             {positions.rooms.slice(0, 4).map((room) => (
                                 <li key={room.slug}>
                                     <Link
@@ -194,7 +204,7 @@ export function HomeScreen() {
                                         <span className="min-w-0 flex-1 truncate">{room.name}</span>
                                         <span
                                             className={
-                                                room.netMinor.startsWith('-') ? '' : 'text-balance-incoming-accent'
+                                                room.netMinor.startsWith('-') ? 'text-white/85' : 'text-[#5ED39A]'
                                             }
                                         >
                                             {room.netMinor.startsWith('-') ? t('youPass') : t('youGet')}{' '}
@@ -206,7 +216,7 @@ export function HomeScreen() {
                                                 className="font-bold"
                                             />
                                         </span>
-                                        <Icon name="chevron-right" size={16} className="shrink-0 text-grey-1" />
+                                        <Icon name="chevron-right" size={16} className="shrink-0 text-white/40" />
                                     </Link>
                                 </li>
                             ))}
@@ -225,7 +235,7 @@ export function HomeScreen() {
                             <li key={`${entry.slug}-${entry.item.id}`}>
                                 <Link
                                     href={roomHref(entry.slug)}
-                                    className="flex items-center gap-3 rounded-sm border border-n-1 bg-white p-3 no-underline"
+                                    className="flex items-center gap-3 rounded-xl border border-n-1 bg-white p-3 no-underline"
                                 >
                                     <span className="flex size-11 shrink-0 flex-col items-center justify-center rounded-sm border border-n-1 bg-primary-3 leading-none">
                                         <span className="text-h7">{entry.day}</span>
@@ -273,7 +283,7 @@ export function HomeScreen() {
                             <li key={room.slug}>
                                 <Link
                                     href={roomHref(room.slug)}
-                                    className="flex items-center gap-3 rounded-sm border border-n-1 bg-white p-3 no-underline"
+                                    className="flex items-center gap-3 rounded-xl border border-n-1 bg-white p-3 no-underline"
                                 >
                                     <span
                                         style={room.theme ? { backgroundColor: themeFor(room.theme).field } : undefined}

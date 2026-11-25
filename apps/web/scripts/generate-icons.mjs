@@ -1,7 +1,7 @@
 /**
  * PWA icon pipeline.
  *
- * Draws Tribu's mark — three people on a black-ringed orange disc — at every size the
+ * Draws Tribu's mark — the ronda, five hooded people around one orange dot on an ink disc — at every size the
  * manifest, the install prompt, iOS and the browser tab need. Deterministic: re-running
  * produces byte-identical files, so it is safe to run in CI or after the artwork changes.
  *
@@ -14,8 +14,8 @@
  *             inside a square.
  *   - "flat"  for icons that get masked into a square or a squircle: Android's maskable
  *             and iOS's apple-touch, neither of which can keep a ring at the edge and
- *             neither of which wants transparency. The disc is dropped and its pink fills
- *             the tile instead, with the thumb inside the safe zone.
+ *             neither of which wants transparency. The disc is dropped and its ink fills
+ *             the tile instead, with the ronda inside the safe zone.
  *   - "mono"  the notification badge. Android throws the colours away and keeps the alpha,
  *             so the only thing that survives is the outline of the ink. Everything is
  *             drawn white, which makes the thumb one solid silhouette.
@@ -35,9 +35,9 @@ const ICON_DIR = path.join(root, 'public/icons')
 const SPLASH_DIR = path.join(ICON_DIR, 'splash')
 const APP_DIR = path.join(root, 'src/app')
 
-const PINK = '#FF7A45'
+const PINK = '#0D1B2A'
 /** The manifest's `background_color`. iOS paints it while the app boots, so the splash matches. */
-const CREAM = '#FAF4F0'
+const CREAM = '#F6F4F0'
 const BOARD = 1705 // the artwork's own coordinate space
 
 const SPLASH_SCREENS = JSON.parse(readFileSync(path.join(root, 'src/lib/splash-screens.json'), 'utf8'))
@@ -49,13 +49,13 @@ const source = readFileSync(SOURCE, 'utf8')
 /** Everything inside the root <svg>: the disc and the thumb. */
 const LOGO = source.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>[\s\S]*$/, '')
 /** Just the thumbs-up, for the tiles that drop the disc. */
-const MARK = source.match(/<g id="mark">([\s\S]*?)<\/g>/)[1]
+const MARK = source.match(/<g id="mark">([\s\S]*)<\/g>\s*<\/svg>/)[1]
 
 /**
  * Where the thumb's ink sits in the artboard. Measured off a render of the mark alone, so
  * it includes the stroke; the drawing is not centred in its own artboard.
  */
-const ART = { x: 333, y: 363, w: 1039, h: 974 }
+const ART = { x: 119, y: 85, w: 1466, h: 1415 }
 
 /**
  * `art` is the share of the frame's height the thumb takes, and applies to "flat" only.
@@ -128,7 +128,7 @@ function mono(size, art) {
     const ty = BOARD / 2 - scale * (ART.y + ART.h / 2)
     return svg(
         size,
-        `<g transform="translate(${tx} ${ty}) scale(${scale})">${MARK.replaceAll('stroke="black"', 'stroke="white"')}</g>`
+        `<g transform="translate(${tx} ${ty}) scale(${scale})">${MARK.replace(/fill="#[0-9A-Fa-f]{6}"/g, 'fill="white"')}</g>`
     )
 }
 

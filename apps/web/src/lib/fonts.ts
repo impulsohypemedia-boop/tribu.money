@@ -1,16 +1,16 @@
-import { Fredoka, Nunito } from 'next/font/google'
+import { Bricolage_Grotesque, Manrope } from 'next/font/google'
 
-const nunito = Nunito({
+const manrope = Manrope({
     subsets: ['latin'],
     display: 'swap',
-    variable: '--font-nunito',
+    variable: '--font-manrope',
 })
 
-const fredoka = Fredoka({
-    weight: ['400', '600', '700'],
+const bricolage = Bricolage_Grotesque({
+    weight: ['500', '700', '800'],
     subsets: ['latin'],
     display: 'swap',
-    variable: '--font-fredoka',
+    variable: '--font-bricolage',
 })
 
-export const bodyFontClassName = `${nunito.variable} ${fredoka.variable} font-sans`
+export const bodyFontClassName = `${manrope.variable} ${bricolage.variable} font-sans`

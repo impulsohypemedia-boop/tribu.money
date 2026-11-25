@@ -16,16 +16,16 @@ import {
 } from './_components/InteractiveSamples'
 
 const coreColors = [
-    { name: 'Ink', token: 'n-1 / black', value: '#211C17', role: 'Text, borders, hard shadows and dark actions' },
-    { name: 'Split yellow', token: 'primary-1', value: '#FF7A45', role: 'Primary action, brand field and selection' },
-    { name: 'Canvas', token: 'background', value: '#FAF4F0', role: 'App background and warm negative space' },
+    { name: 'Ink', token: 'n-1 / black', value: '#0D1B2A', role: 'Text, borders, hard shadows and dark actions' },
+    { name: 'Split yellow', token: 'primary-1', value: '#FF6B35', role: 'Primary action, brand field and selection' },
+    { name: 'Canvas', token: 'background', value: '#F6F4F0', role: 'App background and warm negative space' },
     { name: 'Paper', token: 'white', value: '#FFFFFF', role: 'Controls, cards, sheets and foreground surfaces' },
     { name: 'Muted ink', token: 'grey-1 / n-3', value: '#5F646D', role: 'Secondary copy and non-critical metadata' },
     { name: 'Quiet line', token: 'n-4 / grey-2', value: '#E7E8E9', role: 'Disabled fills and quiet separation' },
     {
         name: 'Peanut pink',
         token: 'secondary-1',
-        value: '#7DD3C0',
+        value: '#C9C2FF',
         role: 'Peanut attribution and rare delight; never primary',
     },
     { name: 'Error ink', token: 'error', value: '#B3261E', role: 'Destructive/error semantics only' },

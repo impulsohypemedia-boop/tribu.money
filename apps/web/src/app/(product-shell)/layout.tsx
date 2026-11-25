@@ -29,7 +29,7 @@ export const viewport: Viewport = {
     initialScale: 1,
     colorScheme: 'light',
     viewportFit: 'cover',
-    themeColor: '#FF7A45',
+    themeColor: '#F6F4F0',
 }
 
 /**

@@ -40,13 +40,14 @@ export function AppTabBar() {
             >
                 <span
                     className={cn(
-                        'flex h-8 w-12 items-center justify-center rounded-full transition-colors',
-                        active && 'bg-primary-3'
+                        'flex h-8 w-12 items-center justify-center rounded-xl transition-colors',
+                        active && 'bg-n-1/[0.06]'
                     )}
                 >
                     <Doodle name={doodle} size={22} weight={active ? 2.1 : 1.7} />
                 </span>
                 {t(key)}
+                <span aria-hidden className={cn('size-1 rounded-full', active ? 'bg-primary-1' : 'bg-transparent')} />
             </Link>
         )
     }
@@ -56,7 +57,7 @@ export function AppTabBar() {
             <nav
                 aria-label={t('label')}
                 data-testid="app-tab-bar"
-                className="fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-xl items-end border-t border-n-1 bg-background/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1 backdrop-blur"
+                className="fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-xl items-end border-t border-n-1 bg-background/90 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1 backdrop-blur"
             >
                 {TABS.slice(0, 2).map(tab)}
                 <div className="flex flex-1 justify-center">
@@ -65,7 +66,7 @@ export function AppTabBar() {
                         onClick={() => setAdding(true)}
                         aria-label={t('add')}
                         data-testid="tab-add"
-                        className="shadow-4 -mt-6 flex size-14 items-center justify-center rounded-full border border-n-1 bg-primary-1 text-n-1 transition-transform active:translate-y-[2px]"
+                        className="btn-shadow-primary-4 -mt-5 flex size-14 items-center justify-center rounded-2xl bg-primary-1 text-n-1 transition-transform active:translate-y-[2px]"
                     >
                         <Doodle name="iconplus" size={28} weight={2.4} />
                     </button>

@@ -21,29 +21,26 @@ export function AccountPreview() {
         <figure className="text-left">
             <div
                 aria-hidden
-                className="shadow-primary-6 rounded-2xl border border-n-1 bg-n-1 p-5 text-white"
+                className="shadow-primary-8 relative overflow-hidden rounded-2xl bg-n-1 p-5 text-white"
                 data-testid="landing-account-preview"
             >
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center justify-between gap-3 pr-14">
                     <div>
-                        <p className="font-display text-xl font-extrabold">{t('name')}</p>
+                        <p className="font-display text-xl font-extrabold tracking-[-0.03em]">{t('name')}</p>
                         <p className="text-sm text-white/60">{t('people')}</p>
                     </div>
-                    <span className="flex size-11 items-center justify-center rounded-full bg-secondary-1 text-n-1">
-                        <Doodle name="tribu" size={24} weight={2} />
-                    </span>
                 </div>
                 <ul className="mt-5 grid gap-2">
                     {ROWS.map(({ key, doodle }) => (
                         <li key={key} className="flex items-center gap-3 rounded-xl bg-white/[0.07] px-3 py-2.5">
-                            <Doodle name={doodle} size={20} weight={1.8} className="shrink-0 text-secondary-1" />
+                            <Doodle name={doodle} size={20} weight={1.8} className="shrink-0 text-primary-1" />
                             <span className="flex-1 text-sm text-white/80">{t(`${key}Label`)}</span>
                             <span className="text-sm font-bold">{t(`${key}Value`)}</span>
                         </li>
                     ))}
                 </ul>
                 <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
-                    <div className="h-full w-[62%] rounded-full bg-secondary-1" />
+                    <div className="h-full w-[62%] rounded-full bg-primary-1" />
                 </div>
             </div>
             <figcaption className="mt-2 text-center text-xs text-n-1/60">{t('label')}</figcaption>

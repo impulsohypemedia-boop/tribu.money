@@ -234,8 +234,9 @@
             "owedValue": "US$ 35",
             "potLabel": "Pot · holidays",
             "potValue": "62%",
-            "fixedLabel": "Rent",
-            "fixedValue": "added on the 1st"
+            "fixedLabel": "Spotify Famille",
+            "fixedValue": "US$ 17 / mois",
+            "fixedChip": "Abonnement"
         },
         "landingFeatures": {
             "title": "All the group's money, in one place",
@@ -571,7 +572,10 @@
             "emptyInvite": "Inviter les autres",
             "emptyShare": "Partager le groupe",
             "emptyAdd": "Ajouter une dépense",
-            "monthlyChip": "Monthly",
+            "monthlyChip": "Abonnement",
+            "filterLabel": "Afficher",
+            "filterAll": "Tout",
+            "filterSubscriptions": "Abonnements",
             "potChip": "Pot"
         },
         "states": {

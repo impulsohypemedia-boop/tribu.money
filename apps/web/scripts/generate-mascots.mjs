@@ -1,6 +1,6 @@
 /**
- * Draws Tribu's cast (La Ronda) and writes the five mascot files the app imports, plus the
- * data URI the share-card rasterizer needs.
+ * Draws Tribu's cast (La Ronda) and writes the five mascot files the app imports, the six
+ * member-avatar heads, and the data URI the share-card rasterizer needs.
  *
  *   node scripts/generate-mascots.mjs        (or: pnpm mascots)
  *
@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url'
 
 const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
 const OUT = path.join(root, 'src/assets/mascot')
+const HEAD_OUT = path.join(root, 'src/assets/ronda')
 const OG = path.join(root, 'src/server/og/mascot.ts')
 
 const K = '#141414'
@@ -48,6 +49,7 @@ const base = (c) =>
     `<ellipse cx="79" cy="220" rx="12" ry="6" fill="${K}"/><ellipse cx="121" cy="220" rx="12" ry="6" fill="${K}"/>`
 const EGG = 'M100 40 C150 40 165 110 165 150 C165 195 135 210 100 210 C65 210 35 195 35 150 C35 110 50 40 100 40Z'
 const BEAN = 'M100 40 C142 40 152 75 152 125 C152 182 146 210 100 210 C54 210 48 182 48 125 C48 75 58 40 100 40Z'
+const ROUND = 'M100 62 C150 62 170 105 170 145 C170 190 140 210 100 210 C60 210 30 190 30 145 C30 105 50 62 100 62Z'
 const SQ =
     'M60 50 C80 42 120 42 140 50 C158 58 162 90 162 140 C162 190 150 210 100 210 C50 210 38 190 38 140 C38 90 42 58 60 50Z'
 const PEAR =
@@ -178,6 +180,59 @@ const CAST = {
     },
 }
 
+/** Neutral poses for the two characters that have no mascot moment of their own. */
+const PACO = () => {
+    const c = C.pileta
+    return (
+        base(c) +
+        limb('M42 140 Q18 160 46 180', c) +
+        S(EGG, c) +
+        S(
+            'M60 80 C56 48 78 30 100 30 C122 30 144 48 140 80 Q133 92 126 80 Q119 94 112 80 Q105 92 98 80 Q91 94 84 80 Q77 92 70 80 Q64 90 60 80Z',
+            C.sol
+        ) +
+        eye(84, 114, 13, 3, 1) +
+        eye(118, 114, 13, 3, 1) +
+        S('M72 96 Q84 90 95 96', 'none', 3.5) +
+        S('M106 96 Q118 90 130 96', 'none', 3.5) +
+        S('M76 142 Q100 174 126 142 Q100 152 76 142Z', K) +
+        S('M92 157 Q101 150 111 157 Q101 165 92 157Z', C.rosa, 2.5) +
+        limb('M158 138 Q184 124 182 96', c) +
+        hand(182, 92, c)
+    )
+}
+const TANO = () => {
+    const c = C.lima
+    return (
+        base(c) +
+        S(ROUND, c) +
+        S('M64 84 C68 60 132 60 136 84 C122 74 78 74 64 84Z', C.pileta) +
+        `<circle cx="100" cy="54" r="15" fill="${C.pileta}" stroke="${K}" stroke-width="4"/>` +
+        S('M76 114 Q86 102 96 114', 'none', 4) +
+        S('M106 114 Q116 102 126 114', 'none', 4) +
+        `<ellipse cx="70" cy="132" rx="9" ry="5" fill="${C.rosa}"/><ellipse cx="132" cy="132" rx="9" ry="5" fill="${C.rosa}"/>` +
+        S('M88 136 Q100 148 112 136', 'none', 4) +
+        `<circle cx="100" cy="174" r="21" fill="${C.sol}" stroke="${K}" stroke-width="4"/>` +
+        limb('M36 150 Q46 180 80 176', c) +
+        limb('M164 150 Q154 180 120 176', c) +
+        hand(80, 176, c) +
+        hand(120, 176, c)
+    )
+}
+
+/**
+ * Member avatars: each character's head, cropped square. The key is what a member row stores
+ * (see `lib/ronda-cast.ts`).
+ */
+const HEADS = {
+    paco: PACO,
+    olvi: CAST.pensando,
+    tano: TANO,
+    tita: CAST.hola,
+    fede: CAST.triste,
+    ruli: CAST.senalando,
+}
+
 const NAMES = {
     festejo: 'Paco festeja',
     pensando: 'Olvi pensando',
@@ -192,6 +247,14 @@ const file = (key) =>
 for (const key of Object.keys(CAST)) {
     await writeFile(path.join(OUT, `tribu-${key}.svg`), file(key))
     console.log(`tribu-${key}.svg`)
+}
+
+for (const [key, draw] of Object.entries(HEADS)) {
+    await writeFile(
+        path.join(HEAD_OUT, `${key}.svg`),
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="32 26 136 136" aria-hidden="true">\n${draw()}\n</svg>\n`
+    )
+    console.log(`ronda/${key}.svg`)
 }
 
 const uri = Buffer.from(file('festejo')).toString('base64')

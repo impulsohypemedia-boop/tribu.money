@@ -12,6 +12,7 @@ import {
     FALLBACK_AVATAR,
     PERSONAS,
     PERSONA_KEYS,
+    RONDA_KEYS,
     avatarArt,
     avatarFamily,
     dealPersonaKeys,
@@ -19,33 +20,35 @@ import {
     randomPersonaKey,
 } from './avatars'
 
+const isRondaKey = (key: string) => (RONDA_KEYS as readonly string[]).includes(key)
+
 describe('the default alter ego', () => {
-    it('draws from the full non-human cast', () => {
-        expect(randomPersonaKey(null, () => 0)).toBe(PERSONA_KEYS[0])
-        expect(randomPersonaKey(null, () => 0.999999)).toBe(PERSONA_KEYS[PERSONA_KEYS.length - 1])
+    it('draws from the Ronda cast', () => {
+        expect(randomPersonaKey(null, () => 0)).toBe('paco')
+        expect(randomPersonaKey(null, () => 0.999999)).toBe('ruli')
     })
 
-    it('excludes the current persona when somebody rolls again', () => {
-        const last = PERSONA_KEYS[PERSONA_KEYS.length - 1]
-        expect(randomPersonaKey(PERSONA_KEYS[0], () => 0)).toBe(PERSONA_KEYS[1])
-        expect(randomPersonaKey(last, () => 0.999999)).toBe(PERSONA_KEYS[PERSONA_KEYS.length - 2])
+    it('excludes the current character when somebody rolls again', () => {
+        expect(randomPersonaKey('paco', () => 0)).toBe('olvi')
+        expect(randomPersonaKey('ruli', () => 0.999999)).toBe('fede')
     })
 
-    it('excludes every persona already used by a room', () => {
-        expect(randomPersonaKey(PERSONA_KEYS.slice(0, 3), () => 0)).toBe(PERSONA_KEYS[3])
-        expect(randomPersonaKey(PERSONA_KEYS, () => 0)).toBe(PERSONA_KEYS[0])
+    it('excludes every character already used by a room, and reuses one once all six are taken', () => {
+        expect(randomPersonaKey(['paco', 'olvi', 'tano'], () => 0)).toBe('tita')
+        expect(randomPersonaKey([...RONDA_KEYS], () => 0)).toBe('paco')
     })
 
-    it('also excludes a current drawing stored under a compatibility alias', () => {
-        expect(randomPersonaKey([...PERSONA_KEYS.slice(0, 8), 'ninja-pear'], () => 0)).toBe('moon-bunny')
+    it('ignores older keys when choosing, because they are drawn as the cast anyway', () => {
+        expect(randomPersonaKey(['vampire-penguin', 'ninja-pear'], () => 0)).toBe('paco')
     })
 
-    it('deals a distinct cast for a whole roster', () => {
-        for (const count of [0, 1, 7, 20, PERSONA_KEYS.length]) {
+    it('deals a distinct cast for a whole roster, the Ronda first', () => {
+        for (const count of [0, 1, 6, 7, 20, PERSONA_KEYS.length]) {
             const dealt = dealPersonaKeys(count, () => 0.42)
             expect(dealt).toHaveLength(count)
             expect(new Set(dealt).size).toBe(count)
             expect(dealt.every((key) => PERSONA_KEYS.includes(key))).toBe(true)
+            expect(dealt.slice(0, Math.min(count, RONDA_KEYS.length)).every((key) => isRondaKey(key))).toBe(true)
         }
     })
 
@@ -57,37 +60,31 @@ describe('the default alter ego', () => {
 })
 
 describe('the catalog', () => {
-    it('offers the thirty-six approved personas and the twelve classics', () => {
-        expect(PERSONA_KEYS).toHaveLength(36)
-        expect(AVATAR_KEYS).toHaveLength(48)
+    it('offers the six Ronda characters and keeps the older cast readable', () => {
+        expect(AVATAR_KEYS).toEqual([...RONDA_KEYS])
+        expect(PERSONA_KEYS).toHaveLength(42)
     })
 
-    it('includes the strange combinations promised by the interaction', () => {
+    it('keeps the older characters under their stored keys', () => {
         expect(PERSONAS['vampire-penguin'].label).toBe('Vampire Penguin')
         expect(PERSONAS['pirate-parrot'].label).toBe('Pirate Parrot')
-        expect(PERSONAS['astronaut-avocado'].label).toBe('Astronaut Avocado')
-        expect(PERSONAS['rockstar-strawberry'].label).toBe('Rockstar Berry')
-        expect(PERSONAS['tea-dragon'].label).toBe('Tea Dragon')
-        expect(PERSONAS['pocket-robot'].label).toBe('Pocket Robot')
-        expect(PERSONAS['snooze-sloth'].label).toBe('Snooze Sloth')
-        expect(PERSONAS['drama-prawn'].label).toBe('Drama Prawn')
-        expect(PERSONAS['thermostat-gremlin'].label).toBe('Thermostat Gremlin')
         expect(PERSONAS['punk-pineapple'].label).toBe('Punk Pineapple')
     })
 
-    it('has unique names, vibes and production drawings', () => {
+    it('has unique names and vibes, and a unique drawing for every older character', () => {
         expect(new Set(PERSONA_KEYS.map((key) => PERSONAS[key].label)).size).toBe(PERSONA_KEYS.length)
         expect(new Set(PERSONA_KEYS.map((key) => PERSONAS[key].vibe)).size).toBe(PERSONA_KEYS.length)
-        expect(new Set(PERSONA_KEYS.map((key) => PERSONAS[key].doodle)).size).toBe(PERSONA_KEYS.length)
+        const older = PERSONA_KEYS.filter((key) => !isRondaKey(key))
+        expect(new Set(older.map((key) => PERSONAS[key].doodle)).size).toBe(older.length)
     })
 
-    it('keeps every card description short enough for one line', () => {
+    it('keeps every card description within the two lines the picker gives it', () => {
         for (const key of AVATAR_KEYS) {
-            expect(AVATARS[key].vibe.length, `${key}: ${AVATARS[key].vibe}`).toBeLessThanOrEqual(18)
+            expect(AVATARS[key].vibe.length, `${key}: ${AVATARS[key].vibe}`).toBeLessThanOrEqual(26)
         }
     })
 
-    it('points every visible option at a real drawing and a complete color palette', () => {
+    it('points every option at a real fallback drawing and a complete color palette', () => {
         for (const key of AVATAR_KEYS) {
             const art = AVATARS[key]
             expect(DOODLE[art.doodle], key).toBeTruthy()
@@ -150,7 +147,7 @@ describe('compatibility and validation', () => {
         }
     })
 
-    it('graduates the six resurrected first-release keys into the visible cast', () => {
+    it('keeps the six resurrected first-release keys readable without reoffering them', () => {
         for (const key of [
             'detective-raccoon',
             'dj-dinosaur',
@@ -159,7 +156,8 @@ describe('compatibility and validation', () => {
             'trickster-fox',
             'punk-pineapple',
         ]) {
-            expect(AVATAR_KEYS).toContain(key)
+            expect(isAvatarKey(key)).toBe(true)
+            expect(AVATAR_KEYS).not.toContain(key)
         }
     })
 

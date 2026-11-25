@@ -10,7 +10,7 @@ import { pageMetadata } from '@/lib/seo'
 
 /** Tribu is Spanish only, so the page's title and description come from the Spanish catalog. */
 export const metadata = pageMetadata({
-    title: 'Tribu: la cuenta compartida de tu grupo',
+    title: 'Tribu: la billetera compartida de tu grupo',
     description: messages.marketing.hero.subtitle,
     path: '/',
     type: 'website',

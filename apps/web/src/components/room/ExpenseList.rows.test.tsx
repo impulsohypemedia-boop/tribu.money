@@ -117,33 +117,18 @@ const renderExpense = (description: string, overrides: Partial<ApiExpense> = {})
         />
     )
 
-describe('ExpenseList subject art', () => {
-    it.each([
-        { description: 'Pizza', subject: 'pizza', doodle: 'pizza', match: 'exact term' },
-        { description: 'Gas bill for the flat', subject: 'utilities', doodle: 'lightbulb', match: 'phrase' },
-        { description: 'Tiket', subject: 'generic-ticket', doodle: 'expense_ticket', match: 'typo' },
-        { description: 'SIM', subject: 'sim-card', doodle: 'expense_card_sim', match: 'exact short term' },
-        { description: 'Ultraviolet marmalade', subject: 'other', doodle: 'question', match: 'fallback' },
-        { description: '', subject: 'other', doodle: 'question', match: 'empty fallback' },
-    ])('renders the $subject doodle for a $match description', ({ description, subject, doodle }) => {
-        const card = renderExpense(description)
+describe('ExpenseList rows', () => {
+    it('draws no illustration next to an expense', () => {
+        const card = renderExpense('Pizza')
 
-        expect(card).toContain(`data-expense-subject="${subject}"`)
-        expect(card).toContain(`data-doodle-name="${doodle}"`)
+        expect(card).not.toContain('data-doodle-name')
+        expect(card).not.toContain('data-expense-subject')
     })
 
     it('keeps the payer identity in the card copy', () => {
         const card = renderExpense('Pizza')
 
         expect(card).toContain('paidByCompact:Ana')
-    })
-
-    it('uses a saved category override ahead of contradictory description inference', () => {
-        const card = renderExpense('Pizza', { category: 'transport' })
-
-        expect(card).toContain('data-expense-category="transport"')
-        expect(card).toContain('data-expense-subject="taxi-rides"')
-        expect(card).toContain('data-doodle-name="taxi"')
     })
 
     it('shows a custom FX rate as frozen on this expense row', () => {
@@ -158,13 +143,19 @@ describe('ExpenseList subject art', () => {
         expect(card).toContain('savedManualRate:BEER,0.5,USD')
     })
 
-    it('uses the locked bare-hero size and keeps inferred art decorative', () => {
-        const card = renderExpense('Pizza')
-        const doodle = card.match(/<span[^>]*data-doodle-name="pizza"[^>]*>/)?.[0]
+    it('marks an expense a monthly schedule created as a subscription, and offers the filter', () => {
+        const card = renderExpense('Netflix', { recurringId: 'monthly-netflix' })
 
-        expect(doodle).toContain('aria-hidden="true"')
-        expect(doodle).not.toContain('aria-label')
-        expect(doodle).toContain('data-doodle-size="44"')
-        expect(doodle).toContain('data-doodle-weight="1.4"')
+        expect(card).toContain('data-testid="expense-recurring-chip"')
+        expect(card).toContain('monthlyChip')
+        expect(card).toContain('data-testid="expense-filter"')
+        expect(card).toContain('filterSubscriptions')
+    })
+
+    it('hides the subscription filter while no expense repeats', () => {
+        const card = renderExpense('Pizza')
+
+        expect(card).not.toContain('data-testid="expense-filter"')
+        expect(card).not.toContain('data-testid="expense-recurring-chip"')
     })
 })

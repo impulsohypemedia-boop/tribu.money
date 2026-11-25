@@ -2,7 +2,7 @@
 
 Peanut Split includes material that is not Squirrel Labs Ltd's. This file carries the notices those
 licenses require. It must travel with any source archive or container image built from this
-repository. Machine-readable per-path annotations live in [`REUSE.toml`](REUSE.toml); full license
+repository. Machine-readable per-path annotations live in [`REUSE.toml`](../REUSE.toml); full license
 texts live in `LICENSES/`.
 
 ## Lucide and Feather icons — ISC and MIT
@@ -13,16 +13,16 @@ The 300 expense-subject geometries in `design/doodles/parts/14-expense-subjects.
 `apps/web/src/components/ui/doodles.ts` aggregates those geometries with Squirrel Labs drawings, so
 it carries all three licenses at once and its header says so.
 
-> Copyright (c) Lucide Contributors — ISC License. See [`LICENSES/ISC.txt`](LICENSES/ISC.txt).
+> Copyright (c) Lucide Contributors — ISC License. See [`LICENSES/ISC.txt`](../LICENSES/ISC.txt).
 >
-> Copyright (c) 2013-2017 Cole Bemis — MIT License. See [`LICENSES/MIT.txt`](LICENSES/MIT.txt).
+> Copyright (c) 2013-2017 Cole Bemis — MIT License. See [`LICENSES/MIT.txt`](../LICENSES/MIT.txt).
 
 The per-icon derivation list is in
-[`design/doodles/LUCIDE-LICENSE.txt`](design/doodles/LUCIDE-LICENSE.txt).
+[`design/doodles/LUCIDE-LICENSE.txt`](../design/doodles/LUCIDE-LICENSE.txt).
 
 The browser-control illustrations in `apps/web/public/install/` reuse Lucide 1.8.0 geometry from
 Peanut UI's install instructions. Their ISC and MIT notices travel in
-[`apps/web/public/install/LICENSE.txt`](apps/web/public/install/LICENSE.txt).
+[`apps/web/public/install/LICENSE.txt`](../apps/web/public/install/LICENSE.txt).
 
 ## Sniglet — SIL Open Font License 1.1
 
@@ -35,7 +35,7 @@ distributed under the OFL. The copyright line below is read verbatim from the fo
 > with no Reserved Font Name.
 >
 > Licensed under the SIL Open Font License, Version 1.1.
-> See [`LICENSES/OFL-1.1-no-RFN.txt`](LICENSES/OFL-1.1-no-RFN.txt) and <https://scripts.sil.org/OFL>.
+> See [`LICENSES/OFL-1.1-no-RFN.txt`](../LICENSES/OFL-1.1-no-RFN.txt) and <https://scripts.sil.org/OFL>.
 
 Because there is no Reserved Font Name, a fork may rename and redistribute modified Sniglet builds,
 provided the whole font stays under the OFL and the notice above is preserved.
@@ -52,7 +52,7 @@ the font's upstream `OFL.txt`.
 > Copyright 2020 The Gluten Project Authors (https://github.com/Etcetera-Type-Co/Gluten)
 >
 > Licensed under the SIL Open Font License, Version 1.1.
-> See [`LICENSES/OFL-1.1-no-RFN.txt`](LICENSES/OFL-1.1-no-RFN.txt) and <https://scripts.sil.org/OFL>.
+> See [`LICENSES/OFL-1.1-no-RFN.txt`](../LICENSES/OFL-1.1-no-RFN.txt) and <https://scripts.sil.org/OFL>.
 
 Gluten names no Reserved Font Name, so a fork may rename and redistribute modified Gluten builds,
 provided the whole font stays under the OFL and the notice above is preserved.

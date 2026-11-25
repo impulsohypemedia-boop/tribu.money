@@ -1,7 +1,7 @@
 {
     "marketing": {
         "hero": {
-            "title": "La cuenta compartida de tu tribu, en dólares.",
+            "title": "La billetera compartida de tu tribu.",
             "controlTitleAccessible": "PÁSALO",
             "titleAccessible": "Las <highlight>cuentas claras</highlight> mantienen las <highlight>buenas amistades</highlight>",
             "subtitle": "Anotan lo que pone cada uno, quedan a mano en un toque y juntan plata para lo que viene. Todo en un solo lugar.",
@@ -22,7 +22,7 @@
                 "roomRequired": "Poné un nombre a la tribu.",
                 "creatorRequired": "Decinos quién sos."
             },
-            "eyebrow": "La cuenta de tu grupo",
+            "eyebrow": "La billetera de tu grupo",
             "ctaNote": "Gratis. Sin registrarte."
         },
         "rooms": {
@@ -134,7 +134,7 @@
             "operatedBy": "Tribu es software libre bajo la licencia AGPL-3.0."
         },
         "appHome": {
-            "landingLink": "¿Qué es Tribu?"
+            "landingLink": "Ir a la página de Tribu"
         },
         "install": {
             "title": "Instalá Tribu",
@@ -234,8 +234,9 @@
             "owedValue": "US$ 35",
             "potLabel": "Vaquita · vacaciones",
             "potValue": "62%",
-            "fixedLabel": "Alquiler",
-            "fixedValue": "se carga el 1"
+            "fixedLabel": "Spotify Familiar",
+            "fixedValue": "US$ 17 / mes",
+            "fixedChip": "Suscripción"
         },
         "landingFeatures": {
             "title": "Toda la plata del grupo, en un lugar",
@@ -257,7 +258,7 @@
             }
         },
         "landingGroups": {
-            "title": "Armá la cuenta de tu tribu",
+            "title": "Armá la billetera de tu tribu",
             "body": "Para la pareja, la casa, los amigos, la familia o el equipo. Elegí uno o ponele el nombre que quieras.",
             "couple": "Pareja",
             "home": "Casa",
@@ -267,8 +268,8 @@
         },
         "landingNext": {
             "badge": "Lo que viene",
-            "title": "La wallet de la tribu",
-            "body": "Estamos armando una cuenta en dólares que el grupo maneja junto: con reglas que eligen entre todos y sin que la plata quede a nombre de uno solo."
+            "title": "La billetera de la tribu",
+            "body": "Estamos armando una billetera que el grupo maneja junto: con reglas que eligen entre todos y sin que la plata quede a nombre de uno solo."
         }
     },
     "locale": {
@@ -571,7 +572,10 @@
             "emptyInvite": "Invita al resto",
             "emptyShare": "Compartir tribu",
             "emptyAdd": "Agregar gasto",
-            "monthlyChip": "Fijo mensual",
+            "monthlyChip": "Suscripción",
+            "filterLabel": "Mostrar",
+            "filterAll": "Todos",
+            "filterSubscriptions": "Suscripciones",
             "potChip": "Vaquita"
         },
         "states": {
@@ -782,7 +786,7 @@
             "recordedTitle": "Registrado recién",
             "amountTooHighYou": "Es más de lo que te falta pasar.",
             "lemon": "Lemon",
-            "lemonNote": "Se paga desde tu wallet de Lemon, en dólares digitales.",
+            "lemonNote": "Se paga desde tu billetera de Lemon, en USDC o USDT.",
             "lemonQuote": "Vas a enviar {amount} {token} desde tu Lemon.",
             "lemonPay": "Pagar con Lemon",
             "lemonPaying": "Esperando a Lemon…",
@@ -1148,7 +1152,7 @@
                 "hypeCrew": "La hinchada"
             },
             "shareText": {
-                "crew": "Las personas de nuestra cuenta compartida.",
+                "crew": "Las personas de nuestra billetera compartida.",
                 "passport": "Monedas distintas, una cuenta limpia.",
                 "alterego": "Este fui yo en esta tribu.",
                 "stats": "La tribu, en números.",
@@ -1209,7 +1213,7 @@
             "copiedLabel": "{label} copiado"
         },
         "monthly": {
-            "title": "Gastos fijos",
+            "title": "Suscripciones y gastos fijos",
             "unnamed": "Sin nombre",
             "everyMonth": "el día {day} de cada mes, paga {name}",
             "stop": "Dejar de repetir",
@@ -1696,7 +1700,7 @@
         }
     },
     "preview": {
-        "roomDescription": "Sumate a la cuenta: mirá cuánto pone cada uno y cargá lo que pagaste.",
+        "roomDescription": "Sumate a la billetera: mirá cuánto pone cada uno y cargá lo que pagaste.",
         "statNone": "Todavía no hay gastos",
         "statOne": "1 gasto · {amount} hasta ahora",
         "statMany": "{count} gastos · {amount} hasta ahora",
@@ -1733,8 +1737,8 @@
                 "hint": "Algo que pagó alguien y se reparte."
             },
             "fixed": {
-                "title": "Un gasto fijo",
-                "hint": "Alquiler, expensas, Netflix: se carga solo cada mes."
+                "title": "Una suscripción",
+                "hint": "Netflix, Spotify, el alquiler: se carga solo cada mes."
             },
             "vaquita": {
                 "title": "Una vaquita",
@@ -1742,12 +1746,12 @@
             },
             "tribu": {
                 "title": "Una tribu nueva",
-                "hint": "La cuenta compartida de un grupo nuevo."
+                "hint": "La billetera compartida de un grupo nuevo."
             }
         },
         "home": {
             "loading": "Mirando tus tribus…",
-            "emptyTitle": "La cuenta de tu tribu",
+            "emptyTitle": "La billetera de tu tribu",
             "emptyBody": "Anotan gastos, quedan a mano y juntan plata con una vaquita. Para la pareja, la casa, los amigos o el equipo.",
             "startTribu": "Armar una tribu",
             "startVaquita": "Armar una vaquita",
@@ -1880,7 +1884,7 @@
         },
         "crew": {
             "title": "EL GRUPO",
-            "line": "Los nombres de nuestra cuenta compartida."
+            "line": "Los nombres de nuestra billetera compartida."
         },
         "passport": {
             "title": "PASAPORTE",

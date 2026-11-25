@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Breadcrumbs } from '@/components/marketing/Breadcrumbs'
-import { SiteFooter } from '@/components/marketing/SiteFooter'
 import { SplitwiseImport } from '@/components/import/SplitwiseImport'
 import { appPageMetadata } from '@/lib/seo'
 
@@ -26,7 +25,6 @@ export default function ImportPage() {
             <section className="mx-auto w-full max-w-xl px-5 py-6">
                 <SplitwiseImport />
             </section>
-            <SiteFooter />
         </main>
     )
 }

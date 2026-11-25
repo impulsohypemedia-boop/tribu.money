@@ -65,6 +65,15 @@ const classic = (
  * the twenty that follow are the cast-36 expansion (design/doodles/parts/07–10).
  */
 export const PERSONAS = {
+    // La Ronda, Tribu's own cast. They are what the picker offers and what new members get.
+    // `doodle` is only the fallback for surfaces that draw doodles (share cards); the app
+    // draws the character itself, see `lib/ronda-cast.ts`.
+    paco: persona('personavampirepenguin', 'Paco', 'El que siempre paga', '#14B8B0', '#FFD23F', '#141414'),
+    olvi: persona('personavampirepenguin', 'Olvi', 'La que se olvida', '#FF7AC6', '#6E5BFF', '#141414'),
+    tano: persona('personavampirepenguin', 'Tano', 'El ahorrador', '#B9D43A', '#14B8B0', '#141414'),
+    tita: persona('personavampirepenguin', 'Tita', 'La que organiza', '#6E5BFF', '#FF9F1C', '#141414'),
+    fede: persona('personavampirepenguin', 'Fede', 'El que pide fiado', '#FF9F1C', '#FF7AC6', '#141414'),
+    ruli: persona('personavampirepenguin', 'Ruli', 'La que divide al centavo', '#FFD23F', '#B9D43A', '#141414'),
     'vampire-penguin': persona(
         'personavampirepenguin',
         'Vampire Penguin',
@@ -305,8 +314,15 @@ export const AVATARS = {
 
 export type AvatarKey = keyof typeof AVATARS
 
-/** The live picker order. Compatibility aliases are deliberately absent. */
-export const AVATAR_KEYS = [...PERSONA_KEYS, ...Object.keys(CLASSIC_AVATARS)] as AvatarKey[]
+/** The Ronda cast, in picker order. */
+export const RONDA_KEYS = ['paco', 'olvi', 'tano', 'tita', 'fede', 'ruli'] as const satisfies readonly PersonaKey[]
+export type RondaKey = (typeof RONDA_KEYS)[number]
+
+/**
+ * The live picker: the Ronda cast only. Every older key stays readable, and the app draws it
+ * as one of the cast (`rondaFor`), so a member who never re-picks still gets a new character.
+ */
+export const AVATAR_KEYS = [...RONDA_KEYS] as AvatarKey[]
 
 export const isAvatarKey = (value: unknown): value is AvatarKey =>
     typeof value === 'string' && Object.prototype.hasOwnProperty.call(AVATARS, value)
@@ -325,13 +341,10 @@ export function randomPersonaKey(
     random: () => number = Math.random
 ): PersonaKey {
     const excluded = new Set(typeof exclude === 'string' ? [exclude] : (exclude ?? []))
-    // Compatibility aliases can point at a current drawing under an older key.
-    // Compare the artwork identity so a legacy room cannot receive two visually
-    // identical mascots with different storage values.
-    const excludedDoodles = new Set([...excluded].flatMap((key) => (isAvatarKey(key) ? [AVATARS[key].doodle] : [])))
-    const available = PERSONA_KEYS.filter((key) => !excludedDoodles.has(PERSONAS[key].doodle))
-    const candidates = available.length > 0 ? available : PERSONA_KEYS
-    return candidates[pick(random, candidates.length)]
+    // The cast first; a seventh member reuses a character rather than getting an old doodle key.
+    const freeRonda = RONDA_KEYS.filter((key) => !excluded.has(key))
+    if (freeRonda.length > 0) return freeRonda[pick(random, freeRonda.length)]
+    return RONDA_KEYS[pick(random, RONDA_KEYS.length)]
 }
 
 /** Deal a room roster distinct personas instead of making independent draws. */
@@ -340,13 +353,20 @@ export function dealPersonaKeys(count: number, random: () => number = Math.rando
         throw new RangeError(`persona deal must be an integer from 0 to ${PERSONA_KEYS.length}`)
     }
 
-    const pool = [...PERSONA_KEYS]
-    for (let index = pool.length - 1; index > 0; index--) {
-        const swap = pick(random, index + 1)
-        const held = pool[index]
-        pool[index] = pool[swap]
-        pool[swap] = held
+    const shuffled = (keys: readonly PersonaKey[]) => {
+        const pool = [...keys]
+        for (let index = pool.length - 1; index > 0; index--) {
+            const swap = pick(random, index + 1)
+            const held = pool[index]
+            pool[index] = pool[swap]
+            pool[swap] = held
+        }
+        return pool
     }
+    // The cast is dealt first; only a roster bigger than the cast draws older keys, which the
+    // app still draws as cast members.
+    const ronda = new Set<string>(RONDA_KEYS)
+    const pool = [...shuffled(RONDA_KEYS), ...shuffled(PERSONA_KEYS.filter((key) => !ronda.has(key)))]
     return pool.slice(0, count)
 }
 

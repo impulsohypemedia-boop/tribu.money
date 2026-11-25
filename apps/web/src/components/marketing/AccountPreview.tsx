@@ -1,17 +1,16 @@
 import { useTranslations } from 'next-intl'
-import { Doodle } from '@/components/ui/Doodle'
-import type { DoodleName } from '@/components/ui/doodles'
 
-const ROWS: { key: 'month' | 'owed' | 'pot' | 'fixed'; doodle: DoodleName }[] = [
-    { key: 'month', doodle: 'tally' },
-    { key: 'owed', doodle: 'swap' },
-    { key: 'pot', doodle: 'gift' },
-    { key: 'fixed', doodle: 'house' },
+/** Each row gets one colour of the ronda instead of an illustration. */
+const ROWS: { key: 'month' | 'owed' | 'pot' | 'fixed'; color: string }[] = [
+    { key: 'month', color: '#FFD23F' },
+    { key: 'owed', color: '#B9D43A' },
+    { key: 'pot', color: '#14B8B0' },
+    { key: 'fixed', color: '#FF7AC6' },
 ]
 
 /**
  * An example tribu drawn as an account card. Every row is something the app already shows
- * (monthly total, who pays whom, a vaquita's progress, a fixed expense), so the picture does not
+ * (monthly total, who pays whom, a vaquita's progress, a subscription), so the picture does not
  * promise a feature that is not there. Decorative: screen readers get the caption only.
  */
 export function AccountPreview() {
@@ -21,20 +20,25 @@ export function AccountPreview() {
         <figure className="text-left">
             <div
                 aria-hidden
-                className="shadow-primary-8 relative overflow-hidden rounded-2xl bg-n-1 p-5 text-white"
+                className="relative overflow-hidden rounded-3xl border-2 border-n-1 bg-n-1 p-5 text-white shadow-[4px_4px_0_#141414]"
                 data-testid="landing-account-preview"
             >
-                <div className="flex items-center justify-between gap-3 pr-14">
-                    <div>
-                        <p className="font-display text-xl font-extrabold">{t('name')}</p>
-                        <p className="text-sm text-white/60">{t('people')}</p>
-                    </div>
+                <div>
+                    <p className="font-display text-xl">{t('name')}</p>
+                    <p className="text-sm text-white/60">{t('people')}</p>
                 </div>
                 <ul className="mt-5 grid gap-2">
-                    {ROWS.map(({ key, doodle }) => (
+                    {ROWS.map(({ key, color }) => (
                         <li key={key} className="flex items-center gap-3 rounded-xl bg-white/[0.07] px-3 py-2.5">
-                            <Doodle name={doodle} size={20} weight={1.8} className="shrink-0 text-n-1" />
-                            <span className="flex-1 text-sm text-white/80">{t(`${key}Label`)}</span>
+                            <span className="size-3 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+                            <span className="flex flex-1 flex-wrap items-center gap-x-2 gap-y-1 text-sm text-white/80">
+                                {t(`${key}Label`)}
+                                {key === 'fixed' && (
+                                    <span className="rounded-full bg-[#FF7AC6] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-n-1">
+                                        {t('fixedChip')}
+                                    </span>
+                                )}
+                            </span>
                             <span className="text-sm font-bold">{t(`${key}Value`)}</span>
                         </li>
                     ))}

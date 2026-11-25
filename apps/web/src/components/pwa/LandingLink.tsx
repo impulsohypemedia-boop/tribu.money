@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { Doodle } from '@/components/ui/Doodle'
+import { TribuSymbol } from '@/components/ui/TribuLogo'
 import { landingLinkTarget } from '@/lib/app-entry'
 
 /**
- * The way back from the accountless home to the landing, for someone who is only browsing.
+ * The way back from the accountless home to the landing, for someone who is only browsing. It is
+ * the ronda in the header, with no visible text: the logo is where people expect to tap to go home.
  *
  * Renders as an ordinary in-tab link first — the server cannot see the display mode — and
  * switches to a new-tab link once the client knows it is running installed. A tap before
@@ -29,10 +30,10 @@ export function LandingLink() {
             target={target}
             rel={target ? 'noopener noreferrer' : undefined}
             data-testid="app-landing-link"
-            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-n-1 underline decoration-2 underline-offset-4"
+            aria-label={t('landingLink')}
+            className="inline-flex size-11 shrink-0 items-center justify-center rounded-full"
         >
-            {t('landingLink')}
-            {target ? <Doodle name="iconarrowright" size={16} weight={2.4} className="-rotate-45" aria-hidden /> : null}
+            <TribuSymbol size={36} />
         </Link>
     )
 }

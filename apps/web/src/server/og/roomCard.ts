@@ -30,7 +30,7 @@ export const MAX_AVATARS = 6
  * lavender, which turn a row of overlapping discs into one smear at thumbnail
  * size. Widely-spaced hues are the whole point here.
  */
-export const AVATAR_COLORS = ['#FF6B35', '#98E9AB', '#90A8ED', '#C9C2FF', '#AE7AFF', '#E99898'] as const
+export const AVATAR_COLORS = ['#FFD23F', '#98E9AB', '#90A8ED', '#C9C2FF', '#AE7AFF', '#E99898'] as const
 
 export interface OgAvatar {
     /** A single body-font-safe character. */

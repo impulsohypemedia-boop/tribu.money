@@ -21,7 +21,8 @@
         "e2e": "playwright test",
         "e2e:pwa-boundary": "playwright test --config playwright.pwa-boundary.config.ts",
         "e2e:v2": "playwright test --config playwright.v2.config.ts",
-        "icons": "node scripts/generate-icons.mjs"
+        "icons": "node scripts/generate-icons.mjs",
+        "mascots": "node scripts/generate-mascots.mjs"
     },
     "pnpm": {
         "onlyBuiltDependencies": [

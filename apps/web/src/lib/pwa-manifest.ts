@@ -44,8 +44,8 @@ export default function manifest(): MetadataRoute.Manifest {
         display: 'standalone',
         display_override: ['standalone'],
         orientation: 'portrait',
-        theme_color: '#FF6B35',
-        background_color: '#F6F4F0',
+        theme_color: '#FFD23F',
+        background_color: '#FFFAEE',
         /**
          * Long-press the launcher icon. English in every language, deliberately: the manifest is
          * fetched without credentials, so the `ps-locale` cookie cannot reach it, and `name` and

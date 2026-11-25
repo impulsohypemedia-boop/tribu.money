@@ -157,7 +157,7 @@ export const PERSONAS = {
         'Spreadsheet Owl',
         'Has a tab for that',
         '#DDE2FF',
-        '#FFB496',
+        '#FFE07A',
         '#41487E'
     ),
     'snack-alpaca': persona('personasnackalpaca', 'Snack Alpaca', 'Bag is 80% snacks', '#FFEBC9', '#F7C5E6', '#6B4A2E'),
@@ -181,7 +181,7 @@ export const PERSONAS = {
         'personalostduckling',
         'Lost Duckling',
         'Right behind you',
-        '#FFE6DB',
+        '#FFF1C2',
         '#BDECF5',
         '#6B5720'
     ),
@@ -239,18 +239,18 @@ export const PERSONA_KEYS = Object.keys(PERSONAS) as PersonaKey[]
  * the named cast they make forty-eight visible options.
  */
 export const CLASSIC_AVATARS = {
-    'doodle-dog': classic('dog', 'Good Dog', 'Reliably delighted', '#FFE6DB', '#B8F0C5'),
-    'doodle-tribu': classic('tribu', 'The Tribe', 'Gets everyone in', '#FFB496', '#F6C7EC'),
-    'doodle-sun': classic('sun', 'Little Sun', 'Aggressively awake', '#FFB496', '#BDECF5'),
-    'doodle-wave': classic('wave', 'Big Wave', 'Swims any weather', '#BDECF5', '#FFE6DB'),
-    'doodle-leaf': classic('leaf', 'Fresh Leaf', 'Touches grass', '#B8F0C5', '#FFE6DB'),
+    'doodle-dog': classic('dog', 'Good Dog', 'Reliably delighted', '#FFF1C2', '#B8F0C5'),
+    'doodle-tribu': classic('tribu', 'The Tribe', 'Gets everyone in', '#FFE07A', '#F6C7EC'),
+    'doodle-sun': classic('sun', 'Little Sun', 'Aggressively awake', '#FFE07A', '#BDECF5'),
+    'doodle-wave': classic('wave', 'Big Wave', 'Swims any weather', '#BDECF5', '#FFF1C2'),
+    'doodle-leaf': classic('leaf', 'Fresh Leaf', 'Touches grass', '#B8F0C5', '#FFF1C2'),
     'doodle-crystal': classic('crystal', 'Lucky Crystal', 'Trusts the vibes', '#F6C7EC', '#C9D3F3'),
-    'doodle-guitar': classic('guitar', 'Tiny Guitar', 'Will play it', '#FFE6DB', '#F6C7EC'),
+    'doodle-guitar': classic('guitar', 'Tiny Guitar', 'Will play it', '#FFF1C2', '#F6C7EC'),
     'doodle-football': classic('football', 'Match Ball', 'Keeps score', '#B8F0C5', '#C9D3F3'),
-    'doodle-pizza': classic('pizza', 'Pizza Slice', 'Table order boss', '#F6C7EC', '#FFB496'),
-    'doodle-coffee': classic('coffee', 'Coffee Cup', 'First one awake', '#FFE6DB', '#C9D3F3'),
-    'doodle-cake': classic('cake', 'Cake Slice', 'Celebrates it all', '#F6C7EC', '#FFE6DB'),
-    'doodle-boat': classic('boat', 'Little Boat', 'Gets everyone home', '#BDECF5', '#FFB496'),
+    'doodle-pizza': classic('pizza', 'Pizza Slice', 'Table order boss', '#F6C7EC', '#FFE07A'),
+    'doodle-coffee': classic('coffee', 'Coffee Cup', 'First one awake', '#FFF1C2', '#C9D3F3'),
+    'doodle-cake': classic('cake', 'Cake Slice', 'Celebrates it all', '#F6C7EC', '#FFF1C2'),
+    'doodle-boat': classic('boat', 'Little Boat', 'Gets everyone home', '#BDECF5', '#FFE07A'),
 } as const satisfies Record<string, DoodleArt>
 
 /**

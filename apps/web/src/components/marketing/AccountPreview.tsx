@@ -26,14 +26,14 @@ export function AccountPreview() {
             >
                 <div className="flex items-center justify-between gap-3 pr-14">
                     <div>
-                        <p className="font-display text-xl font-extrabold tracking-[-0.03em]">{t('name')}</p>
+                        <p className="font-display text-xl font-extrabold">{t('name')}</p>
                         <p className="text-sm text-white/60">{t('people')}</p>
                     </div>
                 </div>
                 <ul className="mt-5 grid gap-2">
                     {ROWS.map(({ key, doodle }) => (
                         <li key={key} className="flex items-center gap-3 rounded-xl bg-white/[0.07] px-3 py-2.5">
-                            <Doodle name={doodle} size={20} weight={1.8} className="shrink-0 text-primary-1" />
+                            <Doodle name={doodle} size={20} weight={1.8} className="shrink-0 text-n-1" />
                             <span className="flex-1 text-sm text-white/80">{t(`${key}Label`)}</span>
                             <span className="text-sm font-bold">{t(`${key}Value`)}</span>
                         </li>

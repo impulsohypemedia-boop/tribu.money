@@ -431,7 +431,7 @@ function RadioMockup() {
 }
 
 const lowContrastThemes = [
-    { name: 'Classic', field: '#FF6B35', muted: '#7A5E00', ratio: '3.97:1' },
+    { name: 'Classic', field: '#FFD23F', muted: '#7A5E00', ratio: '3.97:1' },
     { name: 'Bubblegum', field: '#C9C2FF', muted: '#8A2E77', ratio: '3.80:1' },
     { name: 'Coral', field: '#E99898', muted: '#7A2E2E', ratio: '4.17:1' },
 ] as const

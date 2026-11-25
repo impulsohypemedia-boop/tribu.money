@@ -112,7 +112,7 @@ describe('doodleDataUri', () => {
         expect(uri?.startsWith('data:image/svg+xml;utf8,')).toBe(true)
         const svg = decodeURIComponent(uri!.slice('data:image/svg+xml;utf8,'.length))
         expect(svg).toContain('M3.191 6.413 L28.809 25.587')
-        expect(svg).toContain('stroke="#0D1B2A"')
+        expect(svg).toContain('stroke="#141414"')
         expect(svg).not.toContain(custom)
         expect(emblemDataUri('drawing:v1:not-valid')).toBeNull()
     })

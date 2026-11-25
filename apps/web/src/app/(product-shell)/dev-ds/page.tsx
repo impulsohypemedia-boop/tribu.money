@@ -16,9 +16,9 @@ import {
 } from './_components/InteractiveSamples'
 
 const coreColors = [
-    { name: 'Ink', token: 'n-1 / black', value: '#0D1B2A', role: 'Text, borders, hard shadows and dark actions' },
-    { name: 'Split yellow', token: 'primary-1', value: '#FF6B35', role: 'Primary action, brand field and selection' },
-    { name: 'Canvas', token: 'background', value: '#F6F4F0', role: 'App background and warm negative space' },
+    { name: 'Ink', token: 'n-1 / black', value: '#141414', role: 'Text, borders, hard shadows and dark actions' },
+    { name: 'Split yellow', token: 'primary-1', value: '#FFD23F', role: 'Primary action, brand field and selection' },
+    { name: 'Canvas', token: 'background', value: '#FFFAEE', role: 'App background and warm negative space' },
     { name: 'Paper', token: 'white', value: '#FFFFFF', role: 'Controls, cards, sheets and foreground surfaces' },
     { name: 'Muted ink', token: 'grey-1 / n-3', value: '#5F646D', role: 'Secondary copy and non-critical metadata' },
     { name: 'Quiet line', token: 'n-4 / grey-2', value: '#E7E8E9', role: 'Disabled fills and quiet separation' },
@@ -131,7 +131,7 @@ export default function DesignSystemPage() {
                         <p className="shadow-2 mb-4 inline-flex rounded-full border border-n-1 bg-white px-3 py-1 text-h9 uppercase tracking-[0.16em]">
                             Implementation-backed · v1.0
                         </p>
-                        <h1 className="max-w-4xl font-display text-5xl font-extrabold leading-[0.95] tracking-[-0.045em] sm:text-7xl">
+                        <h1 className="max-w-4xl font-display text-5xl font-extrabold leading-[0.95] sm:text-7xl">
                             Friendly bookkeeping, drawn with a firm hand.
                         </h1>
                         <p className="mt-6 max-w-2xl text-lg leading-7 sm:text-xl sm:leading-8">

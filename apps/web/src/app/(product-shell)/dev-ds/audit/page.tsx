@@ -788,7 +788,7 @@ export default function AuditPage() {
                     <p className="text-h9 uppercase tracking-[0.18em] text-primary-1">
                         Deep implementation audit · 4 August 2026
                     </p>
-                    <h1 className="mt-4 max-w-5xl font-display text-5xl font-extrabold leading-[0.96] tracking-[-0.04em] sm:text-7xl">
+                    <h1 className="mt-4 max-w-5xl font-display text-5xl font-extrabold leading-[0.96] sm:text-7xl">
                         The system is good. Its seams are expensive.
                     </h1>
                     <p className="mt-6 max-w-3xl text-lg leading-8 text-grey-2">

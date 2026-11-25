@@ -62,11 +62,11 @@ export function PatrimonyChart({ points }: { points: PatrimonyPoint[] }) {
                 onPointerLeave={() => setSelected(null)}
             >
                 <line x1={PAD_X} x2={WIDTH - PAD_X} y1={baseline} y2={baseline} stroke="#E7E8E9" strokeWidth={1} />
-                <path d={area} fill="#FFE6DB" />
+                <path d={area} fill="#FFF1C2" />
                 <path
                     d={line}
                     fill="none"
-                    stroke="#E5531F"
+                    stroke="#8A5A00"
                     strokeWidth={2}
                     strokeLinejoin="round"
                     strokeLinecap="round"
@@ -80,7 +80,7 @@ export function PatrimonyChart({ points }: { points: PatrimonyPoint[] }) {
                     strokeWidth={1}
                     strokeDasharray="3 3"
                 />
-                <circle cx={x(active)} cy={y(values[active])} r={5} fill="#E5531F" stroke="#FFFFFF" strokeWidth={2} />
+                <circle cx={x(active)} cy={y(values[active])} r={5} fill="#8A5A00" stroke="#FFFFFF" strokeWidth={2} />
             </svg>
             <p className="mt-1 flex justify-between text-xs capitalize text-grey-1" aria-hidden="true">
                 <span>{monthLabel(points[0].month, locale)}</span>

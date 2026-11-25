@@ -41,13 +41,12 @@ export function AppTabBar() {
                 <span
                     className={cn(
                         'flex h-8 w-12 items-center justify-center rounded-xl transition-colors',
-                        active && 'bg-n-1/[0.06]'
+                        active && 'bg-primary-1/40'
                     )}
                 >
                     <Doodle name={doodle} size={22} weight={active ? 2.1 : 1.7} />
                 </span>
                 {t(key)}
-                <span aria-hidden className={cn('size-1 rounded-full', active ? 'bg-primary-1' : 'bg-transparent')} />
             </Link>
         )
     }
@@ -66,7 +65,7 @@ export function AppTabBar() {
                         onClick={() => setAdding(true)}
                         aria-label={t('add')}
                         data-testid="tab-add"
-                        className="btn-shadow-primary-4 -mt-5 flex size-14 items-center justify-center rounded-2xl bg-primary-1 text-n-1 transition-transform active:translate-y-[2px]"
+                        className="btn-shadow-primary-4 -mt-6 flex size-14 items-center justify-center rounded-full border-2 border-[#141414] bg-primary-1 text-n-1 transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                     >
                         <Doodle name="iconplus" size={28} weight={2.4} />
                     </button>

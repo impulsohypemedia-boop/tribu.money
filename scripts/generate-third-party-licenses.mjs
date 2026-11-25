@@ -18,7 +18,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const OUT = path.join(ROOT, 'THIRD_PARTY_LICENSES.md')
+const OUT = path.join(ROOT, 'legal', 'THIRD_PARTY_LICENSES.md')
 
 /** Corepack first: a bare `pnpm` on PATH is often an older major that rejects this workspace file
  *  outright, and it fails with an exit code rather than ENOENT, so trying it first hides the good

@@ -8,8 +8,8 @@ export function AppScreen({ title, testId, children }: { title: string; testId: 
         <main data-testid={testId} className="split-app-frame mx-auto min-h-dvh w-full max-w-xl bg-background">
             <AppShellPage>
                 <header className="flex items-center justify-between gap-3 px-5 pb-1 pt-[max(1.25rem,env(safe-area-inset-top))]">
-                    <h1 className="flex items-center gap-2.5 font-display text-[1.75rem] font-extrabold leading-none tracking-[-0.04em]">
-                        <TribuSymbol size={30} />
+                    <h1 className="flex items-center gap-2.5 font-display text-[1.8rem] leading-none">
+                        <TribuSymbol size={34} />
                         {title}
                     </h1>
                     <LandingLink />

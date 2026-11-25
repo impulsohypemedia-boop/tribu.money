@@ -31,7 +31,7 @@ const EMPTY_FEATURES: { key: 'record' | 'settle' | 'pool'; doodle: DoodleName }[
 function SectionTitle({ title, href, more }: { title: string; href?: string; more?: string }) {
     return (
         <div className="mb-3 mt-7 flex items-baseline justify-between gap-3">
-            <h2 className="font-display text-h6 tracking-[-0.02em]">{title}</h2>
+            <h2 className="font-display text-h6">{title}</h2>
             {href && more && (
                 <Link href={href} className="text-sm font-bold text-n-1 underline">
                     {more}
@@ -49,7 +49,7 @@ export function PotProgressCard({ pot, catalog }: { pot: MyPot; catalog?: readon
         <Link
             href={roomHref(pot.slug)}
             data-testid="pot-progress"
-            className="block rounded-xl border border-n-1 bg-white p-3 no-underline transition-transform active:translate-y-[2px]"
+            className="card-ronda block p-3 no-underline transition-transform active:translate-y-[2px]"
         >
             <span className="flex items-center gap-2">
                 <Doodle name="gift" size={20} weight={1.8} />
@@ -144,23 +144,17 @@ export function HomeScreen() {
         <div className="px-5 pt-5" data-testid="home">
             <section
                 data-testid="home-balance"
-                className="shadow-primary-6 relative overflow-hidden rounded-2xl bg-n-1 p-5 text-white"
+                className="relative overflow-hidden rounded-3xl bg-n-1 p-5 text-white"
                 aria-busy={loading}
             >
-                <TribuSymbol
-                    size={150}
-                    tone="light"
-                    className="pointer-events-none absolute -right-10 -top-10 opacity-[0.08]"
-                />
+                <TribuSymbol size={110} tone="light" className="pointer-events-none absolute -right-10 -top-10" />
                 {!ready || (loading && rooms.length === 0) ? (
                     <p className="py-4 text-center text-sm text-white/60">{t('loading')}</p>
                 ) : square ? (
                     <div className="flex items-center gap-3">
                         <Image src={tribuFestejo} alt="" unoptimized className="size-16 shrink-0 object-contain" />
                         <div>
-                            <p className="font-display text-h5 tracking-[-0.02em]">
-                                {joinedAny ? t('allSquare') : t('notJoined')}
-                            </p>
+                            <p className="font-display text-h5">{joinedAny ? t('allSquare') : t('notJoined')}</p>
                             <p className="text-sm text-white/60">
                                 {joinedAny ? t('allSquareHint') : t('notJoinedHint')}
                             </p>
@@ -177,7 +171,7 @@ export function HomeScreen() {
                                             minor={total.owedToMeMinor}
                                             currency={total.currency}
                                             catalog={catalog}
-                                            className="font-display text-[2rem] font-bold leading-tight tracking-[-0.03em] text-[#5ED39A]"
+                                            className="font-display text-[2rem] font-bold leading-tight text-[#B9D43A]"
                                         />
                                     </p>
                                 )}
@@ -188,7 +182,7 @@ export function HomeScreen() {
                                             minor={total.iOweMinor}
                                             currency={total.currency}
                                             catalog={catalog}
-                                            className="font-display text-[2rem] font-bold leading-tight tracking-[-0.03em]"
+                                            className="font-display text-[2rem] font-bold leading-tight"
                                         />
                                     </p>
                                 )}
@@ -204,7 +198,7 @@ export function HomeScreen() {
                                         <span className="min-w-0 flex-1 truncate">{room.name}</span>
                                         <span
                                             className={
-                                                room.netMinor.startsWith('-') ? 'text-white/85' : 'text-[#5ED39A]'
+                                                room.netMinor.startsWith('-') ? 'text-white/85' : 'text-[#B9D43A]'
                                             }
                                         >
                                             {room.netMinor.startsWith('-') ? t('youPass') : t('youGet')}{' '}
@@ -235,9 +229,9 @@ export function HomeScreen() {
                             <li key={`${entry.slug}-${entry.item.id}`}>
                                 <Link
                                     href={roomHref(entry.slug)}
-                                    className="flex items-center gap-3 rounded-xl border border-n-1 bg-white p-3 no-underline"
+                                    className="card-ronda flex items-center gap-3 p-3 no-underline"
                                 >
-                                    <span className="flex size-11 shrink-0 flex-col items-center justify-center rounded-sm border border-n-1 bg-primary-3 leading-none">
+                                    <span className="flex size-11 shrink-0 flex-col items-center justify-center rounded-xl border-2 border-[#141414] bg-primary-1 leading-none">
                                         <span className="text-h7">{entry.day}</span>
                                     </span>
                                     <span className="min-w-0 flex-1">
@@ -283,11 +277,11 @@ export function HomeScreen() {
                             <li key={room.slug}>
                                 <Link
                                     href={roomHref(room.slug)}
-                                    className="flex items-center gap-3 rounded-xl border border-n-1 bg-white p-3 no-underline"
+                                    className="card-ronda flex items-center gap-3 p-3 no-underline"
                                 >
                                     <span
                                         style={room.theme ? { backgroundColor: themeFor(room.theme).field } : undefined}
-                                        className="flex size-10 shrink-0 items-center justify-center rounded-sm border border-n-1 bg-primary-3"
+                                        className="flex size-10 shrink-0 items-center justify-center rounded-xl border-2 border-[#141414] bg-primary-1"
                                     >
                                         <RoomEmblem value={room.emoji} name={room.name} size={26} />
                                     </span>

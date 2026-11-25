@@ -42,7 +42,7 @@ import { BadgesSection } from './BadgesSection'
 const pill = (active: boolean) =>
     cn(
         'rounded-full border px-3 py-1.5 text-sm font-bold transition-colors',
-        active ? 'border-n-1 bg-primary-1 text-n-1' : 'border-[#D6D3CC] bg-white text-grey-1'
+        active ? 'border-n-1 bg-primary-1 text-n-1' : 'border-[#DCD3BD] bg-white text-grey-1'
     )
 
 /**

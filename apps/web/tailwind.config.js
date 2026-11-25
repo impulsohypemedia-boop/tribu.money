@@ -2,7 +2,7 @@ const { fontFamily } = require('tailwindcss/defaultTheme')
 const plugin = require('tailwindcss/plugin')
 
 // Tribu's design tokens. Started from an older upstream system and re-keyed to the
-// Tribu identity: primary = #FF6B35 (orange), secondary = #C9C2FF (teal). Legacy colour aliases and every
+// Tribu identity (La Ronda): primary = #FFD23F (sun yellow with ink text), ink = #141414, cream = #FFFAEE, secondary = #C9C2FF. Legacy colour aliases and every
 // dark: variant were stripped on the way in. Diverge freely — there is no
 // dependency on peanut-ui.
 /** @type {import('tailwindcss').Config} */
@@ -27,27 +27,27 @@ module.exports = {
         extend: {
             // Soft warm hairlines instead of black outlines: text keeps n-1, borders do not.
             borderColor: {
-                'n-1': '#E4E1DA',
+                'n-1': '#E9E2D0',
             },
             colors: {
                 primary: {
-                    1: '#FF6B35',
-                    2: '#E5531F',
-                    3: '#FFE6DB',
-                    4: '#FFB496',
+                    1: '#FFD23F',
+                    2: '#8A5A00',
+                    3: '#FFF1C2',
+                    4: '#FFE07A',
                 },
                 secondary: {
                     1: '#C9C2FF',
                     2: '#E99898',
                     3: '#90A8ED',
-                    4: '#FFE6DB',
+                    4: '#FFF1C2',
                     5: '#FBEAEA',
                     6: '#E9EEFB',
                 },
                 grey: {
                     1: '#5F646D',
                     2: '#E7E8E9',
-                    3: '#F6F4F0',
+                    3: '#FFFAEE',
                     4: '#EFEFF0',
                 },
                 outline: {
@@ -56,8 +56,8 @@ module.exports = {
                     3: '#E99898',
                 },
                 n: {
-                    1: '#0D1B2A',
-                    2: '#1C2C3F',
+                    1: '#141414',
+                    2: '#2A2723',
                     3: '#5F646D',
                     4: '#E7E8E9',
                 },
@@ -80,7 +80,7 @@ module.exports = {
                 'primary-base': 'var(--primary-color)',
                 'secondary-base': 'var(--secondary-color)',
                 accent: 'var(--accent-color)',
-                background: '#F6F4F0',
+                background: '#FFFAEE',
                 error: {
                     DEFAULT: '#B3261E',
                     1: '#FFD8D8',
@@ -138,10 +138,10 @@ module.exports = {
                 '2xl': '1.5rem',
             },
             fontFamily: {
-                sans: ['var(--font-manrope)', ...fontFamily.sans],
-                display: ['var(--font-bricolage)', ...fontFamily.sans],
-                'display-hero': ['var(--font-bricolage)', ...fontFamily.sans],
-                roboto: ['var(--font-manrope)', ...fontFamily.sans],
+                sans: ['var(--font-body)', ...fontFamily.sans],
+                display: ['var(--font-display)', ...fontFamily.sans],
+                'display-hero': ['var(--font-display)', ...fontFamily.sans],
+                roboto: ['var(--font-body)', ...fontFamily.sans],
             },
             fontSize: {
                 0: ['0px', '0px'],
@@ -185,6 +185,10 @@ module.exports = {
                 '.col': {
                     '@apply flex flex-col gap-2': {},
                 },
+                // The ronda card: white, a thick ink outline and a hard offset shadow.
+                '.card-ronda': {
+                    '@apply rounded-2xl border-2 border-[#141414] bg-white shadow-[3px_3px_0_#141414]': {},
+                },
                 '.btn': {
                     '@apply disabled:bg-n-4 disabled:hover:bg-n-4/90 disabled:text-grey-1 disabled:cursor-not-allowed inline-flex items-center justify-center h-13 px-5 border border-n-1 rounded-full text-base text-n-1 fill-n-1 font-bold transition-colors':
                         {},
@@ -206,7 +210,7 @@ module.exports = {
                     '@apply btn border-transparent text-n-1 fill-n-1 hover:text-primary-1 hover:fill-primary-1': {},
                 },
                 '.btn-primary': {
-                    '@apply btn border-transparent bg-primary-1 text-n-1 fill-n-1 hover:bg-primary-1/90': {},
+                    '@apply btn border-2 border-[#141414] bg-primary-1 text-n-1 fill-n-1 hover:bg-primary-1/90': {},
                 },
                 '.btn-dark': {
                     '@apply btn bg-n-1 text-white fill-white hover:bg-n-1/80': {},
@@ -292,55 +296,55 @@ module.exports = {
                     '@apply !w-7 !h-7': {},
                 },
                 '.shadow-2': {
-                    '@apply shadow-[0_1px_4px_rgba(13,27,42,0.10)]': {},
+                    '@apply shadow-[0_1px_4px_rgba(20,20,20,0.10)]': {},
                 },
                 '.shadow-4': {
-                    '@apply shadow-[0_6px_18px_-6px_rgba(13,27,42,0.18)]': {},
+                    '@apply shadow-[0_6px_18px_-6px_rgba(20,20,20,0.18)]': {},
                 },
                 '.shadow-primary-6': {
-                    '@apply shadow-[0_10px_24px_-8px_rgba(13,27,42,0.22)]': {},
+                    '@apply shadow-[0_10px_24px_-8px_rgba(20,20,20,0.22)]': {},
                 },
                 '.shadow-primary-8': {
-                    '@apply shadow-[0_14px_32px_-10px_rgba(13,27,42,0.24)]': {},
+                    '@apply shadow-[0_14px_32px_-10px_rgba(20,20,20,0.24)]': {},
                 },
                 '.shadow-secondary-4': {
-                    '@apply shadow-[0_6px_18px_-6px_rgba(13,27,42,0.18)]': {},
+                    '@apply shadow-[0_6px_18px_-6px_rgba(20,20,20,0.18)]': {},
                 },
                 '.shadow-secondary-6': {
-                    '@apply shadow-[0_10px_24px_-8px_rgba(13,27,42,0.22)]': {},
+                    '@apply shadow-[0_10px_24px_-8px_rgba(20,20,20,0.22)]': {},
                 },
                 '.shadow-secondary-8': {
-                    '@apply shadow-[0_14px_32px_-10px_rgba(13,27,42,0.24)]': {},
+                    '@apply shadow-[0_14px_32px_-10px_rgba(20,20,20,0.24)]': {},
                 },
                 '.btn-shadow-primary-3': {
-                    '@apply shadow-[0_4px_12px_-4px_rgba(229,83,31,0.45)]': {},
+                    '@apply shadow-[3px_3px_0_#141414]': {},
                 },
                 '.btn-shadow-primary-4': {
-                    '@apply shadow-[0_6px_16px_-6px_rgba(229,83,31,0.5)]': {},
+                    '@apply shadow-[3px_3px_0_#141414]': {},
                 },
                 '.btn-shadow-primary-6': {
-                    '@apply shadow-[0_8px_20px_-6px_rgba(229,83,31,0.5)]': {},
+                    '@apply shadow-[3px_3px_0_#141414]': {},
                 },
                 '.btn-shadow-primary-8': {
-                    '@apply shadow-[0_10px_24px_-8px_rgba(229,83,31,0.5)]': {},
+                    '@apply shadow-[3px_3px_0_#141414]': {},
                 },
                 '.btn-shadow-secondary-3': {
-                    '@apply shadow-[0_6px_16px_-6px_rgba(229,83,31,0.5)]': {},
+                    '@apply shadow-[3px_3px_0_#141414]': {},
                 },
                 '.btn-shadow-secondary-4': {
-                    '@apply shadow-[0_6px_16px_-6px_rgba(229,83,31,0.5)]': {},
+                    '@apply shadow-[3px_3px_0_#141414]': {},
                 },
                 '.btn-shadow-secondary-6': {
-                    '@apply shadow-[0_6px_16px_-6px_rgba(229,83,31,0.5)]': {},
+                    '@apply shadow-[3px_3px_0_#141414]': {},
                 },
                 '.btn-shadow-secondary-8': {
-                    '@apply shadow-[0_6px_16px_-6px_rgba(229,83,31,0.5)]': {},
+                    '@apply shadow-[3px_3px_0_#141414]': {},
                 },
                 '.brutal-border': {
                     '@apply border-2 border-n-1': {},
                 },
                 '.input': {
-                    '@apply h-16 w-full rounded-sm border-2 border-[#D6D3CC] bg-white focus:border-[#FF6B35] px-5 text-base md:text-sm font-bold text-n-1 outline-none transition-colors placeholder:text-n-3':
+                    '@apply h-16 w-full rounded-sm border-2 border-[#DCD3BD] bg-white focus:border-[#FFD23F] px-5 text-base md:text-sm font-bold text-n-1 outline-none transition-colors placeholder:text-n-3':
                         {},
                 },
             })

@@ -3,7 +3,7 @@ import { decodeRoomDrawing, roomDrawingPathData } from '@/lib/room-drawing'
 
 /** Ink for the unfurl. The card's own art sits on a coloured field, and the drawing has to read
  *  on all of them, so it always uses warm dark ink rather than the theme's accent. */
-const OG_INK = '#0D1B2A'
+const OG_INK = '#141414'
 /** Heavier than the app's default: the card is downscaled hard by every chat client that
  *  previews it, and a 2-unit line disappears in a WhatsApp thumbnail. */
 const OG_WEIGHT = 2.6

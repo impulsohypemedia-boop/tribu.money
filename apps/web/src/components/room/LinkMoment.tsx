@@ -316,7 +316,7 @@ export function LinkMoment({
                                             level="M"
                                             marginSize={4}
                                             bgColor="#FFFFFF"
-                                            fgColor="#0D1B2A"
+                                            fgColor="#141414"
                                             aria-hidden="true"
                                             className="h-auto w-[clamp(7rem,36vw,9rem)]"
                                         />

@@ -1,16 +1,19 @@
-import { Bricolage_Grotesque, Manrope } from 'next/font/google'
+import { DM_Sans, Titan_One } from 'next/font/google'
 
-const manrope = Manrope({
+// Body and numbers: DM Sans reads clearly at small sizes and keeps amounts tidy.
+const dmSans = DM_Sans({
     subsets: ['latin'],
     display: 'swap',
-    variable: '--font-manrope',
+    variable: '--font-body',
 })
 
-const bricolage = Bricolage_Grotesque({
-    weight: ['500', '700', '800'],
+// Logo and headings: Titan One, the heavy rounded face of the ronda identity. It ships one
+// weight; globals.css turns off synthetic bold so `font-bold` never smears it.
+const titanOne = Titan_One({
+    weight: '400',
     subsets: ['latin'],
     display: 'swap',
-    variable: '--font-bricolage',
+    variable: '--font-display',
 })
 
-export const bodyFontClassName = `${manrope.variable} ${bricolage.variable} font-sans`
+export const bodyFontClassName = `${dmSans.variable} ${titanOne.variable} font-sans`

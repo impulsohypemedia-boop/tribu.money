@@ -1,7 +1,7 @@
 /**
  * PWA icon pipeline.
  *
- * Draws Tribu's mark — the ronda, five hooded people around one orange dot on an ink disc — at every size the
+ * Draws Tribu's mark — the ronda, a six-colour ring around one person on an ink disc — at every size the
  * manifest, the install prompt, iOS and the browser tab need. Deterministic: re-running
  * produces byte-identical files, so it is safe to run in CI or after the artwork changes.
  *
@@ -35,9 +35,9 @@ const ICON_DIR = path.join(root, 'public/icons')
 const SPLASH_DIR = path.join(ICON_DIR, 'splash')
 const APP_DIR = path.join(root, 'src/app')
 
-const PINK = '#0D1B2A'
+const PINK = '#141414'
 /** The manifest's `background_color`. iOS paints it while the app boots, so the splash matches. */
-const CREAM = '#F6F4F0'
+const CREAM = '#FFFAEE'
 const BOARD = 1705 // the artwork's own coordinate space
 
 const SPLASH_SCREENS = JSON.parse(readFileSync(path.join(root, 'src/lib/splash-screens.json'), 'utf8'))
@@ -55,7 +55,7 @@ const MARK = source.match(/<g id="mark">([\s\S]*)<\/g>\s*<\/svg>/)[1]
  * Where the thumb's ink sits in the artboard. Measured off a render of the mark alone, so
  * it includes the stroke; the drawing is not centred in its own artboard.
  */
-const ART = { x: 119, y: 85, w: 1466, h: 1415 }
+const ART = { x: 109, y: 109, w: 1487, h: 1487 }
 
 /**
  * `art` is the share of the frame's height the thumb takes, and applies to "flat" only.
@@ -128,7 +128,7 @@ function mono(size, art) {
     const ty = BOARD / 2 - scale * (ART.y + ART.h / 2)
     return svg(
         size,
-        `<g transform="translate(${tx} ${ty}) scale(${scale})">${MARK.replace(/fill="#[0-9A-Fa-f]{6}"/g, 'fill="white"')}</g>`
+        `<g transform="translate(${tx} ${ty}) scale(${scale})">${MARK.replace(/(fill|stroke)="#[0-9A-Fa-f]{6}"/g, '$1="white"')}</g>`
     )
 }
 

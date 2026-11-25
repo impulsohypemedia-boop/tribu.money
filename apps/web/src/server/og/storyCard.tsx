@@ -21,9 +21,9 @@ import { bodySafe, headlineSafe, MAX_AVATARS, safeAmount, sanitizeDisplayName } 
 
 export const STORY_SIZE = { width: 1080, height: 1920 } as const
 
-const ORANGE = '#FF6B35'
+const ORANGE = '#FFD23F'
 const CREAM = '#FFF6F0'
-const PEACH = '#FFE6DB'
+const PEACH = '#FFF1C2'
 const GREEN = '#98E9AB'
 
 export interface StoryPot {

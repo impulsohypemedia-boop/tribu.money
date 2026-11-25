@@ -35,7 +35,7 @@ export function CustomRoomDrawing({
             {...props}
             viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`}
             fill="none"
-            stroke="#0D1B2A"
+            stroke="#141414"
             strokeWidth={weight}
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -43,7 +43,7 @@ export function CustomRoomDrawing({
             aria-label={label}
             aria-hidden={label ? undefined : true}
             className={cn('shrink-0 overflow-visible', className)}
-            style={{ ...style, fill: 'none', stroke: '#0D1B2A' }}
+            style={{ ...style, fill: 'none', stroke: '#141414' }}
         >
             <path d={roomDrawingPathData(strokes, viewBoxSize)} />
         </svg>

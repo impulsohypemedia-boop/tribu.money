@@ -59,7 +59,7 @@ export function SettingToggle({
                 {hint && <span className="block text-sm text-grey-1">{hint}</span>}
             </span>
             <motion.span
-                animate={{ backgroundColor: checked ? '#FF6B35' : '#FFFFFF' }}
+                animate={{ backgroundColor: checked ? '#FFD23F' : '#FFFFFF' }}
                 transition={motionAllowed ? { duration: 0.15 } : { duration: 0 }}
                 data-motion-surface
                 className="flex size-6 shrink-0 items-center justify-center rounded-sm border border-n-1"

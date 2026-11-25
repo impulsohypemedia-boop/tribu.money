@@ -7,7 +7,7 @@
 
     .split-app-frame {
         /* Paint outside the existing column so content and fixed controls stay aligned. */
-        background-color: #f6f4f0;
+        background-color: #fffaee;
         outline: 1px solid rgb(13 27 42 / 8%);
         box-shadow: 0 30px 60px -30px rgb(13 27 42 / 35%);
     }

@@ -1846,6 +1846,24 @@
             "profileSaved": "{count, plural, =0 {All saved} one {Saved to your tribe} few {Saved to your # tribes} many {Saved to your # tribes} other {Saved to your # tribes}}",
             "profilePartial": "{count, plural, one {Could not save to one tribe. Try again.} few {Could not save to # tribes. Try again.} many {Could not save to # tribes. Try again.} other {Could not save to # tribes. Try again.}}",
             "profileStatus": "Up to date in {done} of {total} tribes"
+        },
+        "patrimony": {
+            "title": "Net worth",
+            "loading": "Adding it up…",
+            "totalLabel": "What your groups hold together",
+            "totalHint": "Everything in pots, in dollars.",
+            "chartHint": "Month by month, at today's rate. Tap a month to see its value.",
+            "whereTitle": "Where the money is",
+            "currenciesTitle": "By currency",
+            "pesoRate": "Pesos at today's crypto dollar: US$ 1 = $ {rate}.",
+            "ratesNote": "Reference rates, refreshed every hour.",
+            "ratesStatic": "Today's rate is unavailable: these dollars use a reference rate and may be off.",
+            "unpriced": "{codes} is left out because we have no rate for it.",
+            "emptyTitle": "No money saved yet",
+            "emptyBody": "Once a group puts money in a pot, you'll see the total here and how it grows.",
+            "startVaquita": "Start a pot",
+            "homeCard": "Net worth",
+            "homeCardHint": "In dollars"
         }
     },
     "card": {

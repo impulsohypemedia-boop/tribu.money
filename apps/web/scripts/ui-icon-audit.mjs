@@ -12,6 +12,7 @@ const rawSvgExceptions = new Map([
     ['src/components/ui/CustomRoomDrawing.tsx', 'renders strictly decoded custom room geometry'],
     ['src/server/og/emblem.ts', 'wraps a generated doodle path as a link-preview image'],
     ['src/components/ui/TribuLogo.tsx', 'the brand mark (the ronda), drawn to match assets/logos/tribu-mark.svg'],
+    ['src/components/app/PatrimonyChart.tsx', 'draws a data line from amounts, not an icon'],
 ])
 const forbiddenImports = [
     { pattern: /from\s+['"]lucide(?:-react)?['"]/, label: 'Lucide' },

@@ -17,6 +17,7 @@ import { myPositions, myPots, upcomingFixed, type MyPot } from '@/lib/my-overvie
 import { useMyRooms } from '@/lib/queries/my-rooms'
 import { useCurrencies } from '@/lib/queries/reads'
 import { themeFor } from '@/lib/themes'
+import { PatrimonyCard } from './PatrimonyScreen'
 
 const roomHref = (slug: string) => `/r/${encodeURIComponent(slug)}`
 
@@ -223,6 +224,8 @@ export function HomeScreen() {
                     </div>
                 )}
             </section>
+
+            <PatrimonyCard />
 
             {fixed.length > 0 && (
                 <>

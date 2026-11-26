@@ -83,7 +83,7 @@ describe('room opengraph-image', () => {
         const card = await loadRoomCard(slug)
         expect(card).toMatchObject({
             name: 'Їдемо до Ґанку в Києві',
-            stat: '1 витрата · наразі €2340.00',
+            stat: '1 витрата · наразі €2.340,00',
             people: '8 людей',
             tagline: 'без реєстрації · користування безкоштовне',
         })

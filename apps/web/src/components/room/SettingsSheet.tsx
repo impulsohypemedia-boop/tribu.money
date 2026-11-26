@@ -36,6 +36,7 @@ import { DeviceSheet } from './DeviceSheet'
 import { FeedbackReportDrawer } from './FeedbackReportDrawer'
 import { HistorySheet } from './HistorySheet'
 import { LedgerSheet } from './LedgerSheet'
+import { TribeMilestonesSheet, useTribeMilestoneCount } from './TribeMilestones'
 
 interface SettingsSheetProps {
     open: boolean
@@ -95,6 +96,9 @@ export function SettingsSheet({
     const [deviceOpen, setDeviceOpen] = useState(false)
     const [historyOpen, setHistoryOpen] = useState(false)
     const [ledgerOpen, setLedgerOpen] = useState(false)
+    const [milestonesOpen, setMilestonesOpen] = useState(false)
+    const milestoneCount = useTribeMilestoneCount(state)
+    const tMilestones = useTranslations('room.milestones')
     const [feedbackOpen, setFeedbackOpen] = useState(false)
     const [switchOpen, setSwitchOpen] = useState(false)
     const [pickerOpen, setPickerOpen] = useState(false)
@@ -362,6 +366,15 @@ export function SettingsSheet({
                                 testId="ledger-row"
                             />
 
+                            {milestoneCount.reached > 0 && (
+                                <SettingRow
+                                    label={tMilestones('cardTitle')}
+                                    value={tMilestones('cardLine', milestoneCount)}
+                                    onClick={() => setMilestonesOpen(true)}
+                                    testId="tribe-milestones-row"
+                                />
+                            )}
+
                             <SettingRow
                                 label={t('history')}
                                 value={t('historyHint')}
@@ -400,6 +413,7 @@ export function SettingsSheet({
                 token={identity?.token}
             />
             <LedgerSheet open={ledgerOpen} onClose={() => setLedgerOpen(false)} slug={room.slug} state={state} />
+            <TribeMilestonesSheet open={milestonesOpen} onClose={() => setMilestonesOpen(false)} state={state} />
             <HistorySheet open={historyOpen} onClose={() => setHistoryOpen(false)} slug={room.slug} state={state} />
             <FeedbackReportDrawer open={feedbackOpen} onClose={() => setFeedbackOpen(false)} state={state} />
 

@@ -224,9 +224,11 @@ export function CreateRoomForm({
                     {/* An invented ticker has no rate, so this room converts nothing. Said here, at the
                     pick, rather than as a warning later: it is a property of the choice. */}
                     <p className="px-1 text-xs text-grey-1" data-testid="room-currency-hint">
-                        {currencies.some((info) => info.code === currency)
-                            ? t('currencyHint')
-                            : t('currencyCustomHint', { code: currency })}
+                        {isPot
+                            ? tPot('currencyHint')
+                            : currencies.some((info) => info.code === currency)
+                              ? t('currencyHint')
+                              : t('currencyCustomHint', { code: currency })}
                     </p>
 
                     <AnimatePresence initial={false}>
@@ -356,7 +358,7 @@ export function CreateRoomForm({
                     {isPot && (
                         <div className="grid gap-3" data-testid="pot-goal-fields">
                             <label className="grid gap-1">
-                                <span className="text-sm font-bold">{tPot('targetLabel')}</span>
+                                <span className="text-sm font-bold">{tPot('targetLabel', { currency })}</span>
                                 <BaseInput
                                     value={target}
                                     onChange={(event) => setTarget(event.target.value)}
@@ -367,7 +369,7 @@ export function CreateRoomForm({
                                 />
                             </label>
                             <label className="grid gap-1">
-                                <span className="text-sm font-bold">{tPot('quotaLabel')}</span>
+                                <span className="text-sm font-bold">{tPot('quotaLabel', { currency })}</span>
                                 <BaseInput
                                     value={quota}
                                     onChange={(event) => setQuota(event.target.value)}

@@ -298,7 +298,7 @@ describe('toRecapCard', () => {
     it('reduces the trip to strings the card can draw', () => {
         const card = cardOf(recapOf())
         expect(card.name).toBe('Ski trip')
-        expect(card.total).toBe('€2340.00')
+        expect(card.total).toBe('€2.340,00')
         expect(card.stat).toBe('9 days · 2 expenses · 2 people')
         expect(card.topPayer).toBe('María fronted the most')
         expect(card.settledLabel).toBe('All settled')
@@ -396,7 +396,7 @@ describe('toRecapCard', () => {
     it('swaps an undrawable currency symbol for the ISO code', () => {
         // `฿` is outside the shipped Roboto cmap — a gap in the hero number would read as a bug.
         const card = cardOf(recapOf({ currency: 'THB' }))
-        expect(card.total).toBe('2340.00 THB')
+        expect(card.total).toBe('2.340,00 THB')
         expect(drawableByBody(card.total)).toBe(true)
     })
 

@@ -213,9 +213,12 @@ export function formatMinor(amountMinor: bigint, code: string): string {
     const neg = amountMinor < 0n
     const abs = neg ? -amountMinor : amountMinor
     const sign = neg ? '-' : ''
-    if (c.decimals === 0) return formatWithCurrency(sign, abs.toString(), c)
+    // Argentine format, like the app: dots group thousands, a comma marks decimals, and a bare `$`
+    // means pesos, so dollars print as `US$`.
+    const shown = c.code === 'USD' ? { ...c, symbol: 'US$' } : c
     const factor = 10n ** BigInt(c.decimals)
-    const whole = abs / factor
+    const whole = (abs / factor).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    if (c.decimals === 0) return formatWithCurrency(sign, whole, shown)
     const frac = (abs % factor).toString().padStart(c.decimals, '0')
-    return formatWithCurrency(sign, `${whole.toString()}.${frac}`, c)
+    return formatWithCurrency(sign, `${whole},${frac}`, shown)
 }

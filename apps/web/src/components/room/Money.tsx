@@ -12,6 +12,7 @@ import {
     formatMoneyParts,
     minorToExactNumber,
     moneyFormatOptions,
+    numberLocale,
     overviewMoneyPresentation,
     type OverviewMoneyScale,
 } from '@/lib/money'
@@ -142,7 +143,7 @@ export function AnimatedMoney({ minor, currency, catalog, className, absolute, d
                 // reading an English page put "12.34" and "12,34" on the same screen. The symbol
                 // now comes from the currency style rather than a manual prefix, so its placement
                 // (before in en, after in es) is localised too.
-                locales={locale}
+                locales={numberLocale(locale)}
                 format={moneyFormatOptions(info, locale)}
                 // A currency with no symbol prints its code after the amount, and `format` above only
                 // covers the digits for those. Without this a BEER balance counts up to a bare number.

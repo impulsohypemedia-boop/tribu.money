@@ -3,7 +3,7 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `0700185af99adfad8995c9fd148a4b7e31bd6d6164024aadf7c34419e4a0c632`
+Input SHA-256: `34e858588f89e888cc777f3e86c1785237edd37cb6a43dde91ef362d5ba21bd1`
 
 PostgreSQL namespace: `split`  
 Models: 22  
@@ -19,6 +19,7 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `emoji`                       | `String?`            | —                                    |
 | `currency`                    | `String`             | // display/settle currency, ISO 4217 |
 | `kind`                        | `String`             | @default("tribu")                    |
+| `coupleSplit`                 | `Json?`              | —                                    |
 | `coverUrl`                    | `String?`            | —                                    |
 | `theme`                       | `String?`            | —                                    |
 | `locale`                      | `String?`            | —                                    |

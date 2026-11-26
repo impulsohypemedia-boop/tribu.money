@@ -1244,7 +1244,13 @@
             "biggest": "El gasto más grande fue {name}: <amount></amount>.",
             "unnamed": "uno sin nombre",
             "someone": "Alguien",
-            "fullHistory": "Ver historial completo"
+            "fullHistory": "Ver historial completo",
+            "cardMonth": "Resumen de {month}",
+            "cardConverted": "Incluye <amount></amount> de gastos en otra moneda, ya convertidos.",
+            "convertedTitle": "En otra moneda",
+            "convertedHint": "Cada gasto se pasó a {currency} con la cotización del día en que se cargó. El total de arriba ya los incluye.",
+            "biggestTitle": "El gasto más grande",
+            "shareOf": "le tocaba"
         },
         "pot": {
             "someone": "Alguien",
@@ -1259,8 +1265,8 @@
             "namePlaceholder": "Regalo de cumpleaños",
             "keeperLabel": "¿Quién guarda la plata?",
             "keeperHint": "La plata queda en la cuenta de esa persona. Tribu no la toca.",
-            "targetLabel": "Meta (opcional)",
-            "quotaLabel": "Cuota por persona por mes (opcional)",
+            "targetLabel": "Meta en {currency} (opcional)",
+            "quotaLabel": "Cuota por persona por mes en {currency} (opcional)",
             "dueLabel": "¿Para cuándo? (opcional)",
             "createSubmit": "Armar la vaquita",
             "created": "Vaquita armada",
@@ -1282,7 +1288,7 @@
             "quotaMissing": "falta <amount></amount>",
             "put": "Poner plata",
             "putWho": "¿Quién pone?",
-            "putAmount": "¿Cuánto?",
+            "putAmount": "¿Cuánto? (en {currency})",
             "putSubmit": "Anotar aporte",
             "putDone": "Aporte anotado",
             "putNote": "Queda anotado como un pago de {name} a {keeper}.",
@@ -1321,7 +1327,8 @@
                 "earned": "Ya ganó <amount></amount> sola",
                 "nextYear": "A este ritmo, en un año suma <amount></amount> más.",
                 "estimateNote": "Es un estimado. Tribu no mueve la plata: rinde si {name} la tiene en una cuenta que pague ese rendimiento."
-            }
+            },
+            "currencyHint": "La vaquita junta plata en esta moneda. ¿Quieren juntar dólares? Elegí USD."
         },
         "reminders": {
             "title": "Te tienen que pasar",
@@ -1428,7 +1435,11 @@
             "tripCreated": "¡Viaje en marcha! Ya pueden ir sumando.",
             "heroSince": "En Tribu desde {since}",
             "heroTrip": "{name} · {months, plural, one {falta # mes} other {faltan # meses}}",
-            "heroTripThisMonth": "{name} · ¡es este mes!"
+            "heroTripThisMonth": "{name} · ¡es este mes!",
+            "monthTogether": "Este mes, juntos: <amount></amount>",
+            "even": "Van parejos",
+            "toEven": "Para emparejar, {from} le pasa <amount></amount> a {to}",
+            "evenUp": "Emparejar"
         }
     },
     "slideToConfirm": {

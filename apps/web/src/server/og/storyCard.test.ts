@@ -31,7 +31,7 @@ describe('toStoryCard', () => {
     it('celebrates a settled trip with what the group spent together', () => {
         const card = toStoryCard(recap(), 'tribu', null, t)
         expect(card.headline).toBe('¡Todos a mano!')
-        expect(card.amount).toContain('1800')
+        expect(card.amount).toContain('1.800')
         expect(card.amountCaption).toBe('gastamos juntos')
         expect(card.progressPct).toBeNull()
     })

@@ -339,13 +339,44 @@ type CompactMoneyFormat = Intl.NumberFormatOptions & {
 const printsSymbol = (info: CurrencyInfo): boolean => info.symbol !== '' && isCurrencyCode(info.code)
 
 /**
- * Spanish resolves the default `currencyDisplay: 'symbol'` to the bare ISO code for most
- * currencies — es-419 renders `USD 34.87`, `EUR 90.00`, `MXN 1,234.50` where a symbol belongs.
- * `narrowSymbol` restores the `$`/`€`. Scoped to Spanish on purpose: en and pt-br already resolve
- * a graphical symbol (and pt-br's `US$`/`JP¥` are the correct Brazilian forms), so widening this
- * would collapse `MX$`/`A$`/`CA$` back to a bare `$` there.
+ * Tribu's Spanish is Argentine, so amounts follow es-AR: dots group thousands and a comma marks the
+ * decimals (`$ 12.345,67`). es-419 would print `$12,345.67`, which reads as twelve pesos to anyone
+ * in Argentina. Only the number format moves; the copy stays in the es-419 catalog.
  */
-const prefersNarrowSymbol = (locale?: string): boolean => (locale ?? '').toLowerCase().startsWith('es')
+export const numberLocale = (locale: string): string => (locale.toLowerCase().startsWith('es') ? 'es-AR' : locale)
+
+const isSpanish = (locale?: string): boolean => (locale ?? '').toLowerCase().startsWith('es')
+
+const narrowSymbolCache = new Map<string, boolean>()
+
+/**
+ * In Spanish, a symbol only helps when it cannot be mistaken for pesos. es-AR's own symbols are
+ * `$` for ARS and `US$` for dollars, but it writes `EUR 10,00` where `€ 10,00` belongs, so the
+ * narrow symbol is used whenever it is something other than a bare `$`. A bare `$` stays reserved
+ * for pesos: USD keeps `US$`, MXN or CLP keep their code.
+ */
+const prefersNarrowSymbol = (locale: string | undefined, code: string): boolean => {
+    if (!isSpanish(locale)) return false
+    const upper = code.toUpperCase()
+    if (upper === 'ARS') return true
+    const cached = narrowSymbolCache.get(upper)
+    if (cached !== undefined) return cached
+    let distinct = false
+    try {
+        const symbol = new Intl.NumberFormat('es-AR', {
+            style: 'currency',
+            currency: upper,
+            currencyDisplay: 'narrowSymbol',
+        })
+            .formatToParts(0)
+            .find((part) => part.type === 'currency')?.value
+        distinct = !!symbol && symbol !== '$'
+    } catch {
+        distinct = false
+    }
+    narrowSymbolCache.set(upper, distinct)
+    return distinct
+}
 
 /**
  * The catalog's `decimals` always wins over the currency's Intl default. The API decides that a
@@ -357,7 +388,7 @@ const prefersNarrowSymbol = (locale?: string): boolean => (locale ?? '').toLower
  */
 export function moneyFormatOptions(info: CurrencyInfo, locale?: string): MoneyFormat {
     const digits = { minimumFractionDigits: info.decimals, maximumFractionDigits: info.decimals }
-    const narrow = prefersNarrowSymbol(locale) ? { currencyDisplay: 'narrowSymbol' as const } : {}
+    const narrow = prefersNarrowSymbol(locale, info.code) ? { currencyDisplay: 'narrowSymbol' as const } : {}
     return printsSymbol(info)
         ? { style: 'currency', currency: info.code.toUpperCase(), ...narrow, ...digits }
         : { style: 'decimal', ...digits }
@@ -377,7 +408,7 @@ function compactMoneyFormatOptions(info: CurrencyInfo, locale?: string): Compact
         minimumFractionDigits: 0,
         maximumFractionDigits: 1,
     }
-    const narrow = prefersNarrowSymbol(locale) ? { currencyDisplay: 'narrowSymbol' as const } : {}
+    const narrow = prefersNarrowSymbol(locale, info.code) ? { currencyDisplay: 'narrowSymbol' as const } : {}
     return printsSymbol(info)
         ? { style: 'currency', currency: info.code.toUpperCase(), ...narrow, ...compact }
         : { style: 'decimal', ...compact }
@@ -399,7 +430,7 @@ export function moneyFormatter(locale: string, info: CurrencyInfo): Intl.NumberF
     const key = `${locale}|${info.code}|${info.decimals}`
     const cached = formatterCache.get(key)
     if (cached) return cached
-    const formatter = new Intl.NumberFormat(locale, moneyFormatOptions(info, locale))
+    const formatter = new Intl.NumberFormat(numberLocale(locale), moneyFormatOptions(info, locale))
     formatterCache.set(key, formatter)
     return formatter
 }
@@ -408,7 +439,7 @@ function compactMoneyFormatter(locale: string, info: CurrencyInfo): Intl.NumberF
     const key = `${locale}|${info.code}|compact`
     const cached = compactFormatterCache.get(key)
     if (cached) return cached
-    const formatter = new Intl.NumberFormat(locale, compactMoneyFormatOptions(info, locale))
+    const formatter = new Intl.NumberFormat(numberLocale(locale), compactMoneyFormatOptions(info, locale))
     compactFormatterCache.set(key, formatter)
     return formatter
 }

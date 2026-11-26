@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { ApiExpense } from './api-types'
+import type { ApiExpense, RoomState } from './api-types'
 import { localMonthKey, monthSummary, monthsWithExpenses, shiftLocalMonth } from './month-summary'
 
 const at = (year: number, month: number, day: number) => new Date(year, month - 1, day, 12).toISOString()
@@ -18,6 +18,7 @@ const expense = (
         date,
         baseAmountMinor: amount,
         amountMinor: amount,
+        currency: 'ARS',
         paidById,
         category,
         shares: shares.map(([memberId, amountMinor]) => ({
@@ -68,8 +69,10 @@ const expenses = [
     ),
 ]
 
+const room = { currency: 'ARS' } as RoomState['room']
+
 describe('monthSummary', () => {
-    const november = monthSummary({ expenses }, '2026-11')
+    const november = monthSummary({ expenses, room }, '2026-11')
 
     it('adds up the month and compares it with the one before', () => {
         expect(november.totalMinor).toBe('121200')
@@ -95,8 +98,35 @@ describe('monthSummary', () => {
         expect(shares.toString()).toBe(november.totalMinor)
     })
 
+    it('has nothing converted when every expense is in the room currency', () => {
+        expect(november.converted).toEqual([])
+    })
+
+    /** The total stays in pesos; the dollars inside it are listed apart, never added raw. */
+    it('lists expenses in another currency with what they count for in the room currency', () => {
+        const hotel = {
+            ...expense('hotel', at(2026, 11, 12), '73500000', 'bea', [
+                ['ana', '36750000'],
+                ['bea', '36750000'],
+            ]),
+            currency: 'USD',
+            amountMinor: '42000',
+        } as ApiExpense
+        const taxi = {
+            ...expense('taxi', at(2026, 11, 13), '1750000', 'ana', [
+                ['ana', '875000'],
+                ['bea', '875000'],
+            ]),
+            currency: 'USD',
+            amountMinor: '1000',
+        } as ApiExpense
+        const mixed = monthSummary({ expenses: [...expenses, hotel, taxi], room }, '2026-11')
+        expect(mixed.totalMinor).toBe((121200n + 73500000n + 1750000n).toString())
+        expect(mixed.converted).toEqual([{ currency: 'USD', amountMinor: '43000', baseAmountMinor: '75250000' }])
+    })
+
     it('is empty, not broken, for a quiet month', () => {
-        const quiet = monthSummary({ expenses }, '2026-09')
+        const quiet = monthSummary({ expenses, room }, '2026-09')
         expect(quiet).toMatchObject({ totalMinor: '0', expenseCount: 0, categories: [], members: [] })
         expect(quiet.biggestExpenseId).toBeNull()
     })

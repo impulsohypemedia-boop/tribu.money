@@ -556,10 +556,11 @@ export function ExpenseList({
                                 }
                                 const unsaved = isPending(expense) || queuedExpense
                                 const impact = unsaved ? null : personalExpenseImpact(expense, validMeId)
+                                // A couple sees what each expense cost, not who lent to whom.
                                 const personalPosition = getExpensePersonalPosition(
                                     expense,
                                     state.room.currency,
-                                    validMeId,
+                                    state.room.kind === 'pareja' ? undefined : validMeId,
                                     memberIds,
                                     unsaved
                                 )

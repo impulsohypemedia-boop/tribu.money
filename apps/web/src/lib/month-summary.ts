@@ -35,13 +35,19 @@ export interface MonthSummary {
     members: MonthMemberLine[]
     biggestExpenseId: string | null
     previousTotalMinor: string
+    /**
+     * Expenses loaded in another currency, summed per currency: what was paid in that currency and
+     * what it counts for in the room's currency (each expense at the rate it was saved with). The
+     * total above is always in the room's currency; this is what lets the screen say so.
+     */
+    converted: { currency: string; amountMinor: string; baseAmountMinor: string }[]
 }
 
 const sumBy = (map: Map<string, bigint>, key: string, amount: bigint) => map.set(key, (map.get(key) ?? 0n) + amount)
 
 const desc = (a: bigint, b: bigint) => (a === b ? 0 : a > b ? -1 : 1)
 
-export function monthSummary(state: Pick<RoomState, 'expenses'>, month: string): MonthSummary {
+export function monthSummary(state: Pick<RoomState, 'expenses' | 'room'>, month: string): MonthSummary {
     const inMonth = (key: string) => state.expenses.filter((expense) => localMonthKey(new Date(expense.date)) === key)
     const expenses = inMonth(month)
     const categories = new Map<string, bigint>()
@@ -49,6 +55,7 @@ export function monthSummary(state: Pick<RoomState, 'expenses'>, month: string):
     const shares = new Map<string, bigint>()
     let total = 0n
     let biggest: { id: string; amount: bigint } | null = null
+    const converted = new Map<string, { amount: bigint; base: bigint }>()
 
     for (const expense of expenses) {
         const amount = BigInt(expense.baseAmountMinor)
@@ -57,6 +64,12 @@ export function monthSummary(state: Pick<RoomState, 'expenses'>, month: string):
         sumBy(paid, expense.paidById, amount)
         for (const share of expense.shares) sumBy(shares, share.memberId, BigInt(share.amountMinor))
         if (!biggest || amount > biggest.amount) biggest = { id: expense.id, amount }
+        if (expense.currency !== state.room.currency) {
+            const line = converted.get(expense.currency) ?? { amount: 0n, base: 0n }
+            line.amount += BigInt(expense.amountMinor)
+            line.base += amount
+            converted.set(expense.currency, line)
+        }
     }
 
     const memberIds = new Set([...paid.keys(), ...shares.keys()])
@@ -80,6 +93,13 @@ export function monthSummary(state: Pick<RoomState, 'expenses'>, month: string):
         members,
         biggestExpenseId: biggest?.id ?? null,
         previousTotalMinor: previousTotal.toString(),
+        converted: [...converted.entries()]
+            .sort((a, b) => desc(a[1].base, b[1].base) || a[0].localeCompare(b[0]))
+            .map(([currency, line]) => ({
+                currency,
+                amountMinor: line.amount.toString(),
+                baseAmountMinor: line.base.toString(),
+            })),
     }
 }
 

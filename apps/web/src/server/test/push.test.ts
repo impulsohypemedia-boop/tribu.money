@@ -446,7 +446,7 @@ describe('send pipeline', () => {
         const [subscription, payload, options] = sendNotification.mock.calls[0]
         expect(subscription.endpoint).toBe(FCM('friend-phone'))
         expect(JSON.parse(payload)).toMatchObject({
-            body: 'Ana added Lift passes — €120.00',
+            body: 'Ana added Lift passes — €\u00a0120,00',
             url: `/r/${fixture.slug}`,
             template: 'expense_added',
         })
@@ -639,7 +639,7 @@ describe('expense route wiring', () => {
         await waitFor(async () => (await prisma.notificationSend.count()) === 1)
         expect(sendNotification).toHaveBeenCalledTimes(1)
         expect(JSON.parse(sendNotification.mock.calls[0][1])).toMatchObject({
-            body: 'Ana added Lift passes — €120.00',
+            body: 'Ana added Lift passes — €\u00a0120,00',
             template: 'expense_added',
         })
     })
@@ -666,7 +666,7 @@ describe('expense route wiring', () => {
         expect(sendNotification).toHaveBeenCalledTimes(1)
         const payload = JSON.parse(sendNotification.mock.calls[0][1])
         expect(payload).toMatchObject({
-            body: 'Someone added Dinner — €120.00',
+            body: 'Someone added Dinner — €\u00a0120,00',
             template: 'expense_added',
         })
         expect(payload.body).not.toContain('Ana added')
@@ -693,7 +693,7 @@ describe('expense route wiring', () => {
         await waitFor(async () => (await prisma.notificationSend.count()) === 1)
         const payload = JSON.parse(sendNotification.mock.calls[0][1])
         // Not "Ana added Today — €40.00", which is not a sentence.
-        expect(payload.body).toBe('Ana added €40.00')
+        expect(payload.body).toBe('Ana added €\u00a040,00')
     })
 })
 

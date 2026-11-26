@@ -110,7 +110,7 @@ describe('the card a chat preview draws', () => {
         // it locale-aware is a change to money display across all of those, not a
         // property of this card, so it is deliberately left alone here — and
         // pinned, so the day somebody does it, this test is where it surfaces.
-        expect(card?.stat).toBe('1 gasto · €128.50 hasta ahora')
+        expect(card?.stat).toBe('1 gasto · €128,50 hasta ahora')
         expect(card?.people).toBe('1 persona')
         expect(card?.tagline).toBe('sin registro · uso gratis')
     })
@@ -167,7 +167,7 @@ describe('every localized preview string is drawable', () => {
         expect(bodySafe(pangram)).toBe(pangram)
 
         const copy = await cardCopy('pl')
-        expect(statLine(4, 1250n, 'EUR', copy)).toBe('4 wydatki · łącznie €12.50')
+        expect(statLine(4, 1250n, 'EUR', copy)).toBe('4 wydatki · łącznie €12,50')
         expect(peopleLine(4, copy)).toBe('4 osoby')
     })
 
@@ -176,7 +176,7 @@ describe('every localized preview string is drawable', () => {
         expect(bodySafe(pangram)).toBe(pangram)
 
         const copy = await cardCopy('uk')
-        expect(statLine(4, 1250n, 'EUR', copy)).toBe('4 витрати · наразі €12.50')
+        expect(statLine(4, 1250n, 'EUR', copy)).toBe('4 витрати · наразі €12,50')
         expect(peopleLine(4, copy)).toBe('4 людини')
     })
 

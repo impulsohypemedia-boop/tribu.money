@@ -56,8 +56,7 @@ import { RoomHeader } from './RoomHeader'
 import { MonthSummaryCard } from './MonthSummary'
 import { BudgetCard } from './Budget'
 import { TribePotSetup } from './TribePot'
-import { CouplePanel, CoupleTrips } from './CouplePanel'
-import { TribeMilestones } from './TribeMilestones'
+import { CouplePanel, CoupleSplitCard, CoupleTrips } from './CouplePanel'
 import { VaquitaCard, VaquitaRoomPanel } from './Vaquita'
 import { SettleDrawer } from './SettleDrawer'
 import { ShareDrawer } from './ShareDrawer'
@@ -221,6 +220,7 @@ export function RoomScreen({ slug }: { slug: string }) {
     const settledUp = isRoomSettled(state)
     const hasActiveDebt = (state?.suggestedTransfers.length ?? 0) > 0
     const historyEmpty = !!state && state.expenses.length === 0 && state.settlements.length === 0
+    const isCouple = state?.room.kind === 'pareja'
     const queuedWrites = useQueuedWrites(slug)
     const hasUnsavedExpense =
         queuedWrites.length > 0 || !!state?.expenses.some((expense) => isPendingExpenseId(expense.id))
@@ -575,7 +575,7 @@ export function RoomScreen({ slug }: { slug: string }) {
                             data-motion-surface
                             className="flex flex-col gap-6"
                         >
-                            {!needsJoin && !staleState && (
+                            {!needsJoin && !staleState && !isCouple && (
                                 <ReminderNotice
                                     slug={slug}
                                     state={state}
@@ -585,12 +585,15 @@ export function RoomScreen({ slug }: { slug: string }) {
                                     onSettle={() => setParams({ settle: true })}
                                 />
                             )}
-                            <BalanceStrip
-                                state={state}
-                                currencies={currencies}
-                                meId={meId}
-                                onSelect={(memberId) => setParams({ balance: memberId })}
-                            />
+                            {/* A couple sees one calm "para emparejar" line in its hero instead. */}
+                            {!isCouple && (
+                                <BalanceStrip
+                                    state={state}
+                                    currencies={currencies}
+                                    meId={meId}
+                                    onSelect={(memberId) => setParams({ balance: memberId })}
+                                />
+                            )}
                             {/* Above the history, below the balances: it is a
                                 statement about the numbers on the strip, and the
                                 fix it offers rewrites the rows underneath it. */}
@@ -618,6 +621,7 @@ export function RoomScreen({ slug }: { slug: string }) {
                                 !drawerOpen &&
                                 !latecomerPending &&
                                 !settledUp &&
+                                !isCouple &&
                                 saved.length > 0 && (
                                     <AchievementMoment
                                         slug={slug}
@@ -684,20 +688,43 @@ export function RoomScreen({ slug }: { slug: string }) {
                                             meId={meId}
                                             token={identity?.token}
                                         />
+                                    ) : isCouple ? (
+                                        // A couple shares a life: what they plan together (budget,
+                                        // trips, the month) comes before any reminder to pay.
+                                        <>
+                                            <CouplePanel
+                                                slug={slug}
+                                                state={state}
+                                                currencies={currencies}
+                                                meId={meId}
+                                                token={identity?.token}
+                                                onAddTypical={(id, monthly) =>
+                                                    setParams({ add: true, fijo: monthly || null, concepto: id })
+                                                }
+                                                onSettle={() => setParams({ settle: true })}
+                                            />
+                                            <MonthSummaryCard state={state} currencies={currencies} />
+                                            <BudgetCard state={state} currencies={currencies} />
+                                            <CoupleTrips
+                                                slug={slug}
+                                                state={state}
+                                                currencies={currencies}
+                                                meId={meId}
+                                                token={identity?.token}
+                                            />
+                                            <VaquitaCard
+                                                slug={slug}
+                                                state={state}
+                                                currencies={currencies}
+                                                meId={meId}
+                                                token={identity?.token}
+                                            />
+                                            <div className="mb-4">
+                                                <CoupleSplitCard slug={slug} state={state} token={identity?.token} />
+                                            </div>
+                                        </>
                                     ) : (
                                         <>
-                                            {state.room.kind === 'pareja' && (
-                                                <CouplePanel
-                                                    slug={slug}
-                                                    state={state}
-                                                    currencies={currencies}
-                                                    meId={meId}
-                                                    token={identity?.token}
-                                                    onAddTypical={(id, monthly) =>
-                                                        setParams({ add: true, fijo: monthly || null, concepto: id })
-                                                    }
-                                                />
-                                            )}
                                             <RemindersCard
                                                 slug={slug}
                                                 state={state}
@@ -712,27 +739,16 @@ export function RoomScreen({ slug }: { slug: string }) {
                                                 meId={meId}
                                                 token={identity?.token}
                                             />
-                                            {state.room.kind === 'pareja' ? (
-                                                <CoupleTrips
-                                                    slug={slug}
-                                                    state={state}
-                                                    currencies={currencies}
-                                                    meId={meId}
-                                                    token={identity?.token}
-                                                />
-                                            ) : (
-                                                <TribePotSetup
-                                                    slug={slug}
-                                                    state={state}
-                                                    meId={meId}
-                                                    token={identity?.token}
-                                                />
-                                            )}
+                                            <TribePotSetup
+                                                slug={slug}
+                                                state={state}
+                                                meId={meId}
+                                                token={identity?.token}
+                                            />
                                             <MonthSummaryCard state={state} currencies={currencies} />
                                             <BudgetCard state={state} currencies={currencies} />
                                         </>
                                     )}
-                                    <TribeMilestones slug={slug} state={state} />
                                 </div>
                             )}
                             <ExpenseList

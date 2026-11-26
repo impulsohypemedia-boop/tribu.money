@@ -52,6 +52,8 @@ const nextConfig = {
             { source: '/guides', destination: '/blog', permanent: true },
             { source: '/es-419/guides', destination: '/es-419/blog', permanent: true },
             { source: '/pt-br/guides', destination: '/pt-br/blog', permanent: true },
+            // The legal page moved from /privacy to /terminos; keep old links working.
+            { source: '/privacy', destination: '/terminos', permanent: true },
         ]
     },
 }

@@ -129,8 +129,7 @@
             "colCompare": "Comparar",
             "colGuides": "Guías",
             "allGuides": "Todas las guías",
-            "termsLink": "Términos",
-            "privacyLink": "Privacidad",
+            "termsLink": "Términos y condiciones",
             "operatedBy": "Tribu es software libre bajo la licencia AGPL-3.0."
         },
         "appHome": {
@@ -267,9 +266,15 @@
             "team": "Equipo"
         },
         "landingNext": {
-            "badge": "Lo que viene",
-            "title": "La billetera de la tribu",
-            "body": "Estamos armando una billetera que el grupo maneja junto: con reglas que eligen entre todos y sin que la plata quede a nombre de uno solo."
+            "badge": "Próximamente",
+            "title": "Mucho más que dividir gastos",
+            "body": "Las finanzas de tu grupo, en una sola billetera.",
+            "item1Title": "Ahorro en grupo",
+            "item1Body": "Junten plata para el viaje o el regalo, con una meta que ven todos.",
+            "item2Title": "Inversiones compartidas",
+            "item2Body": "Hagan crecer la plata de la tribu, con reglas que eligen entre todos.",
+            "item3Title": "Pagos desde la billetera común",
+            "item3Body": "Paguen el alquiler o el asado directo con la plata del grupo."
         }
     },
     "locale": {

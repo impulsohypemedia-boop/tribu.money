@@ -8,7 +8,7 @@ third-party services, and operation of the official `peanutsplit.com` service.
 
 This says who maintains and funds the project. It does not by itself claim that Squirrel Labs owns
 every imported file or third-party asset; that scope is recorded separately in the
-[rights register](docs/current/RIGHTS-REGISTER.md).
+[rights register](../docs/current/RIGHTS-REGISTER.md).
 
 ## Why source is being opened
 

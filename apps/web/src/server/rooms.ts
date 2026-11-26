@@ -1,5 +1,6 @@
 /** Room + member writes. Kept out of the route handlers so the maths and the
  *  HTTP layer stay separable. */
+import { COUPLE_THEME } from '@/lib/couple'
 import { Prisma } from '@prisma/client'
 import { randomInt } from 'node:crypto'
 import { prisma } from '@/server/db'
@@ -50,6 +51,8 @@ export async function createRoom(
                         emoji: body.emoji ?? null,
                         currency: body.currency,
                         kind: body.kind ?? 'tribu',
+                        // A couple's tribu starts in the pink palette; either of them can change it.
+                        ...(body.kind === 'pareja' ? { theme: COUPLE_THEME } : {}),
                         locale,
                         members: {
                             create: {

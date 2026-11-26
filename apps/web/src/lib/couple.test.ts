@@ -7,6 +7,7 @@ import {
     coupleSplitFor,
     coupleSplitFromPercent,
     coupleSplitPercentageInputs,
+    nextTrip,
 } from './couple'
 import { getExpenseSubject } from './expense-category'
 
@@ -82,5 +83,40 @@ describe('couple presets', () => {
     it('names the tribu after the two', () => {
         expect(coupleRoomName(' Ana ', 'Leo', 'y')).toBe('Ana y Leo')
         expect(coupleRoomName('Ana', '', 'y')).toBe('Ana')
+    })
+})
+
+describe('nextTrip', () => {
+    const pot = (id: string, dueDate: string | null, closedAt: string | null = null) => ({
+        id,
+        name: id,
+        dueDate,
+        closedAt,
+    })
+    const withPots = (kind: 'tribu' | 'pareja', pots: unknown[]) =>
+        ({ room: { kind, coupleSplit: null }, members: [ana, leo], pots }) as unknown as RoomState
+    const now = new Date(2026, 10, 26)
+
+    it('picks the soonest open trip and counts the months to it', () => {
+        const trip = nextTrip(
+            withPots('pareja', [pot('Río', '2027-12-01T12:00:00Z'), pot('Bariloche', '2027-07-01T12:00:00Z')]),
+            now
+        )
+        expect(trip?.pot.name).toBe('Bariloche')
+        expect(trip?.monthsAway).toBe(8)
+    })
+
+    it('skips closed, undated and past trips, and anything outside a pareja', () => {
+        const pots = [
+            pot('a', '2027-01-01T12:00:00Z', '2026-11-01T00:00:00Z'),
+            pot('b', null),
+            pot('c', '2026-01-01T12:00:00Z'),
+        ]
+        expect(nextTrip(withPots('pareja', pots), now)).toBeNull()
+        expect(nextTrip(withPots('tribu', [pot('Río', '2027-12-01T12:00:00Z')]), now)).toBeNull()
+    })
+
+    it('says this month for a trip in the current month', () => {
+        expect(nextTrip(withPots('pareja', [pot('Mar', '2026-11-01T12:00:00Z')]), now)?.monthsAway).toBe(0)
     })
 })

@@ -1,5 +1,6 @@
 'use client'
 
+import { PlaneSticker } from './CoupleStickers'
 import { useMemo, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
@@ -90,6 +91,8 @@ export function VaquitaCard({ slug, state, currencies, meId, token }: Props) {
     const nameOf = (id: string) => state.members.find((member) => member.id === id)?.name ?? t('someone')
     const openPot = (state.pots ?? []).find((pot) => pot.id === openId) ?? null
 
+    const isCouple = state.room.kind === 'pareja'
+
     // Vaquitas are their own rooms now; a tribu only keeps showing pots it already had.
     if (pots.length === 0) return null
 
@@ -102,11 +105,15 @@ export function VaquitaCard({ slug, state, currencies, meId, token }: Props) {
                         key={pot.id}
                         type="button"
                         onClick={() => setOpenId(pot.id)}
-                        className="shadow-4 mb-4 flex w-full items-center gap-3 rounded-sm border border-n-1 bg-primary-3/40 p-3 text-left transition-transform active:translate-y-[2px]"
+                        className={cn(
+                            'mb-4 flex w-full items-center gap-3 p-3 text-left transition-transform active:translate-y-[2px]',
+                            isCouple ? 'card-ronda' : 'shadow-4 rounded-sm border border-n-1 bg-primary-3/40'
+                        )}
                         data-testid="pot-card"
                     >
                         <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-n-1 bg-white">
-                            <Icon name="hand-coins" size={20} />
+                            {/* In a couple's tribu a pot is a planned trip. */}
+                            {isCouple ? <PlaneSticker size={24} /> : <Icon name="hand-coins" size={20} />}
                         </span>
                         <span className="grid min-w-0 flex-1 gap-1">
                             <span className="flex items-baseline justify-between gap-2">

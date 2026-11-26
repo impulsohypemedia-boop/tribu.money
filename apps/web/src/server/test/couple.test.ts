@@ -45,6 +45,7 @@ describe('tribu de pareja', () => {
         expect(room.room.kind).toBe('pareja')
         expect(room.members.map((member) => member.name)).toEqual(['Ana', 'Leo'])
         expect(room.room.coupleSplit).toBeNull()
+        expect(room.room.theme).toBe('bubblegum')
     })
 
     it('saves a 60/40 split and goes back to half and half with null', async () => {

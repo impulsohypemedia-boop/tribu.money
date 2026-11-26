@@ -1400,7 +1400,7 @@
                 "servicios": "Bills",
                 "salidas": "Going out",
                 "delivery": "Delivery",
-                "suscripciones": "Subscriptions",
+                "suscripciones": "Streaming",
                 "mascota": "Pet",
                 "regalos": "Gifts"
             },
@@ -1425,7 +1425,10 @@
             "tripAmountInvalid": "Check the amount.",
             "tripName": "Trip to {place}",
             "tripCreate": "Create the trip",
-            "tripCreated": "Trip on its way! Start adding to it."
+            "tripCreated": "Trip on its way! Start adding to it.",
+            "heroSince": "On Tribu since {since}",
+            "heroTrip": "{name} · {months, plural, one {# month to go} other {# months to go}}",
+            "heroTripThisMonth": "{name} · this month!"
         }
     },
     "slideToConfirm": {

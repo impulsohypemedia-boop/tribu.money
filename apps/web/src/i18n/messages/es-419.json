@@ -1400,7 +1400,7 @@
                 "servicios": "Servicios",
                 "salidas": "Salidas",
                 "delivery": "Delivery",
-                "suscripciones": "Suscripciones",
+                "suscripciones": "Streaming",
                 "mascota": "Mascota",
                 "regalos": "Regalos"
             },
@@ -1425,7 +1425,10 @@
             "tripAmountInvalid": "Revisá el monto.",
             "tripName": "Viaje a {place}",
             "tripCreate": "Crear el viaje",
-            "tripCreated": "¡Viaje en marcha! Ya pueden ir sumando."
+            "tripCreated": "¡Viaje en marcha! Ya pueden ir sumando.",
+            "heroSince": "En Tribu desde {since}",
+            "heroTrip": "{name} · {months, plural, one {falta # mes} other {faltan # meses}}",
+            "heroTripThisMonth": "{name} · ¡es este mes!"
         }
     },
     "slideToConfirm": {

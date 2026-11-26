@@ -16,6 +16,7 @@ import {
     coupleSplitFor,
     coupleSplitFromPercent,
     isEvenSplit,
+    nextTrip,
     type CoupleExpenseId,
 } from '@/lib/couple'
 import { useErrorMessage } from '@/lib/error-messages'
@@ -23,7 +24,20 @@ import { getExpenseSubject } from '@/lib/expense-category'
 import { decimalsOf, parseAmountToMinor } from '@/lib/money'
 import { useSaveCoupleSplit } from '@/lib/queries/couple'
 import { useCreatePot } from '@/lib/queries/pots'
+import { themeFor } from '@/lib/themes'
 import { TOAST_MS } from '@/lib/toasts'
+import {
+    HeartSticker,
+    PawSticker,
+    PlaneSticker,
+    RONDA_LIME,
+    RONDA_ORANGE,
+    RONDA_PINK,
+    RONDA_TEAL,
+    RONDA_VIOLET,
+    RONDA_YELLOW,
+} from './CoupleStickers'
+import { MemberAvatar } from './MemberAvatar'
 
 interface Props {
     slug: string
@@ -42,9 +56,73 @@ interface Props {
 export function CouplePanel(props: Props) {
     return (
         <div className="mb-4 grid gap-4" data-testid="couple-panel">
+            <CoupleHero state={props.state} />
             <TypicalExpenses onAddTypical={props.onAddTypical} />
             <CoupleSplitCard {...props} />
         </div>
+    )
+}
+
+/** The colours of the logo ring, one per typical expense, so the grid reads like the brand. */
+const TYPICAL_COLORS = [
+    RONDA_YELLOW,
+    RONDA_LIME,
+    RONDA_TEAL,
+    RONDA_PINK,
+    RONDA_ORANGE,
+    RONDA_VIOLET,
+    RONDA_ORANGE,
+    RONDA_PINK,
+]
+
+/**
+ * The two of them, side by side with a heart, and the next trip if they planned one. Decoration in
+ * the Ronda style; the facts on it (names, the trip, when the tribu started) are all real.
+ */
+function CoupleHero({ state }: { state: RoomState }) {
+    const t = useTranslations('room.couple')
+    const locale = useLocale()
+    const [first, second] = coupleMembers(state.members)
+    if (!first || !second) return null
+    const trip = nextTrip(state)
+    const since = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(
+        new Date(state.room.createdAt)
+    )
+    return (
+        <section
+            className="card-ronda relative overflow-hidden p-4"
+            style={{ backgroundColor: themeFor(state.room.theme).tint }}
+            data-testid="couple-hero"
+        >
+            <PawSticker size={26} className="absolute right-3 top-3 rotate-12" />
+            {!trip && <PlaneSticker size={24} className="absolute bottom-3 right-4 -rotate-12 opacity-90" />}
+            <div className="flex items-center gap-3">
+                <span className="flex items-center">
+                    <MemberAvatar name={first.name} avatar={first.avatar} size={52} className="border-2" />
+                    <HeartSticker size={30} className="z-10 -mx-2 -rotate-6" />
+                    <MemberAvatar name={second.name} avatar={second.avatar} size={52} className="border-2" />
+                </span>
+                <span className="min-w-0 flex-1 pr-6">
+                    <span className="block truncate font-display text-2xl leading-tight">
+                        {first.name} <span className="text-[#FF7AC6]">&amp;</span> {second.name}
+                    </span>
+                    <span className="block text-sm text-grey-1">{t('heroSince', { since })}</span>
+                </span>
+            </div>
+            {trip && (
+                <p
+                    className="mt-3 inline-flex max-w-full items-center gap-2 rounded-full border-2 border-[#141414] bg-white px-3 py-1 text-sm font-bold"
+                    data-testid="couple-next-trip"
+                >
+                    <PlaneSticker size={18} />
+                    <span className="truncate">
+                        {trip.monthsAway === 0
+                            ? t('heroTripThisMonth', { name: trip.pot.name })
+                            : t('heroTrip', { name: trip.pot.name, months: trip.monthsAway })}
+                    </span>
+                </p>
+            )}
+        </section>
     )
 }
 
@@ -59,18 +137,29 @@ function TypicalExpenses({ onAddTypical }: Pick<Props, 'onAddTypical'>) {
                 <p className="text-sm text-grey-1">{t('typicalHint')}</p>
             </div>
             <ul className="grid grid-cols-4 gap-2" data-testid="couple-typical">
-                {COUPLE_EXPENSES.map((preset) => (
+                {COUPLE_EXPENSES.map((preset, index) => (
                     <li key={preset.id}>
                         <button
                             type="button"
                             onClick={() => onAddTypical(preset.id, preset.monthly)}
                             data-testid={`couple-typical-${preset.id}`}
-                            className="shadow-4 flex h-full w-full flex-col items-center gap-1 rounded-sm border border-n-1 bg-white px-1 py-2 text-center transition-transform active:translate-y-[2px]"
+                            className="card-ronda flex h-full w-full flex-col items-center gap-1 px-1 py-2 text-center transition-transform active:translate-y-[2px]"
                         >
-                            <span className="flex size-10 items-center justify-center rounded-full border border-n-1 bg-primary-3">
-                                <Doodle name={getExpenseSubject(preset.category).doodle} size={24} weight={1.8} />
+                            <span
+                                className="flex size-10 items-center justify-center rounded-full border-2 border-[#141414]"
+                                style={{ backgroundColor: TYPICAL_COLORS[index % TYPICAL_COLORS.length] }}
+                            >
+                                {preset.id === 'mascota' ? (
+                                    <PawSticker size={24} />
+                                ) : preset.id === 'regalos' ? (
+                                    <HeartSticker size={24} />
+                                ) : (
+                                    <Doodle name={getExpenseSubject(preset.category).doodle} size={22} weight={2} />
+                                )}
                             </span>
-                            <span className="text-xs font-bold leading-tight">{t(`expenses.${preset.id}`)}</span>
+                            <span className="max-w-full truncate text-xs font-bold leading-tight">
+                                {t(`expenses.${preset.id}`)}
+                            </span>
                             {preset.monthly && (
                                 <span className="text-[10px] leading-none text-grey-1">{t('monthlyTag')}</span>
                             )}
@@ -114,10 +203,10 @@ function CoupleSplitCard({ slug, state, token }: Props) {
     )
 
     return (
-        <section className="rounded-sm border border-n-1 bg-white p-3" data-testid="couple-split">
+        <section className="card-ronda p-3" data-testid="couple-split">
             <div className="flex items-center gap-3">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-n-1 bg-primary-3">
-                    <Doodle name="expense_heart_handshake" size={24} weight={1.8} />
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-[#141414] bg-white">
+                    <HeartSticker size={26} />
                 </span>
                 <span className="min-w-0 flex-1">
                     <span className="block text-h8">{t('splitTitle')}</span>
@@ -241,10 +330,10 @@ export function CoupleTrips({ slug, state, currencies, meId, token }: Omit<Props
             <button
                 type="button"
                 onClick={() => setOpen(true)}
-                className="flex w-full items-center gap-3 rounded-sm border border-dashed border-n-1 bg-white/60 p-3 text-left"
+                className="mb-4 flex w-full items-center gap-3 rounded-2xl border-2 border-dashed border-[#141414] bg-white/60 p-3 text-left"
                 data-testid="couple-trip-start"
             >
-                <Doodle name="plane" size={26} weight={1.8} className="shrink-0" />
+                <PlaneSticker size={30} className="shrink-0 -rotate-6" />
                 <span className="grid gap-0.5">
                     <span className="text-h8">{t('tripStart')}</span>
                     <span className="text-sm text-grey-1">{t('tripStartHint')}</span>
@@ -253,7 +342,7 @@ export function CoupleTrips({ slug, state, currencies, meId, token }: Omit<Props
         )
 
     return (
-        <section className="grid gap-3 rounded-sm border border-n-1 bg-white p-3" data-testid="couple-trip-form">
+        <section className="card-ronda mb-4 grid gap-3 p-3" data-testid="couple-trip-form">
             <p className="text-h8">{t('tripFormTitle')}</p>
             <label className="grid gap-1">
                 <span className="text-sm font-bold">{t('tripPlace')}</span>

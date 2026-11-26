@@ -7,6 +7,9 @@
 import type { ApiMember, RoomState } from '@/lib/api-types'
 import { activeMembers } from '@/lib/members'
 
+/** The palette a new couple's tribu starts in (a key from `lib/themes.ts`). */
+export const COUPLE_THEME = 'bubblegum'
+
 export type RoomKind = 'tribu' | 'vaquita' | 'pareja'
 
 export const isCoupleRoom = (state: Pick<RoomState, 'room'> | null | undefined): boolean =>
@@ -77,6 +80,21 @@ export function coupleSplitFromPercent(members: readonly ApiMember[], firstPct: 
     if (!first || !second || firstPct === 50) return null
     return { [first.id]: firstPct, [second.id]: 100 - firstPct }
 }
+
+/** The trip coming up soonest: an open pot with a date, in a couple's tribu. */
+export function nextTrip(state: RoomState, now = new Date()) {
+    if (!isCoupleRoom(state)) return null
+    const upcoming = (state.pots ?? [])
+        .filter((pot) => !pot.closedAt && pot.dueDate && new Date(pot.dueDate) >= startOfMonth(now))
+        .sort((a, b) => a.dueDate!.localeCompare(b.dueDate!))
+    const trip = upcoming[0]
+    if (!trip) return null
+    const due = new Date(trip.dueDate!)
+    const monthsAway = (due.getUTCFullYear() - now.getFullYear()) * 12 + due.getUTCMonth() - now.getMonth()
+    return { pot: trip, monthsAway: Math.max(0, monthsAway) }
+}
+
+const startOfMonth = (date: Date) => new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1))
 
 /** The default name for a couple's tribu: "Ana y Leo". */
 export const coupleRoomName = (creator: string, partner: string, joiner: string) => {

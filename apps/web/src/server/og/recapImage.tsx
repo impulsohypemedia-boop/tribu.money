@@ -60,7 +60,7 @@ export async function recapImageResponse(slug: string, onLookupMiss?: () => void
         card ? (
             <RecapCard card={card} emojiSrc={emojiSrc} />
         ) : (
-            <BrandCard lines={['ALL', 'SETTLED']} tagline="Split anything, settle up after." />
+            <BrandCard lines={['TODO', 'A MANO']} tagline="Anotan entre todos, Tribu hace las cuentas." />
         ),
         { ...OG_SIZE, fonts, headers: { 'Cache-Control': OG_CACHE_CONTROL } }
     )

@@ -117,6 +117,20 @@ precedence = "override"
 SPDX-FileCopyrightText = "2020 The Gluten Project Authors (https://github.com/Etcetera-Type-Co/Gluten)"
 SPDX-License-Identifier = "OFL-1.1-no-RFN"
 
+# The three faces the share-card renderer reads at runtime, copied out of the pinned
+# @fontsource/gluten and @fontsource/roboto packages so the server bundle carries them.
+[[annotations]]
+path = "apps/web/src/server/og/fonts/gluten-*.woff"
+precedence = "override"
+SPDX-FileCopyrightText = "2020 The Gluten Project Authors (https://github.com/Etcetera-Type-Co/Gluten)"
+SPDX-License-Identifier = "OFL-1.1-no-RFN"
+
+[[annotations]]
+path = "apps/web/src/server/og/fonts/roboto-*.woff"
+precedence = "override"
+SPDX-FileCopyrightText = "2011 Google Inc."
+SPDX-License-Identifier = "Apache-2.0"
+
 # Build output and lockfiles carry no separate grant of their own.
 [[annotations]]
 path = [

@@ -5,13 +5,11 @@ import { JsonLd } from '@/components/marketing/JsonLd'
 import { SiteFooter } from '@/components/marketing/SiteFooter'
 import { FEEDBACK_RETENTION_DAYS } from '@/lib/feedback-contract'
 import { breadcrumbSchema, pageMetadata, pageTitle } from '@/lib/seo'
-import { SOURCE_URL } from '@/lib/source'
 
 /**
  * DRAFT. Tribu's operator, legal entity and contact are not decided yet, so this page only states
  * what the code does. It must be reviewed before launch and kept in step with `prisma/schema.prisma`,
- * `lib/analytics.ts`, the Lemon sign-in and Google sign-in (`server/account`). The last paragraph is the AGPL source notice: it stays
- * while the code is AGPL.
+ * `lib/analytics.ts`, the Lemon sign-in and Google sign-in (`server/account`).
  */
 
 const PATH = '/terminos'
@@ -84,14 +82,6 @@ export default function TermsPage() {
                         vendemos datos ni usamos tags de publicidad.
                     </p>
                 </Section>
-
-                <p className="text-xs leading-5 text-n-1/50">
-                    Parte del código de Tribu se distribuye bajo la licencia AGPL-3.0 y se puede consultar{' '}
-                    <a href={SOURCE_URL} target="_blank" rel="noopener noreferrer" className="underline">
-                        acá
-                    </a>
-                    .
-                </p>
             </div>
 
             <SiteFooter />

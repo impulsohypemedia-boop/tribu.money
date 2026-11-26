@@ -129,8 +129,7 @@
             "colCompare": "Comparer",
             "colGuides": "Guides",
             "allGuides": "Tous les guides",
-            "termsLink": "Conditions générales",
-            "operatedBy": "Tribu is free software under the AGPL-3.0 license."
+            "termsLink": "Conditions générales"
         },
         "appHome": {
             "landingLink": "Qu’est-ce que Tribu ?"

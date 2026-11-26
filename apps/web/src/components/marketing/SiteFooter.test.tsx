@@ -10,8 +10,8 @@ vi.mock('next-intl', () => ({
 describe('SiteFooter', () => {
     const html = renderToStaticMarkup(<SiteFooter />)
 
-    it('links the privacy notice, which carries the AGPL source link', () => {
-        expect(html).toContain('href="/privacy"')
+    it('links the terms page, which carries the AGPL source link', () => {
+        expect(html).toContain('href="/terminos"')
     })
 
     it('carries no Peanut link', () => {

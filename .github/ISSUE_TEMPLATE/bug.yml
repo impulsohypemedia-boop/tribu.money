@@ -9,7 +9,7 @@ body:
       value: |
         Do not include room links, expense/member IDs, member tokens, names, amounts, receipts, or other real personal data.
         Do not attach a real room CSV, portable JSON, or history export. Known live capabilities are stripped, but the group's personal and financial data remains.
-        Security issues belong in the private process described in SECURITY.md.
+        Security issues belong in the private process described in legal/SECURITY.md.
   - type: textarea
     id: reproduction
     attributes:

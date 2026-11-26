@@ -38,4 +38,4 @@ actions.
 History goes public with the code, so scan every retained ref for secrets and personal data first,
 and rotate anything the history has seen — `MONO_SPLIT_CONTENT_READ_KEY` in particular, which was a
 deploy key into the private mono. The remaining publication steps are listed at the end of
-[the rights register](docs/current/RIGHTS-REGISTER.md).
+[the rights register](../docs/current/RIGHTS-REGISTER.md).

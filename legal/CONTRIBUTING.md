@@ -32,5 +32,5 @@ the applicable license/history, employment, payment, or roadmap influence.
 
 ## Maintainer checks
 
-Maintainers use the repository commands documented in [README.md](README.md). Money, schema, access,
+Maintainers use the repository commands documented in [README.md](../README.md). Money, schema, access,
 retention, or public-contract changes require tests proportionate to their risk.

@@ -35,6 +35,9 @@ import type {
     SettlementInput,
     LemonQuote,
     WalletLinkInput,
+    AccountState,
+    AccountSummary,
+    AccountMembership,
 } from './api-types'
 import type { FeedbackReportInput, FeedbackReportResult } from './feedback-contract'
 
@@ -367,6 +370,16 @@ export const api = {
         request<RoomState>(`/api/rooms/${encode(slug)}/settlements`, { method: 'POST', body: input, token }),
 
     lemonNonce: () => request<{ nonce: string }>('/api/lemon/nonce', { cache: 'no-store' }),
+
+    account: () => request<AccountState>('/api/account', { cache: 'no-store' }),
+
+    signInWithAccessToken: (accessToken: string) =>
+        request<{ account: AccountSummary }>('/api/account/session', { method: 'POST', body: { accessToken } }),
+
+    signOut: () => request<{ account: null }>('/api/account/session', { method: 'DELETE' }),
+
+    syncAccountRooms: (held: Array<{ slug: string; token: string }>) =>
+        request<{ memberships: AccountMembership[] }>('/api/account/rooms', { method: 'POST', body: { held } }),
 
     lemonQuote: (slug: string, amountMinor: string) =>
         request<LemonQuote>(`/api/rooms/${encode(slug)}/lemon-quote?amountMinor=${encode(amountMinor)}`, {

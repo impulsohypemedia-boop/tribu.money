@@ -10,7 +10,7 @@ import { SOURCE_URL } from '@/lib/source'
 /**
  * DRAFT. Tribu's operator, legal entity and contact are not decided yet, so this page only states
  * what the code does. It must be reviewed before launch and kept in step with `prisma/schema.prisma`,
- * `lib/analytics.ts` and the Lemon sign-in. The last paragraph is the AGPL source notice: it stays
+ * `lib/analytics.ts`, the Lemon sign-in and Google sign-in (`server/account`). The last paragraph is the AGPL source notice: it stays
  * while the code is AGPL.
  */
 
@@ -57,7 +57,8 @@ export default function TermsPage() {
                 <Section title="Cómo funciona">
                     <p>
                         Cada tribu vive en un link. Cualquiera con el link puede entrar, ver los gastos y sumar los
-                        suyos, así que compartilo solo con tu grupo. Tribu es gratis y no pide registro.
+                        suyos, así que compartilo solo con tu grupo. Tribu es gratis y no pide registro. Si querés,
+                        podés entrar con Google para tener tus tribus en cualquier celular.
                     </p>
                 </Section>
 
@@ -73,6 +74,10 @@ export default function TermsPage() {
                         Guardamos el nombre que elegís en cada tribu, los gastos, los pagos y las notas que cargan sus
                         miembros. Si entrás desde Lemon, guardamos la dirección de tu wallet y, si lo aceptás, tu nombre
                         y tu Lemon tag, para que otros miembros puedan pagarte.
+                    </p>
+                    <p>
+                        Si entrás con Google, guardamos tu email para reconocer tu cuenta y en qué tribus estás. Google
+                        no nos da tu contraseña. Cerrar sesión borra la sesión de ese celular.
                     </p>
                     <p>
                         Los reportes de problemas que nos mandes se borran a los {FEEDBACK_RETENTION_DAYS} días. No

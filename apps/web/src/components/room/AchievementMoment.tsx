@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 import { Doodle } from '@/components/ui/Doodle'
 import type { AwardId } from '@/lib/achievements-contract'
 import { claimSessionMoment, markSeen, readSeen } from '@/lib/achievement-storage'
-import { unlocksFor, type Unlock } from '@/lib/achievements'
+import { shareableUnlocks, type Unlock } from '@/lib/achievements'
 import { achievementProps, track } from '@/lib/analytics'
 import type { RoomState } from '@/lib/api-types'
 import { currencyDoodle } from '@/lib/currency-doodle'
@@ -53,7 +53,7 @@ export function AchievementMoment({
     const [dismissed, setDismissed] = useState(false)
     const claimed = useRef(false)
 
-    const unlocks = useMemo(() => unlocksFor(state, meId), [state, meId])
+    const unlocks = useMemo(() => shareableUnlocks(state, meId), [state, meId])
     const open = shown !== null && !dismissed
 
     useEffect(() => onOpenChange?.(open), [onOpenChange, open])
@@ -67,9 +67,7 @@ export function AchievementMoment({
     useEffect(() => {
         if (claimed.current) return
         const seen = readSeen(slug)
-        // WRAPPED has no moment: its surface is the deck on the recap page, and the all-settled
-        // celebration is already the moment for that event.
-        const fresh = unlocks.find((unlock) => unlock.type !== 'wrapped' && !seen.has(unlock.id))
+        const fresh = unlocks.find((unlock) => !seen.has(unlock.id))
         if (!fresh) return
         if (!claimSessionMoment(slug)) return
         claimed.current = true

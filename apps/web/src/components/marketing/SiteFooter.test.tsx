@@ -10,7 +10,7 @@ vi.mock('next-intl', () => ({
 describe('SiteFooter', () => {
     const html = renderToStaticMarkup(<SiteFooter />)
 
-    it('links the terms page, which carries the AGPL source link', () => {
+    it('links the terms page', () => {
         expect(html).toContain('href="/terminos"')
     })
 

@@ -29,8 +29,13 @@ model Room {
   name                        String
   emoji                       String?
   currency                    String // display/settle currency, ISO 4217
-  // "tribu" shares expenses; "vaquita" is a room built around one shared pot.
+  // "tribu" shares expenses; "vaquita" is a room built around one shared pot; "pareja" is a
+  // tribu of two with couple presets (typical expenses, trips, how they split).
   kind                        String             @default("tribu")
+  // Pareja only: how a new expense is split by default, as { memberId: whole percent } for the
+  // two members, summing to 100. Null is half and half. A default for the form, never applied to
+  // saved expenses: each expense still stores its own shares.
+  coupleSplit                 Json?
   coverUrl                    String?
   // A KEY into the code-side catalog in `lib/themes.ts`, never a colour. Null is
   // the default palette, so a room written before themes existed and a room set

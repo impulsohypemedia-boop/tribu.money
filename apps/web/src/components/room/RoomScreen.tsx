@@ -36,6 +36,7 @@ import { activeMembers, isActiveMember } from '@/lib/members'
 import { expenseSessionCanStart, expenseSessionShouldOpen } from '@/lib/expense-session'
 import { discardSharedReceipt } from '@/lib/shared-receipt'
 import { daySpan } from '@/lib/story'
+import { coupleExpense } from '@/lib/couple'
 import { themeVars } from '@/lib/themes'
 import { useRoomIdentity } from '@/lib/use-identity'
 import { usePaymentProfileSync } from '@/lib/use-payment-profile-sync'
@@ -55,6 +56,7 @@ import { RoomHeader } from './RoomHeader'
 import { MonthSummaryCard } from './MonthSummary'
 import { BudgetCard } from './Budget'
 import { TribePotSetup } from './TribePot'
+import { CouplePanel, CoupleTrips } from './CouplePanel'
 import { TribeMilestones } from './TribeMilestones'
 import { VaquitaCard, VaquitaRoomPanel } from './Vaquita'
 import { SettleDrawer } from './SettleDrawer'
@@ -75,6 +77,7 @@ export function RoomScreen({ slug }: { slug: string }) {
     const { identity, loaded, claim, forget } = useRoomIdentity(slug)
     const [displacedIdentity, setDisplacedIdentity] = useState<MemberIdentity | null>(null)
     const [params, setParams] = useRoomParams()
+    const tCouple = useTranslations('room.couple')
     const [shareSurface, setShareSurface] = useState<ShareSurface>(() =>
         params.share && params.shareMoment === 'post_aha' ? 'post_aha' : 'header'
     )
@@ -396,6 +399,11 @@ export function RoomScreen({ slug }: { slug: string }) {
         [params.expense, state]
     )
     const expenseRequested = params.add || (!!editing && !staleState)
+    // A couple's typical expense, filled in from `?concepto=` — only for a new expense in a pareja.
+    const typicalPreset = useMemo(() => {
+        const preset = state?.room.kind === 'pareja' && params.add ? coupleExpense(params.concepto) : null
+        return preset ? { description: tCouple(`expenses.${preset.id}`), category: preset.category } : null
+    }, [state?.room.kind, params.add, params.concepto, tCouple])
     const [expenseSessionStarted, setExpenseSessionStarted] = useState(false)
     const settlementRequested = params.settle && !staleState
     const [settlementSessionStarted, setSettlementSessionStarted] = useState(false)
@@ -469,7 +477,7 @@ export function RoomScreen({ slug }: { slug: string }) {
     if (isApiError(error, 'NOT_FOUND')) return <RoomNotFound slug={slug} addExpense={params.add} />
     if (error && !state) return <RoomErrorState onRetry={() => void refetch()} />
 
-    const closeDrawers = () => setParams({ add: null, fijo: null, expense: null, settle: null })
+    const closeDrawers = () => setParams({ add: null, fijo: null, concepto: null, expense: null, settle: null })
 
     const onJoined = (next: MemberIdentity) => {
         setDisplacedIdentity(null)
@@ -678,6 +686,18 @@ export function RoomScreen({ slug }: { slug: string }) {
                                         />
                                     ) : (
                                         <>
+                                            {state.room.kind === 'pareja' && (
+                                                <CouplePanel
+                                                    slug={slug}
+                                                    state={state}
+                                                    currencies={currencies}
+                                                    meId={meId}
+                                                    token={identity?.token}
+                                                    onAddTypical={(id, monthly) =>
+                                                        setParams({ add: true, fijo: monthly || null, concepto: id })
+                                                    }
+                                                />
+                                            )}
                                             <RemindersCard
                                                 slug={slug}
                                                 state={state}
@@ -692,12 +712,22 @@ export function RoomScreen({ slug }: { slug: string }) {
                                                 meId={meId}
                                                 token={identity?.token}
                                             />
-                                            <TribePotSetup
-                                                slug={slug}
-                                                state={state}
-                                                meId={meId}
-                                                token={identity?.token}
-                                            />
+                                            {state.room.kind === 'pareja' ? (
+                                                <CoupleTrips
+                                                    slug={slug}
+                                                    state={state}
+                                                    currencies={currencies}
+                                                    meId={meId}
+                                                    token={identity?.token}
+                                                />
+                                            ) : (
+                                                <TribePotSetup
+                                                    slug={slug}
+                                                    state={state}
+                                                    meId={meId}
+                                                    token={identity?.token}
+                                                />
+                                            )}
                                             <MonthSummaryCard state={state} currencies={currencies} />
                                             <BudgetCard state={state} currencies={currencies} />
                                         </>
@@ -773,6 +803,7 @@ export function RoomScreen({ slug }: { slug: string }) {
                         meId={meId}
                         expense={editing}
                         startMonthly={params.fijo}
+                        preset={typicalPreset}
                         onFirstSharedBalance={() => openPostAhaShare(true)}
                         onMatureContribution={(result) => {
                             noteMatureContribution(slug, result)

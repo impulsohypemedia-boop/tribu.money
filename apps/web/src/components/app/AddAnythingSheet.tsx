@@ -13,13 +13,14 @@ import { RoomEmblem } from '@/components/room/RoomEmblem'
 import { readRecentRooms, type RecentRoom } from '@/lib/recent-rooms'
 import { themeFor } from '@/lib/themes'
 
-type Choice = 'expense' | 'fixed' | 'vaquita' | 'tribu'
+type Choice = 'expense' | 'fixed' | 'vaquita' | 'tribu' | 'pareja'
 
 const CHOICES: { id: Choice; doodle: DoodleName }[] = [
     { id: 'expense', doodle: 'iconreceipt' },
     { id: 'fixed', doodle: 'iconcalendar' },
     { id: 'vaquita', doodle: 'gift' },
     { id: 'tribu', doodle: 'iconusers' },
+    { id: 'pareja', doodle: 'expense_house_heart' },
 ]
 
 /**
@@ -49,6 +50,7 @@ export function AddAnythingSheet({ open, onClose }: { open: boolean; onClose: ()
     const choose = (choice: Choice) => {
         if (choice === 'vaquita') return go('/new?tipo=vaquita')
         if (choice === 'tribu') return go('/new')
+        if (choice === 'pareja') return go('/new?tipo=pareja')
         if (tribus.length === 0) return go('/new')
         if (tribus.length === 1) return go(roomHref(tribus[0].slug, choice))
         setPicking(choice)
@@ -78,7 +80,8 @@ export function AddAnythingSheet({ open, onClose }: { open: boolean; onClose: ()
                                         <span className="min-w-0 flex-1">
                                             <span className="block text-h7">{t(`${choice.id}.title`)}</span>
                                             <span className="block text-sm text-grey-1">
-                                                {choice.id !== 'vaquita' && choice.id !== 'tribu' && tribus.length === 0
+                                                {(choice.id === 'expense' || choice.id === 'fixed') &&
+                                                tribus.length === 0
                                                     ? t('needTribu')
                                                     : t(`${choice.id}.hint`)}
                                             </span>

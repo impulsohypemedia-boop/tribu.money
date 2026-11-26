@@ -470,6 +470,9 @@ export const api = {
     saveBudgets: (slug: string, budgets: ApiBudget[]) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/budgets`, { method: 'POST', body: { budgets } }),
 
+    saveCoupleSplit: (slug: string, split: Record<string, number> | null, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/couple-split`, { method: 'POST', body: { split }, token }),
+
     sendReminder: (slug: string, toId: string, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/reminders`, { method: 'POST', body: { toId }, token }),
 

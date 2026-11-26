@@ -20,8 +20,8 @@ export const metadata: Metadata = {
  */
 export default async function NewRoomPage({ searchParams }: { searchParams: Promise<Query> }) {
     const query = await searchParams
-    // `?tipo=vaquita` opens the same form for a vaquita.
-    const kind = query.tipo === 'vaquita' ? 'vaquita' : 'tribu'
+    // `?tipo=vaquita` opens the same form for a vaquita, `?tipo=pareja` for a couple's tribu.
+    const kind = query.tipo === 'vaquita' ? 'vaquita' : query.tipo === 'pareja' ? 'pareja' : 'tribu'
     return (
         <>
             <main data-frame="card" className="split-app-frame mx-auto min-h-dvh w-full max-w-xl bg-background">

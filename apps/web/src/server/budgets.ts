@@ -15,7 +15,7 @@ export async function saveBudgets(
     enforceRateLimit(request, WRITE_LIMIT, 'write')
     const room = await loadRoom(slug)
     // A vaquita is one shared pot with its own goal; a monthly spending plan belongs to a tribu.
-    if (room.kind !== 'tribu') throw badRequest('only a tribu has a monthly budget', 'BUDGET_NOT_FOR_VAQUITA')
+    if (room.kind === 'vaquita') throw badRequest('only a tribu has a monthly budget', 'BUDGET_NOT_FOR_VAQUITA')
     const state = await prisma.$transaction(async (tx) => {
         await lockRoomWrite(tx, room.id)
         await tx.budget.deleteMany({ where: { roomId: room.id } })

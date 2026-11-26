@@ -21,6 +21,8 @@ export const roomSearchParams = {
     add: parseAsFlag,
     /** With `add`: open the new expense already set to repeat every month. */
     fijo: parseAsFlag,
+    /** With `add`: a couple's typical expense to fill in (`lib/couple.ts`). */
+    concepto: parseAsString.withDefault(''),
     expense: parseAsString.withDefault(''),
     settle: parseAsFlag,
     share: parseAsFlag,

@@ -80,6 +80,7 @@ import { createClientKey } from '@/lib/offline-queue'
 import { useStartRecurring, useStopRecurring } from '@/lib/queries/recurring'
 import { useLinkPotExpense } from '@/lib/queries/pots'
 import { openPots } from '@/lib/pots'
+import { coupleSplitPercentageInputs } from '@/lib/couple'
 import { SettingToggle } from '@/components/ui/SettingToggle'
 import { useShake } from '@/hooks/useShake'
 import { CurrencyTag } from './CurrencyTag'
@@ -95,6 +96,8 @@ import { ScanFlow } from './scan/ScanFlow'
 interface ExpenseDrawerProps {
     /** A new expense opens already set to repeat every month (the ＋ menu's "Gasto fijo"). */
     startMonthly?: boolean
+    /** A new expense opens with this name and category filled in (a couple's typical expense). */
+    preset?: { description: string; category: string } | null
     open: boolean
     /** Keep the logical draft session mounted while another surface (currently
      * JoinGate after token rotation) temporarily owns the screen. */
@@ -139,6 +142,7 @@ export function ExpenseDrawer({
     meId,
     expense,
     startMonthly = false,
+    preset = null,
     onFirstSharedBalance,
     onMatureContribution,
     defaultPaidById,
@@ -352,9 +356,11 @@ export function ExpenseDrawer({
         if (!open) return
         // One transition owns all ephemeral reset behavior, including clearing
         // a half-finished scan so reopening cannot show somebody else's receipt.
+        // A couple who split by income starts every new expense on their percentages.
+        const coupleInputs = expense ? null : coupleSplitPercentageInputs(state)
         dispatchWorkflow({
             type: 'reset-on-open',
-            advancedOptionsOpen: Boolean(expense && expense.splitMode !== 'EQUAL'),
+            advancedOptionsOpen: Boolean((expense && expense.splitMode !== 'EQUAL') || coupleInputs),
         })
         expenseRequestRef.current = null
         // Polling can replace the expense props while the form keeps its original values.
@@ -368,19 +374,24 @@ export function ExpenseDrawer({
         )
         setManualFxRateInput(expenseNeedsManualRate ? formatManualFxRateInput(expense!.fxRate, locale) : '')
         setManualFxRateSource(expenseNeedsManualRate ? 'expense' : null)
+        const emptyValues = emptyExpenseForm({
+            currency: recents[0] ?? state.room.currency,
+            members: defaultSplitMembers(state.members),
+            paidById: defaultPaidById,
+        })
         const initialValues = expense
             ? expenseToFormValues(expense, currencies, locale)
-            : emptyExpenseForm({
-                  currency: recents[0] ?? state.room.currency,
-                  members: defaultSplitMembers(state.members),
-                  paidById: defaultPaidById,
-              })
+            : {
+                  ...emptyValues,
+                  ...(preset ? { description: preset.description, category: preset.category } : {}),
+                  ...(coupleInputs ? { splitMode: 'PERCENTAGE' as const, percentageInputs: coupleInputs } : {}),
+              }
         initialValuesRef.current = initialValues
         setValues(initialValues)
         // `currencies` and `state.members` intentionally excluded — a poll landing
         // mid-edit must not stomp on what is being typed.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [open, expense?.id, slug, meId])
+    }, [open, expense?.id, slug, meId, preset?.description])
 
     // A route Back can close `?add=1` while the scanner portal is active. The
     // drawer component itself remains mounted, so clear its local session too;

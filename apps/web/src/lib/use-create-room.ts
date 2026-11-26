@@ -17,7 +17,7 @@ export interface CreateRoomFields {
     currency: string
     creatorName: string
     memberNames?: string[]
-    kind?: 'tribu' | 'vaquita'
+    kind?: 'tribu' | 'vaquita' | 'pareja'
     pot?: CreateRoomInput['pot']
     /** The template link this came from, if any. A fact about the page, never about the room. */
     template?: string
@@ -50,6 +50,7 @@ export function useCreateRoomFlow(fallbackMessage: string) {
                 creatorName: fields.creatorName.trim(),
                 memberNames: fields.memberNames?.map(normalizePersonName).filter(Boolean),
                 ...(fields.kind === 'vaquita' ? { kind: 'vaquita' as const, pot: fields.pot } : {}),
+                ...(fields.kind === 'pareja' ? { kind: 'pareja' as const } : {}),
             })
             // The token is returned exactly once — store it before anything else
             // can throw, or this device permanently loses its attribution.

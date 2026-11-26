@@ -1381,6 +1381,51 @@
             "edit": "Cambiar presupuesto",
             "close": "Cerrar",
             "limit": "tope"
+        },
+        "couple": {
+            "newTitle": "Nueva tribu de pareja",
+            "namePlaceholder": "Ana y Leo, la casa…",
+            "peopleTitle": "Ustedes dos",
+            "partnerLabel": "Tu pareja",
+            "partnerPlaceholder": "Su nombre…",
+            "and": "y",
+            "createSubmit": "Crear nuestra tribu",
+            "createHint": "Si no le ponen nombre, la tribu se llama como ustedes.",
+            "typicalTitle": "Gastos de la pareja",
+            "typicalHint": "Tocá uno y cargás el monto. Los fijos se repiten cada mes.",
+            "monthlyTag": "Cada mes",
+            "expenses": {
+                "alquiler": "Alquiler",
+                "super": "Súper",
+                "servicios": "Servicios",
+                "salidas": "Salidas",
+                "delivery": "Delivery",
+                "suscripciones": "Suscripciones",
+                "mascota": "Mascota",
+                "regalos": "Regalos"
+            },
+            "splitTitle": "Cómo dividen",
+            "splitEven": "Mitad y mitad",
+            "splitParts": "{a} {aPct}% · {b} {bPct}%",
+            "splitThree": "Mitad y mitad, porque ya son más de dos",
+            "splitChange": "Cambiar",
+            "splitHint": "Si ganan distinto, puede poner más quien gana más. Elegí cuánto pone {a}.",
+            "splitAppliesTo": "Se usa en los gastos nuevos. Cada gasto se puede cambiar al cargarlo.",
+            "splitSaved": "Listo, así dividen desde ahora.",
+            "save": "Guardar",
+            "cancel": "Cancelar",
+            "tripStart": "Planear un viaje",
+            "tripStartHint": "A dónde, cuándo y cuánto quieren juntar. Tribu les dice cuánto poner por mes.",
+            "tripFormTitle": "Nuevo viaje",
+            "tripPlace": "¿A dónde van?",
+            "tripPlacePlaceholder": "Bariloche, Río, Europa…",
+            "tripWhen": "¿Cuándo?",
+            "tripTarget": "¿Cuánto quieren juntar? ({currency})",
+            "tripHint": "La plata queda en la cuenta de quien lo crea. Tribu no guarda plata.",
+            "tripAmountInvalid": "Revisá el monto.",
+            "tripName": "Viaje a {place}",
+            "tripCreate": "Crear el viaje",
+            "tripCreated": "¡Viaje en marcha! Ya pueden ir sumando."
         }
     },
     "slideToConfirm": {
@@ -1504,6 +1549,8 @@
         "BADGE_NOT_EARNED": "Todavía no conseguiste esta insignia en esa tribu.",
         "BADGE_NO_WALLET": "Primero vinculá tu wallet de Lemon en esa tribu.",
         "MEMBER_TOKEN_REQUIRED": "Primero elegí quién sos en esta tribu.",
+        "NOT_A_COUPLE": "Esto es solo para una tribu de pareja.",
+        "COUPLE_SPLIT_MEMBER": "Una de las dos personas ya no está en la tribu. Volvé a abrirla y probá de nuevo.",
         "BUDGET_NOT_FOR_VAQUITA": "Una vaquita no tiene presupuesto mensual; eso es para las tribus.",
         "PAYOUT_BANK_INVALID": "Eso no parece un alias ni un CBU/CVU.",
         "PAYOUT_LEMON_TAG_INVALID": "Ese Lemon tag no parece válido.",
@@ -1756,6 +1803,10 @@
             "tribu": {
                 "title": "Una tribu nueva",
                 "hint": "La billetera compartida de un grupo nuevo."
+            },
+            "pareja": {
+                "title": "Una tribu de pareja",
+                "hint": "Para los dos: gastos de la casa, viajes y cómo dividen."
             }
         },
         "home": {

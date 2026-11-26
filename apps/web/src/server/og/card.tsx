@@ -15,7 +15,7 @@ import { DEFAULT_THEME } from '@/lib/themes'
 import { doodleDataUri } from '@/server/og/emblem'
 import { DISPLAY_FONT, headlineFont, headlineWeight } from '@/server/og/fonts'
 import { BLOBS_RIGHT, disc, Field, INK, MUTED, Sheet, Wordmark } from '@/server/og/frame'
-import { AVATAR_COLORS, ENGLISH_CARD_COPY, type OgAvatar, type RoomCardData } from '@/server/og/roomCard'
+import { AVATAR_COLORS, type OgAvatar, type RoomCardData } from '@/server/og/roomCard'
 
 /** Re-exported from their canonical home so the seven `opengraph-image` routes
  *  that already read them off this module keep one import each. */
@@ -164,7 +164,7 @@ export function BrandCard({ lines, tagline }: { lines: readonly [string, string]
                     </div>
                 </div>
             </Sheet>
-            <Wordmark note={ENGLISH_CARD_COPY.tagline} noteColor={DEFAULT_THEME.fieldInk} />
+            <Wordmark note="tribu.money" noteColor={DEFAULT_THEME.fieldInk} />
         </Field>
     )
 }

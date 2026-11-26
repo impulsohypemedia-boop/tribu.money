@@ -29,7 +29,7 @@ export default async function RoomOgImage({ params }: { params: Promise<{ slug: 
         card ? (
             <RoomCard card={card} emojiSrc={emojiSrc} />
         ) : (
-            <BrandCard lines={['SPLIT', 'ANYTHING']} tagline="Share one link, settle up after." />
+            <BrandCard lines={['GASTOS', 'COMPARTIDOS']} tagline="Anotan entre todos, Tribu hace las cuentas." />
         ),
         { ...OG_SIZE, fonts, headers: { 'Cache-Control': OG_CACHE_CONTROL } }
     )

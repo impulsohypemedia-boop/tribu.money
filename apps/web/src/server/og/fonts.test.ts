@@ -1,15 +1,18 @@
 import { readdirSync } from 'node:fs'
-import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { DISPLAY_CHARS, DISPLAY_FONT, headlineFont, headlineWeight } from './fonts'
-
-const GLUTEN_DIR = path.join(process.cwd(), 'node_modules', '@fontsource', 'gluten', 'files')
+import { DISPLAY_CHARS, DISPLAY_FONT, OG_FONT_DIR, headlineFont, headlineWeight, inviteFonts, ogFonts } from './fonts'
 
 describe('the display face', () => {
     // Satori reads WOFF and TTF but not WOFF2 — it has no brotli decoder. Fontsource ships both,
     // and picking the wrong one fails at render time on a route with no test of its own.
-    it('reads a WOFF the rasteriser can actually decode, straight out of the package', () => {
-        expect(readdirSync(GLUTEN_DIR)).toContain('gluten-all-400-normal.woff')
+    it('reads a WOFF the rasteriser can actually decode, from the copy kept in the app', () => {
+        expect(readdirSync(OG_FONT_DIR)).toContain('gluten-all-400-normal.woff')
+    })
+
+    // The copies must load from the app's own folder; a missing file is a broken share card.
+    it('loads every face the cards use', async () => {
+        expect((await ogFonts()).every((font) => font.data.byteLength > 0)).toBe(true)
+        expect((await inviteFonts()).every((font) => font.data.byteLength > 0)).toBe(true)
     })
 
     it('is the openly licensed face, not the proprietary one it replaced', () => {

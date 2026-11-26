@@ -6,15 +6,16 @@
  * only safe posture is to know precisely which characters we ship and sanitize
  * every string down to that set before it reaches the renderer.
  *
- * Gluten and Roboto both come from pinned Fontsource packages. The production image copies the
- * installed dependency tree, so neither needs runtime egress — the container has none.
+ * Gluten and Roboto are copied out of the pinned Fontsource packages into `src/server/og/fonts/`
+ * and read from there. Reading them out of node_modules broke on Vercel: pnpm links those packages
+ * through symlinks the function bundle does not keep, so every card answered 500. `next.config.js`
+ * lists the folder in `outputFileTracingIncludes`, because the path is computed and the tracer
+ * cannot see it. No runtime egress either way.
  */
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 
-const FONTSOURCE = path.join(process.cwd(), 'node_modules', '@fontsource')
-const GLUTEN_DIR = path.join(FONTSOURCE, 'gluten', 'files')
-const ROBOTO_DIR = path.join(FONTSOURCE, 'roboto', 'files')
+export const OG_FONT_DIR = path.join(process.cwd(), 'src', 'server', 'og', 'fonts')
 
 /**
  * Display face — the Split hero font, a rounded display face under the OFL. It replaced the
@@ -124,9 +125,9 @@ const load = async (dir: string, file: string): Promise<ArrayBuffer> => {
  */
 export async function ogFonts(): Promise<OgFont[]> {
     const [display, body, bodyBold] = await Promise.all([
-        load(GLUTEN_DIR, 'gluten-all-400-normal.woff'),
-        load(ROBOTO_DIR, 'roboto-all-400-normal.woff'),
-        load(ROBOTO_DIR, 'roboto-all-900-normal.woff'),
+        load(OG_FONT_DIR, 'gluten-all-400-normal.woff'),
+        load(OG_FONT_DIR, 'roboto-all-400-normal.woff'),
+        load(OG_FONT_DIR, 'roboto-all-900-normal.woff'),
     ])
     return [
         { name: DISPLAY_FONT, data: display, weight: 400, style: 'normal' },
@@ -142,8 +143,8 @@ export async function ogFonts(): Promise<OgFont[]> {
  */
 export async function inviteFonts(): Promise<OgFont[]> {
     const [regular, bold] = await Promise.all([
-        load(ROBOTO_DIR, 'roboto-all-400-normal.woff'),
-        load(ROBOTO_DIR, 'roboto-all-900-normal.woff'),
+        load(OG_FONT_DIR, 'roboto-all-400-normal.woff'),
+        load(OG_FONT_DIR, 'roboto-all-900-normal.woff'),
     ])
     return [
         { name: INVITE_FONT, data: regular, weight: 400, style: 'normal' },

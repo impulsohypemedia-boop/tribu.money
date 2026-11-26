@@ -137,6 +137,14 @@ export function checkedBalances(room: BalanceInput & { id?: string }, ledger?: M
     return folded
 }
 
+/** The stored couple split as plain numbers; anything malformed reads as no split (50/50). */
+function coupleSplitOf(value: unknown): Record<string, number> | null {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+    const entries = Object.entries(value as Record<string, unknown>)
+    if (!entries.every(([, pct]) => typeof pct === 'number')) return null
+    return Object.fromEntries(entries) as Record<string, number>
+}
+
 /** DB rows → wire shape. BigInt becomes a decimal string here, not later. */
 export function toRoomState(room: RoomWithRelations, ledgerBalances?: Map<string, bigint>): RoomState {
     const balances = checkedBalances(room, ledgerBalances)
@@ -148,7 +156,8 @@ export function toRoomState(room: RoomWithRelations, ledgerBalances?: Map<string
             name: room.name,
             emoji: room.emoji,
             currency: room.currency,
-            kind: room.kind === 'vaquita' ? 'vaquita' : 'tribu',
+            kind: room.kind === 'vaquita' || room.kind === 'pareja' ? room.kind : 'tribu',
+            coupleSplit: room.kind === 'pareja' ? coupleSplitOf(room.coupleSplit) : null,
             coverUrl: room.coverUrl,
             theme: room.theme,
             hasReachedSharedBalance: room.firstSharedBalanceExpenseId !== null,

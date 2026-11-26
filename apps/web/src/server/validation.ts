@@ -105,7 +105,7 @@ export const createRoomSchema = z.object({
     creatorName: personName,
     memberNames: z.array(personName).optional(),
     /** A vaquita room starts with its pot, kept by the creator. */
-    kind: z.enum(['tribu', 'vaquita']).default('tribu'),
+    kind: z.enum(['tribu', 'vaquita', 'pareja']).default('tribu'),
     pot: z
         .object({
             targetMinor: minorAmount.nullish(),
@@ -552,6 +552,22 @@ export const budgetsSchema = z.object({
         .max(EXPENSE_CATEGORY_IDS.length + 1)
         .refine((list) => new Set(list.map((budget) => budget.category)).size === list.length, {
             message: 'each category can have one limit',
+        }),
+})
+
+/**
+ * Tribu de pareja: how the two split new expenses, as whole percents per member adding up to 100.
+ * Null goes back to half and half.
+ */
+export const coupleSplitSchema = z.object({
+    split: z
+        .record(id, z.number().int().min(1).max(99))
+        .nullable()
+        .refine((split) => split === null || Object.keys(split).length === 2, {
+            message: 'a couple split names the two people',
+        })
+        .refine((split) => split === null || Object.values(split).reduce((sum, pct) => sum + pct, 0) === 100, {
+            message: 'the two parts add up to 100',
         }),
 })
 

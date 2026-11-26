@@ -34,8 +34,11 @@ export interface ApiRoom {
     name: string
     emoji: string | null
     currency: string
-    /** A tribu shares expenses; a vaquita is built around one shared pot. Optional for older caches. */
-    kind?: 'tribu' | 'vaquita'
+    /** A tribu shares expenses; a vaquita is built around one shared pot; a pareja is a tribu of
+     *  two with couple presets. Optional for older caches. */
+    kind?: 'tribu' | 'vaquita' | 'pareja'
+    /** Pareja only: default split for new expenses as { memberId: whole percent }. Null = 50/50. */
+    coupleSplit?: Record<string, number> | null
     coverUrl: string | null
     /** A key into the catalog in `lib/themes.ts`. null = the default palette. */
     theme: string | null
@@ -344,7 +347,7 @@ export interface CreateRoomInput {
     creatorName: string
     /** Additional people in the room, excluding the creator. */
     memberNames?: string[]
-    kind?: 'tribu' | 'vaquita'
+    kind?: 'tribu' | 'vaquita' | 'pareja'
     /** A vaquita's goal; its pot is kept by the creator. */
     pot?: { targetMinor?: string | null; quotaMinor?: string | null; dueDate?: string | null }
 }

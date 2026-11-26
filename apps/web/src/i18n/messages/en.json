@@ -1381,6 +1381,51 @@
             "edit": "Change budget",
             "close": "Close",
             "limit": "limit"
+        },
+        "couple": {
+            "newTitle": "New couple tribu",
+            "namePlaceholder": "Ana and Leo, home…",
+            "peopleTitle": "The two of you",
+            "partnerLabel": "Your partner",
+            "partnerPlaceholder": "Their name…",
+            "and": "and",
+            "createSubmit": "Create our tribu",
+            "createHint": "Leave the name empty and the tribu is named after you two.",
+            "typicalTitle": "Couple expenses",
+            "typicalHint": "Tap one and add the amount. Monthly ones repeat every month.",
+            "monthlyTag": "Monthly",
+            "expenses": {
+                "alquiler": "Rent",
+                "super": "Groceries",
+                "servicios": "Bills",
+                "salidas": "Going out",
+                "delivery": "Delivery",
+                "suscripciones": "Subscriptions",
+                "mascota": "Pet",
+                "regalos": "Gifts"
+            },
+            "splitTitle": "How you split",
+            "splitEven": "Half and half",
+            "splitParts": "{a} {aPct}% · {b} {bPct}%",
+            "splitThree": "Half and half, since there are more than two of you",
+            "splitChange": "Change",
+            "splitHint": "If you earn different amounts, whoever earns more can put in more. Choose how much {a} puts in.",
+            "splitAppliesTo": "Used for new expenses. You can change any expense when you add it.",
+            "splitSaved": "Done, this is how you split from now on.",
+            "save": "Save",
+            "cancel": "Cancel",
+            "tripStart": "Plan a trip",
+            "tripStartHint": "Where, when and how much you want to save. Tribu tells you how much to put in each month.",
+            "tripFormTitle": "New trip",
+            "tripPlace": "Where are you going?",
+            "tripPlacePlaceholder": "Lisbon, Rio, Japan…",
+            "tripWhen": "When?",
+            "tripTarget": "How much do you want to save? ({currency})",
+            "tripHint": "The money stays in the account of whoever creates it. Tribu holds no money.",
+            "tripAmountInvalid": "Check the amount.",
+            "tripName": "Trip to {place}",
+            "tripCreate": "Create the trip",
+            "tripCreated": "Trip on its way! Start adding to it."
         }
     },
     "slideToConfirm": {
@@ -1504,6 +1549,8 @@
         "BADGE_NOT_EARNED": "You have not earned this badge in that tribe yet.",
         "BADGE_NO_WALLET": "Link your Lemon wallet in that tribe first.",
         "MEMBER_TOKEN_REQUIRED": "Pick who you are in this tribe first.",
+        "NOT_A_COUPLE": "This is only for a couple tribu.",
+        "COUPLE_SPLIT_MEMBER": "One of the two people is no longer in the tribu. Reopen it and try again.",
         "BUDGET_NOT_FOR_VAQUITA": "A shared pot has no monthly budget; budgets are for groups.",
         "PAYOUT_BANK_INVALID": "That does not look like an alias or a CBU/CVU.",
         "PAYOUT_LEMON_TAG_INVALID": "That Lemon tag does not look right.",
@@ -1756,6 +1803,10 @@
             "tribu": {
                 "title": "A new group",
                 "hint": "The shared account for a new group."
+            },
+            "pareja": {
+                "title": "A couple tribu",
+                "hint": "For the two of you: home expenses, trips and how you split."
             }
         },
         "home": {

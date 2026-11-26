@@ -14,6 +14,7 @@ import {
     composerSurfaceClassName,
 } from '@/components/ui/composer-style'
 import { Icon } from '@/components/ui/Icon'
+import { coupleRoomName } from '@/lib/couple'
 import { decimalsOf, parseAmountToMinor } from '@/lib/money'
 import type { RoomPrefill } from '@/lib/room-prefill'
 import { readCurrencyChoice, rememberCurrencyChoice, useCurrencyHints } from '@/lib/use-currency-hint'
@@ -31,6 +32,8 @@ import { RoomPeopleFields } from './RoomPeopleFields'
 /** The server-rendered seed only. The real default is the device's top hint, which cannot be
  *  known until after mount — see the effect below. */
 const DEFAULT_CURRENCY = 'EUR'
+/** A couple's tribu starts with the house-and-heart drawing until it gets a name. */
+const COUPLE_EMBLEM = 'expense_house_heart'
 
 /**
  * Room details and the whole group stay editable until creation.
@@ -45,13 +48,18 @@ export function CreateRoomForm({
     kind = 'tribu',
 }: {
     prefill?: RoomPrefill
-    /** A vaquita is created the same way, with its goal and the creator as its keeper. */
-    kind?: 'tribu' | 'vaquita'
+    /** A vaquita is created the same way, with its goal and the creator as its keeper. A pareja
+     *  asks for exactly two people and names itself after them unless given a name. */
+    kind?: 'tribu' | 'vaquita' | 'pareja'
 }) {
     const t = useTranslations('room.create')
     const tPot = useTranslations('room.pot')
     const locale = useLocale()
+    const tCouple = useTranslations('room.couple')
     const isPot = kind === 'vaquita'
+    const isCouple = kind === 'pareja'
+    const [partnerName, setPartnerName] = useState('')
+    const partnerRef = useRef<HTMLInputElement>(null)
     const [target, setTarget] = useState('')
     const [quota, setQuota] = useState('')
     const [potProblem, setPotProblem] = useState<string | null>(null)
@@ -103,13 +111,13 @@ export function CreateRoomForm({
     }
 
     /** The guess, until somebody overrules it with the grid below. */
-    const shownEmblem = emblem ?? roomDoodleFor(name)
+    const shownEmblem = emblem ?? (isCouple && !name.trim() ? COUPLE_EMBLEM : roomDoodleFor(name))
 
-    const canSubmit = creatorName.trim().length > 0 && !pending
+    const canSubmit = creatorName.trim().length > 0 && (!isCouple || partnerName.trim().length > 0) && !pending
 
     const submit = async (event: React.FormEvent) => {
         event.preventDefault()
-        if (!canSubmit || !people.validatePeople()) return
+        if (!canSubmit || (!isCouple && !people.validatePeople())) return
         const decimals = decimalsOf(currency, currencies)
         const optionalMinor = (text: string) => (text.trim() ? parseAmountToMinor(text, decimals, locale) : undefined)
         const targetMinor = optionalMinor(target)
@@ -118,11 +126,12 @@ export function CreateRoomForm({
         setPotProblem(null)
         const state = await createRoom({
             ...(isPot ? { kind: 'vaquita' as const, pot: { targetMinor, quotaMinor } } : {}),
-            name,
+            ...(isCouple ? { kind: 'pareja' as const } : {}),
+            name: isCouple && !name.trim() ? coupleRoomName(creatorName, partnerName, tCouple('and')) : name,
             emoji: shownEmblem,
             currency,
             creatorName,
-            memberNames: people.memberNames,
+            memberNames: isCouple ? [partnerName] : people.memberNames,
             template: prefill.template,
         })
         if (state) router.push(`/r/${state.room.slug}`)
@@ -131,7 +140,7 @@ export function CreateRoomForm({
     return (
         <form onSubmit={submit} className="flex min-h-dvh flex-col pb-[max(2.5rem,env(safe-area-inset-bottom))]">
             <div className="flex items-end justify-between gap-3 px-4 pb-2 pt-6">
-                <h1 className="text-h5">{isPot ? tPot('newTitle') : t('title')}</h1>
+                <h1 className="text-h5">{isPot ? tPot('newTitle') : isCouple ? tCouple('newTitle') : t('title')}</h1>
                 <CloseButton href="/app" label={t('back')} data-testid="close-create-room" />
             </div>
 
@@ -159,7 +168,13 @@ export function CreateRoomForm({
                                         creatorRef.current?.focus()
                                     }}
                                     enterKeyHint="next"
-                                    placeholder={isPot ? tPot('newNamePlaceholder') : t('namePlaceholder')}
+                                    placeholder={
+                                        isPot
+                                            ? tPot('newNamePlaceholder')
+                                            : isCouple
+                                              ? tCouple('namePlaceholder')
+                                              : t('namePlaceholder')
+                                    }
                                     aria-label={isPot ? tPot('nameLabel') : t('name')}
                                     maxLength={80}
                                     autoFocus={prefill.name === undefined}
@@ -264,35 +279,79 @@ export function CreateRoomForm({
                         )}
                     </AnimatePresence>
 
-                    <RoomPeopleFields creatorName={creatorName} draft={people} disabled={pending}>
-                        <label className="flex min-w-0 items-center gap-2 px-4 py-2">
-                            <span className="min-w-0 flex-1">
-                                <span className="block text-xs text-grey-1">{t('people.yourName')}</span>
-                                <input
-                                    ref={creatorRef}
-                                    value={creatorName}
-                                    onChange={(event) => {
-                                        setCreatorName(event.target.value)
-                                        people.changeMembers(people.memberNames)
-                                    }}
-                                    onKeyDown={(event) => {
-                                        if (event.key !== 'Enter' || event.nativeEvent.isComposing) return
-                                        event.preventDefault()
-                                        people.focusPerson(0)
-                                    }}
-                                    placeholder={t('creatorNamePlaceholder')}
-                                    aria-label={t('people.yourName')}
-                                    maxLength={80}
-                                    autoFocus={prefill.name !== undefined}
-                                    enterKeyHint="next"
-                                    data-testid="creator-name"
-                                    data-focus-contained
-                                    className={composerBareInputClassName('h-10 text-base font-bold')}
-                                />
-                            </span>
-                            <span className="text-xs text-grey-1">{t('people.you')}</span>
-                        </label>
-                    </RoomPeopleFields>
+                    {isCouple ? (
+                        <div className="flex flex-col gap-3" data-testid="couple-people">
+                            <h2 className="text-h7">{tCouple('peopleTitle')}</h2>
+                            <div className={composerSurfaceClassName()}>
+                                <label className="flex min-w-0 items-center gap-2 px-4 py-2">
+                                    <span className="min-w-0 flex-1">
+                                        <span className="block text-xs text-grey-1">{t('people.yourName')}</span>
+                                        <input
+                                            ref={creatorRef}
+                                            value={creatorName}
+                                            onChange={(event) => setCreatorName(event.target.value)}
+                                            onKeyDown={(event) => {
+                                                if (event.key !== 'Enter' || event.nativeEvent.isComposing) return
+                                                event.preventDefault()
+                                                partnerRef.current?.focus()
+                                            }}
+                                            placeholder={t('creatorNamePlaceholder')}
+                                            maxLength={80}
+                                            enterKeyHint="next"
+                                            data-testid="creator-name"
+                                            className={composerBareInputClassName('h-10 text-base font-bold')}
+                                        />
+                                    </span>
+                                    <span className="text-xs text-grey-1">{t('people.you')}</span>
+                                </label>
+                                <label className="flex min-w-0 items-center gap-2 border-t border-dashed border-grey-1 px-4 py-2">
+                                    <span className="min-w-0 flex-1">
+                                        <span className="block text-xs text-grey-1">{tCouple('partnerLabel')}</span>
+                                        <input
+                                            ref={partnerRef}
+                                            value={partnerName}
+                                            onChange={(event) => setPartnerName(event.target.value)}
+                                            placeholder={tCouple('partnerPlaceholder')}
+                                            maxLength={80}
+                                            enterKeyHint="done"
+                                            data-testid="partner-name"
+                                            className={composerBareInputClassName('h-10 text-base font-bold')}
+                                        />
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    ) : (
+                        <RoomPeopleFields creatorName={creatorName} draft={people} disabled={pending}>
+                            <label className="flex min-w-0 items-center gap-2 px-4 py-2">
+                                <span className="min-w-0 flex-1">
+                                    <span className="block text-xs text-grey-1">{t('people.yourName')}</span>
+                                    <input
+                                        ref={creatorRef}
+                                        value={creatorName}
+                                        onChange={(event) => {
+                                            setCreatorName(event.target.value)
+                                            people.changeMembers(people.memberNames)
+                                        }}
+                                        onKeyDown={(event) => {
+                                            if (event.key !== 'Enter' || event.nativeEvent.isComposing) return
+                                            event.preventDefault()
+                                            people.focusPerson(0)
+                                        }}
+                                        placeholder={t('creatorNamePlaceholder')}
+                                        aria-label={t('people.yourName')}
+                                        maxLength={80}
+                                        autoFocus={prefill.name !== undefined}
+                                        enterKeyHint="next"
+                                        data-testid="creator-name"
+                                        data-focus-contained
+                                        className={composerBareInputClassName('h-10 text-base font-bold')}
+                                    />
+                                </span>
+                                <span className="text-xs text-grey-1">{t('people.you')}</span>
+                            </label>
+                        </RoomPeopleFields>
+                    )}
 
                     {isPot && (
                         <div className="grid gap-3" data-testid="pot-goal-fields">
@@ -337,9 +396,11 @@ export function CreateRoomForm({
                         className="justify-center text-h6"
                         data-testid="create-room"
                     >
-                        {isPot ? tPot('createSubmit') : t('submit')}
+                        {isPot ? tPot('createSubmit') : isCouple ? tCouple('createSubmit') : t('submit')}
                     </Button>
-                    <p className="text-center text-xs text-grey-1">{t('people.hint')}</p>
+                    <p className="text-center text-xs text-grey-1">
+                        {isCouple ? tCouple('createHint') : t('people.hint')}
+                    </p>
                 </motion.div>
             </fieldset>
         </form>

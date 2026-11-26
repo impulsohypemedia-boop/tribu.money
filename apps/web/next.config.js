@@ -25,6 +25,19 @@ const nextConfig = {
     // and the proxy owns the general strip for everything else.
     skipTrailingSlashRedirect: true,
 
+    // The share cards read their fonts with `readFile` at runtime (src/server/og/fonts.ts), which
+    // the file tracer cannot see. Without this, Vercel ships the functions without the .woff files
+    // and every card answers 500, so the app shows a broken image. The Docker image copies all of
+    // node_modules and never hit this. Three files, ~175KB, so they go to every server route
+    // rather than a list of card paths that would go stale.
+    outputFileTracingIncludes: {
+        '/**': [
+            './node_modules/@fontsource/gluten/files/gluten-all-400-normal.woff',
+            './node_modules/@fontsource/roboto/files/roboto-all-400-normal.woff',
+            './node_modules/@fontsource/roboto/files/roboto-all-900-normal.woff',
+        ],
+    },
+
     /**
      * Two retirements, neither of them locale detection: nothing here reads `Accept-Language` or a
      * cookie, and no reader is ever moved off the language they asked for.

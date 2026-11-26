@@ -468,7 +468,8 @@ export const ART_BY_KIND: Record<CardKind, (card: never) => ReactElement> = {
  * `route.ts` stays free of JSX and can stay a `.ts` file.
  */
 export function renderAchievementCard(card: AchievementCardData | null): ReactElement {
-    if (!card) return <BrandCard lines={['SPLIT', 'ANYTHING']} tagline="Share one link, settle up after." />
+    if (!card)
+        return <BrandCard lines={['GASTOS', 'COMPARTIDOS']} tagline="Anotan entre todos, Tribu hace las cuentas." />
     switch (card.kind) {
         case 'invite':
             return InviteCard(card)

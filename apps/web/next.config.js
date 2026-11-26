@@ -25,6 +25,13 @@ const nextConfig = {
     // and the proxy owns the general strip for everything else.
     skipTrailingSlashRedirect: true,
 
+    // The share cards read their fonts at runtime through a computed path (`src/server/og/fonts.ts`),
+    // which file tracing cannot follow. Without this the Vercel function ships without them and
+    // every card answers 500, which the app shows as a broken image.
+    outputFileTracingIncludes: {
+        '/**': ['./src/server/og/fonts/*.woff'],
+    },
+
     /**
      * Two retirements, neither of them locale detection: nothing here reads `Accept-Language` or a
      * cookie, and no reader is ever moved off the language they asked for.

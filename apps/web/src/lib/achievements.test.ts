@@ -11,7 +11,7 @@
  */
 import { describe, expect, it } from 'vitest'
 import type { ApiExpense, ApiSettlement, RoomState } from './api-types'
-import { awardsFor, crewUnlock, passportUnlock, unlocksFor } from './achievements'
+import { awardsFor, crewUnlock, passportUnlock, shareableUnlocks, unlocksFor } from './achievements'
 
 const iso = (day: number, minute = 0) => new Date(Date.UTC(2026, 6, day, 12, minute)).toISOString()
 
@@ -184,6 +184,19 @@ describe('unlocksFor', () => {
         const room = settledState(['a', 'b'], [{ paidById: 'a' }])
         const alterego = unlocksFor(room, 'a').find((unlock) => unlock.type === 'alterego')
         expect(alterego?.detail.persona).toBe('doodle-tribu')
+    })
+})
+
+describe('shareableUnlocks', () => {
+    it('offers no share image for a head count while the book is open', () => {
+        const open = state(['a', 'b', 'c'], [{ paidById: 'a' }], [], [{ fromId: 'b', toId: 'a', amountMinor: '500' }])
+        expect(shareableUnlocks(open, 'a')).toEqual([])
+    })
+
+    it('keeps only the personal award once the book is closed', () => {
+        const closed = settledState(['a', 'b', 'c'], [{ paidById: 'a' }])
+        expect(shareableUnlocks(closed, 'a').map((unlock) => unlock.id)).toEqual(['alterego'])
+        expect(shareableUnlocks(closed, 'c')).toEqual([])
     })
 })
 

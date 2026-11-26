@@ -227,3 +227,12 @@ export function unlocksFor(state: RoomState, meId: string | undefined): Unlock[]
 
     return unlocks
 }
+
+/**
+ * The unlocks the room offers to share as an image. People count (crew) and currency count
+ * (passport) are left out: a card that says "2 monedas" tells friends nothing worth posting.
+ * What remains is the end-of-trip award; `wrapped` keeps its own surface on the recap page.
+ */
+export function shareableUnlocks(state: RoomState, meId: string | undefined): Unlock[] {
+    return unlocksFor(state, meId).filter((unlock) => unlock.type === 'alterego')
+}

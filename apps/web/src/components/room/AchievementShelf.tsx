@@ -17,7 +17,7 @@
 import { useTranslations } from 'next-intl'
 import { useQuery } from '@tanstack/react-query'
 import { achievementCardPath, shelfKinds, type AlterEgoCardParams, type CardKind } from '@/lib/achievements-contract'
-import { unlocksFor } from '@/lib/achievements'
+import { shareableUnlocks } from '@/lib/achievements'
 import { api } from '@/lib/api'
 import { roomKey } from '@/lib/queries'
 import { useRoomIdentity } from '@/lib/use-identity'
@@ -37,22 +37,20 @@ export function AchievementShelf({ slug, deckShown = false }: { slug: string; de
 
     if (!state) return null
 
-    const tiles = unlocksFor(state, identity?.memberId)
-        .filter((unlock) => unlock.type !== 'wrapped')
-        .map((unlock) => ({
-            key: unlock.id,
-            kind: (unlock.type === 'crew' ? 'crew' : unlock.type === 'passport' ? 'passport' : 'alterego') as CardKind &
-                ShareableCardKind,
-            type: unlock.type,
-            params:
-                unlock.detail.award && unlock.detail.persona
-                    ? ({
-                          award: unlock.detail.award,
-                          persona: unlock.detail.persona,
-                          palette: unlock.detail.palette,
-                      } satisfies AlterEgoCardParams)
-                    : undefined,
-        }))
+    const tiles = shareableUnlocks(state, identity?.memberId).map((unlock) => ({
+        key: unlock.id,
+        kind: (unlock.type === 'crew' ? 'crew' : unlock.type === 'passport' ? 'passport' : 'alterego') as CardKind &
+            ShareableCardKind,
+        type: unlock.type,
+        params:
+            unlock.detail.award && unlock.detail.persona
+                ? ({
+                      award: unlock.detail.award,
+                      persona: unlock.detail.persona,
+                      palette: unlock.detail.palette,
+                  } satisfies AlterEgoCardParams)
+                : undefined,
+    }))
 
     // On a settled room the deck above is the wrapped surface and already draws these — see
     // `shelfKinds` for why the deck wins.

@@ -36,6 +36,8 @@ const proxyUsed = () => egressFetch.mock.calls.at(-1)?.[0]
 
 beforeEach(() => {
     process.env.SPLIT_FX_MODE = ''
+    // These cover the Peanut feed path, which only runs when the endpoint is named on purpose.
+    process.env.SPLIT_FX_ENDPOINT = 'https://api.peanut.me/fx/rates'
     for (const key of PROXY_VARS) delete process.env[key]
     egressFetch.mockReset()
     egressFetch.mockImplementation(async (_proxy: unknown, url: string) =>
@@ -49,6 +51,7 @@ afterEach(() => {
     vi.restoreAllMocks()
     vi.resetModules()
     process.env.SPLIT_FX_MODE = 'static'
+    delete process.env.SPLIT_FX_ENDPOINT
 })
 
 describe('egress proxy selection', () => {

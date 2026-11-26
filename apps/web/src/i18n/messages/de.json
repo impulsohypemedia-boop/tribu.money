@@ -1244,7 +1244,13 @@
             "biggest": "The biggest expense was {name}: <amount></amount>.",
             "unnamed": "an unnamed one",
             "someone": "Someone",
-            "fullHistory": "See full history"
+            "fullHistory": "See full history",
+            "cardMonth": "{month} summary",
+            "cardConverted": "Includes <amount></amount> of expenses in another currency, already converted.",
+            "convertedTitle": "In another currency",
+            "convertedHint": "Each expense was converted to {currency} at the rate of the day it was added. The total above already includes them.",
+            "biggestTitle": "Biggest expense",
+            "shareOf": "their share"
         },
         "pot": {
             "someone": "Someone",
@@ -1259,8 +1265,8 @@
             "namePlaceholder": "Beach trip",
             "keeperLabel": "Who keeps the money?",
             "keeperHint": "The money stays in that person's account. Tribu never touches it.",
-            "targetLabel": "Goal (optional)",
-            "quotaLabel": "Monthly amount per person (optional)",
+            "targetLabel": "Goal in {currency} (optional)",
+            "quotaLabel": "Monthly amount per person (optional) ({currency})",
             "dueLabel": "By when? (optional)",
             "createSubmit": "Start the pot",
             "created": "Pot started",
@@ -1282,7 +1288,7 @@
             "quotaMissing": "<amount></amount> to go",
             "put": "Put money in",
             "putWho": "Who is putting in?",
-            "putAmount": "How much?",
+            "putAmount": "How much? ({currency})",
             "putSubmit": "Record contribution",
             "putDone": "Contribution recorded",
             "putNote": "Recorded as a payment from {name} to {keeper}.",
@@ -1321,7 +1327,8 @@
                 "earned": "Already earned <amount></amount> on its own",
                 "nextYear": "At this rate it adds <amount></amount> more in a year.",
                 "estimateNote": "An estimate. Tribu does not move the money: it earns only if {name} keeps it in an account that pays that rate."
-            }
+            },
+            "currencyHint": "The pot collects money in this currency. Saving dollars? Pick USD."
         },
         "reminders": {
             "title": "People who owe you",
@@ -1428,7 +1435,11 @@
             "tripCreated": "Trip on its way! Start adding to it.",
             "heroSince": "On Tribu since {since}",
             "heroTrip": "{name} · {months, plural, one {# month to go} other {# months to go}}",
-            "heroTripThisMonth": "{name} · this month!"
+            "heroTripThisMonth": "{name} · this month!",
+            "monthTogether": "This month, together: <amount></amount>",
+            "even": "You're even",
+            "toEven": "To even out, {from} pays <amount></amount> to {to}",
+            "evenUp": "Even out"
         }
     },
     "slideToConfirm": {

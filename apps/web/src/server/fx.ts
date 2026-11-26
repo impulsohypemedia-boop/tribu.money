@@ -8,6 +8,7 @@ import { prisma } from '@/server/db'
 import { egressFetch } from '@/server/egress'
 import { badRequest } from '@/server/http'
 import { convertMinorAtRate, isCatalogCode, STATIC_USD_PER_UNIT } from '@/server/money'
+import { getUsdRates } from '@/server/usd-rates'
 
 // Overridable so staging can be pointed at a staging API. Production egress is
 // default-deny, so the call rides the pinned squid proxy exactly like the model
@@ -15,6 +16,15 @@ import { convertMinorAtRate, isCatalogCode, STATIC_USD_PER_UNIT } from '@/server
 // (added 2026-08-07). Without it every refresh fails and the table silently
 // degrades to the twelve static rates. See the Deployment section of README.md.
 const RATE_ENDPOINT = process.env.SPLIT_FX_ENDPOINT || 'https://api.peanut.me/fx/rates'
+
+/**
+ * Tribu prices expenses from the same free sources as the patrimonio screen (`usd-rates.ts`):
+ * pesos at the dólar cripto quote, everything else from open.er-api.com. The Peanut rate feed is
+ * not reachable from Vercel, and before this every USD expense in a peso tribu was converted with
+ * the static outage table (1 US$ = 1.031 pesos against roughly 1.750 real). The Peanut feed is
+ * only tried when `SPLIT_FX_ENDPOINT` names it on purpose.
+ */
+const peanutFeedEnabled = () => !!process.env.SPLIT_FX_ENDPOINT
 
 /**
  * The one egress proxy, whichever consumer's variable happens to name it.
@@ -293,8 +303,33 @@ const rateUrl = (base: string): string => {
     return url.toString()
 }
 
+/** One destination's table from the dollar-anchored public quotes, or null when neither source
+ *  answered (then the static table stays the fallback, exactly as before). */
+async function fetchUsdAnchoredRates(base: string): Promise<LiveRateSnapshot | null> {
+    if (remoteDisabled() || !isCatalogCode(base)) return null
+    try {
+        const table = await getUsdRates()
+        const live = Object.entries(table.sources).some(([code, source]) => code !== 'USD' && source !== 'static')
+        if (!live) return null
+        const usdPerBase = Number(table.rates[base])
+        if (!Number.isFinite(usdPerBase) || usdPerBase <= 0) return null
+        const basePerUnit: Record<string, number> = { [base]: 1 }
+        for (const [quote, usd] of Object.entries(table.rates)) {
+            if (!isCatalogCode(quote) || quote === base) continue
+            const rate = persistableRate(Number(usd) / usdPerBase)
+            if (rate !== null) basePerUnit[quote] = rate
+        }
+        if (![...FX_CORE, base].every((code) => typeof basePerUnit[code] === 'number')) return null
+        return { basePerUnit, generatedAt: new Date(table.fetchedAt) }
+    } catch (error) {
+        console.warn(`[fx] ${base} dollar quotes failed (${failureDetail(error)})`)
+        return null
+    }
+}
+
 async function fetchBaseRates(base: string): Promise<LiveRateSnapshot | null> {
     if (remoteDisabled() || !isCatalogCode(base)) return null
+    if (!peanutFeedEnabled()) return fetchUsdAnchoredRates(base)
     if (Date.now() - (lastFailedFetchAt.get(base) ?? 0) < FAILURE_BACKOFF_MS) return null
     try {
         const response = await egressFetch(egressProxyUrl(), rateUrl(base), {

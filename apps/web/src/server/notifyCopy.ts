@@ -62,7 +62,7 @@ export function expenseAddedPayload(input: {
     currency: string
 }): PushPayload {
     // English words, like the rest of this module — see the file comment.
-    const amount = formatMoney(input.amountMinor, input.currency)
+    const amount = formatMoney(input.amountMinor, input.currency, undefined, 'es-419')
     const name = input.description.trim()
     // A day is not a name. The in-app row can label an unnamed expense with its
     // day, because the day is a heading there and the row is a thing you can
@@ -91,7 +91,7 @@ export function settlementRecordedPayload(input: {
 }): PushPayload {
     return {
         title: titleOf(input.room),
-        body: `${nameOf(input.fromName)} paid ${nameOf(input.toName)} ${formatMoney(input.amountMinor, input.room.currency)}`,
+        body: `${nameOf(input.fromName)} paid ${nameOf(input.toName)} ${formatMoney(input.amountMinor, input.room.currency, undefined, 'es-419')}`,
         url: roomUrl(input.room),
         template: 'settlement_recorded',
         tag: roomTag(input.roomId),
@@ -120,7 +120,7 @@ export function reminderPayload(input: {
 }): PushPayload {
     return {
         title: titleOf(input.room),
-        body: `${input.fromName ?? 'Alguien de la tribu'} te manda un recordatorio amable: le pasás ${formatMoney(input.amountMinor, input.room.currency)} cuando puedas.`,
+        body: `${input.fromName ?? 'Alguien de la tribu'} te manda un recordatorio amable: le pasás ${formatMoney(input.amountMinor, input.room.currency, undefined, 'es-419')} cuando puedas.`,
         url: roomUrl(input.room),
         template: 'reminder',
         tag: roomTag(input.roomId),

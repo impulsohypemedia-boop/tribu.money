@@ -352,29 +352,32 @@ describe('parseMinor', () => {
 })
 
 describe('formatMinor', () => {
+    /** Argentine format, like the app: dots group thousands, a comma marks the decimals. */
     it('renders two-decimal currencies', () => {
-        expect(formatMinor(1234n, 'EUR')).toBe('€12.34')
-        expect(formatMinor(5n, 'EUR')).toBe('€0.05')
+        expect(formatMinor(1234n, 'EUR')).toBe('€12,34')
+        expect(formatMinor(5n, 'EUR')).toBe('€0,05')
+        expect(formatMinor(1234567n, 'ARS')).toBe('$12.345,67')
     })
 
-    it('renders zero-decimal currencies without a separator', () => {
-        expect(formatMinor(1688n, 'JPY')).toBe('¥1688')
+    it('groups zero-decimal currencies with dots', () => {
+        expect(formatMinor(1688n, 'JPY')).toBe('¥1.688')
     })
 
     it('renders three-decimal currencies with three places', () => {
-        expect(formatMinor(1234n, 'KWD')).toBe('1.234 KWD')
+        expect(formatMinor(1234n, 'KWD')).toBe('1,234 KWD')
     })
 
-    it('puts the sign before the symbol', () => {
-        expect(formatMinor(-1234n, 'USD')).toBe('-$12.34')
+    /** A bare `$` means pesos, so dollars carry their prefix. */
+    it('puts the sign before the symbol, and marks dollars as US$', () => {
+        expect(formatMinor(-1234n, 'USD')).toBe('-US$12,34')
     })
 
     /** 61 catalog codes have no symbol, and so does every invented ticker. Without the code after
      *  the amount they print bare — a number with no currency at all, on the OG card included. */
     it('puts the code after the amount when there is no symbol, once', () => {
-        expect(formatMinor(1234n, 'AED')).toBe('12.34 AED')
-        expect(formatMinor(1234n, 'DOGE')).toBe('12.34 DOGE')
-        expect(formatMinor(-1234n, 'DOGE')).toBe('-12.34 DOGE')
-        expect(formatMinor(1688n, 'ALL')).toBe('1688 ALL')
+        expect(formatMinor(1234n, 'AED')).toBe('12,34 AED')
+        expect(formatMinor(1234n, 'DOGE')).toBe('12,34 DOGE')
+        expect(formatMinor(-1234n, 'DOGE')).toBe('-12,34 DOGE')
+        expect(formatMinor(1688n, 'ALL')).toBe('1.688 ALL')
     })
 })

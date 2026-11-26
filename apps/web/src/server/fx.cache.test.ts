@@ -66,6 +66,8 @@ let fetchSpy: ReturnType<typeof vi.fn>
 
 beforeEach(async () => {
     process.env.SPLIT_FX_MODE = ''
+    // These cover the Peanut feed path, which only runs when the endpoint is named on purpose.
+    process.env.SPLIT_FX_ENDPOINT = 'https://api.peanut.me/fx/rates'
     fetchSpy = vi.fn(async (input: string | URL | Request) => {
         const base = new URL(String(input)).searchParams.get('base') ?? 'EUR'
         return feed(base, staticDirect(base))
@@ -80,6 +82,7 @@ afterEach(async () => {
     vi.restoreAllMocks()
     vi.resetModules()
     process.env.SPLIT_FX_MODE = 'static'
+    delete process.env.SPLIT_FX_ENDPOINT
     await prisma.fxRate.deleteMany()
 })
 

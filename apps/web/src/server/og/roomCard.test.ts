@@ -160,15 +160,15 @@ describe('avatars', () => {
 
 describe('statLine', () => {
     it('reads naturally at one expense', () => {
-        expect(statLine(1, 1250n, 'USD')).toBe('1 expense · $12.50 so far')
+        expect(statLine(1, 1250n, 'USD')).toBe('1 expense · US$12,50 so far')
     })
 
     it('pluralises and totals', () => {
-        expect(statLine(3, 12850n, 'USD')).toBe('3 expenses · $128.50 so far')
+        expect(statLine(3, 12850n, 'USD')).toBe('3 expenses · US$128,50 so far')
     })
 
     it('respects zero-decimal currencies', () => {
-        expect(statLine(2, 4000n, 'JPY')).toBe('2 expenses · ¥4000 so far')
+        expect(statLine(2, 4000n, 'JPY')).toBe('2 expenses · ¥4.000 so far')
     })
 
     it('says nothing rather than "$0.00" on an empty room', () => {
@@ -177,14 +177,14 @@ describe('statLine', () => {
 
     it('swaps an undrawable symbol for the ISO code', () => {
         // `฿` is outside the shipped Roboto cmap — a gap here would read as a rendering bug.
-        expect(safeAmount(50000n, 'THB')).toBe('500.00 THB')
+        expect(safeAmount(50000n, 'THB')).toBe('500,00 THB')
         expect(drawableByBody(statLine(1, 50000n, 'THB'))).toBe(true)
     })
 
     /** This used to print raw minor units, because `currency()` threw and the catch below fell
      *  back to the undivided number. It is total now, so an invented ticker reads as money. */
     it('renders an invented ticker as money, not as raw minor units', () => {
-        expect(safeAmount(1234n, 'XYZ')).toBe('12.34 XYZ')
+        expect(safeAmount(1234n, 'XYZ')).toBe('12,34 XYZ')
     })
 
     it('only ever emits characters the body font can draw', () => {
@@ -204,7 +204,7 @@ describe('toRoomCard', () => {
             expenses: [{ baseAmountMinor: 1000n }, { baseAmountMinor: 2550n }],
         })
         expect(card.name).toBe('Ski trip')
-        expect(card.stat).toBe('2 expenses · €35.50 so far')
+        expect(card.stat).toBe('2 expenses · €35,50 so far')
         expect(card.avatars.map((a) => a.letter)).toEqual(['H', 'J'])
         expect(card.memberCount).toBe(2)
         expect(card.overflow).toBe(0)

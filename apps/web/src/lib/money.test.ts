@@ -306,8 +306,10 @@ describe('formatting', () => {
     /** The whole point of the change: separators and symbol placement follow the reader. */
     it('formats in the active locale', () => {
         expect(formatMoney('123456', 'EUR', undefined, 'en')).toBe('€1,234.56')
-        // Spanish puts the symbol last and, by its own rule, does not group a four-digit whole.
-        expect(formatMoney('123456', 'EUR', undefined, 'es')).toBe('1234,56\u00a0€')
+        // Spanish amounts use Argentine conventions: dots group thousands, a comma marks decimals.
+        expect(formatMoney('123456', 'EUR', undefined, 'es')).toBe('€\u00a01.234,56')
+        expect(formatMoney('1234567', 'ARS', undefined, 'es-419')).toBe('$\u00a012.345,67')
+        expect(formatMoney('1234567', 'USD', undefined, 'es-419')).toBe('US$\u00a012.345,67')
         expect(formatMoney('123456', 'BRL', undefined, 'pt-BR')).toBe('R$\u00a01.234,56')
     })
 
@@ -329,7 +331,7 @@ describe('formatting', () => {
 
     it.each([
         ['en', '¥1,234,567', 'ARS\u00a0123,456,789.00'],
-        ['es-419', '\u00a51,234,567', '$123,456,789.00'],
+        ['es-419', '\u00a5\u00a01.234.567', '$\u00a0123.456.789,00'],
         ['pt-br', 'JP¥\u00a01.234.567', 'ARS\u00a0123.456.789,00'],
     ])('uses native JPY and ARS grouping in %s', (locale, jpy, ars) => {
         expect(formatMoney('1234567', 'JPY', undefined, locale)).toBe(jpy)
@@ -370,7 +372,7 @@ describe('formatting', () => {
             'A$1,234.56',
             'CA$1,234.56',
         ])
-        expect(formatMoney('123456', 'EUR', undefined, 'es')).toBe('1234,56\u00a0€')
+        expect(formatMoney('123456', 'EUR', undefined, 'es')).toBe('€\u00a01.234,56')
         expect(formatMoney('123456', 'BRL', undefined, 'pt-BR')).toBe('R$\u00a01.234,56')
     })
 
@@ -400,7 +402,7 @@ describe('formatting', () => {
      */
     it('agrees with the server on a currency that has no symbol', () => {
         for (const code of ['AED', 'BEER', 'WAT']) {
-            expect(formatMoney('1234', code, undefined, 'en')).toBe(formatMinor(1234n, code))
+            expect(formatMoney('1234', code, undefined, 'es-419')).toBe(formatMinor(1234n, code))
         }
         expect(formatMoney('1234', 'AED', undefined, 'en')).toBe('12.34 AED')
     })
@@ -420,7 +422,7 @@ describe('formatting', () => {
 describe('dense overview money', () => {
     it.each([
         ['en', '¥1.2M', 'ARS\u00a0123.5M'],
-        ['es-419', '\u00a51.2\u00a0M', '$123.5\u00a0M'],
+        ['es-419', '\u00a51,2\u00a0M', '$123,5\u00a0M'],
         ['pt-br', 'JP¥\u00a01,2\u00a0mi', 'ARS\u00a0123,5\u00a0mi'],
     ])('uses the locale-native JPY and ARS compact convention in %s', (locale, jpy, ars) => {
         expect(formatCompactMoney('1234567', 'JPY', undefined, locale)).toBe(jpy)
@@ -447,13 +449,13 @@ describe('large raw-input preview', () => {
     it('stays quiet for ordinary values and groups large JPY without changing the field', () => {
         expect(formatLargeAmountPreview('9999', 'JPY', undefined, 'en')).toBeNull()
         expect(formatLargeAmountPreview('10000', 'JPY', undefined, 'en')).toBe('¥10,000')
-        expect(formatLargeAmountPreview('10000', 'JPY', undefined, 'es-419')).toBe('\u00a510,000')
+        expect(formatLargeAmountPreview('10000', 'JPY', undefined, 'es-419')).toBe('\u00a5\u00a010.000')
         expect(formatLargeAmountPreview('10000', 'JPY', undefined, 'pt-br')).toBe('JP¥\u00a010.000')
     })
 
     it('uses the reader locale for large ARS entry', () => {
         expect(formatLargeAmountPreview('12345678900', 'ARS', undefined, 'en')).toBe('ARS\u00a0123,456,789.00')
-        expect(formatLargeAmountPreview('12345678900', 'ARS', undefined, 'es-419')).toBe('$123,456,789.00')
+        expect(formatLargeAmountPreview('12345678900', 'ARS', undefined, 'es-419')).toBe('$\u00a0123.456.789,00')
         expect(formatLargeAmountPreview('12345678900', 'ARS', undefined, 'pt-br')).toBe('ARS\u00a0123.456.789,00')
     })
 })
@@ -507,10 +509,10 @@ describe('formatMoneyParts', () => {
             { type: 'currency', value: '€' },
             { type: 'text', value: '1,234.56' },
         ])
-        // Spanish puts it last, behind a non-breaking space that belongs to the text run.
+        // Argentine Spanish puts it first, followed by a non-breaking space in the text run.
         expect(formatMoneyParts('123456', 'EUR', undefined, 'es')).toEqual([
-            { type: 'text', value: '1234,56 ' },
             { type: 'currency', value: '€' },
+            { type: 'text', value: '\u00a01.234,56' },
         ])
     })
 

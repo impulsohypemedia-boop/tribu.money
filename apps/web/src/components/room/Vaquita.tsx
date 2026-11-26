@@ -362,7 +362,9 @@ export function PotDetails({
                         <span className="text-sm font-bold">{t('putWho')}</span>
                         <MemberChips members={roster} value={who} onChange={setWho} testId="pot-put-who" />
                         <label className="grid gap-1">
-                            <span className="text-sm font-bold">{t('putAmount')}</span>
+                            <span className="text-sm font-bold">
+                                {t('putAmount', { currency: state.room.currency })}
+                            </span>
                             <BaseInput
                                 value={amount}
                                 onChange={(event) => setAmount(event.target.value)}

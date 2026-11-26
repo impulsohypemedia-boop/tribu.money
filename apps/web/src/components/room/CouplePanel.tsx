@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { BaseInput } from '@/components/ui/BaseInput'
@@ -20,6 +20,7 @@ import {
     type CoupleExpenseId,
 } from '@/lib/couple'
 import { useErrorMessage } from '@/lib/error-messages'
+import { localMonthKey, monthSummary } from '@/lib/month-summary'
 import { getExpenseSubject } from '@/lib/expense-category'
 import { decimalsOf, parseAmountToMinor } from '@/lib/money'
 import { useSaveCoupleSplit } from '@/lib/queries/couple'
@@ -38,6 +39,7 @@ import {
     RONDA_YELLOW,
 } from './CoupleStickers'
 import { MemberAvatar } from './MemberAvatar'
+import { Money } from './Money'
 
 interface Props {
     slug: string
@@ -47,18 +49,21 @@ interface Props {
     token?: string | null
     /** Open the new-expense form with one of the couple's typical expenses filled in. */
     onAddTypical: (id: CoupleExpenseId, monthly: boolean) => void
+    /** Open the settle drawer. */
+    onSettle: () => void
 }
 
 /**
- * What a couple's tribu adds on top of a normal one: their typical expenses one tap away and how
- * they split by default. The trips they save for are `CoupleTrips`, placed below the pot cards.
+ * The top of a couple's tribu: the two of them, what they spent together this month, whether they
+ * are even, and their typical expenses one tap away. A couple shares a life, so the balance is one
+ * quiet line in the hero rather than red and green debt cards and reminders. How they split is
+ * `CoupleSplitCard`, lower down; the trips they save for are `CoupleTrips`.
  */
 export function CouplePanel(props: Props) {
     return (
         <div className="mb-4 grid gap-4" data-testid="couple-panel">
-            <CoupleHero state={props.state} />
+            <CoupleHero state={props.state} currencies={props.currencies} onSettle={props.onSettle} />
             <TypicalExpenses onAddTypical={props.onAddTypical} />
-            <CoupleSplitCard {...props} />
         </div>
     )
 }
@@ -79,11 +84,22 @@ const TYPICAL_COLORS = [
  * The two of them, side by side with a heart, and the next trip if they planned one. Decoration in
  * the Ronda style; the facts on it (names, the trip, when the tribu started) are all real.
  */
-function CoupleHero({ state }: { state: RoomState }) {
+function CoupleHero({
+    state,
+    currencies,
+    onSettle,
+}: {
+    state: RoomState
+    currencies: readonly CurrencyInfo[]
+    onSettle: () => void
+}) {
     const t = useTranslations('room.couple')
     const locale = useLocale()
+    const month = useMemo(() => monthSummary(state, localMonthKey(new Date())), [state])
     const [first, second] = coupleMembers(state.members)
     if (!first || !second) return null
+    const nameOf = (id: string) => state.members.find((member) => member.id === id)?.name ?? ''
+    const transfer = state.suggestedTransfers[0]
     const trip = nextTrip(state)
     const since = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(
         new Date(state.room.createdAt)
@@ -95,7 +111,9 @@ function CoupleHero({ state }: { state: RoomState }) {
             data-testid="couple-hero"
         >
             <PawSticker size={26} className="absolute right-3 top-3 rotate-12" />
-            {!trip && <PlaneSticker size={24} className="absolute bottom-3 right-4 -rotate-12 opacity-90" />}
+            {!trip && state.expenses.length === 0 && (
+                <PlaneSticker size={24} className="absolute bottom-3 right-4 -rotate-12 opacity-90" />
+            )}
             <div className="flex items-center gap-3">
                 <span className="flex items-center">
                     <MemberAvatar name={first.name} avatar={first.avatar} size={52} className="border-2" />
@@ -109,6 +127,53 @@ function CoupleHero({ state }: { state: RoomState }) {
                     <span className="block text-sm text-grey-1">{t('heroSince', { since })}</span>
                 </span>
             </div>
+            {month.expenseCount > 0 && (
+                <p className="mt-3 text-sm" data-testid="couple-month-total">
+                    {t.rich('monthTogether', {
+                        amount: () => (
+                            <Money
+                                minor={month.totalMinor}
+                                currency={state.room.currency}
+                                catalog={currencies}
+                                className="font-bold"
+                            />
+                        ),
+                    })}
+                </p>
+            )}
+            {state.expenses.length > 0 && (
+                <div
+                    className="mt-2 flex items-center justify-between gap-3 rounded-sm border-2 border-[#141414] bg-white px-3 py-2"
+                    data-testid="couple-balance"
+                >
+                    <p className="min-w-0 text-sm">
+                        {transfer
+                            ? t.rich('toEven', {
+                                  from: nameOf(transfer.fromId),
+                                  to: nameOf(transfer.toId),
+                                  amount: () => (
+                                      <Money
+                                          minor={transfer.amountMinor}
+                                          currency={state.room.currency}
+                                          catalog={currencies}
+                                          className="font-bold"
+                                      />
+                                  ),
+                              })
+                            : t('even')}
+                    </p>
+                    {transfer && (
+                        <button
+                            type="button"
+                            onClick={onSettle}
+                            className="shrink-0 rounded-full border border-n-1 bg-white px-3 py-1 text-sm font-bold"
+                            data-testid="couple-even-up"
+                        >
+                            {t('evenUp')}
+                        </button>
+                    )}
+                </div>
+            )}
             {trip && (
                 <p
                     className="mt-3 inline-flex max-w-full items-center gap-2 rounded-full border-2 border-[#141414] bg-white px-3 py-1 text-sm font-bold"
@@ -171,7 +236,7 @@ function TypicalExpenses({ onAddTypical }: Pick<Props, 'onAddTypical'>) {
     )
 }
 
-function CoupleSplitCard({ slug, state, token }: Props) {
+export function CoupleSplitCard({ slug, state, token }: Pick<Props, 'slug' | 'state' | 'token'>) {
     const t = useTranslations('room.couple')
     const errorMessage = useErrorMessage()
     const save = useSaveCoupleSplit(slug, token)
@@ -283,7 +348,7 @@ function CoupleSplitCard({ slug, state, token }: Props) {
  * goal and the month they leave. Once created it shows as a pot card with its progress and the
  * monthly amount that gets them there on time.
  */
-export function CoupleTrips({ slug, state, currencies, meId, token }: Omit<Props, 'onAddTypical'>) {
+export function CoupleTrips({ slug, state, currencies, meId, token }: Omit<Props, 'onAddTypical' | 'onSettle'>) {
     const t = useTranslations('room.couple')
     const locale = useLocale()
     const errorMessage = useErrorMessage()

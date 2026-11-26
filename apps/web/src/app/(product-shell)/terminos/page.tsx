@@ -18,7 +18,7 @@ const TITLE = 'Términos y condiciones'
 export function generateMetadata(): Metadata {
     return pageMetadata({
         title: pageTitle(TITLE),
-        description: 'Cómo funciona Tribu, qué datos guarda y para qué.',
+        description: 'Las reglas para usar Tribu y qué datos guarda.',
         path: PATH,
         type: 'website',
     })
@@ -47,40 +47,71 @@ export default function TermsPage() {
             <header className="mt-4 border-y border-n-1 bg-primary-1">
                 <div className="mx-auto w-full max-w-xl px-5 py-9">
                     <h1 className="text-h3 leading-tight text-n-1">{TITLE}</h1>
-                    <p className="mt-3 text-sm text-n-1">Borrador, sujeto a revisión legal.</p>
+                    <p className="mt-3 text-sm text-n-1">Última actualización: 26 de noviembre de 2026</p>
                 </div>
             </header>
 
             <div className="mx-auto grid w-full max-w-xl gap-8 px-5 py-10 text-base leading-7 text-n-1">
-                <Section title="Cómo funciona">
+                <Section title="1. Aceptación">
+                    <p>Al usar Tribu aceptás estos términos. Si no estás de acuerdo con ellos, no uses el servicio.</p>
+                </Section>
+
+                <Section title="2. El servicio">
                     <p>
-                        Cada tribu vive en un link. Cualquiera con el link puede entrar, ver los gastos y sumar los
-                        suyos, así que compartilo solo con tu grupo. Tribu es gratis y no pide registro. Si querés,
-                        podés entrar con Google para tener tus tribus en cualquier celular.
+                        Tribu es una app gratuita para anotar y dividir gastos en grupo. Cada tribu vive en un link:
+                        cualquiera que lo tenga puede entrar, ver los gastos y cargar los suyos, así que compartilo solo
+                        con tu grupo.
+                    </p>
+                    <p>
+                        Te comprometés a usar Tribu de buena fe, a no cargar información falsa o de terceros sin su
+                        permiso y a no intentar dañar el servicio.
                     </p>
                 </Section>
 
-                <Section title="Pagos">
+                <Section title="3. Tu cuenta">
                     <p>
-                        Tribu calcula quién le debe a quién. Los pagos en cripto los ejecuta Lemon: Tribu nunca tiene
-                        tus fondos ni tus claves, y no puede revertir un pago ya enviado.
+                        No hace falta registrarse. Si querés tener tus tribus en cualquier celular, podés entrar con
+                        Google. Sos responsable de lo que se haga desde tu cuenta y tus dispositivos.
                     </p>
                 </Section>
 
-                <Section title="Tus datos">
+                <Section title="4. Pagos entre miembros">
                     <p>
-                        Guardamos el nombre que elegís en cada tribu, los gastos, los pagos y las notas que cargan sus
-                        miembros. Si entrás desde Lemon, guardamos la dirección de tu wallet y, si lo aceptás, tu nombre
-                        y tu Lemon tag, para que otros miembros puedan pagarte.
+                        Tribu calcula quién le tiene que pasar plata a quién, pero los pagos se hacen entre ustedes, con
+                        el medio que elijan. Tribu nunca tiene tus fondos ni tus claves y no puede revertir un pago ya
+                        enviado.
+                    </p>
+                </Section>
+
+                <Section title="5. Datos personales">
+                    <p>
+                        Guardamos lo necesario para que Tribu funcione: el nombre que elegís en cada tribu y los gastos,
+                        pagos y notas que cargan sus miembros. Si entrás con Google, guardamos tu email para reconocer
+                        tu cuenta; Google no nos da tu contraseña. Si conectás una billetera, guardamos su dirección
+                        para que otros miembros puedan pagarte.
                     </p>
                     <p>
-                        Si entrás con Google, guardamos tu email para reconocer tu cuenta y en qué tribus estás. Google
-                        no nos da tu contraseña. Cerrar sesión borra la sesión de ese celular.
+                        Los reportes de problemas se borran a los {FEEDBACK_RETENTION_DAYS} días. No vendemos tus datos
+                        ni usamos publicidad.
                     </p>
+                </Section>
+
+                <Section title="6. Responsabilidad">
                     <p>
-                        Los reportes de problemas que nos mandes se borran a los {FEEDBACK_RETENTION_DAYS} días. No
-                        vendemos datos ni usamos tags de publicidad.
+                        Tribu se ofrece tal como está. Hacemos lo posible para que funcione bien y los números den, pero
+                        no respondemos por acuerdos, deudas o pagos entre los miembros de una tribu.
                     </p>
+                </Section>
+
+                <Section title="7. Cambios">
+                    <p>
+                        Podemos actualizar estos términos. Si el cambio es importante, lo vas a ver en la app antes de
+                        que aplique.
+                    </p>
+                </Section>
+
+                <Section title="8. Contacto">
+                    <p>Para cualquier consulta, escribinos desde “Reportar un problema” dentro de la app.</p>
                 </Section>
             </div>
 

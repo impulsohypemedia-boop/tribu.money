@@ -18,17 +18,26 @@ import type {
     ImportIntoRoomResult,
     ImportRoomInput,
     MemberAvatarInput,
+    MemberProfileInput,
+    PotInput,
     ModelStatus,
     ParsedReceipt,
     PushSubscribeInput,
     PushUnsubscribeInput,
     ReceiptParseInput,
     ReactionInput,
+    LedgerPage,
     RoomHistoryPage,
     RoomState,
+    ApiBudget,
     RoomStateWithAddedMember,
     RoomStateWithMember,
     SettlementInput,
+    LemonQuote,
+    WalletLinkInput,
+    AccountState,
+    AccountSummary,
+    AccountMembership,
 } from './api-types'
 import type { FeedbackReportInput, FeedbackReportResult } from './feedback-contract'
 
@@ -272,6 +281,12 @@ export const api = {
             }),
     },
 
+    roomLedger: (slug: string, cursor?: string | null, signal?: AbortSignal) =>
+        request<LedgerPage>(`/api/rooms/${encode(slug)}/ledger${cursor ? `?cursor=${encode(cursor)}` : ''}`, {
+            signal,
+            cache: 'no-store',
+        }),
+
     roomHistory: (slug: string, cursor?: string | null, signal?: AbortSignal) =>
         request<RoomHistoryPage>(`/api/rooms/${encode(slug)}/history${cursor ? `?cursor=${encode(cursor)}` : ''}`, {
             signal,
@@ -354,6 +369,30 @@ export const api = {
     addSettlement: (slug: string, input: SettlementInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/settlements`, { method: 'POST', body: input, token }),
 
+    lemonNonce: () => request<{ nonce: string }>('/api/lemon/nonce', { cache: 'no-store' }),
+
+    account: () => request<AccountState>('/api/account', { cache: 'no-store' }),
+
+    signInWithAccessToken: (accessToken: string) =>
+        request<{ account: AccountSummary }>('/api/account/session', { method: 'POST', body: { accessToken } }),
+
+    signOut: () => request<{ account: null }>('/api/account/session', { method: 'DELETE' }),
+
+    syncAccountRooms: (held: Array<{ slug: string; token: string }>) =>
+        request<{ memberships: AccountMembership[] }>('/api/account/rooms', { method: 'POST', body: { held } }),
+
+    lemonQuote: (slug: string, amountMinor: string) =>
+        request<LemonQuote>(`/api/rooms/${encode(slug)}/lemon-quote?amountMinor=${encode(amountMinor)}`, {
+            cache: 'no-store',
+        }),
+
+    linkWallet: (slug: string, memberId: string, input: WalletLinkInput, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}/wallet`, {
+            method: 'POST',
+            body: input,
+            token,
+        }),
+
     deleteSettlement: (slug: string, id: string, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/settlements/${encode(id)}`, { method: 'DELETE', token }),
 
@@ -417,6 +456,74 @@ export const api = {
      *  shared-room edit: the room link is the credential. */
     setMemberAvatar: (slug: string, memberId: string, input: MemberAvatarInput, token?: string | null) =>
         request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}`, {
+            method: 'PATCH',
+            body: input,
+            token,
+        }),
+
+    startRecurring: (slug: string, expenseId: string) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/recurring`, { method: 'POST', body: { expenseId } }),
+
+    stopRecurring: (slug: string, recurringId: string) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/recurring/${encode(recurringId)}`, { method: 'DELETE' }),
+
+    saveBudgets: (slug: string, budgets: ApiBudget[]) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/budgets`, { method: 'POST', body: { budgets } }),
+
+    sendReminder: (slug: string, toId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/reminders`, { method: 'POST', body: { toId }, token }),
+
+    dismissReminder: (slug: string, reminderId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/reminders/${encode(reminderId)}/seen`, {
+            method: 'POST',
+            token,
+        }),
+
+    createPot: (slug: string, input: PotInput, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots`, { method: 'POST', body: input, token }),
+
+    updatePot: (slug: string, potId: string, input: Partial<PotInput> & { closed?: boolean }, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}`, { method: 'PATCH', body: input, token }),
+
+    addPotContribution: (
+        slug: string,
+        potId: string,
+        input: { memberId: string; amountMinor: string; reason?: 'roundup' | null },
+        token?: string | null
+    ) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/contributions`, {
+            method: 'POST',
+            body: input,
+            token,
+        }),
+
+    removePotContribution: (slug: string, potId: string, contributionId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/contributions/${encode(contributionId)}`, {
+            method: 'DELETE',
+            token,
+        }),
+
+    linkPotExpense: (slug: string, potId: string, expenseId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/expenses`, {
+            method: 'POST',
+            body: { expenseId },
+            token,
+        }),
+
+    unlinkPotExpense: (slug: string, potId: string, expenseId: string, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/pots/${encode(potId)}/expenses/${encode(expenseId)}`, {
+            method: 'DELETE',
+            token,
+        }),
+
+    badgeVoucher: (slug: string, badge: string, token?: string | null) =>
+        request<{ contract: string; tokenId: number; signature: string; wallet: string }>(
+            `/api/rooms/${encode(slug)}/badges`,
+            { method: 'POST', body: { badge }, token }
+        ),
+
+    setMemberProfile: (slug: string, memberId: string, input: MemberProfileInput, token?: string | null) =>
+        request<RoomState>(`/api/rooms/${encode(slug)}/members/${encode(memberId)}/profile`, {
             method: 'PATCH',
             body: input,
             token,

@@ -39,13 +39,13 @@ describe('the theme catalog', () => {
     it('keeps every field light enough to carry black ink', () => {
         // Ordinary room text uses the shared ink, never `fieldInk`.
         for (const theme of ROOM_THEMES) {
-            expect(contrast(theme.field, '#211C17'), `${theme.key} field vs black ink`).toBeGreaterThanOrEqual(4.5)
+            expect(contrast(theme.field, '#141414'), `${theme.key} field vs black ink`).toBeGreaterThanOrEqual(4.5)
         }
     })
 
     it('limits muted field ink to large or decorative OG copy', () => {
         // Every current use is at least 26px in generated artwork, so 3:1 is the
-        // intended floor. The three named pairs must not be treated as an AA
+        // intended floor. The two named pairs must not be treated as an AA
         // body-text palette; changing that set is a visual-design decision.
         const bodyTextFailures: string[] = []
         for (const theme of ROOM_THEMES) {
@@ -53,7 +53,7 @@ describe('the theme catalog', () => {
             expect(ratio, `${theme.key} field vs muted display ink`).toBeGreaterThanOrEqual(3)
             if (ratio < 4.5) bodyTextFailures.push(theme.key)
         }
-        expect(bodyTextFailures).toEqual(['classic', 'bubblegum', 'coral'])
+        expect(bodyTextFailures).toEqual(['bubblegum', 'coral'])
     })
 
     it('reproduces today’s look exactly under the default key', () => {
@@ -61,9 +61,9 @@ describe('the theme catalog', () => {
         // These four literals were the constants in `og/card.tsx` and the
         // `bg-primary-1` / `bg-white` classes before themes existed. A change
         // here is a change to every unthemed room in production.
-        expect(DEFAULT_THEME.field).toBe('#FFC900')
-        expect(DEFAULT_THEME.fieldTint).toBe('#FFD84D')
-        expect(DEFAULT_THEME.fieldInk).toBe('#7A5E00')
+        expect(DEFAULT_THEME.field).toBe('#FFD23F')
+        expect(DEFAULT_THEME.fieldTint).toBe('#FFE07A')
+        expect(DEFAULT_THEME.fieldInk).toBe('#4A1803')
         expect(DEFAULT_THEME.tint).toBe('#FFFFFF')
     })
 
@@ -92,7 +92,7 @@ describe('the theme catalog', () => {
             '--split-theme-accent',
         ])
         for (const theme of ROOM_THEMES) expect(Object.keys(themeVars(theme.key))).toEqual(keys)
-        expect(themeVars(null)['--split-theme-field']).toBe('#FFC900')
+        expect(themeVars(null)['--split-theme-field']).toBe('#FFD23F')
         expect(themeVars('sky')['--split-theme-field']).toBe('#90A8ED')
     })
 })

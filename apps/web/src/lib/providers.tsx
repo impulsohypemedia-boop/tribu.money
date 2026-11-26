@@ -7,6 +7,8 @@ import { useLocale } from 'next-intl'
 import { usePathname } from 'next/navigation'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { Toaster } from 'sonner'
+import { AccountSync } from '@/components/account/AccountSync'
+import { LemonProvider } from '@/components/lemon/LemonProvider'
 import { PushNavigation } from '@/components/pwa/PushNavigation'
 import { asLocale } from '@/i18n/locales'
 import { localeFromPathname } from '@/i18n/paths'
@@ -120,7 +122,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <MotionConfig reducedMotion={motionAllowed ? 'never' : 'always'}>
             <QueryClientProvider client={queryClient}>
                 <NuqsAdapter>
-                    {children}
+                    <LemonProvider>
+                        {children}
+                        <AccountSync />
+                    </LemonProvider>
                     <OfflineQueueRunner />
                     <PushNavigation />
                     <Toaster

@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import { useLocale, useTranslations } from 'next-intl'
 import { PushOptIn } from '@/components/pwa/PushOptIn'
 import { DoodlePicker } from '@/components/room/DoodlePicker'
+import { MonthlyExpenses } from '@/components/room/MonthlyExpenses'
 import { PeopleSection } from '@/components/room/PeopleSection'
 import { RoomEmblem } from '@/components/room/RoomEmblem'
 import { RoomExport } from '@/components/room/RoomExport'
@@ -34,6 +35,7 @@ import { useFeedback } from '@/lib/use-settings'
 import { DeviceSheet } from './DeviceSheet'
 import { FeedbackReportDrawer } from './FeedbackReportDrawer'
 import { HistorySheet } from './HistorySheet'
+import { LedgerSheet } from './LedgerSheet'
 
 interface SettingsSheetProps {
     open: boolean
@@ -92,6 +94,7 @@ export function SettingsSheet({
     const [draft, setDraft] = useState(room.name)
     const [deviceOpen, setDeviceOpen] = useState(false)
     const [historyOpen, setHistoryOpen] = useState(false)
+    const [ledgerOpen, setLedgerOpen] = useState(false)
     const [feedbackOpen, setFeedbackOpen] = useState(false)
     const [switchOpen, setSwitchOpen] = useState(false)
     const [pickerOpen, setPickerOpen] = useState(false)
@@ -310,6 +313,8 @@ export function SettingsSheet({
                                 onOpenCharacter={onOpenCharacter}
                             />
 
+                            <MonthlyExpenses state={state} />
+
                             <PushOptIn
                                 active={open}
                                 slug={room.slug}
@@ -351,6 +356,13 @@ export function SettingsSheet({
                             <RoomExport state={state} />
 
                             <SettingRow
+                                label={t('ledger')}
+                                value={t('ledgerHint')}
+                                onClick={() => setLedgerOpen(true)}
+                                testId="ledger-row"
+                            />
+
+                            <SettingRow
                                 label={t('history')}
                                 value={t('historyHint')}
                                 onClick={() => setHistoryOpen(true)}
@@ -387,6 +399,7 @@ export function SettingsSheet({
                 slug={room.slug}
                 token={identity?.token}
             />
+            <LedgerSheet open={ledgerOpen} onClose={() => setLedgerOpen(false)} slug={room.slug} state={state} />
             <HistorySheet open={historyOpen} onClose={() => setHistoryOpen(false)} slug={room.slug} state={state} />
             <FeedbackReportDrawer open={feedbackOpen} onClose={() => setFeedbackOpen(false)} state={state} />
 

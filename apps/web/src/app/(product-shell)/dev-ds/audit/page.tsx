@@ -7,8 +7,8 @@ import { ExecutiveQuestions } from './_components/ExecutiveQuestions'
 import { severityOrder, severityStyle, type Finding, type Severity } from './_components/audit-model'
 
 export const metadata: Metadata = {
-    title: 'Implementation audit — Peanut Split',
-    description: 'Interactive decision workspace for the evidence-backed Peanut Split implementation audit.',
+    title: 'Implementation audit — Tribu',
+    description: 'Interactive decision workspace for the evidence-backed Tribu implementation audit.',
 }
 
 const findings: Finding[] = [
@@ -23,7 +23,7 @@ const findings: Finding[] = [
         summary:
             'Dokploy polls main independently, so pushing to main deploys immediately while CI remains advisory. Leadership has explicitly chosen to keep that fast path before meaningful scale.',
         impact: 'A faulty push can reach production before automated checks finish. With no users yet, that blast radius is accepted in exchange for a simpler and faster shipping loop.',
-        action: 'No roadmap work now. Keep direct-to-main deployment and revisit a CI deployment gate only once Peanut Split has tens of thousands of users.',
+        action: 'No roadmap work now. Keep direct-to-main deployment and revisit a CI deployment gate only once Tribu has tens of thousands of users.',
         evidence: [
             '.github/workflows/ci.yml:1 — workflow documents that it does not block deployment',
             '.github/workflows/ci.yml:7 — checks run after push to main',
@@ -788,7 +788,7 @@ export default function AuditPage() {
                     <p className="text-h9 uppercase tracking-[0.18em] text-primary-1">
                         Deep implementation audit · 4 August 2026
                     </p>
-                    <h1 className="mt-4 max-w-5xl font-display text-5xl font-extrabold leading-[0.96] tracking-[-0.04em] sm:text-7xl">
+                    <h1 className="mt-4 max-w-5xl font-display text-5xl font-extrabold leading-[0.96] sm:text-7xl">
                         The system is good. Its seams are expensive.
                     </h1>
                     <p className="mt-6 max-w-3xl text-lg leading-8 text-grey-2">

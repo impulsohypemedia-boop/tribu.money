@@ -104,7 +104,7 @@ function InviteCard(card: Extract<AchievementCardData, { kind: 'invite' }>): Rea
             }}
         >
             <div style={{ display: 'flex', width: 610, height: '100%', flexDirection: 'column', padding: '8px 0' }}>
-                <div style={{ display: 'flex', fontSize: 48, fontWeight: 800, letterSpacing: -2 }}>Peanut Split</div>
+                <div style={{ display: 'flex', fontSize: 48, fontWeight: 800, letterSpacing: -2 }}>Tribu</div>
                 <div
                     style={{
                         display: 'flex',

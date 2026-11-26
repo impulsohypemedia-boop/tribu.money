@@ -3,14 +3,13 @@
 import { useRef, useState } from 'react'
 import { roomProps, track } from '@/lib/analytics'
 import { useErrorMessage } from '@/lib/error-messages'
-import { trackRoomCreatedConversion } from '@/lib/google-ads'
 import { writeIdentity } from '@/lib/identity'
 import { markRoomCreatedHere } from '@/lib/install-funnel'
+import type { CreateRoomInput } from '@/lib/api-types'
 import { useCreateRoom } from '@/lib/queries'
 import { rememberRoom } from '@/lib/recent-rooms'
 import { normalizePersonName } from '@/lib/person-name'
 import { useFeedback } from '@/lib/use-settings'
-import { trackXRoomCreatedConversion } from '@/lib/x-ads'
 
 export interface CreateRoomFields {
     name: string
@@ -18,6 +17,8 @@ export interface CreateRoomFields {
     currency: string
     creatorName: string
     memberNames?: string[]
+    kind?: 'tribu' | 'vaquita'
+    pot?: CreateRoomInput['pot']
     /** The template link this came from, if any. A fact about the page, never about the room. */
     template?: string
 }
@@ -48,6 +49,7 @@ export function useCreateRoomFlow(fallbackMessage: string) {
                 currency: fields.currency,
                 creatorName: fields.creatorName.trim(),
                 memberNames: fields.memberNames?.map(normalizePersonName).filter(Boolean),
+                ...(fields.kind === 'vaquita' ? { kind: 'vaquita' as const, pot: fields.pot } : {}),
             })
             // The token is returned exactly once — store it before anything else
             // can throw, or this device permanently loses its attribution.
@@ -57,7 +59,12 @@ export function useCreateRoomFlow(fallbackMessage: string) {
                 name: fields.creatorName.trim(),
             })
             markRoomCreatedHere(state.room.slug)
-            rememberRoom({ slug: state.room.slug, name: state.room.name, emoji: state.room.emoji ?? undefined })
+            rememberRoom({
+                slug: state.room.slug,
+                name: state.room.name,
+                emoji: state.room.emoji ?? undefined,
+                ...(state.room.kind === 'vaquita' ? { kind: 'vaquita' as const } : {}),
+            })
             // No preview warm from here. The room's card lives at a URL only Next
             // knows and only the room document advertises — and this runs on `/new`
             // or the landing hero, whose head is still describing that page. The
@@ -71,8 +78,6 @@ export function useCreateRoomFlow(fallbackMessage: string) {
             )
             // The campaigns' conversion, from the one place both surfaces create a room. It
             // carries nothing about the room, and is silent anywhere the tags are not mounted.
-            trackRoomCreatedConversion()
-            trackXRoomCreatedConversion()
             // A room came into being — the cork, not the pencil.
             feedback('pop')
             return state

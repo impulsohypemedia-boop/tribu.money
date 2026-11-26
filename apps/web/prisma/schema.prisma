@@ -21,14 +21,16 @@ enum SplitMode {
 }
 
 model Room {
-  id                          String           @id @default(uuid())
+  id                          String             @id @default(uuid())
   // "ski-trip-R7LxQ3TBJV_uQ2PMhzc8rw" — readable name + 128-bit capability.
   // Earlier rooms keep their three-word or 6-character tails; nothing in the
   // database lookup interprets tail shape, so every issued link remains valid.
-  slug                        String           @unique
+  slug                        String             @unique
   name                        String
   emoji                       String?
   currency                    String // display/settle currency, ISO 4217
+  // "tribu" shares expenses; "vaquita" is a room built around one shared pot.
+  kind                        String             @default("tribu")
   coverUrl                    String?
   // A KEY into the code-side catalog in `lib/themes.ts`, never a colour. Null is
   // the default palette, so a room written before themes existed and a room set
@@ -46,11 +48,16 @@ model Room {
   // between different members. Deliberately not a relation, so deleting that
   // expense cannot make a mature room look new again.
   firstSharedBalanceExpenseId String?
-  createdAt                   DateTime         @default(now())
+  createdAt                   DateTime           @default(now())
   members                     Member[]
   expenses                    Expense[]
+  recurringExpenses           RecurringExpense[]
+  pots                        Pot[]
+  reminders                   Reminder[]
+  budgets                     Budget[]
   settlements                 Settlement[]
   auditEvents                 RoomAuditEvent[]
+  ledgerEntries               LedgerEntry[]
   importBatches               ImportBatch[]
   feedbackReports             FeedbackReport[]
   installHandoffs             InstallHandoff[]
@@ -58,6 +65,42 @@ model Room {
   pushSubscriptions PushSubscription[]
   notificationSends NotificationSend[]
 
+  @@schema("split")
+}
+
+/// Presupuesto del grupo: the most the tribu means to spend in a month, overall
+/// or on one category. A plan, not money: nothing here touches balances. What
+/// was spent is read from the month's expenses whenever the screen is drawn.
+model Budget {
+  id          String   @id @default(uuid())
+  roomId      String
+  // "total" for the whole month, otherwise an expense category id.
+  category    String
+  amountMinor BigInt // per calendar month, room currency
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, category])
+  @@schema("split")
+}
+
+/// A friendly nudge from someone who is owed money to someone who owes them.
+/// The amount is not stored: the reminder points at the people, and the screen
+/// shows whatever is still pending between them when it is read. `seenAt` is
+/// set when the person reminded dismisses the notice in the app.
+model Reminder {
+  id        String    @id @default(uuid())
+  roomId    String
+  fromId    String
+  toId      String
+  createdAt DateTime  @default(now())
+  seenAt    DateTime?
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, toId, createdAt])
   @@schema("split")
 }
 
@@ -115,28 +158,44 @@ model RoomAuditEvent {
 }
 
 model Member {
-  id            String    @id @default(uuid())
-  roomId        String
-  name          String
-  token         String    @unique // stable server-issued secret, returned when a device selects this member
+  id             String    @id @default(uuid())
+  roomId         String
+  name           String
+  token          String    @unique // stable server-issued secret, returned when a device selects this member
   // A KEY into the code-side catalog in `lib/avatars.ts`, never artwork and never
   // a URL. Null is the persona derived from the name, so a member written before
   // the picker existed and a member who never opened it are the same row.
   // Like the roster itself, this is shared table banter: any room link-holder
   // may cast any room member, but only with an allowlisted key.
-  avatar        String?
+  avatar         String?
   // A KEY into the curated color pairs in `lib/avatar-palettes.ts`. Nullable
   // only for rolling deploys and rows written before multicolour avatars; new
   // writes always choose a concrete allowlisted key.
-  avatarPalette String?
-  userId        String? // future account-linking hook
+  avatarPalette  String?
+  userId         String? // the Tribu account that holds this member, set by account sync
+  // Lemon wallet this member is paid at. Set only by a holder of this member's token, with a
+  // signature from that wallet (`server/lemon/identity.ts`). Lowercase hex.
+  walletAddress  String?
+  lemonTag       String?
+  walletLinkedAt DateTime?
+  // Where this member asks to be paid outside Lemon, typed by the member themself. Shown to the
+  // people who owe them; never used to send a payment, so it needs no signature.
+  payoutToken    String? // USDT | USDC
+  payoutNetwork  String? // key from lib/payout.ts
+  payoutAddress  String?
+  // Two more ways to be paid, also typed by the member: an Argentine bank alias or a 22-digit
+  // CBU/CVU, and a Lemon tag (without the @). Same audience as the wallet: the room's members.
+  payoutBank     String?
+  payoutLemonTag String?
+  // Shares the room but does not chip in: new expenses leave them out unless picked by hand.
+  honoredGuest   Boolean   @default(false)
   // Creation provenance only: true for a name staged while adding an expense.
   // It is not removal eligibility and selecting the name does not change it.
-  provisional   Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  removedAt     DateTime? // non-null = Former for future activity; ledger identity remains durable
-  room          Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  user          User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  provisional    Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  removedAt      DateTime? // non-null = Former for future activity; ledger identity remains durable
+  room           Room      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user           User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   paidExpenses       Expense[]         @relation("ExpensePaidBy")
   createdExpenses    Expense[]         @relation("ExpenseCreatedBy")
@@ -150,6 +209,7 @@ model Member {
   installHandoffs   InstallHandoff[]
 
   @@index([roomId])
+  @@index([userId])
   @@schema("split")
 }
 
@@ -194,6 +254,10 @@ model Expense {
   category    String?
   createdAt   DateTime  @default(now())
   deletedAt   DateTime? // soft delete → 6s Undo
+  // Set on the expense a monthly template started from, and on every month it created.
+  recurringId String?
+  // Set when the room's vaquita paid this expense; the payer is then the pot's keeper.
+  potId       String?
 
   // Null for ordinary expenses and rooms created before append-imports. Imported
   // rows retain both their immutable batch provenance and their position in the
@@ -292,6 +356,13 @@ model Settlement {
   method      String? // "cash" | "bank" | "peanut" | null
   note        String?
   receiptUrl  String? // pasted documentation only; never fetched or verified
+  // On-chain settlement (method "lemon"): checked against the chain before it is recorded.
+  txHash      String?   @unique
+  chainId     Int?
+  token       String? // "USDC" | "USDT"
+  tokenAmount String? // token base units, decimal string
+  // Method "crypto": a stablecoin sent outside Tribu, recorded on the payer's word like cash.
+  network     String?
   createdAt   DateTime  @default(now())
   deletedAt   DateTime?
 
@@ -380,8 +451,11 @@ model NotificationSend {
 // rewriting member history.
 
 model User {
-  id        String        @id @default(uuid())
-  createdAt DateTime      @default(now())
+  id         String        @id @default(uuid())
+  createdAt  DateTime      @default(now())
+  // The address a person signed in with (Google or a code by email). Null for a Lemon-only account.
+  email      String?
+  lastSeenAt DateTime?
   accounts  AuthAccount[]
   members   Member[]
 
@@ -397,5 +471,115 @@ model AuthAccount {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerId])
+  @@schema("split")
+}
+
+/// A shared expense that repeats every month: rent, a subscription, a club fee.
+/// `body` is the validated expense request (amount, currency, payer, split) the next month is
+/// built from through the same `buildExpense` path as a typed expense. Months are created when
+/// someone opens the room, so no scheduler is needed.
+model RecurringExpense {
+  id          String    @id @default(uuid())
+  roomId      String
+  description String
+  body        Json
+  dayOfMonth  Int // 1–31; a shorter month uses its last day
+  nextMonth   String // YYYY-MM of the next month to create
+  stoppedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+  @@schema("split")
+}
+
+/// La vaquita: a shared pot with a goal. The money sits in one member's own account (the
+/// keeper). Tribu never holds it: a contribution from anyone else is recorded as a payment to
+/// the keeper, and an expense the pot pays is an expense paid by the keeper, so balances stay
+/// the one fold over expenses and settlements.
+model Pot {
+  id          String    @id @default(uuid())
+  roomId      String
+  name        String
+  keeperId    String
+  targetMinor BigInt? // room currency
+  quotaMinor  BigInt? // per person per month, room currency
+  dueDate     DateTime?
+  yieldAprBps Int? // estimated yearly rate the keeper's account pays, in basis points; display only
+  createdAt   DateTime  @default(now())
+  closedAt    DateTime?
+
+  room          Room              @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  contributions PotContribution[]
+
+  @@index([roomId])
+  @@schema("split")
+}
+
+model PotContribution {
+  id           String    @id @default(uuid())
+  potId        String
+  memberId     String
+  amountMinor  BigInt // room currency
+  // The payment to the keeper; null when the keeper put money in their own pot.
+  settlementId String?   @unique
+  reason       String? // null (a plain contribution) | "roundup"
+  createdById  String?
+  createdAt    DateTime  @default(now())
+  deletedAt    DateTime?
+
+  pot Pot @relation(fields: [potId], references: [id], onDelete: Cascade)
+
+  @@index([potId])
+  @@schema("split")
+}
+
+/// The tribu's book of account: every money movement as a double-entry record that is never
+/// changed or deleted. An edited expense gets a reversal of its last record and a new record; a
+/// deleted one gets only the reversal. Amounts are room-currency minor units, and the postings of
+/// each entry sum to zero (checked by a database trigger at commit).
+///
+/// Expenses, settlements and pot contributions stay the rows people edit. `src/server/ledger.ts`
+/// brings this book in line with them inside the same transaction as every audited write.
+model LedgerEntry {
+  id          BigInt   @id @default(autoincrement())
+  roomId      String
+  sourceType  String // expense | settlement | pot_contribution
+  sourceId    String
+  kind        String // record | reversal
+  reversesId  BigInt?  @unique // the record a reversal cancels
+  currency    String // room currency; every posting amount is in it
+  description String? // snapshot at write time
+  detail      Json? // snapshot at write time: original amount and currency, method, pot
+  occurredAt  DateTime // when the money moved: the expense date or when the payment was recorded
+  createdAt   DateTime @default(now())
+
+  room       Room            @relation(fields: [roomId], references: [id], onDelete: Restrict)
+  reverses   LedgerEntry?    @relation("LedgerReversal", fields: [reversesId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  reversedBy LedgerEntry?    @relation("LedgerReversal")
+  postings   LedgerPosting[]
+
+  @@index([roomId, id])
+  @@index([roomId, sourceType, sourceId])
+  @@schema("split")
+}
+
+/// One side of a ledger entry. Accounts:
+/// - member:<memberId>  the person's balance inside the tribu (positive = the tribu owes them)
+/// - pot:<potId>        money in that vaquita
+/// - keeper:<memberId>  vaquita money this person is holding (the pot's mirror, so negative)
+model LedgerPosting {
+  id          BigInt @id @default(autoincrement())
+  entryId     BigInt
+  roomId      String
+  accountType String // member | pot | keeper
+  accountId   String
+  amountMinor BigInt
+
+  entry LedgerEntry @relation(fields: [entryId], references: [id], onDelete: Restrict)
+
+  @@index([entryId])
+  @@index([roomId, accountType, accountId])
   @@schema("split")
 }

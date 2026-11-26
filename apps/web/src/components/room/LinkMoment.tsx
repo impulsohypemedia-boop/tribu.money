@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useTranslations } from 'next-intl'
 import { productUrl } from '@/lib/site'
 import { QRCodeSVG } from 'qrcode.react'
-import { peanutWavingHello } from '@/assets/mascot'
+import { tribuHola } from '@/assets/mascot'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Icon } from '@/components/ui/Icon'
@@ -267,7 +267,7 @@ export function LinkMoment({
                             transition={{ duration: 1.5, times: [0, 0.22, 0.78, 1], ease: 'easeInOut' }}
                             onAnimationComplete={() => setWaving(false)}
                         >
-                            <Image src={peanutWavingHello} alt="" unoptimized className="h-14 w-14 object-contain" />
+                            <Image src={tribuHola} alt="" unoptimized className="h-14 w-14 object-contain" />
                         </motion.div>
                     )}
                     <Card shadowSize="6" className="overflow-hidden">
@@ -316,7 +316,7 @@ export function LinkMoment({
                                             level="M"
                                             marginSize={4}
                                             bgColor="#FFFFFF"
-                                            fgColor="#211C17"
+                                            fgColor="#141414"
                                             aria-hidden="true"
                                             className="h-auto w-[clamp(7rem,36vw,9rem)]"
                                         />

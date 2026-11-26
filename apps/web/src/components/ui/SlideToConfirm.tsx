@@ -213,7 +213,7 @@ export function SlideToConfirm({
             aria-describedby={[ariaDescribedBy, instructionId].filter(Boolean).join(' ')}
             data-progress={progressPercent}
             className={cn(
-                'relative h-13 w-full touch-pan-y select-none overflow-hidden rounded-sm border-2 border-n-1 bg-white text-n-1 shadow-[0.25rem_0.25rem_0_#211C17] outline-none',
+                'shadow-4 relative h-13 w-full touch-pan-y select-none overflow-hidden rounded-sm border-2 border-n-1 bg-white text-n-1 outline-none',
                 (disabled || loading) && 'cursor-not-allowed opacity-60',
                 className
             )}
@@ -272,7 +272,7 @@ export function SlideToConfirm({
                 data-slide-handle
                 aria-hidden="true"
                 className={cn(
-                    'absolute top-1 flex size-11 items-center justify-center rounded-sm border border-n-1 bg-error-1 shadow-[0.125rem_0.125rem_0_#211C17]',
+                    'shadow-4 absolute top-1 flex size-11 items-center justify-center rounded-sm border border-n-1 bg-error-1',
                     !dragging && 'transition-[left] duration-150 ease-out'
                 )}
                 style={{ left: handleLeft }}

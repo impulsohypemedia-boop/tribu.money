@@ -10,17 +10,6 @@ const Title = ({
 } & React.HTMLAttributes<HTMLParagraphElement>) => {
     return (
         <div className="relative inline-block">
-            {/* React hoists this into <head>. Rendered here rather than in a layout so a page
-                preloads the hero face exactly when it is about to paint it. Today that is only the
-                control-variant hero; the default pass_link LP paints no display-hero type. Only the
-                Latin subset is preloaded — the other two are rare enough to fetch on demand. */}
-            <link
-                rel="preload"
-                href="/fonts/gluten-latin-400.woff2"
-                as="font"
-                type="font/woff2"
-                crossOrigin="anonymous"
-            />
             <p className={twMerge('relative font-display-hero text-white', offset && 'translate-x-[3px]', className)}>
                 {text}
             </p>

@@ -94,7 +94,7 @@ export function AchievementMoment({
             data-motion-surface
             data-testid="achievement-moment"
             data-achievement={shown.id}
-            className="relative mx-4 flex flex-col gap-4 overflow-hidden rounded-sm border border-n-1 bg-white p-4 shadow-[6px_6px_0_#211C17]"
+            className="shadow-4 relative mx-4 flex flex-col gap-4 overflow-hidden rounded-sm border border-n-1 bg-white p-4"
         >
             {/* Returns null on its own under reduced motion — no second branch needed here. */}
             {shown.type !== 'alterego' && <Confetti />}

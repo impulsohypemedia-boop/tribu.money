@@ -65,6 +65,15 @@ const classic = (
  * the twenty that follow are the cast-36 expansion (design/doodles/parts/07–10).
  */
 export const PERSONAS = {
+    // La Ronda, Tribu's own cast. They are what the picker offers and what new members get.
+    // `doodle` is only the fallback for surfaces that draw doodles (share cards); the app
+    // draws the character itself, see `lib/ronda-cast.ts`.
+    paco: persona('personavampirepenguin', 'Paco', 'El que siempre paga', '#14B8B0', '#FFD23F', '#141414'),
+    olvi: persona('personavampirepenguin', 'Olvi', 'La que se olvida', '#FF7AC6', '#6E5BFF', '#141414'),
+    tano: persona('personavampirepenguin', 'Tano', 'El ahorrador', '#B9D43A', '#14B8B0', '#141414'),
+    tita: persona('personavampirepenguin', 'Tita', 'La que organiza', '#6E5BFF', '#FF9F1C', '#141414'),
+    fede: persona('personavampirepenguin', 'Fede', 'El que pide fiado', '#FF9F1C', '#FF7AC6', '#141414'),
+    ruli: persona('personavampirepenguin', 'Ruli', 'La que divide al centavo', '#FFD23F', '#B9D43A', '#141414'),
     'vampire-penguin': persona(
         'personavampirepenguin',
         'Vampire Penguin',
@@ -157,7 +166,7 @@ export const PERSONAS = {
         'Spreadsheet Owl',
         'Has a tab for that',
         '#DDE2FF',
-        '#FAE184',
+        '#FFE07A',
         '#41487E'
     ),
     'snack-alpaca': persona('personasnackalpaca', 'Snack Alpaca', 'Bag is 80% snacks', '#FFEBC9', '#F7C5E6', '#6B4A2E'),
@@ -181,7 +190,7 @@ export const PERSONAS = {
         'personalostduckling',
         'Lost Duckling',
         'Right behind you',
-        '#FFF4CC',
+        '#FFF1C2',
         '#BDECF5',
         '#6B5720'
     ),
@@ -239,18 +248,18 @@ export const PERSONA_KEYS = Object.keys(PERSONAS) as PersonaKey[]
  * the named cast they make forty-eight visible options.
  */
 export const CLASSIC_AVATARS = {
-    'doodle-dog': classic('dog', 'Good Dog', 'Reliably delighted', '#FFF4CC', '#B8F0C5'),
-    'doodle-peanut': classic('peanut', 'Classic Peanut', 'Keeps it simple', '#FAE184', '#F6C7EC'),
-    'doodle-sun': classic('sun', 'Little Sun', 'Aggressively awake', '#FAE184', '#BDECF5'),
-    'doodle-wave': classic('wave', 'Big Wave', 'Swims any weather', '#BDECF5', '#FFF4CC'),
-    'doodle-leaf': classic('leaf', 'Fresh Leaf', 'Touches grass', '#B8F0C5', '#FFF4CC'),
+    'doodle-dog': classic('dog', 'Good Dog', 'Reliably delighted', '#FFF1C2', '#B8F0C5'),
+    'doodle-tribu': classic('tribu', 'The Tribe', 'Gets everyone in', '#FFE07A', '#F6C7EC'),
+    'doodle-sun': classic('sun', 'Little Sun', 'Aggressively awake', '#FFE07A', '#BDECF5'),
+    'doodle-wave': classic('wave', 'Big Wave', 'Swims any weather', '#BDECF5', '#FFF1C2'),
+    'doodle-leaf': classic('leaf', 'Fresh Leaf', 'Touches grass', '#B8F0C5', '#FFF1C2'),
     'doodle-crystal': classic('crystal', 'Lucky Crystal', 'Trusts the vibes', '#F6C7EC', '#C9D3F3'),
-    'doodle-guitar': classic('guitar', 'Tiny Guitar', 'Will play it', '#FFF4CC', '#F6C7EC'),
+    'doodle-guitar': classic('guitar', 'Tiny Guitar', 'Will play it', '#FFF1C2', '#F6C7EC'),
     'doodle-football': classic('football', 'Match Ball', 'Keeps score', '#B8F0C5', '#C9D3F3'),
-    'doodle-pizza': classic('pizza', 'Pizza Slice', 'Table order boss', '#F6C7EC', '#FAE184'),
-    'doodle-coffee': classic('coffee', 'Coffee Cup', 'First one awake', '#FFF4CC', '#C9D3F3'),
-    'doodle-cake': classic('cake', 'Cake Slice', 'Celebrates it all', '#F6C7EC', '#FFF4CC'),
-    'doodle-boat': classic('boat', 'Little Boat', 'Gets everyone home', '#BDECF5', '#FAE184'),
+    'doodle-pizza': classic('pizza', 'Pizza Slice', 'Table order boss', '#F6C7EC', '#FFE07A'),
+    'doodle-coffee': classic('coffee', 'Coffee Cup', 'First one awake', '#FFF1C2', '#C9D3F3'),
+    'doodle-cake': classic('cake', 'Cake Slice', 'Celebrates it all', '#F6C7EC', '#FFF1C2'),
+    'doodle-boat': classic('boat', 'Little Boat', 'Gets everyone home', '#BDECF5', '#FFE07A'),
 } as const satisfies Record<string, DoodleArt>
 
 /**
@@ -305,8 +314,15 @@ export const AVATARS = {
 
 export type AvatarKey = keyof typeof AVATARS
 
-/** The live picker order. Compatibility aliases are deliberately absent. */
-export const AVATAR_KEYS = [...PERSONA_KEYS, ...Object.keys(CLASSIC_AVATARS)] as AvatarKey[]
+/** The Ronda cast, in picker order. */
+export const RONDA_KEYS = ['paco', 'olvi', 'tano', 'tita', 'fede', 'ruli'] as const satisfies readonly PersonaKey[]
+export type RondaKey = (typeof RONDA_KEYS)[number]
+
+/**
+ * The live picker: the Ronda cast only. Every older key stays readable, and the app draws it
+ * as one of the cast (`rondaFor`), so a member who never re-picks still gets a new character.
+ */
+export const AVATAR_KEYS = [...RONDA_KEYS] as AvatarKey[]
 
 export const isAvatarKey = (value: unknown): value is AvatarKey =>
     typeof value === 'string' && Object.prototype.hasOwnProperty.call(AVATARS, value)
@@ -325,13 +341,10 @@ export function randomPersonaKey(
     random: () => number = Math.random
 ): PersonaKey {
     const excluded = new Set(typeof exclude === 'string' ? [exclude] : (exclude ?? []))
-    // Compatibility aliases can point at a current drawing under an older key.
-    // Compare the artwork identity so a legacy room cannot receive two visually
-    // identical mascots with different storage values.
-    const excludedDoodles = new Set([...excluded].flatMap((key) => (isAvatarKey(key) ? [AVATARS[key].doodle] : [])))
-    const available = PERSONA_KEYS.filter((key) => !excludedDoodles.has(PERSONAS[key].doodle))
-    const candidates = available.length > 0 ? available : PERSONA_KEYS
-    return candidates[pick(random, candidates.length)]
+    // The cast first; a seventh member reuses a character rather than getting an old doodle key.
+    const freeRonda = RONDA_KEYS.filter((key) => !excluded.has(key))
+    if (freeRonda.length > 0) return freeRonda[pick(random, freeRonda.length)]
+    return RONDA_KEYS[pick(random, RONDA_KEYS.length)]
 }
 
 /** Deal a room roster distinct personas instead of making independent draws. */
@@ -340,22 +353,29 @@ export function dealPersonaKeys(count: number, random: () => number = Math.rando
         throw new RangeError(`persona deal must be an integer from 0 to ${PERSONA_KEYS.length}`)
     }
 
-    const pool = [...PERSONA_KEYS]
-    for (let index = pool.length - 1; index > 0; index--) {
-        const swap = pick(random, index + 1)
-        const held = pool[index]
-        pool[index] = pool[swap]
-        pool[swap] = held
+    const shuffled = (keys: readonly PersonaKey[]) => {
+        const pool = [...keys]
+        for (let index = pool.length - 1; index > 0; index--) {
+            const swap = pick(random, index + 1)
+            const held = pool[index]
+            pool[index] = pool[swap]
+            pool[swap] = held
+        }
+        return pool
     }
+    // The cast is dealt first; only a roster bigger than the cast draws older keys, which the
+    // app still draws as cast members.
+    const ronda = new Set<string>(RONDA_KEYS)
+    const pool = [...shuffled(RONDA_KEYS), ...shuffled(PERSONA_KEYS.filter((key) => !ronda.has(key)))]
     return pool.slice(0, count)
 }
 
 /** A neutral defensive render fallback for null or unknown legacy values. */
-export const FALLBACK_AVATAR = CLASSIC_AVATARS['doodle-peanut']
+export const FALLBACK_AVATAR = CLASSIC_AVATARS['doodle-tribu']
 
 /** The same fallback as a key, for the callers that pass a persona across a boundary rather than
  *  render it — `avatar` is null on legacy rows, and the card route 404s on a null. */
-export const FALLBACK_AVATAR_KEY = 'doodle-peanut' satisfies AvatarKey
+export const FALLBACK_AVATAR_KEY = 'doodle-tribu' satisfies AvatarKey
 
 export const avatarArt = (avatar: string | null | undefined, _name?: string): AvatarArt =>
     isAvatarKey(avatar) ? AVATARS[avatar] : FALLBACK_AVATAR

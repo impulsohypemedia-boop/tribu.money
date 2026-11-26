@@ -23,6 +23,7 @@ import type { PushRoomWriteEvent } from '@/server/history'
 import {
     allSettledPayload,
     expenseAddedPayload,
+    reminderPayload,
     settlementRecordedPayload,
     type NotificationTemplate,
     type PushPayload,
@@ -134,6 +135,8 @@ interface SendRoomEventInput {
     /** Whoever caused the event — excluded from delivery. Null when the writer
      *  sent no member token, in which case everyone subscribed gets it. */
     actorMemberId: string | null
+    /** Deliver only to these members' devices. Omit to reach everyone but the actor. */
+    recipientIds?: readonly string[]
     /** Per-event templates key their dedupe slot on this. Omit for daily ones. */
     eventId?: string
     buildPayload: (sendId: string) => PushPayload
@@ -150,6 +153,7 @@ export async function sendRoomEvent(input: SendRoomEventInput): Promise<SendOutc
             // filter is defense in depth for legacy/orphaned rows.
             member: { removedAt: null },
             ...(actorMemberId ? { memberId: { not: actorMemberId } } : {}),
+            ...(input.recipientIds ? { AND: [{ memberId: { in: [...input.recipientIds] } }] } : {}),
         },
     })
     // Checked BEFORE the claim on purpose. Claiming first would burn the slot —
@@ -314,6 +318,35 @@ export function notifyRoomWrite(input: {
             })
         )
     }
+}
+
+/** A reminder reaches only the person reminded, on the phones where they turned notifications on. */
+export function notifyReminder(input: {
+    room: RoomWithRelations
+    reminderId: string
+    fromId: string
+    toId: string
+    amountMinor: string
+}): void {
+    const { room } = input
+    const fromName = room.members.find((m) => m.id === input.fromId)?.name ?? null
+    fireAndForget(
+        sendRoomEvent({
+            room,
+            template: 'reminder',
+            actorMemberId: input.fromId,
+            recipientIds: [input.toId],
+            eventId: input.reminderId,
+            buildPayload: (sendId) =>
+                reminderPayload({
+                    room: { slug: room.slug, name: room.name, emoji: room.emoji, currency: room.currency },
+                    roomId: room.id,
+                    sendId,
+                    fromName,
+                    amountMinor: input.amountMinor,
+                }),
+        })
+    )
 }
 
 function fireAndForget(send: Promise<SendOutcome>): void {

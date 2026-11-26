@@ -11,7 +11,7 @@ import screens from './splash-screens.json'
  * place, run `pnpm icons`, and both sides move together.
  *
  * Portrait only, deliberately. The manifest asks for `orientation: 'portrait'`, the app is a phone
- * app, and a landscape launch falls back to `background_color` — which is the same `#FAF4F0` the
+ * app, and a landscape launch falls back to `background_color` — which is the same `#FFFAEE` the
  * splash is drawn on, so the worst case is the mark missing for the second the app takes to boot,
  * not a stretched image. Twenty-two files instead of forty-four for that.
  */

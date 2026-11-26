@@ -48,6 +48,8 @@ interface ExpenseComposerProps {
     category: {
         value: ExpenseCategoryId | null
         options: readonly { id: ExpenseCategoryId; label: string; doodle: DoodleName }[]
+        /** What automatic detection reads in the description so far, if anything. */
+        auto?: { doodle: DoodleName; label: string | null } | null
         onChange: (value: ExpenseCategoryId | null) => void
     }
     editor: ExpenseEditor | null
@@ -201,8 +203,22 @@ export function ExpenseComposer({
                                 category.value === null ? 'shadow-2 bg-primary-3' : 'bg-white'
                             )}
                         >
-                            <Icon name="sparkles" size={19} />
-                            <span className="mt-1 max-w-14 truncate">{labels.categoryAutomatic}</span>
+                            {category.auto ? (
+                                <span className="relative" data-testid="expense-category-auto-guess">
+                                    <Doodle name={category.auto.doodle} size={22} weight={1.6} />
+                                    <Icon
+                                        name="sparkles"
+                                        size={11}
+                                        aria-hidden="true"
+                                        className="absolute -right-2.5 -top-1.5"
+                                    />
+                                </span>
+                            ) : (
+                                <Icon name="sparkles" size={19} />
+                            )}
+                            <span className="mt-1 max-w-14 truncate">
+                                {category.auto?.label ?? labels.categoryAutomatic}
+                            </span>
                         </button>
                         {category.options.map((option) => (
                             <button

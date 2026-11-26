@@ -15,14 +15,14 @@
         "currencies:gen": "node scripts/gen-currency-catalog.mjs",
         "i18n:audit": "node scripts/i18n-audit.mjs",
         "marketing-copy:audit": "node scripts/marketing-copy-audit.mjs",
-        "marketing-copy:audit:all": "node scripts/marketing-copy-audit.mjs --include-generated",
         "ui-icons:audit": "node scripts/ui-icon-audit.mjs",
         "classes:audit": "node scripts/tailwind-class-audit.mjs",
         "test:watch": "vitest",
         "e2e": "playwright test",
         "e2e:pwa-boundary": "playwright test --config playwright.pwa-boundary.config.ts",
         "e2e:v2": "playwright test --config playwright.v2.config.ts",
-        "icons": "node scripts/generate-icons.mjs"
+        "icons": "node scripts/generate-icons.mjs",
+        "mascots": "node scripts/generate-mascots.mjs"
     },
     "pnpm": {
         "onlyBuiltDependencies": [
@@ -44,6 +44,7 @@
         "@fontsource/gluten": "4.5.12",
         "@fontsource/roboto": "4.5.8",
         "@headlessui/tailwindcss": "^0.2.2",
+        "@lemoncash/mini-app-sdk": "0.1.16",
         "@number-flow/react": "^0.5.14",
         "@prisma/client": "^6.19.3",
         "@sentry/nextjs": "^10.75.3",
@@ -68,6 +69,7 @@
         "tailwind-merge": "^1.14.0",
         "undici": "^8.11.2",
         "vaul": "^1.1.2",
+        "viem": "^2.57.16",
         "web-push": "^3.6.7",
         "zod": "3.24.1"
     },

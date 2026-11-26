@@ -54,7 +54,7 @@ describe('the meta a chat preview reads', () => {
         expect(meta.description).toBe('Entre na divisão — veja quem deve o quê e lance o que você pagou.')
         // The title is the group's own name plus the brand, and stays text-only:
         // the room's doodle belongs to the rendered card, not a device emoji.
-        expect(meta.title).toBe('Ski Trip — Peanut Split')
+        expect(meta.title).toBe('Ski Trip — Tribu')
         // The slug is the credential, in every language.
         expect(meta.robots).toEqual({ index: false, follow: false })
         expect(meta.openGraph?.description).toBe(meta.description)

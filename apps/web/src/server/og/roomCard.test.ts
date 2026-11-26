@@ -271,15 +271,15 @@ describe('toRoomCard', () => {
 
 describe('roomTitle', () => {
     it('keeps legacy emoji out of text metadata', () => {
-        expect(roomTitle('Ski trip', '🎿')).toBe('Ski trip — Peanut Split')
+        expect(roomTitle('Ski trip', '🎿')).toBe('Ski trip — Tribu')
     })
 
     it('keeps non-Latin names — HTML has no glyph budget', () => {
-        expect(roomTitle('Кипр 2026', null)).toBe('Кипр 2026 — Peanut Split')
+        expect(roomTitle('Кипр 2026', null)).toBe('Кипр 2026 — Tribu')
     })
 
     it('ignores a non-emoji value in the emoji column', () => {
-        expect(roomTitle('Ski trip', 'x')).toBe('Ski trip — Peanut Split')
+        expect(roomTitle('Ski trip', 'x')).toBe('Ski trip — Tribu')
     })
 
     it('falls back when the name is empty', () => {
@@ -288,6 +288,6 @@ describe('roomTitle', () => {
 
     it('clips a very long name', () => {
         const title = roomTitle('B'.repeat(120), null)
-        expect(title).toBe(`${'B'.repeat(48)}… — Peanut Split`)
+        expect(title).toBe(`${'B'.repeat(48)}… — Tribu`)
     })
 })

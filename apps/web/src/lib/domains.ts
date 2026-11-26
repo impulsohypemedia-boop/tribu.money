@@ -1,13 +1,13 @@
 /**
- * Peanut Split has one public identity: app, PWA and content all live on
- * `peanutsplit.com`. `split.peanut.me` remains only as a compatibility alias while its
+ * Tribu has one public identity: app, PWA and content all live on
+ * `tribu.money`. `app.tribu.money` remains only as a compatibility alias while its
  * DNS record exists; it is never used to derive canonical URLs.
  */
-export const CANONICAL_HOST = 'peanutsplit.com'
+export const CANONICAL_HOST = 'tribu.money'
 export const CANONICAL_ORIGIN = `https://${CANONICAL_HOST}`
 export const CANONICAL_APP_ENTRY = `${CANONICAL_ORIGIN}/app`
 
-export const LEGACY_ALIAS_HOST = 'split.peanut.me'
+export const LEGACY_ALIAS_HOST = 'app.tribu.money'
 export const LEGACY_ALIAS_ORIGIN = `https://${LEGACY_ALIAS_HOST}`
 
 /**
@@ -29,10 +29,10 @@ const PRODUCT_HOSTS = new Set([CANONICAL_HOST, `www.${CANONICAL_HOST}`, LEGACY_A
  * Accepts a raw request `Host` header or a parsed `URL.hostname`; the port, the case and a trailing
  * root dot do not count.
  *
- * `peanutsplit.com.` is the fully qualified spelling of `peanutsplit.com` — same DNS name, same
+ * `tribu.money.` is the fully qualified spelling of `tribu.money` — same DNS name, same
  * server, and `new URL()` keeps the dot in `hostname` rather than normalising it away. It also
- * survives percent-encoding: `https://peanutsplit.com%2e/new` parses to the same host. Both forms
- * reach the product, so both are the product. Only the single root dot is stripped: `…com..` is not
+ * survives percent-encoding: `https://tribu.money%2e/new` parses to the same host. Both forms
+ * reach the product, so both are the product. Only the single root dot is stripped: `…money..` is not
  * a name anything resolves.
  */
 export const isProductHost = (host: string): boolean =>

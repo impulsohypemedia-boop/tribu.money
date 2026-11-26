@@ -5,8 +5,8 @@ import { DocChrome } from '../_components/DocChrome'
 import { ReviewPicker } from './_components/ReviewPicker'
 
 export const metadata: Metadata = {
-    title: 'UX review — Peanut Split',
-    description: 'Representative UX mockups and recorded decisions for Peanut Split design-system changes.',
+    title: 'UX review — Tribu',
+    description: 'Representative UX mockups and recorded decisions for Tribu design-system changes.',
 }
 
 const noMockupItems = [
@@ -52,7 +52,7 @@ export default function ReviewPage() {
                         <p className="shadow-2 inline-flex rounded-full border border-n-1 bg-white px-3 py-1 text-h9 uppercase tracking-[0.16em]">
                             Manual review · representative mockups
                         </p>
-                        <h1 className="mt-5 max-w-4xl font-display text-5xl font-extrabold leading-[0.95] tracking-[-0.045em] sm:text-7xl">
+                        <h1 className="mt-5 max-w-4xl font-display text-5xl font-extrabold leading-[0.95] sm:text-7xl">
                             Seven reviewed choices. Approved foundations implemented.
                         </h1>
                         <p className="mt-6 max-w-3xl text-lg leading-8">

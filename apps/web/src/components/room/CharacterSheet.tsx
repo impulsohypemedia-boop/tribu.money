@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useTranslations } from 'next-intl'
 import { AvatarPicker } from '@/components/room/AvatarPicker'
+import { MemberProfile } from '@/components/room/MemberProfile'
 import { CloseButton } from '@/components/ui/CloseButton'
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/Drawer'
 import { DrawerBody } from '@/components/ui/DrawerLayout'
@@ -48,6 +49,7 @@ export function CharacterSheet({
     member,
     members,
     token,
+    meId,
 }: {
     open: boolean
     onClose: () => void
@@ -57,6 +59,8 @@ export function CharacterSheet({
     /** Active roster; removed members never appear in the room state. */
     members: readonly ApiMember[]
     token?: string | null
+    /** This device's member, who alone may edit their own wallet. */
+    meId?: string | null
 }) {
     const t = useTranslations('room.avatar')
     const errorMessage = useErrorMessage()
@@ -112,6 +116,7 @@ export function CharacterSheet({
                             disabled={setAvatar.isPending}
                         />
                     )}
+                    {member && <MemberProfile member={member} slug={slug} token={token} isMe={member.id === meId} />}
                 </DrawerBody>
             </DrawerContent>
         </Drawer>

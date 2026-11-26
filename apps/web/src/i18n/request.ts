@@ -25,39 +25,21 @@
  * it meant an explicit English lookup came back in whatever the cookie held, which served a
  * Spanish `<h1>` at the canonical English URL to anyone carrying a Spanish cookie.
  *
- * Resolution order: explicit request → proxy header → `ps-locale` cookie → `Accept-Language` → `en`.
+ * Tribu is Spanish-only for now: an explicit request (an English OG lookup) still wins, and
+ * every other request renders in `es-419` whatever its cookie or browser says.
  */
 
-import { cookies, headers } from 'next/headers'
 import { getRequestConfig } from 'next-intl/server'
-import {
-    DEFAULT_LOCALE,
-    LOCALE_COOKIE,
-    isLocale,
-    localeFromAcceptLanguage,
-    localeFromStoredPreference,
-    type Locale,
-} from './locales'
+import { isLocale, type Locale } from './locales'
 import { loadMessages } from './messages'
-import { LOCALE_HEADER } from './paths'
+
+/** Tribu ships in Spanish only for now; the other catalogs stay in the repo for later. */
+const PRODUCT_LOCALE: Locale = 'es-419'
 
 async function resolveLocale(requested: string | undefined): Promise<Locale> {
     // A caller naming the language it wants. Always wins — see the note above.
     if (isLocale(requested)) return requested
-
-    const requestHeaders = await headers()
-
-    // Only ever set by the proxy, for a locale-pinned content path or a valid `/new` handoff.
-    const fromUrl = requestHeaders.get(LOCALE_HEADER)
-    if (isLocale(fromUrl)) return fromUrl
-
-    const stored = (await cookies()).get(LOCALE_COOKIE)?.value
-    // Legacy deployed values are normalized before the provider rewrites the canonical value.
-    // Anything else ("fr", "es-ES") must not be trusted into a failed catalog import.
-    const storedLocale = localeFromStoredPreference(stored)
-    if (storedLocale) return storedLocale
-
-    return localeFromAcceptLanguage(requestHeaders.get('accept-language')) ?? DEFAULT_LOCALE
+    return PRODUCT_LOCALE
 }
 
 export default getRequestConfig(async ({ requestLocale }) => {

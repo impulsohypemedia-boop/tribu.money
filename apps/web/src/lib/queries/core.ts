@@ -5,6 +5,7 @@ import { requestDrain } from '../offline-queue'
 export const roomKey = (slug: string) => ['room', slug] as const
 export const currenciesKey = ['currencies'] as const
 export const historyKey = (slug: string) => ['room-history', slug] as const
+export const ledgerKey = (slug: string) => ['room-ledger', slug] as const
 
 /** Every mutation returns the full RoomState, so the cache is seeded in one hop
  *  and no screen ever derives money client-side. */

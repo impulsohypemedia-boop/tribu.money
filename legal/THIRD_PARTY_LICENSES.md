@@ -6,7 +6,7 @@ Every installed dependency of Peanut Split and the license it ships under, acros
 lockfiles. Prose notices for the material that needs one — fonts, icon geometry, quoted
 competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-826 packages, 15 license classes.
+840 packages, 15 license classes.
 
 | License | Packages |
 | --- | ---: |
@@ -23,7 +23,7 @@ competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 | `FSL-1.1-MIT` | 2 |
 | `ISC` | 37 |
 | `LGPL-3.0-or-later` | 1 |
-| `MIT` | 688 |
+| `MIT` | 702 |
 | `MPL-2.0` | 2 |
 
 ## (Apache-2.0 AND MIT)
@@ -203,6 +203,7 @@ competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## MIT
 
+- `@adraffy/ens-normalize@1.11.1`
 - `@alloc/quick-lru@5.3.0`
 - `@babel/code-frame@7.29.7`
 - `@babel/compat-data@7.29.7`
@@ -282,11 +283,15 @@ competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 - `@jridgewell/source-map@0.3.11`
 - `@jridgewell/sourcemap-codec@1.6.0`
 - `@jridgewell/trace-mapping@0.3.31`
+- `@lemoncash/mini-app-sdk@0.1.16`
 - `@mdx-js/mdx@3.1.1`
 - `@mdx-js/react@3.1.1`
 - `@napi-rs/lzma-linux-x64-gnu@1.5.1`
 - `@next/env@16.3.7`
 - `@next/swc-linux-x64-gnu@16.3.7`
+- `@noble/ciphers@1.3.0`
+- `@noble/curves@1.9.1`
+- `@noble/hashes@1.8.0`
 - `@nodelib/fs.scandir@2.1.5`
 - `@nodelib/fs.stat@2.0.5`
 - `@nodelib/fs.walk@1.2.8`
@@ -317,6 +322,9 @@ competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 - `@rollup/pluginutils@5.4.0`
 - `@rollup/rollup-linux-x64-gnu@4.63.5`
 - `@schummar/icu-type-parser@1.21.5`
+- `@scure/base@1.2.6`
+- `@scure/bip32@1.7.0`
+- `@scure/bip39@1.6.0`
 - `@sentry/babel-plugin-component-annotate@5.3.0`
 - `@sentry/browser-utils@10.75.3`
 - `@sentry/browser@10.75.3`
@@ -396,6 +404,7 @@ competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 - `@webassemblyjs/wasm-opt@1.14.1`
 - `@webassemblyjs/wasm-parser@1.14.1`
 - `@webassemblyjs/wast-printer@1.14.1`
+- `abitype@1.2.3`
 - `abstract-logging@2.0.1`
 - `acorn-import-phases@1.0.4`
 - `acorn-jsx@5.3.2`
@@ -516,6 +525,7 @@ competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 - `estree-util-visit@2.0.0`
 - `estree-walker@2.0.2`
 - `estree-walker@3.0.3`
+- `eventemitter3@5.0.1`
 - `events@3.3.0`
 - `execa@5.1.1`
 - `exit@0.1.2`
@@ -580,6 +590,7 @@ competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 - `is-plain-obj@4.1.0`
 - `is-reference@1.2.1`
 - `is-stream@2.0.1`
+- `isows@1.0.7`
 - `jest-changed-files@29.7.0`
 - `jest-circus@29.7.0`
 - `jest-cli@29.7.0`
@@ -721,6 +732,7 @@ competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 - `ohash@2.0.12`
 - `on-exit-leak-free@2.1.2`
 - `onetime@5.1.2`
+- `ox@0.14.59`
 - `p-limit@2.3.0`
 - `p-limit@3.1.0`
 - `p-locate@4.1.0`
@@ -877,6 +889,7 @@ competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 - `vfile-matter@5.0.1`
 - `vfile-message@4.0.3`
 - `vfile@6.0.3`
+- `viem@2.57.16`
 - `vite@7.3.6`
 - `vitest@4.1.11`
 - `watchpack@2.5.2`
@@ -886,6 +899,7 @@ competitor copy — are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 - `why-is-node-running@2.3.0`
 - `wordwrap@1.0.0`
 - `wrap-ansi@7.0.0`
+- `ws@8.21.0`
 - `yargs@17.7.3`
 - `yocto-queue@0.1.0`
 - `zod@3.24.1`

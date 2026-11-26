@@ -1,50 +1,42 @@
 'use client'
 
-import { Doodle } from '@/components/ui/Doodle'
-import { avatarPalette, avatarPaletteForIdentity, isAvatarPaletteKey } from '@/lib/avatar-palettes'
-import { avatarArt } from '@/lib/avatars'
+import Image from 'next/image'
 import { cn } from '@/lib/cn'
+import { RONDA_HEADS, rondaFor } from '@/lib/ronda-cast'
 
 /**
- * A member's little alter ego.
+ * A member's character from La Ronda, Tribu's cast: the head on cream.
  *
- * Every identity uses the approved pop palette: a crisp dark coloured line,
- * close-cropped on a bright flat ground. Null and unknown values use one neutral
- * peanut while legacy rows are backfilled; colour is deterministic until a
- * stored palette is supplied.
- *
- * No generated human face can turn a name into an accidental claim about the
- * person. The result stays legible down to the tiny header treatment.
+ * Every stored key draws one of the cast. Older keys map to a character by a stable hash, so a
+ * room that predates the cast changes look without changing data. `palette` is still accepted
+ * because member rows carry it, but the cast always wears its own colours.
  */
 export function MemberAvatar({
     name,
     avatar,
-    palette,
     size = 32,
     className,
 }: {
     name: string
-    /** Null/undefined/unknown → neutral compatibility fallback. */
+    /** Null/undefined/unknown → a character picked from the name. */
     avatar?: string | null
-    /** Optional allowlisted palette key; invalid/missing values use a stable compatibility colour. */
     palette?: string | null
     size?: number
     className?: string
 }) {
-    const art = avatarArt(avatar, name)
-    const colors = isAvatarPaletteKey(palette) ? avatarPalette(palette) : avatarPaletteForIdentity(avatar ?? name)
-    const compact = size <= 24
+    const key = rondaFor(avatar, name)
 
     return (
         <span
             className={cn(
-                'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-n-1 bg-white',
+                'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border-[1.5px] border-n-1 bg-background',
                 className
             )}
-            style={{ width: size, height: size, background: colors.background, color: colors.ink }}
+            style={{ width: size, height: size }}
             aria-hidden="true"
+            data-ronda={key}
         >
-            <Doodle name={art.doodle} size={size * 1.04} weight={compact ? 2.05 : 2.15} className="max-w-none" />
+            <Image src={RONDA_HEADS[key]} alt="" unoptimized width={size} height={size} className="size-full" />
         </span>
     )
 }

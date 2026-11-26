@@ -75,14 +75,18 @@ const relativeTime = (epochMs: number, locale: string): string => {
 export function YourRooms({
     surface = 'landing',
     entryActions,
+    only,
     addExpense = false,
 }: {
     surface?: 'landing' | 'app'
     entryActions?: ReactNode
+    /** Show only one kind of room (the app's Tribus tab lists tribus only). */
+    only?: 'tribus'
     addExpense?: boolean
 }) {
     const router = useRouter()
     const t = useTranslations('marketing.rooms')
+    const tPot = useTranslations('room.pot')
     const locale = useLocale()
     const motionAllowed = useMotionAllowed()
     const feedback = useFeedback()
@@ -137,16 +141,69 @@ export function YourRooms({
     // the control's own promise governs instead — a button that says "Show fewer
     // rooms" and then shows all six of them is a worse lie than a sixth room
     // behind a reveal.
-    const compact = recent.length === COLLAPSED_LIMIT + 1 && reveal === null
-    const collapsedLimit = compact ? recent.length : COLLAPSED_LIMIT
-    const visible = expanded ? recent : recent.slice(0, collapsedLimit)
-    const overflow = recent.length - visible.length
+    // A vaquita is its own section, not one more tribu: it lists apart, below.
+    const tribus = recent.filter((room) => room.kind !== 'vaquita')
+    const vaquitas = only === 'tribus' ? [] : recent.filter((room) => room.kind === 'vaquita')
+    const compact = tribus.length === COLLAPSED_LIMIT + 1 && reveal === null
+    const collapsedLimit = compact ? tribus.length : COLLAPSED_LIMIT
+    const visible = expanded ? tribus : tribus.slice(0, collapsedLimit)
+    const overflow = tribus.length - visible.length
     // `expanded ||` is what was missing. Derived from the limit alone, the control
     // vanished the moment forgetting a room brought an EXPANDED list down to a
     // count the limit already covered: "Show fewer rooms" disappeared under the
     // finger that had just deleted something, and the list stayed expanded with no
     // way back. Whatever the count, an expanded list can always be collapsed.
-    const canCollapse = expanded || recent.length > collapsedLimit
+    const canCollapse = expanded || tribus.length > collapsedLimit
+
+    const roomTile = (room: RecentRoom) => (
+        <motion.li
+            key={room.slug}
+            variants={roomCardVariants}
+            whileHover={motionAllowed ? { y: -2 } : undefined}
+            data-motion-surface
+            className="shadow-4 flex overflow-hidden rounded-sm border border-n-1 bg-white"
+        >
+            <RoomCardLink
+                href={`/r/${encodeURIComponent(room.slug)}${addExpense ? '?add=1' : ''}`}
+                data-focus-contained
+                whileTap={motionAllowed ? { scale: 0.97 } : undefined}
+                onClick={() => feedback('whoosh')}
+                aria-label={`${t('openLabel')}: ${room.name}`}
+                className="flex min-w-0 flex-1 items-center gap-3 rounded-l-sm p-3 transition-colors hover:bg-primary-4/20"
+            >
+                {/* The tile wears the room's own palette. Eight rooms rendered in
+                        one lavender square are eight identical rows you have to READ;
+                        the colour is the thing you actually recognise, and it is the
+                        same colour the room's header will be a tap later. Lavender
+                        stays the literal fallback, so an unthemed room is unchanged. */}
+                <motion.span
+                    aria-hidden="true"
+                    variants={emblemVariants}
+                    data-motion-surface
+                    style={room.theme ? { backgroundColor: themeFor(room.theme).field } : undefined}
+                    className="flex size-11 shrink-0 items-center justify-center rounded-sm border border-n-1 bg-primary-3 text-h5"
+                >
+                    <RoomEmblem value={room.emoji} name={room.name} size={30} />
+                </motion.span>
+                <span className="min-w-0 flex-1">
+                    <span className="block truncate text-h7">{room.name}</span>
+                    <span className="block text-sm text-grey-1">{relativeTime(room.lastSeenAt, locale)}</span>
+                </span>
+                <Icon name="chevron-right" size={20} className="shrink-0 text-n-1" />
+            </RoomCardLink>
+            <button
+                type="button"
+                onClick={() => askForget(room)}
+                aria-label={t('forgetLabel', { room: room.name })}
+                data-testid="forget-room"
+                data-room={room.slug}
+                data-focus-contained
+                className="flex min-w-12 shrink-0 items-center justify-center rounded-r-sm border-l border-n-1 text-grey-1 transition-colors hover:bg-primary-4/30 hover:text-n-1"
+            >
+                <Icon name="trash" size={19} aria-hidden="true" />
+            </button>
+        </motion.li>
+    )
 
     if (surface === 'landing' && recent.length === 0) return null
 
@@ -229,7 +286,7 @@ export function YourRooms({
             data-surface={surface}
             className="mx-auto w-full max-w-xl px-5 py-8 sm:py-10"
         >
-            {recent.length > 0 && (
+            {tribus.length > 0 && (
                 <>
                     <motion.div
                         variants={riseSoftVariants}
@@ -249,57 +306,7 @@ export function YourRooms({
                         data-motion-surface
                         className="mt-4 flex flex-col gap-3"
                     >
-                        {visible.map((room) => (
-                            <motion.li
-                                key={room.slug}
-                                variants={roomCardVariants}
-                                whileHover={motionAllowed ? { y: -2 } : undefined}
-                                data-motion-surface
-                                className="shadow-4 flex overflow-hidden rounded-sm border border-n-1 bg-white"
-                            >
-                                <RoomCardLink
-                                    href={`/r/${encodeURIComponent(room.slug)}${addExpense ? '?add=1' : ''}`}
-                                    data-focus-contained
-                                    whileTap={motionAllowed ? { scale: 0.97 } : undefined}
-                                    onClick={() => feedback('whoosh')}
-                                    aria-label={`${t('openLabel')}: ${room.name}`}
-                                    className="flex min-w-0 flex-1 items-center gap-3 rounded-l-sm p-3 transition-colors hover:bg-primary-4/20"
-                                >
-                                    {/* The tile wears the room's own palette. Eight rooms rendered in
-                                        one lavender square are eight identical rows you have to READ;
-                                        the colour is the thing you actually recognise, and it is the
-                                        same colour the room's header will be a tap later. Lavender
-                                        stays the literal fallback, so an unthemed room is unchanged. */}
-                                    <motion.span
-                                        aria-hidden="true"
-                                        variants={emblemVariants}
-                                        data-motion-surface
-                                        style={room.theme ? { backgroundColor: themeFor(room.theme).field } : undefined}
-                                        className="flex size-11 shrink-0 items-center justify-center rounded-sm border border-n-1 bg-primary-3 text-h5"
-                                    >
-                                        <RoomEmblem value={room.emoji} name={room.name} size={30} />
-                                    </motion.span>
-                                    <span className="min-w-0 flex-1">
-                                        <span className="block truncate text-h7">{room.name}</span>
-                                        <span className="block text-sm text-grey-1">
-                                            {relativeTime(room.lastSeenAt, locale)}
-                                        </span>
-                                    </span>
-                                    <Icon name="chevron-right" size={20} className="shrink-0 text-n-1" />
-                                </RoomCardLink>
-                                <button
-                                    type="button"
-                                    onClick={() => askForget(room)}
-                                    aria-label={t('forgetLabel', { room: room.name })}
-                                    data-testid="forget-room"
-                                    data-room={room.slug}
-                                    data-focus-contained
-                                    className="flex min-w-12 shrink-0 items-center justify-center rounded-r-sm border-l border-n-1 text-grey-1 transition-colors hover:bg-primary-4/30 hover:text-n-1"
-                                >
-                                    <Icon name="trash" size={19} aria-hidden="true" />
-                                </button>
-                            </motion.li>
-                        ))}
+                        {visible.map(roomTile)}
                     </motion.ul>
 
                     {canCollapse && (
@@ -324,6 +331,22 @@ export function YourRooms({
                         </motion.button>
                     )}
                 </>
+            )}
+
+            {vaquitas.length > 0 && (
+                <section data-testid="recent-vaquitas" className={tribus.length > 0 ? 'mt-8' : ''}>
+                    <motion.h2 variants={riseSoftVariants} data-motion-surface className="text-h5">
+                        {tPot('yourVaquitas')}
+                    </motion.h2>
+                    <motion.ul
+                        variants={roomListVariants}
+                        data-testid="recent-vaquita-list"
+                        data-motion-surface
+                        className="mt-4 flex flex-col gap-3"
+                    >
+                        {vaquitas.map(roomTile)}
+                    </motion.ul>
+                </section>
             )}
 
             {surface === 'app' && (

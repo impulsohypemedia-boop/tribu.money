@@ -1,12 +1,12 @@
 'use client'
 
-import { memo, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent } from 'react'
 import Image from 'next/image'
 import { AnimatePresence, motion } from 'motion/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { toast } from 'sonner'
-import { peanutThinking } from '@/assets/mascot'
+import { tribuPensando } from '@/assets/mascot'
 import type { ApiExpense, CurrencyInfo, RoomState } from '@/lib/api-types'
 import { cn } from '@/lib/cn'
 import { personalExpenseImpact } from '@/lib/expense-impact'
@@ -29,9 +29,7 @@ import { isPendingExpenseId } from '@/lib/pending'
 import { roomTimeline } from '@/lib/timeline'
 import { useMotionAllowed } from '@/lib/use-motion'
 import { dayLabel, expenseRowLabel, groupByDay } from '@/lib/dates'
-import { matchExpenseCategory } from '@/lib/expense-category'
 import { Button } from '@/components/ui/Button'
-import { Doodle } from '@/components/ui/Doodle'
 import { Money } from './Money'
 import { ReactionBar } from './ReactionBar'
 import { SettlementRow } from './SettlementRow'
@@ -65,33 +63,6 @@ const EXPENSE_PRESS_CONTROL_SELECTOR = 'button, a, input, select, textarea, [rol
 
 const expensePressTarget = (target: EventTarget | null, card: Element): Element =>
     target instanceof Element ? (target.closest(EXPENSE_PRESS_CONTROL_SELECTOR) ?? card) : card
-
-/**
- * Matching can include a conservative typo scan across the term catalog. Keeping the
- * art in a memoized leaf means reaction, gesture and polling state do not repeat
- * that work for every unchanged row.
- */
-const ExpenseSubjectArt = memo(function ExpenseSubjectArt({
-    description,
-    category,
-}: {
-    description: string
-    category: string | null
-}) {
-    const match = matchExpenseCategory(description, category)
-    const subject = match.subject
-
-    return (
-        <span
-            className="flex h-11 w-11 shrink-0 items-center justify-center self-center text-n-1"
-            data-expense-subject={subject.id}
-            data-expense-category={match.category.id}
-            data-testid="expense-subject-doodle"
-        >
-            <Doodle name={subject.doodle} size={44} weight={1.4} />
-        </span>
-    )
-})
 
 export interface ExpensePersonalPosition {
     direction: 'lent' | 'borrowed' | 'total'
@@ -213,6 +184,8 @@ export function ExpenseList({
     savedActionsDisabled = false,
 }: ExpenseListProps) {
     const t = useTranslations('room.expenses')
+    const tPot = useTranslations('room.pot')
+    const isVaquita = state.room.kind === 'vaquita'
     const tDates = useTranslations('dates')
     const tOffline = useTranslations('offline')
     const locale = useLocale()
@@ -227,6 +200,14 @@ export function ExpenseList({
     /** Expenses and payments in one list, newest first — see `lib/timeline.ts`
      *  for why a settlement's `createdAt` is the date it interleaves on. */
     const timeline = useMemo(() => roomTimeline(state.expenses, state.settlements), [state.expenses, state.settlements])
+    // Subscriptions are the expenses a monthly schedule created. The filter only appears once
+    // there is at least one, and it never hides anything from the balances.
+    const hasSubscriptions = state.expenses.some((expense) => expense.recurringId)
+    const [onlySubscriptions, setOnlySubscriptions] = useState(false)
+    const showOnlySubscriptions = onlySubscriptions && hasSubscriptions
+    const visibleTimeline = showOnlySubscriptions
+        ? timeline.filter((entry) => entry.kind === 'expense' && entry.expense.recurringId)
+        : timeline
 
     const clearPress = () => {
         if (press.current) window.clearTimeout(press.current.timer)
@@ -368,13 +349,13 @@ export function ExpenseList({
                     data-motion-surface
                 >
                     <Image
-                        src={peanutThinking}
+                        src={tribuPensando}
                         alt=""
                         unoptimized
                         className="h-20 w-20 object-contain sm:h-32 sm:w-32"
                     />
                 </motion.div>
-                <p className="text-h6">{t('emptyTitle')}</p>
+                <p className="text-h6">{isVaquita ? tPot('emptyTitle') : t('emptyTitle')}</p>
                 <div className="flex w-full max-w-[18rem] flex-col gap-3">
                     <Button
                         variant="primary"
@@ -384,7 +365,7 @@ export function ExpenseList({
                         onClick={onShare}
                         data-testid="empty-share"
                     >
-                        {t('emptyShare')}
+                        {isVaquita ? tPot('emptyShare') : t('emptyShare')}
                     </Button>
                     <Button
                         variant="stroke"
@@ -413,10 +394,29 @@ export function ExpenseList({
         meId && state.members.some((member) => member.id === meId && member.removedAt == null) ? meId : undefined
     const memberIds = state.members.map((member) => member.id)
     const viewerIsMember = !!validMeId
-    const groups = groupByDay(timeline, (entry) => entry.date)
+    const groups = groupByDay(visibleTimeline, (entry) => entry.date)
 
     return (
         <section aria-label={t('title')} className="flex flex-col gap-5 px-4">
+            {hasSubscriptions && (
+                <div role="group" aria-label={t('filterLabel')} className="flex gap-2" data-testid="expense-filter">
+                    {([false, true] as const).map((only) => (
+                        <button
+                            key={String(only)}
+                            type="button"
+                            aria-pressed={showOnlySubscriptions === only}
+                            onClick={() => setOnlySubscriptions(only)}
+                            data-testid={only ? 'filter-subscriptions' : 'filter-all'}
+                            className={cn(
+                                'rounded-full border-[1.5px] border-n-1 px-3 py-1 text-sm font-bold',
+                                showOnlySubscriptions === only ? 'bg-n-1 text-white' : 'bg-white text-n-1'
+                            )}
+                        >
+                            {only ? t('filterSubscriptions') : t('filterAll')}
+                        </button>
+                    ))}
+                </div>
+            )}
             {groups.map((group) => (
                 <div key={group.key} className="flex flex-col gap-2">
                     <h3 id={`expense-day-${group.key}`} className="text-h8 uppercase tracking-wide text-grey-1">
@@ -671,13 +671,6 @@ export function ExpenseList({
                                                 poppedId === expense.id && 'animate-pop'
                                             )}
                                         >
-                                            {/* The description already names the purchase, so the subject art is
-                                                decorative. Its bare 44px stroke replaces the old payer portrait;
-                                                who paid remains on the secondary text line below. */}
-                                            <ExpenseSubjectArt
-                                                description={expense.description}
-                                                category={expense.category}
-                                            />
                                             <span className="min-w-0 flex-1 pt-0.5">
                                                 <span className="block truncate text-h7">
                                                     {/* Row label, not plain `expenseLabel`: these rows
@@ -686,6 +679,22 @@ export function ExpenseList({
                                                         heading and two unnamed rows read identically. */}
                                                     {expenseRowLabel(expense.description, expense.date, dayOptions)}
                                                 </span>
+                                                {expense.recurringId && (
+                                                    <span
+                                                        className="mt-0.5 inline-block rounded-full border-[1.5px] border-n-1 bg-[#FF7AC6] px-2 py-0.5 text-h10 font-bold uppercase tracking-wide text-n-1"
+                                                        data-testid="expense-recurring-chip"
+                                                    >
+                                                        {t('monthlyChip')}
+                                                    </span>
+                                                )}
+                                                {expense.potId && (
+                                                    <span
+                                                        className="ml-1 mt-0.5 inline-block rounded-full bg-primary-3 px-2 py-0.5 text-h10 font-bold uppercase tracking-wide text-n-1"
+                                                        data-testid="expense-pot-chip"
+                                                    >
+                                                        {t('potChip')}
+                                                    </span>
+                                                )}
                                                 {queuedExpense && (
                                                     <span className="block text-h10 uppercase tracking-wide text-grey-1">
                                                         {blockedWrite

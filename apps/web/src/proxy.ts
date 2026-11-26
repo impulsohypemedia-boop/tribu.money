@@ -3,10 +3,7 @@ import { LOCALE_COOKIE, LOCALE_COOKIE_MAX_AGE_SECONDS } from '@/i18n/locales'
 import { LOCALE_HEADER, localeFromPathname } from '@/i18n/paths'
 import { canonicalRedirect } from '@/lib/canonical-redirect'
 import { localeFromNewRoomHandoff } from '@/lib/locale-handoff'
-import { MARKETING_CACHE_CONTROL, marketingCacheable } from '@/lib/marketing-cache'
 import { siteUrl } from '@/lib/site'
-import { splitContentIndexable } from '@/lib/split-content/indexability'
-import { splitGuideLocale } from '@/lib/split-content/urls'
 
 /**
  * Tells the server what language a URL is in. It does not route or rewrite anything.
@@ -42,11 +39,6 @@ export function proxy(request: NextRequest) {
     const redirect = canonicalRedirect(host, request.nextUrl.pathname, request.nextUrl.search, siteUrl)
     if (redirect) return NextResponse.redirect(redirect.target, redirect.status)
 
-    // Generated guides render like any other public page, but stay out of every index until a
-    // human reviews them live and moves the source-controlled release registry. Their locale comes
-    // from the ordinary `localeFromPathname` path below — a guide URL states its language.
-    const isGuide = splitGuideLocale(request.nextUrl.pathname) !== null
-
     // API requests are matched only so requests to an alias can be canonicalised above.
     // On the configured host they must remain untouched: creation locale and request-origin
     // checks belong to the API handlers themselves.
@@ -62,17 +54,6 @@ export function proxy(request: NextRequest) {
 
     forwarded.set(LOCALE_HEADER, locale)
     const response = NextResponse.next({ request: { headers: forwarded } })
-
-    // Only a path that states its locale can be shared: `/` and the app shell returned above
-    // with the cookie still deciding their language, so they keep Next's `no-store`.
-    if (marketingCacheable(request.nextUrl.pathname)) {
-        response.headers.set('cache-control', MARKETING_CACHE_CONTROL)
-    }
-
-    if (isGuide && !splitContentIndexable(request.nextUrl.pathname)) {
-        response.headers.set('x-robots-tag', 'noindex, nofollow, noarchive')
-        response.headers.set('cache-control', 'private, no-store')
-    }
 
     if (handoffLocale) {
         response.cookies.set(LOCALE_COOKIE, handoffLocale, {

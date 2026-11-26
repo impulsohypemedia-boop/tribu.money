@@ -1,19 +1,19 @@
-import { Roboto_Flex, Sniglet } from 'next/font/google'
+import { DM_Sans, Titan_One } from 'next/font/google'
 
-const roboto = Roboto_Flex({
+// Body and numbers: DM Sans reads clearly at small sizes and keeps amounts tidy.
+const dmSans = DM_Sans({
     subsets: ['latin'],
     display: 'swap',
-    variable: '--font-roboto',
-    axes: ['wdth'],
+    variable: '--font-body',
 })
 
-const sniglet = Sniglet({
-    weight: ['400', '800'],
+// Logo and headings: Titan One, the heavy rounded face of the ronda identity. It ships one
+// weight; globals.css turns off synthetic bold so `font-bold` never smears it.
+const titanOne = Titan_One({
+    weight: '400',
     subsets: ['latin'],
     display: 'swap',
-    variable: '--font-sniglet',
+    variable: '--font-display',
 })
 
-// Gluten, the hero display face, lives in globals.css (@font-face over public/fonts woff2), not
-// here: next/font would hash its URL, and Title.tsx preloads it by stable URL.
-export const bodyFontClassName = `${roboto.variable} ${sniglet.variable} font-sans`
+export const bodyFontClassName = `${dmSans.variable} ${titanOne.variable} font-sans`

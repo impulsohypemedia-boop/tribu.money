@@ -52,16 +52,9 @@ const nextConfig = {
             { source: '/guides', destination: '/blog', permanent: true },
             { source: '/es-419/guides', destination: '/es-419/blog', permanent: true },
             { source: '/pt-br/guides', destination: '/pt-br/blog', permanent: true },
+            // The legal page moved from /privacy to /terminos; keep old links working.
+            { source: '/privacy', destination: '/terminos', permanent: true },
         ]
-    },
-
-    /**
-     * `public/` serves files at their exact path only — a directory never resolves to its own
-     * index.html. The funnel quiz is one self-contained static file under `public/dev/funnel-quiz/`,
-     * and this maps the clean URL onto it. After-files stage, so real files still win.
-     */
-    async rewrites() {
-        return [{ source: '/dev/funnel-quiz', destination: '/dev/funnel-quiz/index.html' }]
     },
 }
 
@@ -84,7 +77,7 @@ if (process.env.NODE_ENV !== 'development') {
             // requests — iOS takes those from the OS at install time, not from a cache. This is
             // the same list minus `icons/splash`, written as an include list because glob drops
             // `!` patterns silently rather than treating them as exclusions.
-            globPublicPatterns: ['*', 'doodles/**/*', 'fonts/*', 'icons/*', 'install/*.svg'],
+            globPublicPatterns: ['*', 'fonts/*', 'icons/*', 'install/*.svg'],
         })
         return withSerwist(withNextIntl(nextConfig))
     }

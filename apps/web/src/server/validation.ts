@@ -1,9 +1,13 @@
 /** Request-shape validation. Cross-field rules that need the room (membership,
  *  exact shares adding up) live in the domain modules, not here. */
+import { MAX_YIELD_APR_BPS } from '@/lib/pot-yield'
+import { isBudgetCategory } from '@/lib/budget'
+import { EXPENSE_CATEGORY_IDS } from '@/lib/expense-category'
 import { z } from 'zod'
 import { isValidCode, MAX_SIGNED_MINOR, normaliseCode, parseManualFxRate } from '@/server/money'
 import { isAvatarKey } from '@/lib/avatars'
 import { isAvatarPaletteKey } from '@/lib/avatar-palettes'
+import { PAYOUT_NETWORK_KEYS, PAYOUT_TOKENS, isPayoutNetwork, isPayoutToken, type PayoutNetwork } from '@/lib/payout'
 import { normalizePersonName } from '@/lib/person-name'
 import { isReactionEmoji } from '@/lib/reactions'
 import { isRoomDrawing } from '@/lib/room-drawing'
@@ -100,6 +104,15 @@ export const createRoomSchema = z.object({
     currency: currencyCode,
     creatorName: personName,
     memberNames: z.array(personName).optional(),
+    /** A vaquita room starts with its pot, kept by the creator. */
+    kind: z.enum(['tribu', 'vaquita']).default('tribu'),
+    pot: z
+        .object({
+            targetMinor: minorAmount.nullish(),
+            quotaMinor: minorAmount.nullish(),
+            dueDate: z.string().datetime({ offset: true }).nullish(),
+        })
+        .optional(),
 })
 
 export const createMemberSchema = z.object({
@@ -258,6 +271,37 @@ export const settlementSchema = z.object({
     method: z.string().trim().max(20).nullish(),
     note: z.string().trim().max(280).nullish(),
     receiptUrl: receiptUrl.nullish(),
+    /**
+     * Paying ahead on purpose: the amount may exceed what the payer owes, and the extra stays as
+     * credit in their favour that later expenses use up. Without it the debt is a hard ceiling,
+     * so a typo cannot silently flip who owes whom. Never allowed with `lemon`.
+     */
+    advance: z.boolean().optional(),
+    /** Method `crypto` only: what was sent, as the payer says. Nothing is checked on chain. */
+    crypto: z
+        .object({
+            token: z.enum(PAYOUT_TOKENS),
+            network: z.enum(PAYOUT_NETWORK_KEYS as [PayoutNetwork, ...PayoutNetwork[]]),
+        })
+        .optional(),
+    /** Method `lemon` only: the stablecoin transfer that paid this debt. */
+    lemon: z
+        .object({
+            txHash: z.string().regex(/^0x[0-9a-fA-F]{64}$/),
+            token: z.enum(['USDC', 'USDT']),
+            tokenAmount: z.string().regex(/^[1-9][0-9]{0,30}$/),
+        })
+        .optional(),
+})
+
+export const walletLinkSchema = z.object({
+    wallet: z.string().regex(/^0x[0-9a-fA-F]{40}$/),
+    message: z.string().min(1).max(4000),
+    signature: z
+        .string()
+        .regex(/^0x[0-9a-fA-F]+$/)
+        .max(20_000),
+    lemonTag: z.string().trim().max(64).nullish(),
 })
 
 export const rateQuerySchema = z.object({ from: currencyCode, to: currencyCode })
@@ -466,6 +510,54 @@ export const memberAvatarSchema = z.object({
     avatarPalette: z.string().max(40).refine(isAvatarPaletteKey, { message: 'unknown avatar palette' }).optional(),
 })
 
+/**
+ * A member's own profile: the honored-guest flag and where they ask to be paid. The address is
+ * checked against its network in the route, where a mismatch can name the field.
+ */
+export const memberProfileSchema = z
+    .object({
+        honoredGuest: z.boolean().optional(),
+        payout: z
+            .object({
+                token: z.string().refine(isPayoutToken, { message: 'unknown token' }),
+                network: z.string().refine(isPayoutNetwork, { message: 'unknown network' }),
+                address: z.string().max(120),
+            })
+            .nullable()
+            .optional(),
+        /** Bank alias or CBU/CVU; null clears it. */
+        bank: z.string().max(60).nullable().optional(),
+        /** Lemon tag, with or without the @; null clears it. */
+        lemonTag: z.string().max(40).nullable().optional(),
+    })
+    .refine(
+        (body) =>
+            body.honoredGuest !== undefined ||
+            body.payout !== undefined ||
+            body.bank !== undefined ||
+            body.lemonTag !== undefined,
+        { message: 'nothing to change' }
+    )
+
+export type MemberProfileBody = z.infer<typeof memberProfileSchema>
+/** Presupuesto del grupo: the whole list of monthly limits, replacing what was there. */
+export const budgetsSchema = z.object({
+    budgets: z
+        .array(
+            z.object({
+                category: z.string().refine(isBudgetCategory, { message: 'unknown budget category' }),
+                amountMinor: minorAmount.refine((s) => BigInt(s) > 0n, { message: 'a limit needs an amount' }),
+            })
+        )
+        .max(EXPENSE_CATEGORY_IDS.length + 1)
+        .refine((list) => new Set(list.map((budget) => budget.category)).size === list.length, {
+            message: 'each category can have one limit',
+        }),
+})
+
+/** Repeat a saved expense every month. */
+export const recurringStartSchema = z.object({ expenseId: id })
+
 export type RoomSettingsBody = z.infer<typeof roomSettingsSchema>
 export type ReactionBody = z.infer<typeof reactionSchema>
 export type MemberAvatarBody = z.infer<typeof memberAvatarSchema>
@@ -644,3 +736,43 @@ export const importIntoRoomSchema = z
     })
 
 export type ImportIntoRoomBody = z.infer<typeof importIntoRoomSchema>
+
+const potName = z.string().trim().min(1).max(60)
+const optionalMinor = minorAmount.nullish()
+
+const yieldAprBps = z.number().int().min(1).max(MAX_YIELD_APR_BPS).nullish()
+
+export const reminderSchema = z.object({ toId: id })
+
+export const potCreateSchema = z.object({
+    name: potName,
+    keeperId: id,
+    targetMinor: optionalMinor,
+    quotaMinor: optionalMinor,
+    dueDate: z.string().datetime({ offset: true }).nullish(),
+    yieldAprBps,
+})
+
+export const potUpdateSchema = z.object({
+    name: potName.optional(),
+    targetMinor: optionalMinor,
+    quotaMinor: optionalMinor,
+    dueDate: z.string().datetime({ offset: true }).nullish(),
+    yieldAprBps,
+    closed: z.boolean().optional(),
+})
+
+export const potContributionSchema = z.object({
+    memberId: id,
+    amountMinor: minorAmount,
+    /** Marks a round-up from Quedar a mano; null for a plain contribution. */
+    reason: z.literal('roundup').nullish(),
+})
+
+export const potSpendSchema = z.object({ expenseId: id })
+
+export const accountSessionSchema = z.object({ accessToken: z.string().min(20).max(8000) })
+
+export const accountRoomsSchema = z.object({
+    held: z.array(z.object({ slug: z.string().min(1).max(120), token: z.string().min(1).max(200) })).max(200),
+})

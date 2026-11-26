@@ -31,7 +31,7 @@ export interface RoomTheme {
     /** The OG card's decorative blobs — one step off `field`, same hue. */
     fieldTint: string
     /** Muted display ink used only by large/decorative OG copy. It is not a
-     *  general text token: classic, bubblegum and coral are below 4.5:1 on
+     *  general text token: bubblegum and coral are below 4.5:1 on
      *  `field`. Ordinary product text always inherits the shared black ink. */
     fieldInk: string
     /** The lightest member of the family, for a tint sitting on white — the
@@ -59,14 +59,14 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
     {
         key: 'classic',
         nameKey: 'classic',
-        field: '#FFC900',
-        fieldTint: '#FFD84D',
-        fieldInk: '#7A5E00',
+        field: '#FFD23F',
+        fieldTint: '#FFE07A',
+        fieldInk: '#4A1803',
         // White, not a yellow wash: the settled balance card is white today and
         // the default theme is not allowed to move a single pixel.
         tint: '#FFFFFF',
-        accent: '#FF90E8',
-        motif: 'peanut',
+        accent: '#C9C2FF',
+        motif: 'tribu',
     },
     {
         key: 'bubblegum',
@@ -75,7 +75,7 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
         fieldTint: '#FFB3EF',
         fieldInk: '#8A2E77',
         tint: '#FFEAFA',
-        accent: '#FFC900',
+        accent: '#FFD23F',
         motif: 'candy',
     },
     {
@@ -105,7 +105,7 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
         fieldTint: '#B0C1F3',
         fieldInk: '#26356B',
         tint: '#E9EEFB',
-        accent: '#FFC900',
+        accent: '#FFD23F',
         motif: 'wave',
     },
     {
@@ -115,17 +115,17 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
         fieldTint: '#F2B9B9',
         fieldInk: '#7A2E2E',
         tint: '#FBEAEA',
-        accent: '#FFC900',
+        accent: '#FFD23F',
         motif: 'sun',
     },
     {
         key: 'sand',
         nameKey: 'sand',
-        field: '#FFF4CC',
-        fieldTint: '#FAE184',
+        field: '#FFF1C2',
+        fieldTint: '#FFE07A',
         fieldInk: '#7A5E00',
         tint: '#FFFBEE',
-        accent: '#FFC900',
+        accent: '#FFD23F',
         motif: 'island',
     },
     {
@@ -135,7 +135,7 @@ export const ROOM_THEMES: readonly RoomTheme[] = [
         fieldTint: '#D3D5D8',
         fieldInk: '#3A3E45',
         tint: '#F4F5F6',
-        accent: '#211C17',
+        accent: '#141414',
         motif: 'iconpencil',
     },
 ]

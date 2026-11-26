@@ -3,28 +3,28 @@ import { CANONICAL_APP_ENTRY, CANONICAL_HOST, CANONICAL_ORIGIN, isProductHost, L
 import { parseRequestAuthority, productUrl, requestAuthorityMatchesOrigin, resolveSiteUrl } from './site'
 
 describe('domain constants', () => {
-    it('keeps the whole public product on peanutsplit.com', () => {
+    it('keeps the whole public product on tribu.money', () => {
         const entry = new URL(CANONICAL_APP_ENTRY)
-        expect(CANONICAL_HOST).toBe('peanutsplit.com')
+        expect(CANONICAL_HOST).toBe('tribu.money')
         expect(entry.origin).toBe(CANONICAL_ORIGIN)
         expect(entry.pathname).toBe('/app')
         expect(entry.search).toBe('')
         expect(entry.hash).toBe('')
-        expect(LEGACY_ALIAS_HOST).toBe('split.peanut.me')
+        expect(LEGACY_ALIAS_HOST).toBe('app.tribu.money')
     })
 
     it('counts the canonical host, the alias, and both www forms as the product', () => {
         for (const host of [
-            'peanutsplit.com',
-            'www.peanutsplit.com',
-            'split.peanut.me',
-            'www.split.peanut.me',
-            'PEANUTSPLIT.COM',
-            'peanutsplit.com:8443',
+            'tribu.money',
+            'www.tribu.money',
+            'app.tribu.money',
+            'www.app.tribu.money',
+            'TRIBU.MONEY',
+            'tribu.money:8443',
         ]) {
             expect(isProductHost(host)).toBe(true)
         }
-        for (const host of ['peanut.me', 'splitwise.com', 'split.peanut.me.evil.example', 'peanutsplit.com.co', '']) {
+        for (const host of ['peanut.me', 'splitwise.com', 'app.tribu.money.evil.example', 'tribu.money.co', '']) {
             expect(isProductHost(host)).toBe(false)
         }
     })
@@ -35,19 +35,19 @@ describe('domain constants', () => {
      */
     it('counts the fully qualified form of every product host, literal dot or percent-encoded', () => {
         for (const href of [
-            'https://peanutsplit.com./new',
-            'https://peanutsplit.com%2e/new',
-            'https://www.peanutsplit.com./new',
-            'https://www.peanutsplit.com%2e/new',
-            'https://split.peanut.me./new',
-            'https://split.peanut.me%2e/new',
-            'http://peanutsplit.com.:8443/new',
+            'https://tribu.money./new',
+            'https://tribu.money%2e/new',
+            'https://www.tribu.money./new',
+            'https://www.tribu.money%2e/new',
+            'https://app.tribu.money./new',
+            'https://app.tribu.money%2e/new',
+            'http://tribu.money.:8443/new',
         ]) {
             expect(isProductHost(new URL(href).hostname), href).toBe(true)
         }
-        expect(isProductHost('peanutsplit.com')).toBe(true)
+        expect(isProductHost('tribu.money')).toBe(true)
         // One root dot is the name; two are not a name at all.
-        expect(isProductHost('peanutsplit.com..')).toBe(false)
+        expect(isProductHost('tribu.money..')).toBe(false)
         expect(isProductHost('.')).toBe(false)
     })
 

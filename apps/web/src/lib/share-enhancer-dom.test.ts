@@ -51,7 +51,7 @@ class FakeElement {
     }
 }
 
-const URL_WITH_CAMPAIGN = 'https://peanutsplit.com/blog/who-pays-for-the-wine?campaign=share-who-pays-for-the-wine'
+const URL_WITH_CAMPAIGN = 'https://tribu.money/blog/who-pays-for-the-wine?campaign=share-who-pays-for-the-wine'
 
 /** The article's own block, the shape `Share.tsx` server-renders. An empty `url`/`done` omits the
  *  attribute entirely, which is the malformed case the enhancer has to survive. */

@@ -30,7 +30,8 @@ describe('the initial room roster', () => {
     const room = { name: 'Trip', currency: 'EUR', creatorName: 'Ana' }
 
     it('keeps requests without additional people compatible', () => {
-        expect(createRoomSchema.parse(room)).toEqual(room)
+        // An old client that never sends a kind still gets a plain tribu.
+        expect(createRoomSchema.parse(room)).toEqual({ ...room, kind: 'tribu' })
         expect(createRoomSchema.parse({ ...room, memberNames: [] }).memberNames).toEqual([])
     })
 

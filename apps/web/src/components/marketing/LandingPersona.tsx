@@ -16,8 +16,6 @@ export const LANDING_CAST = {
     mo: 'moon-bunny',
     you: 'pocket-robot',
     ana: 'raincoat-duck',
-    konrad: 'astronaut-avocado',
-    hugo: 'disco-octopus',
     lisbon: 'pirate-parrot',
     flat: 'cozy-ghost',
     dinner: 'pancake-bear',

@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { CANONICAL_ORIGIN } from '@/lib/domains'
 import { siteUrl } from '@/lib/site'
 import { DEFAULT_LOCALE, HREFLANG, type Locale } from '@/i18n/locales'
-import type { Doc, Faq } from '@/lib/content'
 
 /**
  * Metadata and JSON-LD builders for Split's own pages. A local copy of the idea behind
@@ -13,13 +12,10 @@ import type { Doc, Faq } from '@/lib/content'
  * `siteUrl`, which is the same origin in production and may be loopback in local/E2E builds.
  */
 
-const SITE_NAME = 'Peanut Split'
-const STEWARD_NAME = 'Squirrel Labs'
-const STEWARD_LEGAL_NAME = 'Squirrel Labs Ltd'
-const STEWARD_URL = 'https://squirrellabs.dev/'
-/** The other brand the same company runs. Google Ads limited ad serving on 28 Sep 2026 for an
- *  "unclear brand relationship"; naming it here keeps the shared operator machine-readable. */
-const PEANUT_URL = 'https://peanut.me/'
+const SITE_NAME = 'Tribu'
+/** Tribu's operator. No legal entity yet, so the organization node names the brand itself. */
+const STEWARD_NAME = 'Tribu'
+const STEWARD_URL = 'https://tribu.money/'
 
 /**
  * The site's one-line description. Lives here rather than inline in the root layout because two
@@ -28,7 +24,7 @@ const PEANUT_URL = 'https://peanut.me/'
  * the served meta description is the kind of mismatch that gets structured data ignored.
  */
 export const SITE_DESCRIPTION =
-    'Split expenses with friends for free. Share a room link, add what everyone paid, and see who owes what. No account or app download needed.'
+    'La billetera compartida de tu grupo. Anotan lo que pone cada uno, quedan a mano y juntan plata para lo que viene.'
 
 /**
  * OG spells locales `language_TERRITORY`; everything else here uses BCP 47.
@@ -60,9 +56,7 @@ export const ORGANIZATION_NODE = {
     '@type': 'Organization' as const,
     '@id': ORGANIZATION_ID,
     name: STEWARD_NAME,
-    legalName: STEWARD_LEGAL_NAME,
     url: STEWARD_URL,
-    sameAs: [PEANUT_URL],
 }
 
 /**
@@ -218,48 +212,6 @@ export function appBreadcrumbSchema(crumbs: Breadcrumb[]) {
 }
 
 /**
- * FAQPage. Returns null for an empty list — an FAQPage with no mainEntity is a structured-data
- * error, and callers pass frontmatter straight through.
- */
-export function faqSchema(faqs: Faq[] | undefined) {
-    if (!faqs?.length) return null
-    return {
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: faqs.map((faq) => ({
-            '@type': 'Question',
-            name: faq.question,
-            acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-        })),
-    }
-}
-
-/**
- * Article/BlogPosting for a content doc. Blog posts get BlogPosting; the alternative pages are
- * evergreen comparisons rather than dated posts, so they get plain Article.
- */
-export function articleSchema(doc: Doc) {
-    const { frontmatter } = doc
-    return {
-        '@context': 'https://schema.org',
-        '@type': doc.collection === 'blog' ? 'BlogPosting' : 'Article',
-        headline: frontmatter.title,
-        description: frontmatter.description,
-        // Standard BCP 47 casing, like hreflang — schema.org's `inLanguage` is an IETF tag, and
-        // the lowercase code is a filename convention that has no business in structured data.
-        inLanguage: HREFLANG[doc.locale],
-        datePublished: frontmatter.date,
-        dateModified: frontmatter.updated ?? frontmatter.date,
-        author: frontmatter.author ? { '@type': 'Person', name: frontmatter.author } : { '@id': ORGANIZATION_ID },
-        publisher: { '@id': ORGANIZATION_ID },
-        // Google lists `image` as required for an Article rich result.
-        image: ARTICLE_IMAGE_URL,
-        mainEntityOfPage: absoluteUrl(frontmatter.canonical ?? doc.href),
-        url: absoluteUrl(frontmatter.canonical ?? doc.href),
-    }
-}
-
-/**
  * WebApplication for a calculator page.
  *
  * `WebApplication` rather than the site-level `SoftwareApplication`: a tool is a thing you use in
@@ -296,14 +248,6 @@ export function toolSchema({
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     }
 }
-
-/**
- * A capture page whose head term names a calculator. It answers the same query a registry tool
- * does, so the `/tools` hub lists it after the registry rows. It gets no WebApplication node:
- * the page explains the split and states it has no calculator, so the markup would contradict it.
- */
-export const isCalculatorDoc = (doc: Doc): boolean =>
-    doc.collection === 'capture' && /\bcalculator\b/i.test(doc.frontmatter.headTerm ?? '')
 
 /**
  * WebSite + SoftwareApplication for the LP. The price assertion is the one claim here that

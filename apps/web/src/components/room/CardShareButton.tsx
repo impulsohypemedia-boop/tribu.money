@@ -26,7 +26,7 @@ import { useFeedback } from '@/lib/use-settings'
  *
  * The native payload carries `{ files }` only. That is the whole privacy design
  * in one object: the room link is the room's credential, so it rides only in the
- * deliberate invite flow. The card prints `peanutsplit.com` instead, which is
+ * deliberate invite flow. The card prints `tribu.money` instead, which is
  * the acquisition path that survives being forwarded.
  *
  * Sound and haptics fire on the tap, never on appearance.

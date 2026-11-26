@@ -9,7 +9,7 @@ import { useMotionAllowed } from '@/lib/use-motion'
 
 /** Brand confetti only — yellow, pink and black. Anything else and it stops
  *  looking like Peanut and starts looking like a party-supplies website. */
-const COLORS = ['#FFC900', '#FF90E8', '#211C17', '#FFC900', '#98E9AB'] as const
+const COLORS = ['#FFD23F', '#C9C2FF', '#141414', '#FFD23F', '#98E9AB'] as const
 
 const PIECES = 24
 

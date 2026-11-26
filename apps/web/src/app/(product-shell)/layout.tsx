@@ -15,13 +15,13 @@ import '../../styles/globals.css'
 import '../../styles/desktop-frame.css'
 
 export const metadata: Metadata = {
-    title: 'Peanut Split — split expenses, no signup',
+    title: 'Tribu — split expenses, no signup',
     // Shared with the SoftwareApplication node in `siteSchema()` — same sentence, one source.
     description: SITE_DESCRIPTION,
     metadataBase: new URL(siteUrl),
     // The app CHROME is "Split": launcher label, home-screen label, lock-screen sender. Everything
     // a search engine or a group chat sees — the title above, `SITE_NAME`, every OG unfurl — stays
-    // "Peanut Split".
+    // "Tribu".
 }
 
 export const viewport: Viewport = {
@@ -29,7 +29,7 @@ export const viewport: Viewport = {
     initialScale: 1,
     colorScheme: 'light',
     viewportFit: 'cover',
-    themeColor: '#FFC900',
+    themeColor: '#FFFAEE',
 }
 
 /**
@@ -116,7 +116,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <body className={bodyFontClassName}>
                 {canonicalPwa ? <RegisterProductServiceWorker /> : null}
                 {/* One WebSite, Organization and SoftwareApplication graph for the canonical
-                    peanutsplit.com identity. Room pages remain noindex. */}
+                    tribu.money identity. Room pages remain noindex. */}
                 <JsonLd data={siteSchema()} />
                 {/* No `messages` prop: rendered from a Server Component, the provider inherits
                     the request config, which serialises only the active catalog to the client.

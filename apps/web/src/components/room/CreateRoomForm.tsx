@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
+import { BaseInput } from '@/components/ui/BaseInput'
 import { Button } from '@/components/ui/Button'
 import { CloseButton } from '@/components/ui/CloseButton'
 import {
@@ -13,6 +14,7 @@ import {
     composerSurfaceClassName,
 } from '@/components/ui/composer-style'
 import { Icon } from '@/components/ui/Icon'
+import { decimalsOf, parseAmountToMinor } from '@/lib/money'
 import type { RoomPrefill } from '@/lib/room-prefill'
 import { readCurrencyChoice, rememberCurrencyChoice, useCurrencyHints } from '@/lib/use-currency-hint'
 import { useCurrencies } from '@/lib/queries'
@@ -38,8 +40,21 @@ const DEFAULT_CURRENCY = 'EUR'
  * and the form behaves identically once anybody touches it. A prefilled name also moves the
  * autofocus down to the one field a link is never allowed to fill in.
  */
-export function CreateRoomForm({ prefill = {} }: { prefill?: RoomPrefill }) {
+export function CreateRoomForm({
+    prefill = {},
+    kind = 'tribu',
+}: {
+    prefill?: RoomPrefill
+    /** A vaquita is created the same way, with its goal and the creator as its keeper. */
+    kind?: 'tribu' | 'vaquita'
+}) {
     const t = useTranslations('room.create')
+    const tPot = useTranslations('room.pot')
+    const locale = useLocale()
+    const isPot = kind === 'vaquita'
+    const [target, setTarget] = useState('')
+    const [quota, setQuota] = useState('')
+    const [potProblem, setPotProblem] = useState<string | null>(null)
     const router = useRouter()
     const { data: currencies } = useCurrencies()
     const { submit: createRoom, error, pending } = useCreateRoomFlow(t('failed'))
@@ -95,7 +110,14 @@ export function CreateRoomForm({ prefill = {} }: { prefill?: RoomPrefill }) {
     const submit = async (event: React.FormEvent) => {
         event.preventDefault()
         if (!canSubmit || !people.validatePeople()) return
+        const decimals = decimalsOf(currency, currencies)
+        const optionalMinor = (text: string) => (text.trim() ? parseAmountToMinor(text, decimals, locale) : undefined)
+        const targetMinor = optionalMinor(target)
+        const quotaMinor = optionalMinor(quota)
+        if (isPot && (targetMinor === null || quotaMinor === null)) return setPotProblem(tPot('amountInvalid'))
+        setPotProblem(null)
         const state = await createRoom({
+            ...(isPot ? { kind: 'vaquita' as const, pot: { targetMinor, quotaMinor } } : {}),
             name,
             emoji: shownEmblem,
             currency,
@@ -109,7 +131,7 @@ export function CreateRoomForm({ prefill = {} }: { prefill?: RoomPrefill }) {
     return (
         <form onSubmit={submit} className="flex min-h-dvh flex-col pb-[max(2.5rem,env(safe-area-inset-bottom))]">
             <div className="flex items-end justify-between gap-3 px-4 pb-2 pt-6">
-                <h1 className="text-h5">{t('title')}</h1>
+                <h1 className="text-h5">{isPot ? tPot('newTitle') : t('title')}</h1>
                 <CloseButton href="/app" label={t('back')} data-testid="close-create-room" />
             </div>
 
@@ -137,8 +159,8 @@ export function CreateRoomForm({ prefill = {} }: { prefill?: RoomPrefill }) {
                                         creatorRef.current?.focus()
                                     }}
                                     enterKeyHint="next"
-                                    placeholder={t('namePlaceholder')}
-                                    aria-label={t('name')}
+                                    placeholder={isPot ? tPot('newNamePlaceholder') : t('namePlaceholder')}
+                                    aria-label={isPot ? tPot('nameLabel') : t('name')}
                                     maxLength={80}
                                     autoFocus={prefill.name === undefined}
                                     data-testid="room-name"
@@ -272,9 +294,37 @@ export function CreateRoomForm({ prefill = {} }: { prefill?: RoomPrefill }) {
                         </label>
                     </RoomPeopleFields>
 
-                    {error && (
+                    {isPot && (
+                        <div className="grid gap-3" data-testid="pot-goal-fields">
+                            <label className="grid gap-1">
+                                <span className="text-sm font-bold">{tPot('targetLabel')}</span>
+                                <BaseInput
+                                    value={target}
+                                    onChange={(event) => setTarget(event.target.value)}
+                                    inputMode="decimal"
+                                    autoComplete="off"
+                                    maxLength={20}
+                                    data-testid="pot-target"
+                                />
+                            </label>
+                            <label className="grid gap-1">
+                                <span className="text-sm font-bold">{tPot('quotaLabel')}</span>
+                                <BaseInput
+                                    value={quota}
+                                    onChange={(event) => setQuota(event.target.value)}
+                                    inputMode="decimal"
+                                    autoComplete="off"
+                                    maxLength={20}
+                                    data-testid="pot-quota"
+                                />
+                            </label>
+                            <p className="text-sm text-grey-1">{tPot('newKeeperHint')}</p>
+                        </div>
+                    )}
+
+                    {(error || potProblem) && (
                         <p role="alert" className="text-sm font-bold text-error">
-                            {error}
+                            {potProblem ?? error}
                         </p>
                     )}
 
@@ -287,7 +337,7 @@ export function CreateRoomForm({ prefill = {} }: { prefill?: RoomPrefill }) {
                         className="justify-center text-h6"
                         data-testid="create-room"
                     >
-                        {t('submit')}
+                        {isPot ? tPot('createSubmit') : t('submit')}
                     </Button>
                     <p className="text-center text-xs text-grey-1">{t('people.hint')}</p>
                 </motion.div>

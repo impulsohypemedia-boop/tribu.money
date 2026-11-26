@@ -129,7 +129,7 @@ function buildDecisionBrief(findings: Finding[], records: DecisionRecords, overr
     ) as Record<Decision, number>
 
     const lines = [
-        '# Peanut Split audit decisions',
+        '# Tribu audit decisions',
         '',
         `Exported: ${new Date().toISOString()}`,
         `Progress: ${reviewed}/${findings.length} reviewed`,

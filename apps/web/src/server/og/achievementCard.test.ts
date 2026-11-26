@@ -123,8 +123,8 @@ describe('achievement cards', () => {
             {
                 inviter: 'Te invitaron a',
                 label: 'Gastos compartidos',
-                line: 'Todos agregan. Calculamos quién debe.',
-                rosterLabel: 'YA ESTÁN EN EL SPLIT',
+                line: 'Todos cargan. Tribu hace las cuentas.',
+                rosterLabel: 'YA ESTÁN EN LA TRIBU',
                 rosterLine: '5 personas ya están',
                 count: 5,
                 overflow: 2,
@@ -335,7 +335,7 @@ describe('achievement cards', () => {
         // legacy member who earns an award must not get a dead share button.
         const card = await loadAchievementCard(slugOf('en'), 'alterego', {
             award: 'hypeCrew',
-            persona: 'doodle-peanut',
+            persona: 'doodle-tribu',
         })
         expect(card).not.toBeNull()
     })

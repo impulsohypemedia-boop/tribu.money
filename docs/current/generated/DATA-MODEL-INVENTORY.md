@@ -3,10 +3,10 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `a486551b2365dab7eb7a451ee4c0ccb8944a51f9e163bac5fddc0eb8bd7dd4b1`
+Input SHA-256: `0700185af99adfad8995c9fd148a4b7e31bd6d6164024aadf7c34419e4a0c632`
 
 PostgreSQL namespace: `split`  
-Models: 15  
+Models: 22  
 Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## Room
@@ -18,6 +18,7 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `name`                        | `String`             | —                                    |
 | `emoji`                       | `String?`            | —                                    |
 | `currency`                    | `String`             | // display/settle currency, ISO 4217 |
+| `kind`                        | `String`             | @default("tribu")                    |
 | `coverUrl`                    | `String?`            | —                                    |
 | `theme`                       | `String?`            | —                                    |
 | `locale`                      | `String?`            | —                                    |
@@ -25,13 +26,42 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `createdAt`                   | `DateTime`           | @default(now())                      |
 | `members`                     | `Member[]`           | —                                    |
 | `expenses`                    | `Expense[]`          | —                                    |
+| `recurringExpenses`           | `RecurringExpense[]` | —                                    |
+| `pots`                        | `Pot[]`              | —                                    |
+| `reminders`                   | `Reminder[]`         | —                                    |
+| `budgets`                     | `Budget[]`           | —                                    |
 | `settlements`                 | `Settlement[]`       | —                                    |
 | `auditEvents`                 | `RoomAuditEvent[]`   | —                                    |
+| `ledgerEntries`               | `LedgerEntry[]`      | —                                    |
 | `importBatches`               | `ImportBatch[]`      | —                                    |
 | `feedbackReports`             | `FeedbackReport[]`   | —                                    |
 | `installHandoffs`             | `InstallHandoff[]`   | —                                    |
 | `pushSubscriptions`           | `PushSubscription[]` | —                                    |
 | `notificationSends`           | `NotificationSend[]` | —                                    |
+
+## Budget
+
+| Field         | Prisma type | Attributes                                                       |
+| ------------- | ----------- | ---------------------------------------------------------------- |
+| `id`          | `String`    | @id @default(uuid())                                             |
+| `roomId`      | `String`    | —                                                                |
+| `category`    | `String`    | —                                                                |
+| `amountMinor` | `BigInt`    | // per calendar month, room currency                             |
+| `createdAt`   | `DateTime`  | @default(now())                                                  |
+| `updatedAt`   | `DateTime`  | @updatedAt                                                       |
+| `room`        | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade) |
+
+## Reminder
+
+| Field       | Prisma type | Attributes                                                       |
+| ----------- | ----------- | ---------------------------------------------------------------- |
+| `id`        | `String`    | @id @default(uuid())                                             |
+| `roomId`    | `String`    | —                                                                |
+| `fromId`    | `String`    | —                                                                |
+| `toId`      | `String`    | —                                                                |
+| `createdAt` | `DateTime`  | @default(now())                                                  |
+| `seenAt`    | `DateTime?` | —                                                                |
+| `room`      | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade) |
 
 ## FeedbackReport
 
@@ -79,7 +109,16 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `token`              | `String`             | @unique // stable server-issued secret, returned when a device selects this member |
 | `avatar`             | `String?`            | —                                                                                  |
 | `avatarPalette`      | `String?`            | —                                                                                  |
-| `userId`             | `String?`            | // future account-linking hook                                                     |
+| `userId`             | `String?`            | // the Tribu account that holds this member, set by account sync                   |
+| `walletAddress`      | `String?`            | —                                                                                  |
+| `lemonTag`           | `String?`            | —                                                                                  |
+| `walletLinkedAt`     | `DateTime?`          | —                                                                                  |
+| `payoutToken`        | `String?`            | // USDT \| USDC                                                                    |
+| `payoutNetwork`      | `String?`            | // key from lib/payout.ts                                                          |
+| `payoutAddress`      | `String?`            | —                                                                                  |
+| `payoutBank`         | `String?`            | —                                                                                  |
+| `payoutLemonTag`     | `String?`            | —                                                                                  |
+| `honoredGuest`       | `Boolean`            | @default(false)                                                                    |
 | `provisional`        | `Boolean`            | @default(false)                                                                    |
 | `createdAt`          | `DateTime`           | @default(now())                                                                    |
 | `removedAt`          | `DateTime?`          | // non-null = Former for future activity; ledger identity remains durable          |
@@ -126,6 +165,8 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `category`        | `String?`           | —                                                                                         |
 | `createdAt`       | `DateTime`          | @default(now())                                                                           |
 | `deletedAt`       | `DateTime?`         | // soft delete → 6s Undo                                                                  |
+| `recurringId`     | `String?`           | —                                                                                         |
+| `potId`           | `String?`           | —                                                                                         |
 | `importBatchId`   | `String?`           | —                                                                                         |
 | `importRowIndex`  | `Int?`              | —                                                                                         |
 | `room`            | `Room`              | @relation(fields: [roomId], references: [id], onDelete: Cascade)                          |
@@ -187,6 +228,11 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `method`      | `String?`   | // "cash" \| "bank" \| "peanut" \| null                                                      |
 | `note`        | `String?`   | —                                                                                            |
 | `receiptUrl`  | `String?`   | // pasted documentation only; never fetched or verified                                      |
+| `txHash`      | `String?`   | @unique                                                                                      |
+| `chainId`     | `Int?`      | —                                                                                            |
+| `token`       | `String?`   | // "USDC" \| "USDT"                                                                          |
+| `tokenAmount` | `String?`   | // token base units, decimal string                                                          |
+| `network`     | `String?`   | —                                                                                            |
 | `createdAt`   | `DateTime`  | @default(now())                                                                              |
 | `deletedAt`   | `DateTime?` | —                                                                                            |
 | `room`        | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade)                             |
@@ -238,12 +284,14 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## User
 
-| Field       | Prisma type     | Attributes           |
-| ----------- | --------------- | -------------------- |
-| `id`        | `String`        | @id @default(uuid()) |
-| `createdAt` | `DateTime`      | @default(now())      |
-| `accounts`  | `AuthAccount[]` | —                    |
-| `members`   | `Member[]`      | —                    |
+| Field        | Prisma type     | Attributes           |
+| ------------ | --------------- | -------------------- |
+| `id`         | `String`        | @id @default(uuid()) |
+| `createdAt`  | `DateTime`      | @default(now())      |
+| `email`      | `String?`       | —                    |
+| `lastSeenAt` | `DateTime?`     | —                    |
+| `accounts`   | `AuthAccount[]` | —                    |
+| `members`    | `Member[]`      | —                    |
 
 ## AuthAccount
 
@@ -255,3 +303,81 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `providerId` | `String`    | —                                                                |
 | `createdAt`  | `DateTime`  | @default(now())                                                  |
 | `user`       | `User`      | @relation(fields: [userId], references: [id], onDelete: Cascade) |
+
+## RecurringExpense
+
+| Field         | Prisma type | Attributes                                                       |
+| ------------- | ----------- | ---------------------------------------------------------------- |
+| `id`          | `String`    | @id @default(uuid())                                             |
+| `roomId`      | `String`    | —                                                                |
+| `description` | `String`    | —                                                                |
+| `body`        | `Json`      | —                                                                |
+| `dayOfMonth`  | `Int`       | // 1–31; a shorter month uses its last day                       |
+| `nextMonth`   | `String`    | // YYYY-MM of the next month to create                           |
+| `stoppedAt`   | `DateTime?` | —                                                                |
+| `createdAt`   | `DateTime`  | @default(now())                                                  |
+| `room`        | `Room`      | @relation(fields: [roomId], references: [id], onDelete: Cascade) |
+
+## Pot
+
+| Field           | Prisma type         | Attributes                                                                        |
+| --------------- | ------------------- | --------------------------------------------------------------------------------- |
+| `id`            | `String`            | @id @default(uuid())                                                              |
+| `roomId`        | `String`            | —                                                                                 |
+| `name`          | `String`            | —                                                                                 |
+| `keeperId`      | `String`            | —                                                                                 |
+| `targetMinor`   | `BigInt?`           | // room currency                                                                  |
+| `quotaMinor`    | `BigInt?`           | // per person per month, room currency                                            |
+| `dueDate`       | `DateTime?`         | —                                                                                 |
+| `yieldAprBps`   | `Int?`              | // estimated yearly rate the keeper's account pays, in basis points; display only |
+| `createdAt`     | `DateTime`          | @default(now())                                                                   |
+| `closedAt`      | `DateTime?`         | —                                                                                 |
+| `room`          | `Room`              | @relation(fields: [roomId], references: [id], onDelete: Cascade)                  |
+| `contributions` | `PotContribution[]` | —                                                                                 |
+
+## PotContribution
+
+| Field          | Prisma type | Attributes                                                      |
+| -------------- | ----------- | --------------------------------------------------------------- |
+| `id`           | `String`    | @id @default(uuid())                                            |
+| `potId`        | `String`    | —                                                               |
+| `memberId`     | `String`    | —                                                               |
+| `amountMinor`  | `BigInt`    | // room currency                                                |
+| `settlementId` | `String?`   | @unique                                                         |
+| `reason`       | `String?`   | // null (a plain contribution) \| "roundup"                     |
+| `createdById`  | `String?`   | —                                                               |
+| `createdAt`    | `DateTime`  | @default(now())                                                 |
+| `deletedAt`    | `DateTime?` | —                                                               |
+| `pot`          | `Pot`       | @relation(fields: [potId], references: [id], onDelete: Cascade) |
+
+## LedgerEntry
+
+| Field         | Prisma type       | Attributes                                                                                                  |
+| ------------- | ----------------- | ----------------------------------------------------------------------------------------------------------- |
+| `id`          | `BigInt`          | @id @default(autoincrement())                                                                               |
+| `roomId`      | `String`          | —                                                                                                           |
+| `sourceType`  | `String`          | // expense \| settlement \| pot_contribution                                                                |
+| `sourceId`    | `String`          | —                                                                                                           |
+| `kind`        | `String`          | // record \| reversal                                                                                       |
+| `reversesId`  | `BigInt?`         | @unique // the record a reversal cancels                                                                    |
+| `currency`    | `String`          | // room currency; every posting amount is in it                                                             |
+| `description` | `String?`         | // snapshot at write time                                                                                   |
+| `detail`      | `Json?`           | // snapshot at write time: original amount and currency, method, pot                                        |
+| `occurredAt`  | `DateTime`        | // when the money moved: the expense date or when the payment was recorded                                  |
+| `createdAt`   | `DateTime`        | @default(now())                                                                                             |
+| `room`        | `Room`            | @relation(fields: [roomId], references: [id], onDelete: Restrict)                                           |
+| `reverses`    | `LedgerEntry?`    | @relation("LedgerReversal", fields: [reversesId], references: [id], onDelete: Restrict, onUpdate: Restrict) |
+| `reversedBy`  | `LedgerEntry?`    | @relation("LedgerReversal")                                                                                 |
+| `postings`    | `LedgerPosting[]` | —                                                                                                           |
+
+## LedgerPosting
+
+| Field         | Prisma type   | Attributes                                                         |
+| ------------- | ------------- | ------------------------------------------------------------------ |
+| `id`          | `BigInt`      | @id @default(autoincrement())                                      |
+| `entryId`     | `BigInt`      | —                                                                  |
+| `roomId`      | `String`      | —                                                                  |
+| `accountType` | `String`      | // member \| pot \| keeper                                         |
+| `accountId`   | `String`      | —                                                                  |
+| `amountMinor` | `BigInt`      | —                                                                  |
+| `entry`       | `LedgerEntry` | @relation(fields: [entryId], references: [id], onDelete: Restrict) |

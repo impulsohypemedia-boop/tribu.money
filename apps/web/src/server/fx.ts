@@ -14,7 +14,7 @@ import { convertMinorAtRate, isCatalogCode, STATIC_USD_PER_UNIT } from '@/server
 // scan does, and `api.peanut.me` must be on that proxy's CONNECT-443 allowlist
 // (added 2026-08-07). Without it every refresh fails and the table silently
 // degrades to the twelve static rates. See the Deployment section of README.md.
-const RATE_ENDPOINT = process.env.SPLIT_FX_ENDPOINT ?? 'https://api.peanut.me/fx/rates'
+const RATE_ENDPOINT = process.env.SPLIT_FX_ENDPOINT || 'https://api.peanut.me/fx/rates'
 
 /**
  * The one egress proxy, whichever consumer's variable happens to name it.

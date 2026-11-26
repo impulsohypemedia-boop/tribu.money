@@ -182,7 +182,7 @@ describe('OpenRouter — the request', () => {
         expect(sent.init.method).toBe('POST')
         expect(sent.init.headers.Authorization).toBe(`Bearer ${OPENROUTER_KEY}`)
         expect(sent.init.headers['HTTP-Referer']).toBe(siteUrl)
-        expect(sent.init.headers['X-Title']).toBe('Peanut Split')
+        expect(sent.init.headers['X-Title']).toBe('Tribu')
 
         const payload = sentBody(sent)
         expect(payload.model).toBe('google/gemini-2.5-flash-lite')

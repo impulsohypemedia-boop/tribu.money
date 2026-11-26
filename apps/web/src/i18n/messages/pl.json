@@ -130,7 +130,6 @@
             "colGuides": "Poradniki",
             "allGuides": "Wszystkie poradniki",
             "termsLink": "Regulamin",
-            "privacyLink": "Prywatność",
             "operatedBy": "Tribu is free software under the AGPL-3.0 license."
         },
         "appHome": {
@@ -267,9 +266,15 @@
             "team": "Team"
         },
         "landingNext": {
-            "badge": "Coming next",
-            "title": "The group wallet",
-            "body": "We're building a dollar account the group runs together: with rules everyone agrees on, and the money never in just one person's name."
+            "badge": "Wkrótce",
+            "title": "Dużo więcej niż dzielenie wydatków",
+            "body": "Finanse waszej grupy w jednym portfelu.",
+            "item1Title": "Wspólne oszczędzanie",
+            "item1Body": "Odkładajcie na wyjazd albo prezent, z celem widocznym dla wszystkich.",
+            "item2Title": "Wspólne inwestycje",
+            "item2Body": "Pomnażajcie pieniądze grupy według zasad, które wybieracie razem.",
+            "item3Title": "Płatności ze wspólnego portfela",
+            "item3Body": "Płaćcie czynsz albo grilla prosto z pieniędzy grupy."
         }
     },
     "locale": {

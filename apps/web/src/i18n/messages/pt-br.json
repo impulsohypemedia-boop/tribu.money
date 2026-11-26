@@ -129,8 +129,7 @@
             "colCompare": "Comparar",
             "colGuides": "Guias",
             "allGuides": "Todos os guias",
-            "termsLink": "Termos",
-            "privacyLink": "Privacidade",
+            "termsLink": "Termos e condições",
             "operatedBy": "O Tribu é software livre sob a licença AGPL-3.0."
         },
         "appHome": {
@@ -267,9 +266,15 @@
             "team": "Team"
         },
         "landingNext": {
-            "badge": "Coming next",
-            "title": "The group wallet",
-            "body": "We're building a dollar account the group runs together: with rules everyone agrees on, and the money never in just one person's name."
+            "badge": "Em breve",
+            "title": "Muito mais que dividir gastos",
+            "body": "As finanças do seu grupo, numa só carteira.",
+            "item1Title": "Poupança em grupo",
+            "item1Body": "Juntem dinheiro para a viagem ou o presente, com uma meta que todos veem.",
+            "item2Title": "Investimentos compartilhados",
+            "item2Body": "Façam o dinheiro do grupo render, com regras que escolhem juntos.",
+            "item3Title": "Pagamentos da carteira comum",
+            "item3Body": "Paguem o aluguel ou o churrasco direto com o dinheiro do grupo."
         }
     },
     "locale": {

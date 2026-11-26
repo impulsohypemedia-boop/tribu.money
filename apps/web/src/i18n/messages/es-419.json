@@ -1502,7 +1502,12 @@
         "MEMBER_TOKEN_REQUIRED": "Primero elegí quién sos en esta tribu.",
         "BUDGET_NOT_FOR_VAQUITA": "Una vaquita no tiene presupuesto mensual; eso es para las tribus.",
         "PAYOUT_BANK_INVALID": "Eso no parece un alias ni un CBU/CVU.",
-        "PAYOUT_LEMON_TAG_INVALID": "Ese Lemon tag no parece válido."
+        "PAYOUT_LEMON_TAG_INVALID": "Ese Lemon tag no parece válido.",
+        "ACCOUNTS_OFF": "Todavía no se puede entrar con una cuenta.",
+        "CROSS_SITE": "Ese pedido no vino de Tribu.",
+        "SIGN_IN_EXPIRED": "El inicio de sesión venció. Probá de nuevo.",
+        "SIGN_IN_UNAVAILABLE": "No pudimos hablar con Google. Probá en un rato.",
+        "SIGNED_OUT": "Entrá con Google para seguir."
     },
     "derivation": {
         "title": "Cómo sale este número",
@@ -1908,5 +1913,18 @@
             "theCloser": "Quien cierra",
             "hypeCrew": "La hinchada"
         }
+    },
+    "account": {
+        "pageTitle": "Entrar",
+        "title": "Tu cuenta",
+        "pitch": "Entrá con Google y tus tribus quedan guardadas en tu cuenta. Si cambiás de celular, las volvés a ver al entrar.",
+        "google": "Seguir con Google",
+        "signedInAs": "Entraste como {email}.",
+        "signedIn": "Entraste con tu cuenta de Google.",
+        "signedInHint": "Tus tribus quedan guardadas en tu cuenta. Entrá con el mismo Google en otro celular y aparecen solas.",
+        "signOut": "Cerrar sesión",
+        "inLemon": "Dentro de Lemon no se puede entrar con Google. Abrí tribu.money en el navegador para guardar tus tribus en tu cuenta.",
+        "finishing": "Entrando…",
+        "failed": "No pudimos terminar de entrar con Google. Probá de nuevo."
     }
 }

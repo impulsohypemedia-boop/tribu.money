@@ -37,6 +37,7 @@ import { useMyRooms } from '@/lib/queries/my-rooms'
 import { useCurrencies } from '@/lib/queries/reads'
 import { TOAST_MS } from '@/lib/toasts'
 import { tribeMilestones } from '@/lib/tribe-milestones'
+import { AccountSection } from '@/components/account/AccountSection'
 import { BadgesSection } from './BadgesSection'
 
 const pill = (active: boolean) =>
@@ -296,6 +297,8 @@ export function MeScreen() {
 
     return (
         <div className="grid gap-7 px-5 pt-5" data-testid="me">
+            <AccountSection />
+
             <PaymentProfileSection rooms={rooms} />
 
             <BadgesSection rooms={rooms} />

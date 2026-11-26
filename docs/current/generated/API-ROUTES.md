@@ -3,12 +3,16 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/src/app/**/route.ts`  
-Input SHA-256: `58994f2e0c439d7a66861eb1367fe62e9e8befb50e7a37aeca5e64fed13bc186`
+Input SHA-256: `703a4b7853bea0061991ad6ea21dec627e43818db8fbf4ea417e83d2b2d61672`
 
-Exported operations: 61
+Exported operations: 65
 
 | Method   | Path                                                         | Handler                                                                                  |
 | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `GET`    | `/api/account`                                               | `apps/web/src/app/api/account/route.ts`                                                  |
+| `POST`   | `/api/account/rooms`                                         | `apps/web/src/app/api/account/rooms/route.ts`                                            |
+| `DELETE` | `/api/account/session`                                       | `apps/web/src/app/api/account/session/route.ts`                                          |
+| `POST`   | `/api/account/session`                                       | `apps/web/src/app/api/account/session/route.ts`                                          |
 | `GET`    | `/api/currencies`                                            | `apps/web/src/app/api/currencies/route.ts`                                               |
 | `DELETE` | `/api/expenses/:id/reactions`                                | `apps/web/src/app/api/expenses/[id]/reactions/route.ts`                                  |
 | `POST`   | `/api/expenses/:id/reactions`                                | `apps/web/src/app/api/expenses/[id]/reactions/route.ts`                                  |

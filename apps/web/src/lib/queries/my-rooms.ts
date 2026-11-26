@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useQueries } from '@tanstack/react-query'
+import { ACCOUNT_ROOMS_EVENT } from '../account'
 import { readIdentity } from '../identity'
 import type { MyRoom } from '../my-overview'
 import { readRecentRooms, type RecentRoom } from '../recent-rooms'
@@ -29,6 +30,10 @@ export function useMyRooms(): MyRoomsResult {
     useEffect(() => {
         setRecent(readRecentRooms())
         setReady(true)
+        // Signing in on a new phone brings the account's tribus onto this device.
+        const reread = () => setRecent(readRecentRooms())
+        window.addEventListener(ACCOUNT_ROOMS_EVENT, reread)
+        return () => window.removeEventListener(ACCOUNT_ROOMS_EVENT, reread)
     }, [])
 
     const results = useQueries({

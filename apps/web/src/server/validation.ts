@@ -770,3 +770,9 @@ export const potContributionSchema = z.object({
 })
 
 export const potSpendSchema = z.object({ expenseId: id })
+
+export const accountSessionSchema = z.object({ accessToken: z.string().min(20).max(8000) })
+
+export const accountRoomsSchema = z.object({
+    held: z.array(z.object({ slug: z.string().min(1).max(120), token: z.string().min(1).max(200) })).max(200),
+})

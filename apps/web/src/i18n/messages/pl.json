@@ -1502,7 +1502,12 @@
         "MEMBER_TOKEN_REQUIRED": "Pick who you are in this tribe first.",
         "BUDGET_NOT_FOR_VAQUITA": "A shared pot has no monthly budget; budgets are for groups.",
         "PAYOUT_BANK_INVALID": "That does not look like an alias or a CBU/CVU.",
-        "PAYOUT_LEMON_TAG_INVALID": "That Lemon tag does not look right."
+        "PAYOUT_LEMON_TAG_INVALID": "That Lemon tag does not look right.",
+        "ACCOUNTS_OFF": "Accounts aren't available yet.",
+        "CROSS_SITE": "That request didn't come from Tribu.",
+        "SIGN_IN_EXPIRED": "Your sign-in expired. Try again.",
+        "SIGN_IN_UNAVAILABLE": "We couldn't reach Google. Try again soon.",
+        "SIGNED_OUT": "Sign in with Google to continue."
     },
     "derivation": {
         "title": "Skąd ta suma",
@@ -1908,5 +1913,18 @@
             "theCloser": "Domknięcie rozliczeń",
             "hypeCrew": "Dobra energia"
         }
+    },
+    "account": {
+        "pageTitle": "Sign in",
+        "title": "Your account",
+        "pitch": "Sign in with Google and your groups are saved to your account. On a new phone, sign in and they come back.",
+        "google": "Continue with Google",
+        "signedInAs": "Signed in as {email}.",
+        "signedIn": "Signed in with Google.",
+        "signedInHint": "Your groups are saved to your account. Sign in with the same Google account on another phone and they appear.",
+        "signOut": "Sign out",
+        "inLemon": "Google sign-in is not available inside Lemon. Open tribu.money in your browser to save your groups to your account.",
+        "finishing": "Signing in…",
+        "failed": "We couldn't finish signing in with Google. Try again."
     }
 }

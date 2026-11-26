@@ -600,3 +600,26 @@ export interface ImportIntoRoomResult extends RoomState {
     addedMembers: number
     alreadyImported: boolean
 }
+
+export interface AccountSummary {
+    /** The Google address the person signed in with. */
+    email: string | null
+}
+
+export interface AccountState {
+    /** False when this deployment has no sign-in configured. */
+    enabled: boolean
+    account: AccountSummary | null
+}
+
+/** One tribu the account belongs to, with what a device needs to act as that member there. */
+export interface AccountMembership {
+    slug: string
+    roomName: string
+    emoji: string | null
+    theme: string | null
+    kind: string
+    memberId: string
+    name: string
+    token: string
+}

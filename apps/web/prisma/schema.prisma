@@ -172,7 +172,7 @@ model Member {
   // only for rolling deploys and rows written before multicolour avatars; new
   // writes always choose a concrete allowlisted key.
   avatarPalette  String?
-  userId         String? // future account-linking hook
+  userId         String? // the Tribu account that holds this member, set by account sync
   // Lemon wallet this member is paid at. Set only by a holder of this member's token, with a
   // signature from that wallet (`server/lemon/identity.ts`). Lowercase hex.
   walletAddress  String?
@@ -209,6 +209,7 @@ model Member {
   installHandoffs   InstallHandoff[]
 
   @@index([roomId])
+  @@index([userId])
   @@schema("split")
 }
 
@@ -450,8 +451,11 @@ model NotificationSend {
 // rewriting member history.
 
 model User {
-  id        String        @id @default(uuid())
-  createdAt DateTime      @default(now())
+  id         String        @id @default(uuid())
+  createdAt  DateTime      @default(now())
+  // The address a person signed in with (Google or a code by email). Null for a Lemon-only account.
+  email      String?
+  lastSeenAt DateTime?
   accounts  AuthAccount[]
   members   Member[]
 

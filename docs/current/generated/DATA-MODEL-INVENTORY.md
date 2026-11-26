@@ -3,7 +3,7 @@
 <!-- GENERATED FILE. Run `pnpm docs:generate`; do not hand-edit. -->
 
 Source: `apps/web/prisma/schema.prisma`  
-Input SHA-256: `23ecc0cb171e304a06ca8bbc8f5d4a4ed05be4a46a20128251fd5435a5f9ff2d`
+Input SHA-256: `0700185af99adfad8995c9fd148a4b7e31bd6d6164024aadf7c34419e4a0c632`
 
 PostgreSQL namespace: `split`  
 Models: 22  
@@ -109,7 +109,7 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 | `token`              | `String`             | @unique // stable server-issued secret, returned when a device selects this member |
 | `avatar`             | `String?`            | —                                                                                  |
 | `avatarPalette`      | `String?`            | —                                                                                  |
-| `userId`             | `String?`            | // future account-linking hook                                                     |
+| `userId`             | `String?`            | // the Tribu account that holds this member, set by account sync                   |
 | `walletAddress`      | `String?`            | —                                                                                  |
 | `lemonTag`           | `String?`            | —                                                                                  |
 | `walletLinkedAt`     | `DateTime?`          | —                                                                                  |
@@ -284,12 +284,14 @@ Split modes: `EQUAL`, `EXACT`, `PERCENTAGE`, `SHARES`
 
 ## User
 
-| Field       | Prisma type     | Attributes           |
-| ----------- | --------------- | -------------------- |
-| `id`        | `String`        | @id @default(uuid()) |
-| `createdAt` | `DateTime`      | @default(now())      |
-| `accounts`  | `AuthAccount[]` | —                    |
-| `members`   | `Member[]`      | —                    |
+| Field        | Prisma type     | Attributes           |
+| ------------ | --------------- | -------------------- |
+| `id`         | `String`        | @id @default(uuid()) |
+| `createdAt`  | `DateTime`      | @default(now())      |
+| `email`      | `String?`       | —                    |
+| `lastSeenAt` | `DateTime?`     | —                    |
+| `accounts`   | `AuthAccount[]` | —                    |
+| `members`    | `Member[]`      | —                    |
 
 ## AuthAccount
 
